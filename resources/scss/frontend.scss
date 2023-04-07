@@ -1,0 +1,492 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+
+@import "~noty/src/noty";
+@import "~noty/src/themes/nest";
+
+@import 'animate.css';
+@import 'aos.css';
+
+@layer base {
+    html {
+        font-family: Roboto, system-ui, sans-serif;
+        @apply text-gray-900;
+    }
+    body {
+        @apply bg-gray-50;
+    }
+    a {
+        @apply hover:text-secondary cursor-pointer transition duration-300 ease-in-out;
+    }
+}
+
+//=============Page Design============
+#page {
+    @apply relative;
+    .container {
+        @apply mx-auto;
+    }
+    .page-section {
+        @apply py-4 sm:py-4 md:py-6 lg:py-8 xl:py-8 2xl:py-10;
+    }
+
+    .section-title {
+        @apply text-primary text-2xl sm:text-2xl md:text-2xl lg:text-3xl xl:text-3xl 2xl:text-3xl font-medium;
+    }
+
+    .page-top-gap {
+        @apply mt-32 sm:mt-32 md:mt-32 lg:mt-40;
+    }
+    .header-wrapper {
+        @apply bg-white fixed top-0 z-50 w-full shadow;
+        .top-header-bar {
+            @apply block h-10 transition-all duration-300 ease-in-out;
+        }
+        // ============when scroll header will be shrink for small header class======================
+        &.small-header {
+            * {
+                @apply transition-all duration-300 ease-in-out;
+            }
+            .top-header-bar {
+                @apply h-0 overflow-hidden;
+            }
+            .page-header {
+                @apply h-16;
+                .logo-wrapper {
+                    .logo {
+                        @apply h-11;
+                    }
+                }
+            }
+            .search-box {
+                .search-box-input {
+                    @apply py-2;
+                }
+            }
+            .actions {
+                .item {
+                    @apply w-10 h-10;
+                    .icon {
+                        @apply text-sm;
+                    }
+                    .cart-dev {
+                        @apply mt-0.5 w-4 h-4;
+                        .cart-count {
+                            @apply flex items-center justify-center text-xxs;
+                        }
+                    }
+                }
+                .user-profile{
+                    @apply h-10;
+                    .icon{
+                        @apply text-sm;
+                    }
+                }
+            }
+            .post-header {
+                .category-btn {
+                    @apply w-52 px-4 py-2;
+                }
+                .dropdown-menu {
+                    @apply w-52;
+                }
+            }
+        }
+    }
+}
+
+.product-detail {
+    ul, ol {
+        margin-left: 24px;
+    }
+    ul {
+        list-style: disc;
+    }
+    ol {
+        list-style: decimal;
+    }
+}
+
+.medicine-corner {
+    .mcontainer {
+        @apply grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-5 gap-2;
+    }
+}
+
+.page-header {
+    @apply h-20;
+    >.grid {
+        @apply h-full;
+    }
+    .logo-wrapper {
+        @apply flex items-center h-full;
+    }
+    .nav {
+        @apply flex space-x-2;
+        .item {
+            @apply text-base xl:text-base 2xl:text-lg text-primary bg-white font-medium rounded lg:px-2 xl:px-6 lg:py-1 xl:py-3;
+            @apply hover:text-primary-darkest hover:bg-primary-lightest transition duration-300 ease-in-out hover:ease-in-out;
+        }
+    }
+    .actions {
+        @apply flex space-x-4 items-center justify-end h-full;
+        .item {
+            @apply lg:w-8 xl:w-12 lg:h-8 xl:h-12 bg-gray-50 flex items-center justify-center rounded shadow text-secondary hover:text-primary;
+            @apply transition duration-300 ease-in-out;
+        }
+    }
+}
+// Terms & Conditions- Header Design
+.title-wrapper {
+    @apply h-12 flex items-center rounded bg-gray-300;
+    .title {
+        @apply text-lg ml-2 font-medium tracking-wider;
+    }
+}
+
+// ======mobile nav=======
+.mobile-nav {
+    @apply z-30 rounded rounded-t-none shadow top-full flex flex-col bg-white text-primary;
+    .mobile-nav-item {
+        @apply w-full px-4 py-2 text-sm font-medium rounded rounded-t-none inline-block border-b hover:bg-secondary hover:text-white transition duration-300 ease-in-out;
+        .img-wrapper {
+            @apply inline-block mr-2 w-5 h-5 border shadow-sm rounded-full;
+        }
+    }
+}
+
+.page-footer {
+    .main-footer {
+        .logo-wrapper {}
+        .description {
+            @apply pr-2 text-sm;
+        }
+        .contact {
+            .icon {}
+            .label {
+                @apply text-sm;
+            }
+        }
+        .social-nav {
+            @apply flex space-x-2;
+            .item {
+                @apply flex items-center justify-center border bg-white rounded w-8 h-8;
+            }
+        }
+        .nav {
+            @apply flex flex-col space-y-2;
+            .header {
+                @apply text-base sm:text-base md:text-lg text-primary font-medium mb-3 sm:mb-3 md:mb-3;
+            }
+            .item {
+                @apply text-sm capitalize;
+            }
+        }
+    }
+}
+
+//=========Service Section======
+.service-card {
+    @apply bg-white shadow-sm border px-0 py-3 sm:px-0 sm:py-3 md:px-3 md:py-3 lg:px-3 lg:py-3 xl:px-4 xl:py-4 2xl:px-6 2xl:py-6 rounded hover:shadow;
+    .header {
+        .title {
+            @apply text-xxs sm:text-xxs md:text-base lg:text-base xl:text-xl 2xl:text-2xl font-semibold sm:font-semibold md:font-semibold lg:font-semibold xl:font-semibold 2xl:font-semibold text-center text-primary;
+        }
+    }
+    .body {
+        .img-wrapper {
+            @apply aspect-w-1 aspect-h-1;
+            .img {
+                @apply p-2 h-full w-full;
+            }
+        }
+    }
+    .footer {
+        @apply text-center;
+    }
+}
+
+//==========Symptoms Section=======
+.symptoms-section {
+    .img-wrapper {
+        @apply block rounded hover:scale-105;
+        .img {
+            @apply w-full h-auto;
+        }
+    }
+}
+
+// ==========All Components styles ============
+.card {
+    @apply bg-white rounded-md;
+    .header {
+        @apply rounded-t-md border-b;
+        .title {
+            @apply flex items-center tracking-wide justify-center py-3 text-lg font-semibold;
+        }
+    }
+    .footer {
+        @apply rounded-b-md border-t;
+        .title {
+            @apply flex items-center justify-center py-2 text-xl;
+        }
+    }
+}
+
+// ================form design================
+.form-item {
+    @apply flex flex-col mb-4;
+    .form-label {
+        @apply text-xs md:text-base mb-1 md:mb-2;
+    }
+    .form-input {
+        @apply text-xs md:text-sm rounded placeholder:text-xs md:placeholder:text-sm placeholder:text-gray-400;
+    }
+    .form-helper {
+        @apply text-xs mt-1 px-1 text-gray-400;
+        &.warning {
+            @apply text-primaryWarning-darkest;
+        }
+        &.error {
+            @apply text-primaryError-darkest;
+        }
+        &.success {
+            @apply text-primaryPositive-darkest;
+        }
+    }
+}
+
+// ==============filter-card===================
+.filter-card {
+    .title-wrapper {
+        @apply p-3 bg-primary rounded;
+        .title {
+            @apply tracking-wide font-medium text-white uppercase;
+        }
+    }
+    .filter-box {
+        @apply bg-white border rounded mb-4 last:mb-0;
+        .box-wrapper {
+            @apply border-b p-3 bg-primary-lightest;
+            .box-title {
+                @apply flex items-center justify-between font-medium;
+            }
+        }
+        .filter-list {
+            @apply flex flex-col space-y-2 p-4 overflow-y-auto max-h-64;
+            .item {
+                @apply flex items-center;
+            }
+        }
+    }
+}
+
+// ==============Breadcrumb=============================
+.breadcrumb-wrapper {
+    @apply bg-gray-100 px-5 py-3 rounded-md w-full;
+    .list-reset {
+        @apply flex text-sm sm:text-sm md:text-base;
+        .item {
+            .item-link {
+                @apply text-primary hover:text-secondary transition duration-300 ease-in-out;
+            }
+            .divider {
+                @apply text-gray-500 mx-2;
+            }
+        }
+        .last-item {
+            @apply text-gray-500;
+        }
+    }
+}
+// =========================================================================
+// Design Components
+// =========================================================================
+@layer components {
+    // Buttons
+    .btn {
+        @apply bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded;
+        @apply transition duration-200 ease-in-out;
+        &.btn-ghost {
+            @apply bg-transparent border border-dashed text-gray-500 hover:text-gray-700;
+        }
+        &.btn-primary {
+            @apply bg-gradient-to-t bg-primary text-white hover:bg-primary-dark transition duration-300 ease-in-out;
+        }
+        &.btn-secondary {
+            @apply bg-secondary text-white hover:bg-secondary-dark transition duration-300 ease-in-out;
+        }
+        &.btn-success {
+            @apply bg-primaryPositive text-white hover:bg-primaryPositive-darker;
+        }
+        &.btn-danger {
+            @apply text-white bg-gradient-to-t from-red-600 hover:from-red-700 to-red-500 hover:to-red-700;
+        }
+        &.btn-xxs {
+            @apply text-xxs px-2 py-1 normal-case;
+            &.btn-icon-only {
+                @apply p-1 w-7;
+                font-size: 10px;
+            }
+        }
+        &.btn-xs {
+            @apply text-xxs px-4 py-1 normal-case;
+            &.btn-icon-only {
+                @apply p-1 w-7;
+                font-size: 12px;
+            }
+        }
+        &.btn-sm {
+            @apply text-xs px-4 py-2 normal-case;
+            &.btn-icon-only {
+                @apply p-1 w-6 sm:w-6 md:w-8;
+                font-size: 12px;
+            }
+        }
+        &.btn-md {
+            @apply text-sm px-4 py-2;
+            &.btn-icon-only {
+                @apply p-1 w-7;
+                font-size: 12px;
+            }
+        }
+        &.btn-lg {
+            @apply text-lg px-6 py-3;
+            &.btn-icon-only {
+                @apply p-3 w-[52px];
+            }
+        }
+        &.btn-xl {
+            @apply text-xl px-8 py-4;
+            &.btn-icon-only {
+                @apply p-4 w-[60px];
+            }
+        }
+        &.btn-rounded {
+            @apply rounded-full;
+        }
+        &.btn-rounded-none {
+            @apply rounded-none;
+        }
+        &.btn-block {
+            @apply block text-center w-full;
+        }
+        &.btn-icon-only {
+            @apply p-2 w-10;
+        }
+        &.btn-icon {
+            .icon {
+                @apply mr-2;
+            }
+        }
+    }
+
+    .alert {
+        @apply border rounded-md p-4 text-base text-gray-700;
+        &.warning {
+            @apply text-primaryWarning-darkest bg-primaryWarning-lightest border-primaryWarning-dark;
+        }
+        &.error {
+            @apply text-primaryError-darkest bg-primaryError-lightest border-primaryError-dark;
+        }
+        &.success {
+            @apply text-primaryPositive-darkest bg-primaryPositive-lightest border-primaryPositive-dark;
+        }
+    }
+}
+
+#noty {
+    width: 256px;
+    margin: 100px auto;
+}
+
+// =========================================================================
+// Cart page design
+// =========================================================================
+.btn-delivery-gateway {
+    @apply flex flex-col flex-1 items-center border border-primary-light hover:bg-primary-light hover:text-white p-2 rounded transition-all duration-300 ease-in-out;
+    &.active {
+        @apply text-white bg-primary hover:bg-primary-dark;
+    }
+}
+
+.btn-payment-method {
+    @apply flex flex-1 flex-col items-center justify-center border p-2 rounded space-y-2 hover:bg-primary-lightest transition duration-300 ease-in-out;
+    &.active {
+        @apply bg-primary hover:bg-primary-dark text-white;
+    }
+}
+
+.modal-backdrop {
+    z-index: 30 !important;
+}
+
+// ==================slider button===========
+.carousel-indicators [data-bs-target] {
+    width: 30px;
+    height: 5px;
+    padding: 0;
+    background-color: #102967;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+.fb_iframe_widget iframe:focus-visible {
+    outline: none !important;
+}
+:focus-visible {
+  outline: none !important;
+}
+
+// ==========start icon css========
+.rate {
+    float: left;
+    height: 46px;
+    padding: 0 10px;
+}
+.rate:not(:checked) > input {
+    position:absolute;
+    top:-9999px;
+}
+.rate:not(:checked) > label {
+    float:right;
+    width:1em;
+    overflow:hidden;
+    white-space:nowrap;
+    cursor:pointer;
+    font-size:50px;
+    color:#ccc;
+}
+.rate:not(:checked) > label:before {
+    content: '★ ';
+}
+.rate > input:checked ~ label {
+    color: #FF9C0B;
+}
+.rate:not(:checked) > label:hover,
+.rate:not(:checked) > label:hover ~ label {
+    color: #FF9C0B;
+}
+.rate > input:checked + label:hover,
+.rate > input:checked + label:hover ~ label,
+.rate > input:checked ~ label:hover,
+.rate > input:checked ~ label:hover ~ label,
+.rate > label:hover ~ input:checked ~ label {
+    color: #c59b08;
+}
+
