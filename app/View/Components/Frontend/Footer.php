@@ -25,13 +25,13 @@ class Footer extends Component
     {
         $about = [
             'logo'        => '/images/logos/logo-full-color.svg',
-            'description' => 'Pharmacy at Home.',
-            'loc1'        => 'J K Tower, 31, Segun Bagicha, Ramna,',
-            'loc2'        => 'Dhaka-1000, Bangladesh.',
-            'email'       => 'info@medicart.health',
-            'phone'       => '+8809609080706',
-            'phone2'       => '+8801322800327',
-            'phone3'       => '+8801322800320'
+            'description' => 'Description',
+            'loc1'        => 'Address 1',
+            'loc2'        => 'Address 2',
+            'email'       => 'contact@gmail.com',
+            'phone'       => '+8801**********',
+            'phone2'      => '+8801**********',
+            'phone3'      => '+8801**********',
         ];
 
         $nav1 = [

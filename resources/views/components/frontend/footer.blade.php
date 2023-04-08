@@ -49,9 +49,6 @@
                             <a href="/about" class="item">{{ $nav1['about'] }}</a>
                             <a href="/frequently-asked-questions" class="item">{{ $nav1['faq'] }}</a>
                             <a href="/terms-and-conditions" class="item">{{ $nav1['termsAndConditions'] }}</a>
-                            @role('superadministrator|administrator')
-                                <a href="/admin/dashboard" class="font-medium">Admin Panel</a>
-                            @endrole
                         </div>
                     </div>
                     <div class="">
@@ -66,7 +63,6 @@
                             @endauth
                             <a href="/products" class="item">{{ $nav2['products'] }}</a>
                             <a href="{{ route('my.order') }}" class="item">{{ $nav2['ordertrac'] }} </a>
-                            {{-- <a href="/promotion-offers" class="item">{{ $nav2['promotion'] }} </a> --}}
                         </div>
                     </div>
                     <div class="">
@@ -80,27 +76,27 @@
                 </div>
                 {{-- ========Download our app========= --}}
                 <div class="download-app-section col-span-1 flex flex-col justify-center lg:justify-self-end ">
-                    <div class="mt-6 text-center sm:text-center md:text-center lg:text-left xl:text-left">
+                    {{-- <div class="mt-6 text-center sm:text-center md:text-center lg:text-left xl:text-left">
                         <div class="text-lg text-primary font-medium">{{ $nav4['title'] }}</div>
-                    </div>
-                    <div class="mt-5 flex space-x-2 justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
-                        <a href="https://apps.apple.com/us/app/apple-store/id6443554194/" target="_blank" class="">
+                    </div> --}}
+                    {{-- <div class="mt-5 flex space-x-2 justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
+                        <a href="" class="">
                             <img class="" src="/images/sample/appStore.png">
                         </a>
-                        <a href="https://play.google.com/store/apps/details?id=com.pulsetechltd.medicart" target="_blank">
+                        <a href="">
                             <img class="" src="/images/sample/google-Play.png">
                         </a>
-                    </div>
-                    <div class="mt-6 text-center sm:text-center md:text-center lg:text-left xl:text-left">
+                    </div> --}}
+                    <div class="text-center sm:text-center md:text-center lg:text-left xl:text-left">
                         <div class="text-lg text-primary font-medium">{{ $nav4['title2'] }}</div>
                     </div>
                     <div class="mt-5 flex space-x-4 justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
                         {{-- social --}}
                         <div class="social-nav justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
-                            <a href="https://www.facebook.com/Medicart-107068648773339" target="_blank" class="item">
+                            <a href="#" class="item">
                                 <i class="fa-brands fa-facebook-f"></i>
                             </a>
-                            <a href="https://www.linkedin.com/company/medicart-health/" target="_blank" class="item">
+                            <a href="#" class="item">
                                 <i class="fa-brands fa-linkedin-in"></i>
                             </a>
                         </div>
@@ -109,34 +105,7 @@
             </div>
         </footer>
     </div>
-    <div class="container">
-        <div class="text-center pb-4">
-            <img src="{{ asset('images/logos/SSLCOMMERZ2.png') }}" alt="">
-        </div>
-    </div>
-    <div class="post-footer bg-primary-darkest py-2 md:py-2">
-        <div class="container">
-            <div class="flex flex-col md:flex-col lg:flex-row items-center justify-between text-gray-200">
-                <div class="copyright text-xs">&copy; {{ date('Y') }}, All Rights Reserved, <a class="text-secondary" href="http://www.pulsetechltd.com/" target="_blank">Pulse Tech Ltd</a>.</div>
-                <div class="mt-1 sm:mt-1 md:mt-2 lg:mt-0 text-xs flex flex-wrap items-center justify-center space-x-0 md:space-x-8">
-                    <span>Trade License Number : TRAD/DSCC/040894/2021  </span>
-                    <span>BIN : 004938907-0208</span>
-                </div>
-                <div class="flex space-x-4 text-xs mt-1 sm:mt-1 md:mt-2 lg:mt-0">
-                    <a href="/terms-and-conditions" class="text-xs">Terms & Conditions</a>
-                    <a href="/privacy-policy" class="text-xs">Privacy & Policy</a>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
-
-<!-- Messenger Chat Plugin Code -->
-{{-- <div class="" id="fb-root"></div> --}}
-
-<!-- Your Chat Plugin code -->
-{{-- <div id="fb-customer-chat" class="fb-customerchat">
-</div> --}}
 
 @push('scripts')
     <script>

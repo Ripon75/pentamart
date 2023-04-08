@@ -8,6 +8,7 @@ use App\Models\Cart;
 use App\Classes\Utility;
 use App\Classes\SMSGateway;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Routing\Controller;
 use App\Events\CustomerRegistration;
 use Illuminate\Support\Facades\Hash;
@@ -58,43 +59,51 @@ class AuthController extends Controller
         $termsAndConditions = $request->input('terms_and_conditons', null);
         $code               = $this->getRandomCode();
 
-        // check first digit 0 or not
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        try {
+            DB::beginTransaction();
+            // check first digit 0 or not
+            $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
-        $user = User::where('email', $email)->whereNotNull('email')->orWhere('phone_number', $phoneNumber)->first();
-        if ($user) {
-            if ($user->ac_active) {
-                return back()->with('success', 'User already active');
-            } else {
-
-                if ($code && $phoneNumber) {
-                    $user->code = $code;
-                    $res = $user->save();
-                    $SMSGateway = new SMSGateway();
-                    $SMSGateway->sendActivationCode($phoneNumber, $code);
+            $user = User::where('email', $email)->whereNotNull('email')->orWhere('phone_number', $phoneNumber)->first();
+            if ($user) {
+                if ($user->ac_active) {
+                    return back()->with('success', 'User already active');
+                } else {
+                    if ($code && $phoneNumber) {
+                        $user->code = $code;
+                        $res = $user->save();
+                        $SMSGateway = new SMSGateway();
+                        $SMSGateway->sendActivationCode($phoneNumber, $code);
+                    }
+                    return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
                 }
-                return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
             }
-        }
 
-        $userObj = new User();
+            $userObj = new User();
 
-        $userObj->name  = $name;
-        $userObj->email = $email;
-        $userObj->phone_number        = $phoneNumber;
-        $userObj->password            = Hash::make($password);
-        $userObj->terms_and_conditons = $termsAndConditions;
-        $userObj->code = $code;
-        $res = $userObj->save();
+            $userObj->name  = $name;
+            $userObj->email = $email;
+            $userObj->phone_number        = $phoneNumber;
+            $userObj->password            = Hash::make($password);
+            $userObj->terms_and_conditons = $termsAndConditions;
+            $userObj->code = $code;
+            $res = $userObj->save();
 
-        if($res) {
-            Utility::setUserEvent('customer-registration', [
-                'user' => $userObj
-            ]);
-            CustomerRegistration::dispatch($userObj, $phoneNumber, $code);
-            return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
-        } else {
-            return back()->with($res);
+            if ($res) {
+                Utility::setUserEvent('customer-registration', [
+                    'user' => $userObj
+                ]);
+                CustomerRegistration::dispatch($userObj, $phoneNumber, $code);
+                return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
+            } else {
+                return back()->with($res);
+            }
+            DB::commit();
+        } catch (\Exception $e) {
+            //throw $th;
+            info($e);
+            DB::rollback();
+            return false;
         }
     }
 

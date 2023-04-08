@@ -28,6 +28,8 @@ class CreateProductsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('generic_id')->nullable()->constrained('generics')
                   ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('company_id')->nullable()->constrained('companies')
+                  ->onUpdate('cascade')->onDelete('cascade');
             $table->integer('pos_product_id')->nullable();
             $table->decimal('mrp', 20, 2)->default(0);
             $table->decimal('selling_price', 20, 2)->default(0);
@@ -84,25 +86,25 @@ class CreateProductsTable extends Migration
         });
 
         // Product category table
-        Schema::create('categories', function (Blueprint $table) use ($status) {
-            $table->id();
-            $table->string('slug', 100)->nullable();
-            $table->string('name', 100)->nullable();
-            $table->enum('status', $status)->default('draft');
-            $table->string('color', 6)->nullable();
-            $table->foreignId('parent_id')->nullable();
-            $table->foreignId('family_id')->nullable();
-            $table->string('description', 1000)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-        });
+        // Schema::create('categories', function (Blueprint $table) use ($status) {
+        //     $table->id();
+        //     $table->string('slug', 100)->nullable();
+        //     $table->string('name', 100)->nullable();
+        //     $table->enum('status', $status)->default('draft');
+        //     $table->string('color', 6)->nullable();
+        //     $table->foreignId('parent_id')->nullable();
+        //     $table->foreignId('family_id')->nullable();
+        //     $table->string('description', 1000)->nullable();
+        //     $table->timestamps();
+        //     $table->softDeletes();
+        // });
 
         // Product & Product category (relation table)
-        Schema::create('product_category', function (Blueprint $table) {
-            $table->foreignId('product_id');
-            $table->foreignId('category_id');
-            $table->timestamps();
-        });
+        // Schema::create('product_category', function (Blueprint $table) {
+        //     $table->foreignId('product_id');
+        //     $table->foreignId('category_id');
+        //     $table->timestamps();
+        // });
 
         // Product attribute & product attribut family category (relation table)
         Schema::create('family_attribute', function (Blueprint $table) {

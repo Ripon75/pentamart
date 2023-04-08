@@ -36,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         CustomerRegistration::class => [
-            SendActivationCode::class,
+            // SendActivationCode::class,
             AttachCustomerRole::class,
             CreateCustomerCart::class,
         ],

@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
             OrderStatusSeeder::class,
             SymptomSeeder::class,
             SettingSeeder::class,
-            ProductAttributeSeeder::class,
+            // ProductAttributeSeeder::class,
         ]);
     }
 }
