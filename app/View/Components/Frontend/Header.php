@@ -38,8 +38,6 @@ class Header extends Component
             [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],
             [ 'label' => 'Medical Devices', 'route' => route('category.page', ['medical-devices'])],
             [ 'label' => 'Offers', 'route' => route('offers.products')],
-            [ 'label' => 'InstaMed', 'route' => route('home')],
-            [ 'label' => 'Wishcart', 'route' => route('home')]
         ];
         $countries  = config('lang.countries');
         $currencies = config('lang.currencies');

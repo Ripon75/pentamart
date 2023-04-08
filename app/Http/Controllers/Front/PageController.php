@@ -23,7 +23,6 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use App\Models\DeliveryGateway;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
