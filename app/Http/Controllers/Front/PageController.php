@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
-use Setting;
+use App\Traits\Setting;
 use Carbon\Carbon;
 use App\Models\Tag;
 use App\Models\Area;

@@ -1,7 +1,7 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
     <div class="top-header-bar">
-        <div class="bg-primary h-8 sm:h-8 md:h-10">
+        <div class="bg-[#00798c] h-8 sm:h-8 md:h-10">
             <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-white h-full">
                 <div class="address flex-1 hidden sm:hidden md:block">
                     <span class="text-xs font-light">DELIVER TO : </span>
@@ -91,7 +91,7 @@
                                 <button class="block" type="button">
                                     <i class="icon fa-solid fa-cart-shopping"></i>
                                 </button>
-                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-primary rounded-full w-6 h-6 text-center">
+                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#00798c] rounded-full w-6 h-6 text-center">
                                     <span class="cart-count flex items-center justify-center h-full text-white text-xs">0</span>
                                 </div>
                             </div>

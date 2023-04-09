@@ -24,7 +24,7 @@ class Footer extends Component
     public function render()
     {
         $about = [
-            'logo'        => '/images/logos/logo-full-color.svg',
+            'logo'        => '/images/logos/logo.svg',
             'description' => 'Description',
             'loc1'        => 'Address 1',
             'loc2'        => 'Address 2',

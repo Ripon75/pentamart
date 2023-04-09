@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Auth;
 use Image;
 use Debugbar;
 use Carbon\Carbon;
@@ -10,6 +9,7 @@ use App\Classes\Model;
 use App\Rules\NotNumeric;
 use Laravel\Scout\Searchable;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -244,11 +244,13 @@ class Product extends Model
                 return Storage::url($value);
             } else {
                 // TODO: get this file url from a config
-                return '/images/sample/product-placeholder2.png';
+                // return '/images/sample/product-placeholder2.png';
+                return '/images/sample/watch.jpeg';
             }
         } else {
-             // TODO: get this file url from a config
-             return '/images/sample/product-placeholder2.png';
+            // TODO: get this file url from a config
+            //  return '/images/sample/product-placeholder2.png';
+            return '/images/sample/watch.jpeg';
         }
 
     }

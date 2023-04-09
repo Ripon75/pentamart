@@ -44,7 +44,7 @@ class Header extends Component
         $languages  = config('lang.languages');
 
         return view('components.frontend.header', [
-            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo-full-color.svg' ],
+            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.svg' ],
             'menus'       => $menus,
             'cart'        => $cart,
             'areas'       => $areas,

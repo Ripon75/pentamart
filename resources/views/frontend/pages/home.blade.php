@@ -181,7 +181,7 @@
     </section>
 
     {{-- ==================Hot Sale=============== --}}
-    <section class="page-section bg-gray-100">
+    {{-- <section class="page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
                 <h1 class="section-title">Medical Device Offers</h1>
@@ -202,136 +202,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
-
-    {{-- ==================Medicine corner=============== --}}
-    <section class="page-section hidden sm:hidden md:block">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-10">Medicine Corner</h1>
-            </div>
-            <div class="relative mb-6 block sm:block md:hidden lg:hidden xl:hidden 2xl:hidden">
-                <div class="">
-                    <button id="category" onclick="toggleCategory()" class="flex items-center space-x-2 text-primary border border-primary rounded px-4 py-1">
-                        <i class="fa-solid fa-filter"></i>
-                        <div class=""><span class="font-medium">Show Filter</span></div>
-                    </button>
-                </div>
-                {{--=====Category Medicine Corner=== --}}
-                {{-- ======Filter menu for mobile=== --}}
-                <div class="">
-                    <ul id="category-list" style="display: none" class="mobile-nav w-64 absolute left-0">
-                        @foreach ($categories as $category)
-                        <li class="mobile-nav-item">
-                            <button
-                                type="button"
-                                class="btn-medicine-corner"
-                                data-category-slug="{{ $category['slug'] }}">
-                                <img class="img-wrapper" src="{{ $category['img_SRC'] }}">
-                                {{ $category['title'] }}
-                            </button>
-                        </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-            {{-- ====================Tab======================= --}}
-            <ul class="hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex nav nav-tabs flex-wrap list-none border-b-0 pl-0 mb-4 justify-center" id="tabs-tab3" role="tablist">
-                @php $i = 1; @endphp
-                @foreach ($categories as $category)
-                <li class="nav-item" role="presentation">
-                    <a
-                        href="#tabs-medicine-corner-{{ $i }}"
-                        class="btn-medicine-corner nav-link w-full block font-medium text-xs md:text-xs lg:text-base leading-tight uppercase border-x-0 border-t-0 border-b-2 border-transparent px-3 md:px-3 lg:px-6 py-3 mb-2 hover:border-transparent hover:bg-gray-200 focus:border-transparent {{ $i == 1 ? 'active' : '' }}"
-                        data-bs-toggle="pill"
-                        data-bs-target="#tabs-medicine-corner-{{ $i }}"
-                        aria-controls="tabs-medicine-corner-{{ $i }}"
-                        role="tab"
-                        aria-selected="{{ $i == 1 ? 'true' : 'false' }}"
-                    >{{ $category['title'] }}</a>
-                </li>
-                @php $i++; @endphp
-                @endforeach
-            </ul>
-            <div class="tab-content" id="tabs-tabContent3">
-                {{-- Man care prducts --}}
-                <div class="tab-pane fade show active" id="tabs-medicine-corner-1" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($mCareProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                {{-- Women care prducts --}}
-                <div class="tab-pane fade show" id="tabs-medicine-corner-2" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($wCareProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                {{-- Sexual wellness prducts --}}
-                <div class="tab-pane fade show" id="tabs-medicine-corner-3" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($swProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                {{-- Herbal homeopathy prducts --}}
-                <div class="tab-pane fade show" id="tabs-medicine-corner-4" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($hProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                {{-- Baby mom care prducts --}}
-                <div class="tab-pane fade show" id="tabs-medicine-corner-5" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($bProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-                {{-- Personal care prducts --}}
-                <div class="tab-pane fade show" id="tabs-medicine-corner-6" role="tabpanel" aria-labelledby="tabs-home-tab3">
-                    <div class="medicine-corner">
-                        <div class="product-grid mcontainer">
-                            @foreach ($pProducts as $product)
-                            <div>
-                                <x-frontend.product-thumb type="default" :product="$product" />
-                            </div>
-                            @endforeach
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center mt-8">
-                <a href="{{ route('products.index') }}" class="btn btn-primary btn-md">Browse All Products</a>
-            </div>
-        </div>
-    </section>
+    </section> --}}
 
     {{-- =======================Top Categories========================== --}}
     <section class="page-section bg-gray-100">
