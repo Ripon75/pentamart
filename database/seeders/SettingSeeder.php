@@ -22,14 +22,14 @@ class SettingSeeder extends Seeder
         Setting::insert([
             [
                 'key'             => 'app_name',
-                'value'           => 'Medicart',
+                'value'           => 'Pentamart',
                 'value_cast_type' => 'string',
                 'group'           => 'general',
                 'created_at'      => $now
             ],
             [
                 'key'             => 'app_logo_src',
-                'value'           => '/images/logos/logo-full-color.svg',
+                'value'           => '/images/logos/logo.svg',
                 'value_cast_type' => 'string',
                 'group'           => 'general',
                 'created_at'      => $now

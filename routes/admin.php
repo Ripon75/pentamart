@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AppController;
 use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
@@ -10,31 +9,19 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\FamilyController;
 use App\Http\Controllers\Admin\GenericController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\CategoryController;
-use App\Http\Controllers\Admin\BSGSOfferController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DosageFormController;
 use App\Http\Controllers\Admin\CouponCodeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\OrderStatusController;
-use App\Http\Controllers\Admin\BrandBannerController;
-use App\Http\Controllers\Admin\SellPartnerController;
-use App\Http\Controllers\Admin\ProductPackController;
-use App\Http\Controllers\Admin\PurchaseOrderController;
-use App\Http\Controllers\Admin\MedicalBannerController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\DeliveryGatewayController;
-use App\Http\Controllers\Admin\OrderProcessingController;
 use App\Http\Controllers\Admin\ProductPriceLogController;
-
-// admin login route
-Route::get('/users/login',  [UserController::class, 'loginCreate'])->name('users.login.create');
-Route::post('/users/login', [UserController::class, 'loginStore'])->name('users.login.store');
 
 Route::middleware(['auth'])->group(function() {
     // Dashboard route
@@ -99,14 +86,6 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/products/{id}',      [ProductController::class, 'update'])->name('products.update')->middleware(['permission:products-update']);
     Route::delete('/products/{id}',   [ProductController::class, 'delete'])->name('products.delete')->middleware(['permission:products-delete']);
     
-    // All product pack route (not used)
-    Route::get('/product-packs',           [ProductPackController::class, 'index'])->name('product-packs.index');
-    Route::get('/product-packs/create',    [ProductPackController::class, 'create'])->name('product-packs.create');
-    Route::post('/product-packs',          [ProductPackController::class, 'store'])->name('product-packs.store');
-    Route::get('/product-packs/{id}',      [ProductPackController::class, 'show'])->name('product-packs.show');
-    Route::get('/product-packs/{id}/edit', [ProductPackController::class, 'edit'])->name('product-packs.edit');
-    Route::put('/product-packs/{id}',      [ProductPackController::class, 'update'])->name('product-packs.update');
-    
     // Order route
     Route::get('/orders',                      [OrderController::class, 'index'])->name('orders.index')->middleware(['permission:orders-read']);
     Route::get('/orders/manual/create',        [OrderController::class, 'manualCreate'])->name('orders.manual.create')->middleware(['permission:orders-create']);
@@ -125,7 +104,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/orders/bulk/onclogy',   [OrderController::class, 'bulkOrderCreate'])->name('orders.bulk.onclogy.create')->middleware(['permission:orders-create']);
     Route::post('/orders/bulk/onclogy',  [OrderController::class, 'bulkOrderStore'])->name('orders.bulk.onclogy.store')->middleware(['permission:orders-create']);
     Route::get('order/report',           [ReportController::class, 'orderReport'])->name('orders.report')->middleware(['permission:sell-reports-read']);
-    Route::get('orders/processing/{id}', [OrderProcessingController::class, 'orderProcessing'])->name('orders.processing')->middleware(['permission:orders-create']);
+
     // Show prescription
     Route::get('/prescriptions/{id}', [OrderController::class, 'prescriptionShow'])->name('prescription.show')->middleware(['permission:orders-read']);
     Route::post('/orders/make/paid',  [Ordercontroller::class, 'makePaid'])->name('make.paid')->middleware(['permission:orders-update']);
@@ -189,31 +168,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('offers/quantity/{id}',      [OfferController::class, 'show'])->name('offers.quantity.show')->middleware(['permission:offers-read']);
     Route::get('offers/quantity/{id}/edit', [OfferController::class, 'edit'])->name('offers.quantity.edit')->middleware(['permission:offers-update']);
     Route::put('offers/quantity/{id}',      [OfferController::class, 'update'])->name('offers.quantity.update')->middleware(['permission:offers-update']);
-    
-    // All offer route
-    Route::get('offers/bsgs',           [BSGSOfferController::class, 'index'])->name('offers.bsgs.index')->middleware(['permission:offers-read']);
-    Route::get('offers/bsgs/create',    [BSGSOfferController::class, 'create'])->name('offers.bsgs.create')->middleware(['permission:offers-create']);
-    Route::post('offers/bsgs',          [BSGSOfferController::class, 'store'])->name('offers.bsgs.store')->middleware(['permission:offers-create']);
-    Route::get('offers/bsgs/{id}',      [BSGSOfferController::class, 'show'])->name('offers.bsgs.show')->middleware(['permission:offers-read']);
-    Route::get('offers/bsgs/{id}/edit', [BSGSOfferController::class, 'edit'])->name('offers.bsgs.edit')->middleware(['permission:offers-update']);
-    Route::put('offers/bsgs/{id}',      [BSGSOfferController::class, 'update'])->name('offers.bsgs.update')->middleware(['permission:offers-update']);
-    
-    // Medical device banner (not used)
-    Route::get('medical/device/banners',           [MedicalBannerController::class, 'index'])->name('medical.device.banners');
-    Route::get('medical/device/banners/create',    [MedicalBannerController::class, 'create'])->name('medical.device.banners.create');
-    Route::post('medical/device/banners',          [MedicalBannerController::class, 'store'])->name('medical.device.banners.store');
-    Route::get('medical/device/banners/{id}',      [MedicalBannerController::class, 'show'])->name('medical.device.banners.show');
-    Route::get('medical/device/banners/{id}/edit', [MedicalBannerController::class, 'edit'])->name('medical.device.banners.edit');
-    Route::put('medical/device/banners/{id}',      [MedicalBannerController::class, 'update'])->name('medical.device.banners.update');
-    
-    // Brand banner (not used)
-    Route::get('brand/banners',           [BrandBannerController::class, 'index'])->name('brand.banners');
-    Route::get('brand/banners/create',    [BrandBannerController::class, 'create'])->name('brand.banners.create');
-    Route::post('brand/banners',          [BrandBannerController::class, 'store'])->name('brand.banners.store');
-    Route::get('brand/banners/{id}',      [BrandBannerController::class, 'show'])->name('brand.banners.show');
-    Route::get('brand/banners/{id}/edit', [BrandBannerController::class, 'edit'])->name('brand.banners.edit');
-    Route::put('brand/banners/{id}',      [BrandBannerController::class, 'update'])->name('brand.banners.update');
-    
+
     // Banner route
     Route::get('banners',           [BannerController::class, 'index'])->name('banners')->middleware(['permission:banners-read']);
     Route::get('banners/create',    [BannerController::class, 'create'])->name('banners.create')->middleware(['permission:banners-create']);
@@ -221,14 +176,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('banners/{id}',      [BannerController::class, 'show'])->name('banners.show')->middleware(['permission:banners-read']);
     Route::get('banners/{id}/edit', [BannerController::class, 'edit'])->name('banners.edit')->middleware(['permission:banners-update']);
     Route::put('banners/{id}',      [BannerController::class, 'update'])->name('banners.update')->middleware(['permission:banners-update']);
-    
-    // Attribute route
-    Route::get('families',           [FamilyController::class, 'index'])->name('families')->middleware(['permission:families-read']);
-    Route::get('families/create',    [FamilyController::class, 'create'])->name('families.create')->middleware(['permission:families-create']);
-    Route::post('families',          [FamilyController::class, 'store'])->name('families.store')->middleware(['permission:families-create']);
-    Route::get('families/{id}',      [FamilyController::class, 'show'])->name('families.show')->middleware(['permission:families-read']);
-    Route::get('families/{id}/edit', [FamilyController::class, 'edit'])->name('families.edit')->middleware(['permission:families-update']);
-    Route::put('families/{id}',      [FamilyController::class, 'update'])->name('families.update')->middleware(['permission:families-update']);
 
     // Section route
     Route::get('sections',           [SectionController::class, 'index'])->name('sections.index')->middleware(['permission:sections-read']);
@@ -242,26 +189,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('users',           [UserController::class, 'index'])->name('users.index')->middleware(['permission:users-read']);
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware(['permission:users-update']);
     Route::put('users/{id}',      [UserController::class, 'update'])->name('users.update')->middleware(['permission:users-update']);
-    Route::get('users/create',    [UserController::class, 'userCreate'])->name('users.registration.create')->middleware(['permission:users-create']);
-    Route::post('users/create',   [UserController::class, 'userStore'])->name('users.registration.store')->middleware(['permission:users-create']);
-
-    // App contrller route (not used)
-    Route::get('app/update/view', [AppController::class, 'updateView'])->name('app.update.view')->middleware(['permission:app-version-update']);
-    Route::get('app/update',      [AppController::class, 'update'])->name('app.update')->middleware(['permission:app-version-update']);
 
     // Price logs route
     Route::get('products/price/logs', [ProductPriceLogController::class, 'index'])->name('logs.index')->middleware(['permission:price-log-read']);
-
-    // Purchase order route
-    Route::get('purchase/orders', [PurchaseOrderController::class, 'index'])->name('purchase.orders.index')->middleware(['permission:purchase-order-read']);
-    Route::get('purchase/orders/create', [PurchaseOrderController::class, 'create'])->name('purchase.orders.create')->middleware(['permission:purchase-order-create']);
-    Route::post('purchase/orders', [PurchaseOrderController::class, 'store'])->name('purchase.orders.store')->middleware(['permission:purchase-order-create']);
-
-    // Sell partners route
-    Route::get('sell-partners',           [SellPartnerController::class, 'index'])->name('sell-partners.index')->middleware(['permission:sell-partners-read']);
-    Route::get('sell-partners/create',    [SellPartnerController::class, 'create'])->name('sell-partners.create')->middleware(['permission:purchase-order-create']);
-    Route::post('sell-partners',          [SellPartnerController::class, 'store'])->name('sell-partners.store')->middleware(['permission:purchase-order-create']);
-    Route::get('sell-partners/{id}',      [SellPartnerController::class, 'show'])->name('sell-partners.show')->middleware(['permission:purchase-order-read']);
-    Route::get('sell-partners/{id}/edit', [SellPartnerController::class, 'edit'])->name('sell-partners.edit')->middleware(['permission:purchase-order-update']);
-    Route::put('sell-partners/{id}',      [SellPartnerController::class, 'update'])->name('sell-partners.update')->middleware(['permission:purchase-order-update']);
 });

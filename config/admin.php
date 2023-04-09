@@ -32,13 +32,6 @@ return [
                     'route'      => 'admin.offers.quantity.index',
                     'permission' => 'offers-read'
                 ],
-                [
-                    'label'      => 'Offers On BSGS',
-                    'icon'       => 'fa-solid fa-truck',
-                    'title'      => 'Offers On Quantity',
-                    'route'      => 'admin.offers.bsgs.index',
-                    'permission' => 'offers-read'
-                ]
             ]
         ],
         [
@@ -65,19 +58,12 @@ return [
             ]
         ],
         [
-            'label'      => 'Attributes',
+            'label'      => 'Sections',
             'icon'       => 'fa-solid fa-people-roof',
-            'title'      => 'Families',
+            'title'      => 'Sections',
             'route'      => '#',
-            'permission' => 'families-read',
+            'permission' => 'sections-read',
             'sub' => [
-                [
-                    'label'      => 'Families',
-                    'icon'       => 'fa-solid fa-people-roof',
-                    'title'      => 'Families',
-                    'route'      => 'admin.families',
-                    'permission' => 'families-read'
-                ],
                 [
                     'label'      => 'Sections',
                     'icon'       => 'fa-solid fa-section',
@@ -144,22 +130,6 @@ return [
                     'title'      => 'Coupon Code',
                     'route'      => 'admin.coupon-codes.index',
                     'permission' => 'coupon-codes-read'
-                ]
-            ]
-        ],
-        [
-            'label'      => 'Purchase Order',
-            'icon'       => 'fa fa-history',
-            'title'      => 'Purchase Order',
-            'route'      => '#',
-            'permission' => 'purchase-order-read',
-            'sub' => [
-                [
-                    'label'      => 'Purchase Orders',
-                    'icon'       => 'fa fa-history',
-                    'title'      => 'Purchase Orders',
-                    'route'      => 'admin.purchase.orders.index',
-                    'permission' => 'purchase-order-read'
                 ]
             ]
         ],
@@ -273,14 +243,6 @@ return [
                     'permission' => 'sell-reports-read'
                 ]
             ]
-        ],
-        // [
-        //     'label'      => 'Setting',
-        //     'icon'       => 'fa fa-history',
-        //     'title'      => 'Sections',
-        //     'route'      => '#',
-        //     'permission' => 'app-version-update',
-        //     'sub' => []
-        // ],
+        ]
     ]
 ];
