@@ -14,10 +14,8 @@ const tailwindcss = require('tailwindcss');
 
 mixx.js('resources/js/frontend.js', 'public/js')
     .js('resources/js/adminend.js', 'public/js')
-    .js('resources/js/sellercenter.js', 'public/js')
     .sass('resources/scss/frontend.scss', 'public/css')
     .sass('resources/scss/adminend.scss', 'public/css')
-    .sass('resources/scss/sellercenter.scss', 'public/css')
     .options({
         postCss: [tailwindcss('./tailwind.config.js')],
     })
