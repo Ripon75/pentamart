@@ -19,7 +19,7 @@
         <div class="app-layout">
             <aside id="app-sidebar" class="app-sidebar flex flex-col">
                 <a href="{{ route('home') }}" class="logo-container">
-                    <img class="logo" src="{{ asset('images/adminend/logo.svg') }}">
+                    <img class="logo" src="{{ asset('images/adminend/logo.png') }}">
                 </a>
                  @php
                     $menus = config('admin.menu');

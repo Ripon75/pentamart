@@ -59,9 +59,9 @@ Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCal
 // Cart items and wishlist count route
 Route::get('/cart/count', [CartController::class, 'cartItemCount']);
 // Personal care route
-Route::get('tags/{slug}/{thumbOnly?}',       [PageController::class, 'tagPage'])->name('tag.page');
+// Route::get('tags/{slug}/{thumbOnly?}',       [PageController::class, 'tagPage'])->name('tag.page');
 Route::get('categories/{slug}/{thumbOnly?}', [PageController::class, 'categoryPage'])->name('category.page');
-Route::get('symptoms/{slug}/{thumbOnly?}',   [PageController::class, 'symptomPage'])->name('symptom.page');
+// Route::get('symptoms/{slug}/{thumbOnly?}',   [PageController::class, 'symptomPage'])->name('symptom.page');
 Route::get('brands/{slug}/{thumbOnly?}',     [PageController::class, 'brandPage'])->name('brand.page');
 // Get area
 Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');

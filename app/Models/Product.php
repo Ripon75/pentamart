@@ -3,7 +3,6 @@
 namespace App\Models;
 
 use Image;
-use Debugbar;
 use Carbon\Carbon;
 use App\Classes\Model;
 use App\Rules\NotNumeric;
@@ -206,28 +205,12 @@ class Product extends Model
         return $this->morphToMany(Tag::class, 'taggable');
     }
 
-    public function detail()
-    {
-        return $this->hasOne(ProductDetail::class);
-    }
-
     public function offersQty()
     {
         return $this->belongsToMany(Offer::class, 'offer_product', 'product_id', 'offer_id')
                     ->withPivot('quantity', 'discount_percent', 'discount_amount')->withTimestamps();
     }
 
-    public function offersBSGS()
-    {
-        return $this->belongsToMany(Offer::class, 'offer_bsgs_product', 'buy_product_id', 'offer_id')
-                    ->withPivot('buy_qty', 'get_product_id', 'get_qty')->withTimestamps();
-    }
-
-    public function attributes()
-    {
-        return $this->belongsToMany(Attribute::class, 'product_attribute', 'product_id', 'attribute_id')
-        ->withPivot('value')->withTimestamps();
-    }
 
     public function sections()
     {

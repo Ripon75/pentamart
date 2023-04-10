@@ -35,8 +35,8 @@ class Header extends Component
         $userAddress = UserAddress::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [
             // [ 'label' => 'Home', 'route' => route('home') ],
-            [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],
-            [ 'label' => 'Medical Devices', 'route' => route('category.page', ['medical-devices'])],
+            // [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],
+            // [ 'label' => 'Medical Devices', 'route' => route('category.page', ['medical-devices'])],
             [ 'label' => 'Offers', 'route' => route('offers.products')],
         ];
         $countries  = config('lang.countries');
@@ -44,7 +44,7 @@ class Header extends Component
         $languages  = config('lang.languages');
 
         return view('components.frontend.header', [
-            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.svg' ],
+            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.png' ],
             'menus'       => $menus,
             'cart'        => $cart,
             'areas'       => $areas,

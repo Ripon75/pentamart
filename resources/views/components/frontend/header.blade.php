@@ -126,9 +126,6 @@
                                             <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
                                         </a>
                                         <a href="#" class="relative border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            {{-- <div class="absolute rounded-full bg-red-500 w-4 h-4 flex items-center justify-center -mt-2 ml-1">
-                                                <span class="text-white text-xxs">5</span>
-                                            </div> --}}
                                             <i class="mr-3 text-xs fa-solid fa-bell"></i>
                                             Notification
                                         </a>
@@ -254,7 +251,7 @@
                                 <a class="mobile-nav-item" href="{{ route('products.index') }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/medicine.png') }}"> All Products
                                 </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
+                                {{-- <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/mencare.png') }}"> Men Care
                                 </a>
                                 <a class="mobile-nav-item" href="{{ route('tag.page', ['women-care']) }}">
@@ -271,7 +268,7 @@
                                 </a>
                                 <a class="mobile-nav-item" href="{{ route('tag.page', ['personal-care']) }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/personal-care.png') }}"> Personal Care
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
@@ -313,7 +310,7 @@
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/medicine.png') }}">All Products
                             </a>
                         </li>
-                        <li class="border-b">
+                        {{-- <li class="border-b">
                             <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                                 href="{{ route('tag.page', ['men-care']) }}">
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/mencare.png') }}">Men Care
@@ -348,7 +345,7 @@
                                 href="{{ route('tag.page', ['personal-care']) }}">
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/personal-care.png') }}">Personal Care
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="flex-1">

@@ -146,7 +146,7 @@
     @endif
 
     {{-- ==============Symptoms Section=================== --}}
-    <section class="symptoms-section page-section bg-gray-100">
+    {{-- <section class="symptoms-section page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
                 <h1 class="section-title">Products By Symptoms</h1>
@@ -159,7 +159,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ==================Medical Devices================== --}}
     <section class="page-section">
