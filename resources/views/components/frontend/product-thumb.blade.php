@@ -29,11 +29,6 @@
                                 Out of Stock
                             </span> --}}
                         </div>
-                        <div class="">
-                            @if ($product->counter_type === 'prescribed')
-                                <span class="bg-secondary/20 text-secondary text-xs sm:text-xs md:text-xs text-center inline-block align-middle rounded px-2 py-0.5">Prescribed</span>
-                            @endif
-                        </div>
                     </div>
                 </div>
                 <div class="thumb-image-wrapper aspect-w-1 aspect-h-1">
@@ -48,7 +43,9 @@
 
             <div class="content px-3 py-2 bg-gray-50 rounded-b-md flex-1">
                 @if ($product->dosageForm)
-                <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="block h-6 pt-1 text-xs text-gray-400 line-clamp-1">{{ $product->dosageForm->name }}</a>
+                    <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="block h-6 pt-1 text-xs text-gray-400 line-clamp-1">
+                        {{ $product->dosageForm->name }} Brand
+                    </a>
                 @else
                 <div class="h-6"></div>
                 @endif
@@ -63,36 +60,16 @@
 
                 @if ($product->generic)
                     <a href="{{ route('generics.show', $product->generic->slug) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->generic->name }}">
-                        {{ $product->generic->name }}
+                        Category
                     </a>
-                @endif
-
-                @if ($product->company_id)
-                    <a href="{{ route('companies.show', $product->company->slug) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->company->name }}">
-                        {{ $product->company->name ?? null }}
-                    </a>
-                @else
-                    @if ($product->brand && $product->brand->company)
-                        <a href="{{ route('companies.show', $product->brand->company->slug) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->brand->company->name }}">
-                            {{ $product->brand->company->name ?? null}}
-                        </a>
-                    @else
-                        <div class="h-4"></div>
-                    @endif
                 @endif
                 {{-- Price show for type default --}}
                 <div class="prices mt-1 text-xs sm:text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base flex space-x-4">
                     @php
                         $productMRP          = 0;
                         $productSellingPrice = 0;
-                        if ($product->is_single_sell_allow) {
-                            $productMRP          = $product->mrp;
-                            $productSellingPrice = $product->selling_price;
-                        } else {
-                            $packSize            = $product->pack_size;
-                            $productMRP          = $product->mrp * $packSize;
-                            $productSellingPrice = $product->selling_price * $packSize;
-                        }
+                        $productMRP          = $product->mrp;
+                        $productSellingPrice = $product->selling_price;
                     @endphp
                     @if ($product->selling_price > 0)
                         <span>
@@ -115,7 +92,7 @@
                         </span>
                     @endif
                 </div>
-                <div data-test="test-div" class="qty-div flex space-x-2 items-center mt-1">
+                {{-- <div data-test="test-div" class="qty-div flex space-x-2 items-center mt-1">
                     <div class="flex-1">
                         <select data-test="test-select" class="selected-pack rounded w-full text-xs"
                             data-header-product-mrp="{{ $product->mrp }}"
@@ -150,7 +127,7 @@
                             Add
                         </button>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -216,37 +193,6 @@
 @push('scripts')
 <script>
     AOS.init();
-    // var checkOfferQtyEndpoint = '/api/check/offer/quantity';
-
-    // $(() => {
-    //     $('.product-grid').on('change', '.selected-pack', function () {
-    //         var selectedProductQty = $(this).val();
-    //         var selectedProductId = $(this).data('header-product-id');
-    //         var headerProductMRP = $(this).data('header-product-mrp');
-    //         var headerProductSellingPrice = $(this).data('header-product-selling-price');
-
-    //         axios.get(checkOfferQtyEndpoint, {
-    //             params: {
-    //                 'product_id': selectedProductId,
-    //                 'quantity': selectedProductQty
-    //             }
-    //         })
-    //         .then(res => {
-    //             console.log(res);
-    //             if (res.data.success) {
-    //                 var productOfferAmount = parseFloat(res.data.result);
-    //                 productOfferAmount = (productOfferAmount * selectedProductQty).toFixed(2);
-    //                 $(`.product-grid #header-product-price-label-${selectedProductId}`).text(productOfferAmount);
-    //                 $(`.product-grid #header-product-mrp-label-${selectedProductId}`).text('Tk '+ headerProductMRP);
-    //             } else {
-    //                 $(`.product-grid #header-product-mrp-label-${selectedProductId}`).text('');
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    //     });
-    // });
 </script>
 @endpush
 @endonce

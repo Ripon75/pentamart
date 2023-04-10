@@ -62,61 +62,58 @@
                         {{-- show dosage form --}}
                         @if ($product->dosageForm)
                             <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="text-base text-gray-500 block my-2">
-                                {{ $product->dosageForm->name }}
+                                {{ $product->dosageForm->name }} (Brand name)
                             </a>
-                        @endif
-                        {{-- show packsize, uom and packname --}}
-                        @if ($product->is_single_sell_allow)
-                            {{-- <div class="text-sm text-gray-600">
-                                <strong>Pack Size :&nbsp;</strong>&nbsp;
-                                    1 {{ $product->uom }}
-                            </div> --}}
-                        @else
-                            <div class="text-sm text-gray-600">
-                                <strong>Pack Size :&nbsp;</strong>&nbsp;
-                                {{ $product->pack_size }} {{ $product->uom }} x 1 {{ $product->pack_name }}
-                            </div>
                         @endif
                         {{-- show generic --}}
                         @if ($product->generic)
                             <div class="text-sm text-gray-600">
                                 <strong>Generics :&nbsp;</strong>&nbsp;
                                 <a href="{{ route('generics.show', $product->generic->slug) }}">
-                                    {{ $product->generic->name }}
+                                    {{ $product->generic->name }} (Category name)
                                 </a>
                             </div>
-                        @endif
-                        {{-- show company --}}
-                        @if ($product->company_id)
-                            <div class="text-sm text-gray-600">
-                                <strong>Manufacturer :&nbsp;</strong>&nbsp;
-                                <a href="{{ route('companies.show', $product->company->slug) }}" class="text-gray-600 text-sm italic">
-                                    {{ $product->company->name }}
-                                </a>
-                            </div>
-                        @else
-                            @if ($product->brand && $product->brand->company)
-                                <div class="text-xs text-gray-600">
-                                    <strong>Manufacturer :&nbsp;</strong>&nbsp;
-                                    <a href="{{ route('companies.show', $product->brand->company->slug) }}" class="text-gray-600 text-sm italic">
-                                        {{ $product->brand->company->name }}
-                                    </a>
-                                </div>
-                            @endif
                         @endif
 
-                       <div class="flex space-x-2 mt-1">
-                            <div class="">
-                                <button class="bg-secondary/80 text-white py-0.5 px-2 text-xxs rounded">Literature</button>
-                            </div>
-                            <div class="">
-                                @if ($product->counter_type == 'prescribed')
-                                <button class="bg-secondary/80 text-white py-0.5 px-2 text-xxs rounded">
-                                    *Prescription required
-                                    <span class="ml-2"><i class="fa-solid fa-file-pdf"></i></span>
-                                </button>
-                                @endif
-                            </div>
+                       <div class="mt-1">
+                           <div class="flex">
+                               <strong>Colors:&nbsp;</strong>&nbsp;
+                               <div class="flex items-center mr-4">
+                                   <input id="red-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="red-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Red</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="green-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="green-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Green</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="yellow-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="yellow-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yellow</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="orange-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="orange-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Orange</label>
+                               </div>
+                           </div>
+                           <div class="flex">
+                               <strong>Sizes:&nbsp;</strong>&nbsp;
+                               <div class="flex items-center mr-4">
+                                   <input id="m-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="m-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">M</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="l-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="l-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">L</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="xl-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="xl-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XL</label>
+                               </div>
+                               <div class="flex items-center mr-4">
+                                   <input id="xll-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                   <label for="xll-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XLL</label>
+                               </div>
+                           </div>
                        </div>
                     </div>
                 </div>
@@ -132,109 +129,65 @@
                         @else
                             <input type="hidden" value="{{ $product->mrp }}" id="input-price">
                         @endif
-                        <input type="hidden" value="{{ $product->pack_size }}" id="input-pack-size">
+                        {{-- <input type="hidden" value="{{ $product->pack_size }}" id="input-pack-size"> --}}
                         <input type="hidden" value="{{ $product->mrp }}" id="input-product-mrp">
-                        <input type="hidden" value="{{ $product->is_single_sell_allow }}" id="input-negative-sell-allow">
+                        {{-- <input type="hidden" value="{{ $product->is_single_sell_allow }}" id="input-negative-sell-allow"> --}}
                     </div>
                     <div class="prices flex space-x-2 items-center mb-2">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
-                            @if ($product->is_single_sell_allow)
-                                @if ($product->selling_price > 0)
-                                    <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                        {{ number_format(($product->selling_price), 2) }}
-                                    </span>
-                                    <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
-                                        {{ $product->mrp }}
-                                    </span>
-                                @else
-                                    <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                        {{ number_format(($product->mrp), 2) }}
-                                    </span>
-                                    <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
-                                        
-                                    </span>
-                                @endif
+                            @if ($product->selling_price > 0)
+                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                    {{ number_format(($product->selling_price), 2) }}
+                                </span>
+                                <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
+                                    {{ $product->mrp }}
+                                </span>
                             @else
-                                @if ($product->selling_price > 0)
-                                    <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                        {{ number_format(($product->selling_price * $product->pack_size), 2) }}
-                                    </span>
-                                    <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
-                                        {{ $product->mrp * $product->pack_size }}
-                                    </span>
-                                @else
-                                    <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                        {{ number_format(($product->mrp * $product->pack_size), 2) }}
-                                    </span>
-                                    <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
-                                        
-                                    </span>
-                                @endif
+                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                    {{ number_format(($product->mrp), 2) }}
+                                </span>
+                                <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
+                                </span>
                             @endif
                         </span>
                     </div>
                     <div class="flex flex-col space-y-2">
                         <div class="flex space-x-4">
                             <select class="selected-pack-single w-32 rounded-md py-1.5 text-sm" id="input-qty">
-                            @if ($product->is_single_sell_allow)
-                                @for ($i = 1 ; $i <= $product->num_of_pack ; $i++)
-                                    <option
-                                        value="{{ $i }}">
-                                        {{ $i }} {{ $product->uom }}
-                                    </option>
+                                @for ($i = 1 ; $i <= 5 ; $i++)
+                                    <option value="{{ $i }}">{{ $i }} </option>
                                 @endfor
-                            @else
-                                @for ($i = 1 ; $i <= $product->num_of_pack ; $i++)
-                                    <option
-                                        value="{{ $i * $product->pack_size }}">
-                                        {{ $i * $product->pack_size }} {{ $product->uom }}
-                                    </option>
-                                @endfor
-                            @endif
-                        </select>
-                        <div class="flex space-x-4">
-                            <button class="btn-add-to-car-single h-[36px] bg-primary text-sm whitespace-nowrap px-4 text-white rounded-md"
-                                data-mc-on-previous-url="{{ url()->current() }}"
-                                @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
-                                <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
-                                Add to cart
-                            </button>
-                            @if ($isWishListed)
-                                <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
-                                    <i class="text-4xl text-secondary fa-solid fa-heart"></i>
-                                </button>
-                                <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
-                                    data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
+                            </select>
+                            <div class="flex space-x-4">
+                                <button class="btn-add-to-car-single h-[36px] bg-primary text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                    data-mc-on-previous-url="{{ url()->current() }}"
                                     @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                    <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                    <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
+                                    <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
+                                    Add to cart
                                 </button>
-                            @else
-                                <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
-                                    <i class="text-4xl text-secondary fa-solid fa-heart"></i>
-                                </button>
-                                <button id="wish-button" type="button" class="h-[36px] bg-white"
-                                    data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
-                                    @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                    <i class="text-4xl text-secondary fa-regular fa-heart"></i>
-                                </button>
-                            @endif
-                        </div>
-                        </div>
-                        <div class="flex space-x-2 pt-2 lg:pt-6">
-                            @if ($product->is_express_delivery)
-                                <div class="">
-                                    <img class="w-24" src="/images/icons/express_delivery.svg" alt="Express Delivery Available.">
-                                </div>
-                            @endif
-                            @if ($product->is_refrigerated)
-                                <span class="flex bg-sky-100 p-1 px-2 items-center rounded-md">
-                                    <img class="w-4 mr-1" src="/images/icons/fridge.png" alt="Refrigerated">
-                                    <span class="text-xs">Refrigerated</span>
-                                </span>
-                            @endif
+                                @if ($isWishListed)
+                                    <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
+                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                    </button>
+                                    <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
+                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                    </button>
+                                @else
+                                    <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
+                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                    </button>
+                                    <button id="wish-button" type="button" class="h-[36px] bg-white"
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
+                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                    </button>
+                                @endif
+                            </div>
                         </div>
                         <h6 class="text-sm font-semibold text-gray-500">
                             * Delivery will be done in Dhaka city only.
@@ -275,180 +228,8 @@
                         </div>
                     </div>
                 @endif
-                <div class="">
-                    @if ($productDetail)
-                        @if ($productDetail->indication)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Indications</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->indication }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->description)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Description</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{!! $productDetail->description !!}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->pharmacology)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Pharmacology</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->pharmacology }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->dosage)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Dosage</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->dosage }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->administration)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Administration</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->administration }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->interaction)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Interaction</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->interaction }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->contraindication)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Contraindication</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->contraindication }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->side_effect)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Side effect</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->side_effect }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->pregnancy)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Pregnancy</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->pregnancy }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->warning)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Warning</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->warning }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->uses)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Uses</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->uses }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->therapeutic)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Therapeutic</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->therapeutic }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->storage_condition)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Storage condition</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->storage_condition }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                        @if ($productDetail->disclaimer)
-                            <div class="detail">
-                                <div>
-                                    <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                        <h1 class="text-base text-white pl-4">Disclaimer</h1>
-                                    </div>
-                                    <div class="bg-white mb-4">
-                                        <p class="px-4 pt-2 pb-4 text-sm">{{ $productDetail->disclaimer }}</p>
-                                    </div>
-                                </div>
-                            </div>
-                        @endif
-                    @endif
-                </div>
                 {{-- ===========Disclaimer============= --}}
-                <div class="col-span-3 mt-3">
+                {{-- <div class="col-span-3 mt-3">
                     <div>
                         <div class="bg-gradient-to-t to-gray-200 from-gray-100 h-10 flex items-center rounded-t-md">
                             <h1 class="text-base text-red-500 font-medium pl-4"><i class="mr-3 fa-solid fa-bookmark"></i>Disclaimer</h1>
@@ -457,9 +238,9 @@
                             <p class="text-sm text-gray-600">The information provided herein are for informational purposes only and not intended to be a substitute for professional medical advice, diagnosis, or treatment. Please note that this information should not be treated as a replacement for physical medical consultation or advice. Great effort has been placed to provide accurate and comprehensive data. However, Medicart along with its authors and editors make no representations or warranties and specifically disclaim all liability for any medical information provided on the site. The absence of any information and/or warning to any drug shall not be considered and assumed as an implied assurance of the Company.</p>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
-            <div class="col-span-6 lg:col-span-6 xl:col-span-2">
+            {{-- <div class="col-span-6 lg:col-span-6 xl:col-span-2">
                 <h1 class="text-xl font-medium">Others Product</h1>
                 <div class="mt-3 product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 gap-2">
                     @foreach ($otherProducts as $oProduct)
@@ -468,7 +249,7 @@
                     </div>
                     @endforeach
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 </section>
@@ -498,7 +279,7 @@
     var selectedPackSingle     = $('.selected-pack-single');
     var priceLabel             = $('#item-price-label');
     var itemMRPLabel           = $('#item-mrp-label');
-    var inputPacksize          = $('#input-pack-size');
+    // var inputPacksize          = $('#input-pack-size');
     var inputPrice             = $('#input-price');
     var inputProductMRP        = $('#input-product-mrp');
     var inputQty               = $('#input-qty');
@@ -507,7 +288,7 @@
     var wishButton             = $('#wish-button');
     var undoWishButton         = $('#undo-wish-button');
     var packQtyLavel           = $('#pack-quantity-label');
-    var inputNegativeSellAllow = $('#input-negative-sell-allow');
+    // var inputNegativeSellAllow = $('#input-negative-sell-allow');
     var sUserID                = {{ Auth::id() }}
 
     @auth
@@ -535,10 +316,10 @@
     $(function() {
         selectedPackSingle.on('change', function() {
             var productQty        = inputQty.val();
-            var packSize          = inputPacksize.val();
+            // var packSize          = inputPacksize.val();
             var productPrice      = inputPrice.val();
             var productMRP        = inputProductMRP.val();
-            var negativeSellAllow = inputNegativeSellAllow.val()
+            // var negativeSellAllow = inputNegativeSellAllow.val()
             var totalPrice        = 0;
             var totalMRP          = 0;
 
@@ -554,7 +335,7 @@
                 itemMRPLabel.text(totalMRP.toFixed(2));
             }
 
-            __SPcheckProductOfferQty(productID, productQty, totalMRP, totalPrice);
+            // __SPcheckProductOfferQty(productID, productQty, totalMRP, totalPrice);
         });
 
         // Add product to cart
@@ -650,43 +431,29 @@
         });
     }
 
-    function __SPcheckProductOfferQty(selectedProductId, selectedProductQty, productMRP = 0, productPrice = 0) {
-        var checkOfferQtyEndpoint = '/api/check/offer/quantity';
-        axios.get(checkOfferQtyEndpoint, {
-                params: {
-                    'product_id': selectedProductId,
-                    'quantity': selectedProductQty
-                }
-            })
-            .then(res => {
-                if (res.data.success) {
-                    var productOfferAmount = parseFloat(res.data.result);
-                    productOfferAmount = (productOfferAmount * selectedProductQty).toFixed(2);
-                    $(`#item-price-label`).text(productOfferAmount);
-                    $(`#item-mrp-label`).text('Tk '+ productMRP);
-                } else {
-                    if (productPrice === productMRP) {
-                        $(`#item-mrp-label`).text('');
-                    }
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
+    // function __SPcheckProductOfferQty(selectedProductId, selectedProductQty, productMRP = 0, productPrice = 0) {
+    //     var checkOfferQtyEndpoint = '/api/check/offer/quantity';
+    //     axios.get(checkOfferQtyEndpoint, {
+    //             params: {
+    //                 'product_id': selectedProductId,
+    //                 'quantity': selectedProductQty
+    //             }
+    //         })
+    //         .then(res => {
+    //             if (res.data.success) {
+    //                 var productOfferAmount = parseFloat(res.data.result);
+    //                 productOfferAmount = (productOfferAmount * selectedProductQty).toFixed(2);
+    //                 $(`#item-price-label`).text(productOfferAmount);
+    //                 $(`#item-mrp-label`).text('Tk '+ productMRP);
+    //             } else {
+    //                 if (productPrice === productMRP) {
+    //                     $(`#item-mrp-label`).text('');
+    //                 }
+    //             }
+    //         })
+    //         .catch(err => {
+    //             console.log(err);
+    //         });
+    // }
 </script>
-@endpush
-
-@push('styles')
-    <style>
-        .product-description h3{
-            font-weight: 500;
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-            margin: 6px 0px 2px 0px;
-        }
-        .product-description h6{
-            font-weight: 500;
-        }
-    </style>
 @endpush

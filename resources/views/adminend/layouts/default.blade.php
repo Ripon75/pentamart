@@ -19,7 +19,7 @@
         <div class="app-layout">
             <aside id="app-sidebar" class="app-sidebar flex flex-col">
                 <a href="{{ route('home') }}" class="logo-container">
-                    <img class="logo" src="{{ asset('images/adminend/logo-full-color.svg') }}">
+                    <img class="logo" src="{{ asset('images/adminend/logo.png') }}">
                 </a>
                  @php
                     $menus = config('admin.menu');
@@ -92,7 +92,7 @@
                                 <a href="#!">
                                 <div class="flex items-center">
                                     <div class="shrink-0">
-                                    <img src="{{ asset('images/adminend/user-avator.jpg') }}" class="rounded-full w-10" alt="Avatar">
+                                    <img src="{{ asset('images/adminend/admin.png') }}" class="rounded-full w-10" alt="Avatar">
                                     </div>
                                     <div class="grow ml-3">
                                     <p class="text-sm font-semibold text-primary">{{ Auth::user()->name ?? null }}</p>

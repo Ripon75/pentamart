@@ -1,21 +1,15 @@
 <?php
 
-use App\Classes\Bkash;
-use App\Classes\Nagad;
 use App\Models\Product;
-use App\Classes\SSLGateway;
-use App\Classes\SMSGateway;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\PageController;
 use App\Http\Controllers\Front\CartController;
 use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\CouponController;
-use App\Http\Controllers\Front\ProductController;
 use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CustomerController;
 use App\Http\Controllers\Front\WishlistController;
-use App\Http\Controllers\Front\OrderRequestController;
 
 use Illuminate\Support\Facades\Http;
 
@@ -65,9 +59,9 @@ Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCal
 // Cart items and wishlist count route
 Route::get('/cart/count', [CartController::class, 'cartItemCount']);
 // Personal care route
-Route::get('tags/{slug}/{thumbOnly?}',       [PageController::class, 'tagPage'])->name('tag.page');
+// Route::get('tags/{slug}/{thumbOnly?}',       [PageController::class, 'tagPage'])->name('tag.page');
 Route::get('categories/{slug}/{thumbOnly?}', [PageController::class, 'categoryPage'])->name('category.page');
-Route::get('symptoms/{slug}/{thumbOnly?}',   [PageController::class, 'symptomPage'])->name('symptom.page');
+// Route::get('symptoms/{slug}/{thumbOnly?}',   [PageController::class, 'symptomPage'])->name('symptom.page');
 Route::get('brands/{slug}/{thumbOnly?}',     [PageController::class, 'brandPage'])->name('brand.page');
 // Get area
 Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');

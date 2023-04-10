@@ -30338,19 +30338,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/scss/sellercenter.scss":
-/*!******************************************!*\
-  !*** ./resources/scss/sellercenter.scss ***!
-  \******************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-// extracted by mini-css-extract-plugin
-
-
-/***/ }),
-
 /***/ "./node_modules/noty/lib/noty.js":
 /*!***************************************!*\
   !*** ./node_modules/noty/lib/noty.js ***!
@@ -33806,7 +33793,6 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 		var installedChunks = {
 /******/ 			"/js/frontend": 0,
 /******/ 			"css/frontend": 0,
-/******/ 			"css/sellercenter": 0,
 /******/ 			"css/adminend": 0
 /******/ 		};
 /******/ 		
@@ -33857,10 +33843,9 @@ module.exports = JSON.parse('{"name":"axios","version":"0.21.4","description":"P
 /******/ 	// startup
 /******/ 	// Load entry module and return exports
 /******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
-/******/ 	__webpack_require__.O(undefined, ["css/frontend","css/sellercenter","css/adminend"], () => (__webpack_require__("./resources/js/frontend.js")))
-/******/ 	__webpack_require__.O(undefined, ["css/frontend","css/sellercenter","css/adminend"], () => (__webpack_require__("./resources/scss/frontend.scss")))
-/******/ 	__webpack_require__.O(undefined, ["css/frontend","css/sellercenter","css/adminend"], () => (__webpack_require__("./resources/scss/adminend.scss")))
-/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/frontend","css/sellercenter","css/adminend"], () => (__webpack_require__("./resources/scss/sellercenter.scss")))
+/******/ 	__webpack_require__.O(undefined, ["css/frontend","css/adminend"], () => (__webpack_require__("./resources/js/frontend.js")))
+/******/ 	__webpack_require__.O(undefined, ["css/frontend","css/adminend"], () => (__webpack_require__("./resources/scss/frontend.scss")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/frontend","css/adminend"], () => (__webpack_require__("./resources/scss/adminend.scss")))
 /******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()

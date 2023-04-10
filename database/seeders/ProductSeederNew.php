@@ -104,7 +104,6 @@ class ProductSeederNew extends Seeder
 
                 if ($name && $price) {
                     $productObj                 = new Product();
-                    $productObj->id             = $posProductID;
                     $productObj->name           = $name;
                     $productObj->slug           = $slug;
                     $productObj->dosage_form_id = $dosageFormID;

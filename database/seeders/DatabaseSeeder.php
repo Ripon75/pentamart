@@ -19,7 +19,6 @@ class DatabaseSeeder extends Seeder
             ImageConveter::class,
             LaratrustSeeder::class,
             CountrySeeder::class,
-            UOMSeeder::class,
             AreaTypeSeeder::class,
             AreaSeeder::class,
             CompanySeeder::class,
@@ -32,9 +31,8 @@ class DatabaseSeeder extends Seeder
             PaymentGatewaySeeder::class,
             DeliveryGatewaySeeder::class,
             OrderStatusSeeder::class,
-            SymptomSeeder::class,
             SettingSeeder::class,
-            // ProductAttributeSeeder::class,
+            SectionSeeder::class,
         ]);
     }
 }

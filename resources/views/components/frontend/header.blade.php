@@ -1,15 +1,8 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
     <div class="top-header-bar">
-        <div class="bg-primary h-8 sm:h-8 md:h-10">
+        <div class="bg-[#00798c] h-8 sm:h-8 md:h-10">
             <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-white h-full">
-                <div class="social-icons flex">
-                    <a href="https://www.facebook.com/Medicart-107068648773339" target="_blank" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-facebook"></i></a>
-                    <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-instagram"></i></a>
-                    <a href="https://www.youtube.com/@medicart.health" target="_blank" class="p-2">
-                        <i class="text-sm sm:text-sm lg:text-base fa-brands fa-youtube"></i>
-                    </a>
-                </div>
                 <div class="address flex-1 hidden sm:hidden md:block">
                     <span class="text-xs font-light">DELIVER TO : </span>
                     <span id="show-address-top-nav" class="text-xs font-light"></span>
@@ -25,79 +18,10 @@
                 {{-- ======top links====== --}}
                 <div class="top-links">
                     <div class="flex space-x-0 sm:space-x-0 lg:space-x-4">
-                        <div>
-                            <div class="dropdown relative">
-                                <button
-                                    class="tracking-wider dropdown-toggle focus:outline-none focus:ring-0 px-2 py-2 text-white font-normal text-xs transition duration-150 ease-in-out flex items-center"
-                                    type="button"
-                                    id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <span class="hidden sm:hidden md:block">Country</span>
-                                    <span class="block sm:block md:hidden"><i class="fa-solid fa-globe"></i></span>
-                                    <i class="text-xs ml-1 sm:ml-1 md:ml-2 fa-solid fa-caret-down"></i>
-                                </button>
-                                <ul class="dropdown-menu min-w-max absolute bg-gray-50 text-base z-50 float-left py-2 list-none text-left rounded-md shadow-md hidden m-0 bg-clip-padding border-none"
-                                    aria-labelledby="dropdownMenuButton1">
-                                    @foreach ($countries as $country)
-                                        <li>
-                                            <a class=" dropdown-item text-xs py-1 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"href="#">
-                                                {{ $country['label'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="dropdown relative">
-                                <button
-                                    class="tracking-wider dropdown-toggle focus:outline-none focus:ring-0 px-2 py-2 text-white font-normal text-xs transition duration-150 ease-in-out flex items-center"
-                                    type="button"
-                                    id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <span class="hidden sm:hidden md:block">Currency</span>
-                                    <span class="block sm:block md:hidden"><i class="fa-regular fa-dollar-sign"></i></span>
-                                    <i class="text-xs ml-1 sm:ml-1 md:ml-2 fa-solid fa-caret-down"></i>
-                                </button>
-                                <ul class="dropdown-menu min-w-max w-24 absolute bg-gray-50 text-base z-50 float-left py-2 list-none text-left rounded-md shadow-md hidden m-0 bg-clip-padding border-none"
-                                    aria-labelledby="dropdownMenuButton1">
-                                    @foreach ($currencies as $currency)
-                                        <li>
-                                            <a class=" dropdown-item text-xs py-1 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="#">
-                                                {{ $currency['label'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="dropdown relative">
-                                <button
-                                    class="tracking-wider dropdown-toggle focus:outline-none focus:ring-0 px-2 py-2 text-white font-normal text-xs transition duration-150 ease-in-out flex items-center"
-                                    type="button"
-                                    id="dropdownMenuButton1"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false">
-                                    <span class="hidden sm:hidden md:block">Language</span>
-                                    <span class="block sm:block md:hidden">En</span>
-                                    <i class="text-xs ml-1 sm:ml-1 md:ml-2 fa-solid fa-caret-down"></i>
-                                </button>
-                                <ul class="dropdown-menu min-w-max w-24 absolute bg-gray-50 text-base z-50 float-left py-2 list-none text-left rounded-md shadow-md hidden m-0 bg-clip-padding border-none"
-                                    aria-labelledby="dropdownMenuButton1">
-                                    @foreach ($languages as $language)
-                                        <li>
-                                            <a class=" dropdown-item text-xs py-1 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="#">
-                                                {{ $language['label'] }}
-                                            </a>
-                                        </li>
-                                    @endforeach
-                                </ul>
-                            </div>
+                        <div class="social-icons flex">
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-facebook"></i></a>
+                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-instagram"></i></a>
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
@@ -167,7 +91,7 @@
                                 <button class="block" type="button">
                                     <i class="icon fa-solid fa-cart-shopping"></i>
                                 </button>
-                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-primary rounded-full w-6 h-6 text-center">
+                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#00798c] rounded-full w-6 h-6 text-center">
                                     <span class="cart-count flex items-center justify-center h-full text-white text-xs">0</span>
                                 </div>
                             </div>
@@ -202,9 +126,6 @@
                                             <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
                                         </a>
                                         <a href="#" class="relative border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            {{-- <div class="absolute rounded-full bg-red-500 w-4 h-4 flex items-center justify-center -mt-2 ml-1">
-                                                <span class="text-white text-xxs">5</span>
-                                            </div> --}}
                                             <i class="mr-3 text-xs fa-solid fa-bell"></i>
                                             Notification
                                         </a>
@@ -330,7 +251,7 @@
                                 <a class="mobile-nav-item" href="{{ route('products.index') }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/medicine.png') }}"> All Products
                                 </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
+                                {{-- <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/mencare.png') }}"> Men Care
                                 </a>
                                 <a class="mobile-nav-item" href="{{ route('tag.page', ['women-care']) }}">
@@ -347,7 +268,7 @@
                                 </a>
                                 <a class="mobile-nav-item" href="{{ route('tag.page', ['personal-care']) }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/personal-care.png') }}"> Personal Care
-                                </a>
+                                </a> --}}
                             </div>
                         </div>
                     </div>
@@ -389,7 +310,7 @@
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/medicine.png') }}">All Products
                             </a>
                         </li>
-                        <li class="border-b">
+                        {{-- <li class="border-b">
                             <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                                 href="{{ route('tag.page', ['men-care']) }}">
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/mencare.png') }}">Men Care
@@ -424,7 +345,7 @@
                                 href="{{ route('tag.page', ['personal-care']) }}">
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/personal-care.png') }}">Personal Care
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                 </div>
                 <div class="flex-1">
@@ -434,7 +355,7 @@
                         @endforeach
                     </ul>
                 </div>
-                <div class="flex justify-end">
+                {{-- <div class="flex justify-end">
                     <div class="flex justify-end space-x-4 items-center">
                         <span class="text-sm sm:text-sm lg:text-base text-primary">Download App</span>
                         <div class="download-app flex items-center space-x-3 text-primary">
@@ -442,7 +363,7 @@
                             <a href="https://play.google.com/store/apps/details?id=com.pulsetechltd.medicart" target="_blank" class="icon-wrapper text-xl xl:text-2xl"><i class="icon fa-brands fa-google-play"></i></a>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>

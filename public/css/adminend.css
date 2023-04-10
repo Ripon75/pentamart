@@ -7437,9 +7437,6 @@ textarea.form-control.is-invalid{
   -ms-flex-basis: 0;
   flex-basis: 0;
 }
-.tab-content > .tab-pane{
-  display: none;
-}
 .tab-content > .active{
   display: block;
 }
@@ -10336,9 +10333,6 @@ textarea.form-control.is-invalid{
 .col-span-6{
   grid-column: span 6 / span 6;
 }
-.col-span-9{
-  grid-column: span 9 / span 9;
-}
 .col-start-5{
   grid-column-start: 5;
 }
@@ -10382,10 +10376,6 @@ textarea.form-control.is-invalid{
 .my-16{
   margin-top: 4rem;
   margin-bottom: 4rem;
-}
-.-mx-4{
-  margin-left: -1rem;
-  margin-right: -1rem;
 }
 .ml-1{
   margin-left: 0.25rem;
@@ -10489,20 +10479,11 @@ textarea.form-control.is-invalid{
 .mb-10{
   margin-bottom: 2.5rem;
 }
-.mb-6{
-  margin-bottom: 1.5rem;
-}
 .mt-3{
   margin-top: 0.75rem;
 }
-.mt-24{
-  margin-top: 6rem;
-}
 .-ml-px{
   margin-left: -1px;
-}
-.mb-16{
-  margin-bottom: 4rem;
 }
 .box-content{
   box-sizing: content-box;
@@ -10621,9 +10602,6 @@ textarea.form-control.is-invalid{
 .h-\[384px\]{
   height: 384px;
 }
-.h-1{
-  height: 0.25rem;
-}
 .max-h-64{
   max-height: 16rem;
 }
@@ -10731,9 +10709,6 @@ textarea.form-control.is-invalid{
 }
 .w-1\/3{
   width: 33.333333%;
-}
-.w-\[928px\]{
-  width: 928px;
 }
 .w-80{
   width: 20rem;
@@ -10958,11 +10933,6 @@ textarea.form-control.is-invalid{
   margin-right: calc(0.25rem * var(--tw-space-x-reverse));
   margin-left: calc(0.25rem * calc(1 - var(--tw-space-x-reverse)));
 }
-.space-x-16 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(4rem * var(--tw-space-x-reverse));
-  margin-left: calc(4rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .divide-x > :not([hidden]) ~ :not([hidden]){
   --tw-divide-x-reverse: 0;
   border-right-width: calc(1px * var(--tw-divide-x-reverse));
@@ -11089,10 +11059,6 @@ textarea.form-control.is-invalid{
 .border-0{
   border-width: 0px;
 }
-.border-x-0{
-  border-left-width: 0px;
-  border-right-width: 0px;
-}
 .border-t{
   border-top-width: 1px;
 }
@@ -11107,15 +11073,6 @@ textarea.form-control.is-invalid{
 }
 .border-r-0{
   border-right-width: 0px;
-}
-.border-b-0{
-  border-bottom-width: 0px;
-}
-.border-t-0{
-  border-top-width: 0px;
-}
-.border-b-2{
-  border-bottom-width: 2px;
 }
 .border-l{
   border-left-width: 1px;
@@ -11155,13 +11112,6 @@ textarea.form-control.is-invalid{
 .border-green-600{
   --tw-border-opacity: 1;
   border-color: rgb(22 163 74 / var(--tw-border-opacity));
-}
-.border-primary{
-  --tw-border-opacity: 1;
-  border-color: rgb(16 41 103 / var(--tw-border-opacity));
-}
-.border-transparent{
-  border-color: transparent;
 }
 .bg-white{
   --tw-bg-opacity: 1;
@@ -11219,9 +11169,9 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
-.bg-primary{
+.bg-\[\#00798c\]{
   --tw-bg-opacity: 1;
-  background-color: rgb(16 41 103 / var(--tw-bg-opacity));
+  background-color: rgb(0 121 140 / var(--tw-bg-opacity));
 }
 .bg-gray-50{
   --tw-bg-opacity: 1;
@@ -11229,6 +11179,10 @@ textarea.form-control.is-invalid{
 }
 .bg-transparent{
   background-color: transparent;
+}
+.bg-primary{
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 41 103 / var(--tw-bg-opacity));
 }
 .bg-black\/30{
   background-color: rgb(0 0 0 / 0.3);
@@ -11249,9 +11203,6 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
-.bg-secondary\/20{
-  background-color: rgb(255 156 11 / 0.2);
-}
 .bg-red-600{
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
@@ -11268,13 +11219,6 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(251 146 60 / var(--tw-bg-opacity));
 }
-.bg-secondary\/80{
-  background-color: rgb(255 156 11 / 0.8);
-}
-.bg-sky-100{
-  --tw-bg-opacity: 1;
-  background-color: rgb(224 242 254 / var(--tw-bg-opacity));
-}
 .bg-socials-facebook{
   --tw-bg-opacity: 1;
   background-color: rgb(66 103 178 / var(--tw-bg-opacity));
@@ -11282,14 +11226,6 @@ textarea.form-control.is-invalid{
 .bg-socials-google{
   --tw-bg-opacity: 1;
   background-color: rgb(219 68 55 / var(--tw-bg-opacity));
-}
-.bg-slate-100{
-  --tw-bg-opacity: 1;
-  background-color: rgb(241 245 249 / var(--tw-bg-opacity));
-}
-.bg-slate-50{
-  --tw-bg-opacity: 1;
-  background-color: rgb(248 250 252 / var(--tw-bg-opacity));
 }
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
@@ -11497,9 +11433,6 @@ textarea.form-control.is-invalid{
 .pr-20{
   padding-right: 5rem;
 }
-.pt-2{
-  padding-top: 0.5rem;
-}
 .pb-1{
   padding-bottom: 0.25rem;
 }
@@ -11594,9 +11527,6 @@ textarea.form-control.is-invalid{
 }
 .leading-6{
   line-height: 1.5rem;
-}
-.leading-tight{
-  line-height: 1.25;
 }
 .leading-5{
   line-height: 1.25rem;
@@ -13463,9 +13393,6 @@ fieldset legend{
   --tw-scale-y: 1.1;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
-.hover\:border-transparent:hover{
-  border-color: transparent;
-}
 .hover\:bg-blue-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(239 246 255 / var(--tw-bg-opacity));
@@ -13595,9 +13522,6 @@ fieldset legend{
   --tw-border-opacity: 1;
   border-color: rgb(99 102 241 / var(--tw-border-opacity));
 }
-.focus\:border-transparent:focus{
-  border-color: transparent;
-}
 .focus\:border-blue-300:focus{
   --tw-border-opacity: 1;
   border-color: rgb(147 197 253 / var(--tw-border-opacity));
@@ -13658,9 +13582,6 @@ fieldset legend{
 .disabled\:opacity-80:disabled{
   opacity: 0.8;
 }
-.disabled\:opacity-30:disabled{
-  opacity: 0.3;
-}
 .group:hover .group-hover\:block{
   display: block;
 }
@@ -13704,6 +13625,10 @@ fieldset legend{
     --tw-border-opacity: 1;
     border-color: rgb(55 65 81 / var(--tw-border-opacity));
   }
+  .dark\:border-gray-600{
+    --tw-border-opacity: 1;
+    border-color: rgb(75 85 99 / var(--tw-border-opacity));
+  }
   .dark\:bg-gray-900{
     --tw-bg-opacity: 1;
     background-color: rgb(17 24 39 / var(--tw-bg-opacity));
@@ -13711,6 +13636,10 @@ fieldset legend{
   .dark\:bg-gray-800{
     --tw-bg-opacity: 1;
     background-color: rgb(31 41 55 / var(--tw-bg-opacity));
+  }
+  .dark\:bg-gray-700{
+    --tw-bg-opacity: 1;
+    background-color: rgb(55 65 81 / var(--tw-bg-opacity));
   }
   .dark\:text-gray-500{
     --tw-text-opacity: 1;
@@ -13723,6 +13652,13 @@ fieldset legend{
   .dark\:text-gray-400{
     --tw-text-opacity: 1;
     color: rgb(156 163 175 / var(--tw-text-opacity));
+  }
+  .dark\:text-gray-300{
+    --tw-text-opacity: 1;
+    color: rgb(209 213 219 / var(--tw-text-opacity));
+  }
+  .dark\:ring-offset-gray-800{
+    --tw-ring-offset-color: #1f2937;
   }
 }
 @media (min-width: 640px){
@@ -13800,9 +13736,6 @@ fieldset legend{
   }
   .sm\:ml-2{
     margin-left: 0.5rem;
-  }
-  .sm\:ml-1{
-    margin-left: 0.25rem;
   }
   .sm\:mt-8{
     margin-top: 2rem;
@@ -14054,9 +13987,6 @@ fieldset legend{
     margin-left: auto;
     margin-right: auto;
   }
-  .md\:ml-2{
-    margin-left: 0.5rem;
-  }
   .md\:mt-2{
     margin-top: 0.5rem;
   }
@@ -14217,10 +14147,6 @@ fieldset legend{
   .md\:px-2{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-  }
-  .md\:px-3{
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
   }
   .md\:pb-2{
     padding-bottom: 0.5rem;
@@ -14447,15 +14373,8 @@ fieldset legend{
     padding-top: 1rem;
     padding-bottom: 1rem;
   }
-  .lg\:px-6{
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
-  }
   .lg\:pb-4{
     padding-bottom: 1rem;
-  }
-  .lg\:pt-6{
-    padding-top: 1.5rem;
   }
   .lg\:text-left{
     text-align: left;
@@ -14551,9 +14470,6 @@ fieldset legend{
   }
   .xl\:w-96{
     width: 24rem;
-  }
-  .xl\:w-2\/3{
-    width: 66.666667%;
   }
   .xl\:w-\[800px\]{
     width: 800px;
