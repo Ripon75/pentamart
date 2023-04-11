@@ -62,38 +62,38 @@ class PageController extends Controller
         ];
 
         $feelings = [
-            // [
-            //     'link' => route('symptom.page',['stomach-pain']),
-            //     'imgSRC' => '/images/sample/stomachache.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['fever']),
-            //     'imgSRC' => '/images/sample/fever.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['pregnant']),
-            //     'imgSRC' => '/images/sample/pregnant.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['joint-pain']),
-            //     'imgSRC' => '/images/sample/joint-pain.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['headache']),
-            //     'imgSRC' => '/images/sample/headache.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['newborn-baby']),
-            //     'imgSRC' => '/images/sample/newborn-baby.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['diabetes']),
-            //     'imgSRC' => '/images/sample/diabetes.png'
-            // ],
-            // [
-            //     'link' => route('symptom.page', ['over-weight']),
-            //     'imgSRC' => '/images/sample/over-weight.png'
-            // ]
+            [
+                // 'link' => route('symptom.page',['stomach-pain']),
+                'imgSRC' => '/images/sample/stomachache.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['fever']),
+                'imgSRC' => '/images/sample/fever.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['pregnant']),
+                'imgSRC' => '/images/sample/pregnant.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['joint-pain']),
+                'imgSRC' => '/images/sample/joint-pain.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['headache']),
+                'imgSRC' => '/images/sample/headache.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['newborn-baby']),
+                'imgSRC' => '/images/sample/newborn-baby.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['diabetes']),
+                'imgSRC' => '/images/sample/diabetes.png'
+            ],
+            [
+                // 'link' => route('symptom.page', ['over-weight']),
+                'imgSRC' => '/images/sample/over-weight.png'
+            ]
         ];
 
         // Top products
@@ -414,21 +414,51 @@ class PageController extends Controller
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $dosageForms = DosageForm::distinct()
-            ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
+        $categories = [
+            [
+                'id' => 1,
+                'name' => 'Category 1'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Category 2'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Category 3'
+            ]
+        ];
 
-        $companies = Company::distinct()
-            ->join('products', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
+        // $dosageForms = DosageForm::distinct()
+        //     ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
+        //     ->select('dosage_forms.id', 'dosage_forms.name')
+        //     ->whereNull('products.deleted_at')
+        //     ->where('products.status', 'activated')
+        //     ->orderBy('dosage_forms.name', 'ASC')
+        //     ->get();
+
+        // $companies = Company::distinct()
+        //     ->join('products', 'companies.id', '=', 'products.company_id')
+        //     ->select('companies.id', 'companies.name')
+        //     ->whereNull('products.deleted_at')
+        //     ->where('products.status', 'activated')
+        //     ->orderBy('companies.name', 'ASC')
+        //     ->get();
+
+        $companies = [
+            [
+                'id' => 1,
+                'name' => 'Brand 1'
+            ],
+            [
+                'id' => 2,
+                'name' => 'Brand 2'
+            ],
+            [
+                'id' => 3,
+                'name' => 'Brand 3'
+            ]
+        ];
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.product-index';
 
@@ -436,7 +466,7 @@ class PageController extends Controller
             'products'            => $products,
             'companies'           => $companies,
             'categories'          => $categories,
-            'dosageForms'         => $dosageForms,
+            // 'dosageForms'         => $dosageForms,
             'filterCategoryIds'   => $filterCategoryIds,
             'filterCompanyIds'    => $filterCompanyIds,
             'filterDosageFormIds' => $filterDosageFormIds,
@@ -452,7 +482,7 @@ class PageController extends Controller
 
         $currentURL = url()->current();
         Utility::saveIntendedURL($currentURL);
-        $product = Product::where('status', 'activated')->find($id);
+        $product = Product::where('status', 'active')->find($id);
 
         if(!$product) {
             abort(404);
@@ -468,12 +498,10 @@ class PageController extends Controller
 
         $isWishListed = $wishlistedProduct ? true : false;
 
-        $relatedProducts = Product::getDefaultMetaData()
-            ->where('generic_id', $product->generic_id)
-            ->where('id', '<>', $product->id)->take(5)->get();
+        $relatedProducts = Product::getDefaultMetaData()->take(5)->get();
 
-        $otherProducts = Product::inRandomOrder()->getDefaultMetaData()->
-            where('id', '<>', $product->id)->take(4)->get();
+        $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
+        ->where('id', '<>', $product->id)->take(4)->get();
 
         return view('frontend.pages.product-single', [
             'product'         => $product,
@@ -481,7 +509,7 @@ class PageController extends Controller
             'relatedProducts' => $relatedProducts,
             'isWishListed'    => $isWishListed,
             'otherProducts'   => $otherProducts,
-            'currency'        => 'TK'
+            'currency'        => 'Tk'
         ]);
     }
 
@@ -720,8 +748,8 @@ class PageController extends Controller
         }
         $areas            = Area::orderBy('name', 'asc')->get();
         $userAddress      = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
-        $deliveryGateways = DeliveryGateway::where('status', 'activated')->get();
-        $paymentGateways  = PaymentGateway::where('status', 'activated')->get();
+        $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
+        $paymentGateways  = PaymentGateway::where('status', 'active')->get();
         // $currency         = Setting::getValue('app_currency_symbol', null, 'Tk');
         $currency         = 'Tk';
 
@@ -738,7 +766,7 @@ class PageController extends Controller
 
     private function getProducts($request, $relation = null, $slug = null)
     {
-        $orderBy = 'unit_price';
+        $orderBy = 'price';
         $percent             = $request->input('percent', null);
         $searchKey           = $request->input('search_key', null);
         $order               = $request->input('order', null);
@@ -766,40 +794,19 @@ class PageController extends Controller
             });
         }
 
-        // Tag wise product find
-        if ($relation && $relation === 'tags' && $slug) {
-            $products = $products->whereHas('tags', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        }
-
-        // Tag wise product find
-        if ($relation && $relation === 'symptoms' && $slug) {
-            $products = $products->whereHas('symptoms', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        }
-
         // dosage form wise product filter
-        if ($relation && $relation === 'dosageForm' && $slug) {
-            $products = $products->whereHas('dosageForm', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        }
+        // if ($relation && $relation === 'dosageForm' && $slug) {
+        //     $products = $products->whereHas('dosageForm', function($query) use ($slug) {
+        //         $query->where('slug', $slug);
+        //     });
+        // }
 
         // company wise product filter
-        if ($relation && $relation === 'company' && $slug) {
-            $products = $products->whereHas('company', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        }
-
-        // company wise product filter
-        if ($relation && $relation === 'generic' && $slug) {
-            $products = $products->whereHas('generic', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
-        }
+        // if ($relation && $relation === 'company' && $slug) {
+        //     $products = $products->whereHas('company', function($query) use ($slug) {
+        //         $query->where('slug', $slug);
+        //     });
+        // }
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -834,7 +841,7 @@ class PageController extends Controller
                 $query->where('status', 'activated');
             })->paginate($paginate);
         } else {
-            $products = $products->where('mrp', '>', 0)->paginate($paginate);
+            $products = $products->where('price', '>', 0)->paginate($paginate);
         }
 
         return $products;

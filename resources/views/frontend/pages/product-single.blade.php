@@ -11,12 +11,12 @@
                         {{-- offer --}}
                         <div class="flex justify-between">
                             <div class="">
-                                @if ($product->selling_price > 0)
+                                @if ($product->offer_price > 0)
                                     @php
-                                        $mrp            = $product->mrp;
-                                        $discountAmount = $product->mrp - $product->selling_price;
+                                        $price          = $product->price;
+                                        $discountAmount = $product->price - $product->offer_price;
 
-                                        $discountPercent = ($discountAmount/$mrp) * 100
+                                        $discountPercent = ($discountAmount/$price) * 100
                                     @endphp
                                     <span class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
                                         {{ (number_format($discountPercent, 0)) }}
@@ -35,12 +35,12 @@
                         {{-- offer --}}
                         <div class="flex justify-between">
                             <div class="">
-                                @if ($product->selling_price > 0)
+                                @if ($product->offer_price > 0)
                                     @php
-                                        $mrp            = $product->mrp;
-                                        $discountAmount = $product->mrp - $product->selling_price;
+                                        $price          = $product->price;
+                                        $discountAmount = $product->price - $product->offer_price;
 
-                                        $discountPercent = ($discountAmount/$mrp) * 100
+                                        $discountPercent = ($discountAmount/$price) * 100
                                     @endphp
                                     <span
                                         class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
@@ -121,32 +121,32 @@
                 <div class="mt-1">
                     <div class="hidden">
                         <input type="hidden" value="{{ $product->id }}" id="product-id" style="display: none">
-                        @if ($product->selling_price > 0)
+                        @if ($product->offer_price > 0)
                             @php
-                                $sellPrice = $product->selling_price;
+                                $sellPrice = $product->offer_price;
                             @endphp
                             <input type="hidden" value="{{ $sellPrice }}" id="input-price">
                         @else
-                            <input type="hidden" value="{{ $product->mrp }}" id="input-price">
+                            <input type="hidden" value="{{ $product->price }}" id="input-price">
                         @endif
                         {{-- <input type="hidden" value="{{ $product->pack_size }}" id="input-pack-size"> --}}
-                        <input type="hidden" value="{{ $product->mrp }}" id="input-product-mrp">
+                        <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
                         {{-- <input type="hidden" value="{{ $product->is_single_sell_allow }}" id="input-negative-sell-allow"> --}}
                     </div>
                     <div class="prices flex space-x-2 items-center mb-2">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
-                            @if ($product->selling_price > 0)
+                            @if ($product->offer_price > 0)
                                 <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                    {{ number_format(($product->selling_price), 2) }}
+                                    {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
-                                    {{ $product->mrp }}
+                                    {{ $product->price }}
                                 </span>
                             @else
                                 <span id="item-price-label" class="text-secondary text-xl font-medium">
-                                    {{ number_format(($product->mrp), 2) }}
+                                    {{ number_format(($product->price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
                                 </span>

@@ -90,27 +90,27 @@
                                         <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
                                             @php
                                                 $itemDiscountCalculate = 0;
-                                                if ($product->selling_price > 0) {
-                                                    $itemDiscountCalculate = $product->mrp - $product->selling_price;
+                                                if ($product->offer_price > 0) {
+                                                    $itemDiscountCalculate = $product->mrp - $product->offer_price;
                                                 }
                                             @endphp
                                             <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
                                                 data-item-id="{{ $product->id }}"
-                                                data-unit-price="{{ $product->selling_price }}"
+                                                data-unit-price="{{ $product->offer_price }}"
                                                 data-item-pack-size="{{ $product->pack_size }}"
                                                 data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
                                                 data-total-item-mrp-label="total-mrp-{{ $product->pivot->item_id }}"
                                                 data-item-discount="{{ $itemDiscountCalculate }}"
                                                 data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
-                                                data-unit-mrp="{{ $product->mrp }}">
+                                                data-unit-mrp="{{ $product->price }}">
 
-                                                @if ($product->is_single_sell_allow)
-                                                    @for ($i = 1; $i <= $product->num_of_pack; $i++)
-                                                        <option value="{{ $i }}"
-                                                            {{ $i == $product->pivot->quantity ? 'selected' : '' }}>
-                                                            {{ $i }} {{ $product->uom }}
-                                                        </option>
-                                                    @endfor
+                                                @for ($i = 1; $i <= 5; $i++)
+                                                    <option value="{{ $i }}"
+                                                        {{ $i == $product->pivot->quantity ? 'selected' : '' }}>
+                                                        {{ $i }} {{ $product->uom }}
+                                                    </option>
+                                                @endfor
+                                                {{-- @if ($product->is_single_sell_allow)
                                                 @else
                                                     @for ($i = 1; $i <= $product->num_of_pack; $i++)
                                                         <option value="{{ $product->pack_size * $i }}"
@@ -118,7 +118,7 @@
                                                             {{ $product->pack_size * $i }} {{ $product->uom }}
                                                         </option>
                                                     @endfor
-                                                @endif
+                                                @endif --}}
                                             </select>
                                         </td>
                                         <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
@@ -126,7 +126,7 @@
                                             @php
                                                 $productDiscount = 0;
                                                 $itemDiscount    = $product->pivot->discount * $product->pivot->quantity;
-                                                $productDiscount = ($product->pivot->discount * 100) / $product->pivot->item_mrp;
+                                                $productDiscount = ($product->pivot->discount * 100) / $product->pivot->item_price;
                                                 $itemDiscount    = number_format( (float) $itemDiscount, 2, '.', '');
                                             @endphp
                                             <span id="total-discount-{{ $product->pivot->item_id }}" class="s-totalDiscount ml-1">
@@ -137,7 +137,7 @@
                                             <span
                                                 id="product-discount-percent-id-{{ $product->id }}"
                                                 class="product-discount-percent hidden"
-                                                data-product-mrp="{{ $product->pivot->item_mrp }}"
+                                                data-product-mrp="{{ $product->pivot->item_price }}"
                                                 data-product-quantity="{{ $product->pivot->quantity }}">
                                                 {{ $productDiscount }}
                                             </span>
@@ -146,7 +146,7 @@
                                         <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
                                             >{{ $currency }}
                                             @php
-                                                $itemTotalPrice = $product->pivot->price * $product->pivot->quantity;
+                                                $itemTotalPrice = $product->pivot->item_offer_price * $product->pivot->quantity;
                                                 $itemTotalPrice = number_format( (float) $itemTotalPrice, 2, '.', '');
                                             @endphp
                                             <span id="total-price-{{ $product->pivot->item_id }}" class="s-cart-total-price ml-1">
@@ -159,7 +159,7 @@
                                         <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
                                             >{{ $currency }}
                                             @php
-                                                $itemTotalMRP = $product->pivot->item_mrp * $product->pivot->quantity;
+                                                $itemTotalMRP = $product->pivot->item_price * $product->pivot->quantity;
                                             @endphp
                                             <span id="total-mrp-{{ $product->pivot->item_id }}" class="s-cart-total-mrp ml-1">
                                                 <span id="mrp-show-{{ $product->pivot->item_id}}">
@@ -176,7 +176,7 @@
                                             </button>
                                         </td>
                                         @php
-                                            $subTotal += $product->pivot->price * $product->pivot->quantity;
+                                            $subTotal += $product->pivot->item_offer_price * $product->pivot->quantity;
                                         @endphp
                                     </tr>
                                 @endforeach
@@ -217,8 +217,8 @@
                         <div class="flex justify-between">
                             <span>Delivery Charge (+)</span>
                             <span>{{ $currency }}
-                                <span id="delivery-charge-lavel" class="ml-1">{{ $deliveryGateways[0]->price }}</span>
-                                <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
+                                <span id="delivery-charge-lavel" class="ml-1"></span>
+                                <input id="input-delivery-charge" type="hidden" value="">
                             </span>
                         </div>
                         <div class="flex justify-between">
@@ -250,7 +250,8 @@
                             <span class="text-base sm:text-base md:text-lg">Total</span>
                             <span class="text-base sm:text-base md:text-lg font-medium">
                                 @php
-                                    $total = $subTotal + $deliveryGateways[0]->price;
+                                    // $total = $subTotal + $deliveryGateways[0]->price;
+                                    $total = $subTotal + 50;
                                 @endphp
                                 <span>{{ $currency }}
                                     <span id="cart-total-price-label" class="ml-1">
@@ -270,7 +271,7 @@
                                 <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
                             </div>
                             <div class="p-2 flex space-x-2 first:space-x-0">
-                                <input type="hidden" id="input-delivery-gateway-id" value="{{ $deliveryGateways[0]->id }}">
+                                <input type="hidden" id="input-delivery-gateway-id" value="">
                                 @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
                                     <button
                                         type="button"
@@ -320,7 +321,7 @@
                                 <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
                             </div>
                             <div class="flex p-2 space-x-2">
-                                <input type="hidden" name="payment_method_id" id="input-payment-method-id" value="{{ $paymentGateways[0]->id }}">
+                                <input type="hidden" name="payment_method_id" id="input-payment-method-id" value="">
                                 @for ($i=0 ; $i < count($paymentGateways) ; $i++)
                                     <button
                                         type="button"
@@ -328,7 +329,6 @@
                                         class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
                                         @if ($paymentGateways[$i]->img_src)
                                             <div class="icon text-xl">
-                                                {{-- <i class="{{ $paymentGateways[$i]->icon }}"></i> --}}
                                                 <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
                                             </div>
                                         @else
@@ -373,11 +373,11 @@
                     {{-- ===============Checkout================== --}}
                     <section class="mt-4">
                         <div class="card border-2">
-                            <div class="header">
+                            {{-- <div class="header">
                                 <h1 class="title">Upload prescriptions<i class="ml-3 fa-solid fa-file-arrow-up"></i></h1>
-                            </div>
+                            </div> --}}
                             <div class="px-4 py-2">
-                                <div class="mt-4">
+                                {{-- <div class="mt-4">
                                     <input id="input-cart-prescription-id" name="files[]" multiple type="file"
                                         class="block w-full text-sm text-slate-500
                                         focus:outline-none focus:ring-0
@@ -388,13 +388,13 @@
                                         file:bg-violet-50 file:text-primary
                                         hover:file:bg-violet-100
                                     "/>
-                                </div>
-                                <div class="flex space-x-2 mt-2">
+                                </div> --}}
+                                {{-- <div class="flex space-x-2 mt-2">
                                     <input id="input-prescription-checkbox" class="focus:ring-0" type="checkbox" value="">
                                     <span class="text-primary text-xs">
                                         I will give prescription at time of delivery
                                     </span>
-                                </div>
+                                </div> --}}
                                 <div class="mt-4">
                                     <label class="text-sm" for="">Write note here</label><br>
                                     <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>

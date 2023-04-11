@@ -3,12 +3,12 @@
         <div class="rounded-md border-2 h-full">
             <div class="relative">
                 <div class="absolute top-0 right-0 p-2 z-20">
-                    @if ($product->selling_price > 0)
+                    @if ($product->offer_price > 0)
                     @php
-                        $mrp            = $product->mrp;
-                        $discountAmount = $product->mrp - $product->selling_price;
+                        $price          = $product->price;
+                        $discountAmount = $product->price - $product->offer_price;
 
-                        $discountPercent = ($discountAmount/$mrp) * 100
+                        $discountPercent = ($discountAmount/$price) * 100
                     @endphp
                     <span
                         class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
@@ -66,26 +66,26 @@
                 {{-- Price show for type default --}}
                 <div class="prices mt-1 text-xs sm:text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base flex space-x-4">
                     @php
-                        $productMRP          = 0;
-                        $productSellingPrice = 0;
-                        $productMRP          = $product->mrp;
-                        $productSellingPrice = $product->selling_price;
+                        $productPrice        = 0;
+                        $productOfferPrice = 0;
+                        $productPrice        = $product->price;
+                        $productOfferPrice   = $product->offer_price;
                     @endphp
-                    @if ($product->selling_price > 0)
+                    @if ($product->offer_price > 0)
                         <span>
                             {{ $currency }}
                             <span id="header-product-price-label-{{ $product->id }}" class="text-secondary">
-                                {{ $productSellingPrice }}
+                                {{ $productOfferPrice }}
                             </span>
                         </span>
                         <span id="header-product-mrp-label-{{ $product->id }}" class="line-through text-gray-500 self-end">
-                            {{ $currency }} {{ $productMRP }}
+                            {{ $currency }} {{ $productPrice }}
                         </span>
                     @else
                         <span>
                             {{ $currency }}
                             <span id="header-product-price-label-{{ $product->id }}" class="text-secondary">
-                                {{ $productMRP }}
+                                {{ $productPrice }}
                             </span>
                             <span id="header-product-mrp-label-{{ $product->id }}" class="line-through text-gray-500 self-end">
                             </span>
@@ -162,11 +162,11 @@
 
                     {{-- Price show --}}
                     <div class="prices mt-2 flex space-x-4">
-                        @if ($product->selling_price > 0)
-                        <span class="text-secondary text-sm">{{ $currency }} {{ $product->selling_price }}</span>
-                        <span class="line-through text-sm text-gray-500 self-end">{{ $currency }} {{ $product->mrp }}</span>
+                        @if ($product->offer_price > 0)
+                        <span class="text-secondary text-sm">{{ $currency }} {{ $product->offer_price }}</span>
+                        <span class="line-through text-sm text-gray-500 self-end">{{ $currency }} {{ $product->price }}</span>
                         @else
-                        <span class="text-secondary">{{ $currency }} {{ $product->mrp }}</span>
+                        <span class="text-secondary">{{ $currency }} {{ $product->price }}</span>
                         @endif
                     </div>
                 </div>
@@ -183,7 +183,7 @@
             <div
                 class="text-center p-4 rounded-b-md bg-gray-50 text-primary-dark hover:text-primary-dark">
                 <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="inline-block text-sm font-medium">{{ $product->name  }}</a>
-                <h2 class="text-sm">{{ $currency }} {{ $product->mrp }} </h2>
+                <h2 class="text-sm">{{ $currency }} {{ $product->price }} </h2>
             </div>
         </div>
     </div>

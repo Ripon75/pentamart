@@ -60,15 +60,15 @@
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($categories as $category)
-                                    <label class="item">
-                                        <input
-                                            type="checkbox"
-                                            name="categories[]"
-                                            value="{{ $category->id }}"
-                                            class="focus:ring-0 input-checkbox"
-                                            {{ in_array($category->id, $filterCategoryIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $category->name }}</span>
-                                    </label>
+                                        <label class="item">
+                                            <input
+                                                type="checkbox"
+                                                name="categories[]"
+                                                value="{{ $category['id'] }}"
+                                                class="focus:ring-0 input-checkbox"
+                                                {{ in_array($category['id'], $filterCategoryIds) ? 'checked' : '' }}/>
+                                            <span class="ml-3 text-sm">{{ $category['name'] }}</span>
+                                        </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -77,7 +77,7 @@
                         @if (count($companies))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Manufacturer</span>
+                                <span class="box-title">Brand</span>
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($companies as $company)
@@ -85,17 +85,17 @@
                                         <input
                                             type="checkbox"
                                             name="companies[]"
-                                            value="{{ $company->id }}"
+                                            value="{{ $company['id'] }}"
                                             class="focus:ring-0 input-checkbox"
-                                            {{ in_array($company->id, $filterCompanyIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $company->name }}</span>
+                                            {{ in_array($company['id'], $filterCompanyIds) ? 'checked' : '' }}/>
+                                        <span class="ml-3 text-sm">{{ $company['name'] }}</span>
                                     </label>
                                     @endforeach
                                 </div>
                             </div>
                         @endif
 
-                        @if (count($dosageForms))
+                        {{-- @if (count($dosageForms))
                             <div class="filter-box">
                                 <div class="box-wrapper">
                                 <span class="box-title">Dosage Forms</span>
@@ -114,7 +114,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                     </div>
                 </div>
 

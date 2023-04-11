@@ -112,8 +112,11 @@
     </section>
 
     {{-- ==================Banner-photo============================= --}}
-    <section class="bg-gray-100 page-section">
+    {{-- <section class="bg-gray-100 page-section">
         <section class="container">
+            <div class="text-center">
+                <h1 class="section-title mb-10">Top Category</h1>
+            </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-4 xl:gap-8">
                 @foreach ($banners as $banner)
                 <a href="{{ $banner->box_link }}" class="block rounded hover:shadow-md">
@@ -122,14 +125,14 @@
                 @endforeach
             </div>
         </section>
-    </section>
+    </section> --}}
 
     {{-- ==================Top Products================== --}}
     @if ($topProducts)
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-10">{{ $topProducts->title ?? '' }}</h1>
+                    <h1 class="section-title mb-10">Best Selling Products</h1> 
                 </div>
                 <div class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
                     @foreach ($topProducts->products as $product)
@@ -146,20 +149,20 @@
     @endif
 
     {{-- ==============Symptoms Section=================== --}}
-    {{-- <section class="symptoms-section page-section bg-gray-100">
+    <section class="symptoms-section page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
-                <h1 class="section-title">Products By Symptoms</h1>
+                <h1 class="section-title"> All Category</h1>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
                 @foreach ( $feelings as $feeling)
-                <a href="{{ $feeling['link'] }}" class="img-wrapper">
-                    <img class="img" src="{{ $feeling['imgSRC'] }}">
-                </a>
+                {{-- <a href="{{ $feeling['link'] }}" class="img-wrapper">
+                </a> --}}
+                <img class="img" src="{{ $feeling['imgSRC'] }}">
                 @endforeach
             </div>
         </div>
-    </section> --}}
+    </section>
 
     {{-- ==================Medical Devices================== --}}
     <section class="page-section">
@@ -181,10 +184,10 @@
     </section>
 
     {{-- ==================Hot Sale=============== --}}
-    {{-- <section class="page-section bg-gray-100">
+    <section class="page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
-                <h1 class="section-title">Medical Device Offers</h1>
+                <h1 class="section-title">Offers</h1>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-4 lg:gap-4 xl:gap-4 2xl:gap-8 mt-10">
                 @foreach ($hotSales as $hotSale)
@@ -202,7 +205,7 @@
                 @endforeach
             </div>
         </div>
-    </section> --}}
+    </section>
 
     {{-- =======================Top Categories========================== --}}
     <section class="page-section bg-gray-100">
@@ -226,7 +229,7 @@
     </section>
 
     {{-- =======================Top Brands========================== --}}
-    <section class="page-section">
+    {{-- <section class="page-section">
         <div class="container">
             <div class="text-center">
                 <h1 class="section-title mb-10">Top Brands</h1>
@@ -244,7 +247,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ==================Features================== --}}
     <section class="page-section bg-gray-100">

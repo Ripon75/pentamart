@@ -86,7 +86,7 @@ class DashboardController extends Controller
         $totalUser = User::count();
 
         // Calculate cart items value
-        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(quantity * price) as cart_value"))->first();
+        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(quantity * item_offer_price) as cart_value"))->first();
 
         // Calculate number of login and current login user
         $userEvent = UserEvent::select(

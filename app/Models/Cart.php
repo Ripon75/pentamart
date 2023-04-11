@@ -63,7 +63,7 @@ class Cart extends Model
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-                    ->withPivot('quantity', 'item_pack_size', 'item_mrp', 'price', 'discount')
+                    ->withPivot('quantity', 'item_pack_size', 'item_price', 'item_offer_price', 'discount')
                     ->withTimestamps();
     }
 
@@ -109,24 +109,24 @@ class Cart extends Model
             $itemQuantity = $product->pack_size;
         }
 
-        $mrp      = $product->mrp;
+        $price    = $product->price;
         $packSize = $product->pack_size;
 
         $utility = new Utility ();
 
         
-        if ($product->selling_price > 0) {
-            $discount   = $mrp - $product->selling_price;
-            $offerPrice = $mrp - $discount;
+        if ($product->offer_price > 0) {
+            $discount   = $price - $product->offer_price;
+            $offerPrice = $price - $discount;
         }
 
         $res = $utility->checkOffer($itemId, $itemQuantity);
         if ($res) {
-            $discount   = $mrp - $res['result'];
-            $offerPrice = $mrp - $discount;
+            $discount   = $price - $res['result'];
+            $offerPrice = $price - $discount;
         }
 
-        $price = $discount > 0 ? $offerPrice : $mrp;
+        $price = $discount > 0 ? $offerPrice : $price;
 
         if (!$price) {
             return $this->_makeResponse(false, null, 'Product have no price');
@@ -147,8 +147,8 @@ class Cart extends Model
         $res = $cart->items()->attach($itemId, [
                 'quantity'          => $itemQuantity,
                 'item_pack_size'    => $packSize,
-                'item_mrp'          => $mrp,
-                'price'             => $price,
+                'item_price'        => $price,
+                'item_offer_price'  => $offerPrice,
                 'discount'          => $discount
             ]
         );
