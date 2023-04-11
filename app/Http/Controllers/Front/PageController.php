@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Traits\Setting;
+// use Setting;
 use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\Cart;
@@ -32,13 +32,13 @@ class PageController extends Controller
             'page' => 'home'
         ]);
 
-        $sliderBanners = Banner::where('position', 'slider')->where('status', 'activated')->get();
+        $sliderBanners = Banner::where('position', 'slider')->where('status', 'active')->get();
 
-        $banners  = Banner::where('position', 'offer')->where('status', 'activated')->get();
+        $banners  = Banner::where('position', 'offer')->where('status', 'active')->get();
 
-        $brands   = Banner::where('position', 'top-brand-offer')->where('status', 'activated')->get();
+        $brands   = Banner::where('position', 'top-brand-offer')->where('status', 'active')->get();
 
-        $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'activated')->get();
+        $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
         $services = [
             [
@@ -62,38 +62,38 @@ class PageController extends Controller
         ];
 
         $feelings = [
-            [
-                'link' => route('symptom.page',['stomach-pain']),
-                'imgSRC' => '/images/sample/stomachache.png'
-            ],
-            [
-                'link' => route('symptom.page', ['fever']),
-                'imgSRC' => '/images/sample/fever.png'
-            ],
-            [
-                'link' => route('symptom.page', ['pregnant']),
-                'imgSRC' => '/images/sample/pregnant.png'
-            ],
-            [
-                'link' => route('symptom.page', ['joint-pain']),
-                'imgSRC' => '/images/sample/joint-pain.png'
-            ],
-            [
-                'link' => route('symptom.page', ['headache']),
-                'imgSRC' => '/images/sample/headache.png'
-            ],
-            [
-                'link' => route('symptom.page', ['newborn-baby']),
-                'imgSRC' => '/images/sample/newborn-baby.png'
-            ],
-            [
-                'link' => route('symptom.page', ['diabetes']),
-                'imgSRC' => '/images/sample/diabetes.png'
-            ],
-            [
-                'link' => route('symptom.page', ['over-weight']),
-                'imgSRC' => '/images/sample/over-weight.png'
-            ]
+            // [
+            //     'link' => route('symptom.page',['stomach-pain']),
+            //     'imgSRC' => '/images/sample/stomachache.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['fever']),
+            //     'imgSRC' => '/images/sample/fever.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['pregnant']),
+            //     'imgSRC' => '/images/sample/pregnant.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['joint-pain']),
+            //     'imgSRC' => '/images/sample/joint-pain.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['headache']),
+            //     'imgSRC' => '/images/sample/headache.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['newborn-baby']),
+            //     'imgSRC' => '/images/sample/newborn-baby.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['diabetes']),
+            //     'imgSRC' => '/images/sample/diabetes.png'
+            // ],
+            // [
+            //     'link' => route('symptom.page', ['over-weight']),
+            //     'imgSRC' => '/images/sample/over-weight.png'
+            // ]
         ];
 
         // Top products
@@ -106,46 +106,46 @@ class PageController extends Controller
         $defaultQuantity = 12;
 
         // Man care prducts
-        $mCareProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'men-care');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $mCareProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'men-care');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         // Women care prducts
-        $wCareProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'women-care');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $wCareProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'women-care');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         // Sexual wellness prducts
-        $swProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'sexual-wellness');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $swProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'sexual-wellness');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         // Herbal homeopathy prducts
-        $hProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'herbal-homeopathy');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $hProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'herbal-homeopathy');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         // Baby mom care prducts
-        $bProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'baby-mom-care');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $bProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'baby-mom-care');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         // Personal care prducts
-        $pProducts = $productObj->whereHas('categories', function($query) {
-                $query->where('slug', 'personal-care');
-            })
-            ->getDefaultMetaData()
-            ->take($defaultQuantity)->get();
+        // $pProducts = $productObj->whereHas('categories', function($query) {
+        //         $query->where('slug', 'personal-care');
+        //     })
+        //     ->getDefaultMetaData()
+        //     ->take($defaultQuantity)->get();
 
         $categories = [
             [
@@ -244,12 +244,12 @@ class PageController extends Controller
             'feelings'        => $feelings,
             'hotSales'        => $hotSales,
             'topProducts'     => $topProducts,
-            'mCareProducts'   => $mCareProducts,
-            'wCareProducts'   => $wCareProducts,
-            'swProducts'      => $swProducts,
-            'hProducts'       => $hProducts,
-            'bProducts'       => $bProducts,
-            'pProducts'       => $pProducts,
+            // 'mCareProducts'   => $mCareProducts,
+            // 'wCareProducts'   => $wCareProducts,
+            // 'swProducts'      => $swProducts,
+            // 'hProducts'       => $hProducts,
+            // 'bProducts'       => $bProducts,
+            // 'pProducts'       => $pProducts,
             'categories'      => $categories,
             'topCategories'   => $topCategories,
             'features'        => $features,
@@ -722,7 +722,8 @@ class PageController extends Controller
         $userAddress      = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
         $deliveryGateways = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways  = PaymentGateway::where('status', 'activated')->get();
-        $currency         = Setting::getValue('app_currency_symbol', null, 'Tk');
+        // $currency         = Setting::getValue('app_currency_symbol', null, 'Tk');
+        $currency         = 'Tk';
 
         return view('frontend.pages.cart', [
             'cart'             => $cart,

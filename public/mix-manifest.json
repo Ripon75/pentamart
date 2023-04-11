@@ -1,8 +1,6 @@
 {
     "/js/frontend.js": "/js/frontend.js",
     "/js/adminend.js": "/js/adminend.js",
-    "/js/sellercenter.js": "/js/sellercenter.js",
     "/css/frontend.css": "/css/frontend.css",
-    "/css/sellercenter.css": "/css/sellercenter.css",
     "/css/adminend.css": "/css/adminend.css"
 }

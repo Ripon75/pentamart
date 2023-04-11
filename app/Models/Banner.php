@@ -2,43 +2,35 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+// use Storage;
 use Carbon\Carbon;
-use Storage;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 
 class Banner extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'pre_title',
-        'pre_title_link',
         'title',
         'title_link',
-        'post_title',
-        'post_title_link',
         'box_link',
         'position',
         'serial',
         'img_src',
         'status',
-        'caption'
     ];
 
     protected $casts = [
-        'pre_title'       => 'string',
-        'pre_title_link'  => 'string',
         'title'           => 'string',
         'title_link'      => 'string',
-        'post_title'      => 'string',
-        'post_title_link' => 'string',
         'box_link'        => 'string',
         'position'        => 'string',
         'serial'          => 'string',
         'img_src'         => 'string',
         'status'          => 'string',
-        'caption'         => 'string',
         'created_at'      => 'datetime:Y-m-d H:i:s',
         'updated_at'      => 'datetime:Y-m-d H:i:s'
     ];

@@ -15,10 +15,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Http\Resources\ProductThumbCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Product extends Model
+class Product extends Model implements Auditable
 {
     use SoftDeletes, Searchable, HasFactory;
-    // use \OwenIt\Auditing\Auditable;  implements Auditable
+    use \OwenIt\Auditing\Auditable;
 
     protected $table      = 'products';
     protected $_className = 'Product';
@@ -29,8 +29,7 @@ class Product extends Model
         'create' => 'adminend.pages.product.create',
         'edit'   => 'adminend.pages.product.edit',
         'show'   => 'adminend.pages.product.show',
-        'bulk'   => 'adminend.pages.product.bulk',
-        // 'show'   => 'frontend.pages.product-single'
+        'bulk'   => 'adminend.pages.product.bulk'
     ];
 
     // All routes
@@ -61,31 +60,23 @@ class Product extends Model
             'cast'       => 'string',
             'fillable'   => true
         ],
-        'dosage_form_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
         'brand_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'generic_id' => [
+        'category_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'company_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'mrp' => [
+        'price' => [
             'cast'     => 'decimal:2',
             'fillable' => true
         ],
-        'selling_price' => [
+        'offer_price' => [
             'cast'     => 'decimal:2',
             'fillable' => true
         ],
-        'selling_percent' => [
+        'offer_percent' => [
             'cast'     => 'decimal:2',
             'fillable' => true
         ],
@@ -96,26 +87,6 @@ class Product extends Model
         'description' => [
             'cast'     => 'string',
             'fillable' => true
-        ],
-        'meta_title' => [
-            'cast'       => 'string',
-            'fillable'   => true
-        ],
-        'meta_keywords' => [
-            'cast'       => 'string',
-            'fillable'   => true
-        ],
-        'meta_description' => [
-            'cast'       => 'string',
-            'fillable'   => true
-        ],
-        'is_single_sell_allow' => [
-            'cast'       => 'boolean',
-            'fillable'   => true
-        ],
-        'uom' => [
-            'cast'       => 'string',
-            'fillable'   => true
         ],
         'created_at' => [
             'cast'     => 'datetime:Y-m-d H:i:s',
@@ -131,17 +102,13 @@ class Product extends Model
     ];
 
     protected $_defaultWith = [
-        'brand:id,slug,company_id,name',
-        'brand.company:id,slug,name',
-        'generic:id,slug,name',
-        'categories:id,name,slug',
-        'dosageForm:id,slug,name',
-        'tags'
+        'brand:id,slug,name',
+        'category:id,slug,name',
     ];
 
     public function searchableAs()
     {
-        return 'medicart_products_index';
+        return 'pentamart_products_index';
     }
 
     public function toSearchableArray()
@@ -149,19 +116,18 @@ class Product extends Model
         return [
             'id'            => (int) $this->id,
             'name'          => $this->name,
-            'mrp'           => (float) $this->mrp,
-            'selling_price' => (float) $this->selling_price,
+            'price'         => (float) $this->price,
+            'offer_price'   => (float) $this->offer_price,
             'status'        => $this->status,
-            'meta_keywords' => $this->meta_keywords,
-            'counter_type'  => $this->counter_type,
-            'created_at'    => $this->created_at,
-            'generic'       => $this->generic->name ?? null
+            'brand'         => $this->brand->name ?? null,
+            'category'      => $this->category->name ?? null,
+            'created_at'    => $this->created_at
         ];
     }
 
     public function shouldBeSearchable()
     {
-        return $this->status === 'activated' ? true : false;
+        return $this->status === 'active' ? true : false;
     }
 
     protected function makeAllSearchableUsing($query)
@@ -172,45 +138,13 @@ class Product extends Model
     // Relation start ======================================================================
     public function brand()
     {
-        return $this->belongsTo(Brand::class);
+        return $this->belongsTo(Brand::class, 'brand_id', 'id');
     }
 
-    public function company()
+    public function category()
     {
-        return $this->belongsTo(Company::class);
+        return $this->belongsTo(Category::class, 'category_id', 'id');
     }
-
-    public function generic()
-    {
-        return $this->belongsTo(Generic::class);
-    }
-
-    public function dosageForm()
-    {
-        return $this->belongsTo(DosageForm::class);
-    }
-
-    public function categories()
-    {
-        return $this->belongsToMany(Category::class, 'product_category', 'product_id', 'category_id')->withTimestamps();
-    }
-
-    public function symptoms()
-    {
-        return $this->belongsToMany(Symptom::class, 'product_symptom')->withTimestamps();
-    }
-
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
-
-    public function offersQty()
-    {
-        return $this->belongsToMany(Offer::class, 'offer_product', 'product_id', 'offer_id')
-                    ->withPivot('quantity', 'discount_percent', 'discount_amount')->withTimestamps();
-    }
-
 
     public function sections()
     {
@@ -221,38 +155,28 @@ class Product extends Model
 
     public function getImageSrcAttribute($value)
     {
-        // return $value ? $value : '/images/sample/ace.jpg';
         if ($value) {
             if (Storage::disk('public')->exists($value)) {
                 return Storage::url($value);
             } else {
-                // TODO: get this file url from a config
-                // return '/images/sample/product-placeholder2.png';
                 return '/images/sample/watch.jpeg';
             }
         } else {
-            // TODO: get this file url from a config
-            //  return '/images/sample/product-placeholder2.png';
             return '/images/sample/watch.jpeg';
         }
 
     }
 
-     // get image source
+    // get image source
     public function getImageSrcValueAttribute()
     {
         return $this->attributes['image_src'];
     }
 
-    public function getBoxSizeAttribute($value)
-    {
-        return '10 Pc';
-    }
-
     // Scope start ======================================================================
     public function scopeActive($query)
     {
-        $query->where('status', 'activated');
+        $query->where('status', 'active');
     }
 
     public function scopeGetDefaultMetaData($query)
@@ -260,32 +184,21 @@ class Product extends Model
         $now = Carbon::now();
 
         return $query->select(
-            'id', 'name', 'generic_id', 'brand_id', 'dosage_form_id', 'mrp', 'selling_price', 'slug',
-            DB::raw("
-                CASE
-                    WHEN selling_price > 0 THEN (selling_price*pack_size)
-                    ELSE (mrp*pack_size)
-                    END as 'unit_price'
-            "),
-            'image_src', 'pack_size', 'pack_name', 'num_of_pack', 'counter_type', 'company_id', 'is_single_sell_allow', 'uom'
+            'id', 'name', 'brand_id', 'category_id', 'price', 'offer_price', 'slug','image_src'
         )
         ->with([
-            'generic:id,name,slug',
-            'brand:id,company_id,name,slug',
-            'brand.company:id,name,slug',
-            'dosageForm:id,name,slug',
-            'categories:id,name,slug',
-            'company:id,name,slug'
+            'brand:id,name,slug',
+            'category:id,name,slug'
         ])
-        ->where('status', 'activated')
-        ->where('mrp', '>', 0);
+        ->where('status', 'active')
+        ->where('price', '>', 0);
     }
 
 
     public function scopeThumbs($query)
     {
         return $query->with($this->_defaultWith)
-                     ->where('status', 'activated');
+                     ->where('status', 'active');
     }
 
     // Scope end ======================================================================
@@ -296,7 +209,6 @@ class Product extends Model
         $id          = $request->input('id', null);
         $name        = $request->input('name', null);
         $status      = $request->input('status', null);
-        $counterType = $request->input('counter_type', null);
         $startDate   = $request->input('start_date', null);
         $endDate     = $request->input('end_date', null);
 
@@ -318,11 +230,6 @@ class Product extends Model
             $obj = $obj->where('status', $status);
         }
 
-        // Filter status
-        if($counterType) {
-            $obj = $obj->where('counter_type', $counterType);
-        }
-
         // Date range wise filter
         if ($startDate && $endDate) {
             $startDate = $startDate.' 00:00:00';
@@ -338,21 +245,17 @@ class Product extends Model
 
     public function _storeOrUpdate($request, $id = 0, $action = 'store')
     {
-        $oldMRP = null;
-        $oldSellingPrice = null;
+        $oldPrice = null;
+        $oldOfferPrice = null;
         $obj = null;
         $rules = [];
         if ($action === 'store') {
             $rules = [
                 'name'           => ['required', "unique:{$this->table}", new NotNumeric],
-                'dosage_form_id' => ['required'],
-                'company_id'     => ['required'],
-                'generic_id'     => ['required'],
-                'mrp'            => ['required'],
-                'pack_size'      => ['required'],
-                'num_of_pack'    => ['required'],
-                'pack_name'      => ['required'],
-                'uom'            => ['required']
+                'brand_id'       => ['required'],
+                'category_id'    => ['required'],
+                'price'          => ['required'],
+                'current_stock'  => ['required']
             ];
             $request->validate($rules);
             $obj = new Self();
@@ -360,92 +263,51 @@ class Product extends Model
         } else {
             $rules = [
                 'name'           => ['required', new NotNumeric],
-                'dosage_form_id' => ['required'],
-                'company_id'     => ['required'],
-                'generic_id'     => ['required'],
-                'mrp'            => ['required'],
-                'pack_size'      => ['required'],
-                'num_of_pack'    => ['required'],
-                'pack_name'      => ['required']
+                'brand_id'       => ['required'],
+                'category_id'    => ['required'],
+                'price'          => ['required'],
+                'current_stock'  => ['required']
             ];
-            // $request->validate($rules);
+            $request->validate($rules);
 
             $obj = Self::find($id);
-            if (!$obj) { // If the product not found
+            if (!$obj) {
                 $msg = $this->_getMessage('not_found');
                 return $this->_makeResponse(false, null, $msg);
             }
 
             // Get old mrp and selling price
-            $oldMRP = $obj->mrp;
-            $oldSellingPrice = $obj->selling_price;
+            $oldPrice = $obj->price;
+            $oldOfferPrice = $obj->offer_price;
         }
 
         // Get input value form request
-        $name              = $request->input('name', null);
-        $mrp               = $request->input('mrp', 0);
-        $sellingPrice      = $request->input('selling_price', 0);
-        $sellingPercent    = $request->input('selling_percent', 0);
-        $status            = $request->input('status', 'draft');
-        $brandId           = $request->input('brand_id', null);
-        $genericId         = $request->input('generic_id', null);
-        $categoryIds       = $request->input('category_ids', null);
-        $symptomIds        = $request->input('symptom_ids', null);
-        $dosageFormId      = $request->input('dosage_form_id', null);
-        $companyId         = $request->input('company_id', null);
-        $description       = $request->input('description', null);
-        $metaTitle         = $request->input('meta_title', null);
-        $metaKeyword       = $request->input('meta_keywords', null);
-        $metaDescription   = $request->input('meta_description', null);
-        $tagNames          = $request->input('tag_names', null);
-        $packSize          = $request->input('pack_size', null);
-        $packName          = $request->input('pack_name', null);
-        $numOfPack         = $request->input('num_of_pack', null);
-        $counterType       = $request->input('counter_type', null);
-        $posProductId      = $request->input('pos_product_id', null);
-        $uom               = $request->input('uom', null);
-        $singleSellAllow   = $request->input('is_single_sell_allow', 0);
-        $isRefrigerated    = $request->input('is_refrigerated', 0);
-        $isExpressDelivery = $request->input('is_express_delivery', 0);
+        $name         = $request->input('name', null);
+        $brandId      = $request->input('brand_id', null);
+        $categoryId   = $request->input('category_id', null);
+        $price        = $request->input('price', 0);
+        $offerPrice   = $request->input('offer_price', 0);
+        $currentStock = $request->input('current_stock', 0);
+        $status       = $request->input('status', 'active');
+        $description  = $request->input('description', null);
 
-        $mrp = $mrp ? $mrp : 0;
-        $sellingPrice = $sellingPrice ? $sellingPrice : 0;
-
-        // Assigned request input value into object
         $obj->name                 = $name;
         $obj->slug                 = $name;
-        $obj->mrp                  = $mrp;
-        $obj->selling_price        = $sellingPrice;
-        $obj->selling_percent      = $sellingPercent;
-        $obj->status               = $status;
         $obj->brand_id             = $brandId;
-        $obj->generic_id           = $genericId;
-        $obj->dosage_form_id       = $dosageFormId;
-        $obj->company_id           = $companyId;
+        $obj->category_id          = $categoryId;
+        $obj->price                = $price;
+        $obj->offer_price          = $offerPrice;
+        $obj->status               = $status;
+        $obj->current_stock        = $currentStock;
         $obj->description          = $description;
-        $obj->meta_title           = $metaTitle;
-        $obj->meta_keywords        = $metaKeyword;
-        $obj->meta_description     = $metaDescription;
-        $obj->pack_size            = $packSize;
-        $obj->pack_name            = $packName;
-        $obj->num_of_pack          = $numOfPack;
-        $obj->counter_type         = $counterType;
-        $obj->pos_product_id       = $posProductId;
-        $obj->uom                  = $uom;
-        $obj->is_single_sell_allow = $singleSellAllow;
-        $obj->is_refrigerated      = $isRefrigerated;
-        $obj->is_express_delivery  = $isExpressDelivery;
         $obj->created_by_id        = Auth::id();
         $res = $obj->save();
 
         if ($res) {
             $action = $action === 'store' ? $action : 'update';
 
-            $obj->categories()->sync($categoryIds);
-            $obj->symptoms()->sync($symptomIds);
-
             // Save product price log
-            ProductPriceLog::_store($obj->id, $mrp, $sellingPrice, $oldMRP, $oldSellingPrice);
+            ProductPriceLog::_store($obj->id, $price, $offerPrice, $oldPrice, $oldOfferPrice);
 
             if($request->hasFile('image')) {
                 $oldImagePath = $action === 'store' ? '' : $obj->attributes['image_src'];
@@ -474,11 +336,6 @@ class Product extends Model
 
                 $obj->image_src = $path;
                 $obj->save();
-            }
-
-            if ($tagNames) {
-                $tagObj = new Tag();
-                $tagObj->attachTags($tagNames, $obj);
             }
 
             $msg = $this->_getMessage($action);

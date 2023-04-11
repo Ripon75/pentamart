@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Banner;
-use Storage;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
+// use Storage;
 
 class BannerController extends Controller
 {
@@ -48,57 +50,47 @@ class BannerController extends Controller
             'position'    => ['required']
         ]);
 
-        $preTitle      = $request->input('pre_title', null);
-        $preTitleLink  = $request->input('pre_title_link', null);
         $title         = $request->input('title', null);
-        $titleLink     = $request->input('title_link', null);
-        $postTitle     = $request->input('post_title', null);
-        $postTitleLink = $request->input('post_title_link', null);
         $boxLink       = $request->input('box_link', null);
         $position      = $request->input('position', null);
         $serial        = $request->input('serial', null);
-        $caption       = $request->input('caption', null);
         $status        = $request->input('status', null);
         $bgColor       = $request->input('bg_color', null);
 
-        $bannerObj  = new Banner();
+        try {
+            DB::beginTransaction();
+            $bannerObj  = new Banner();
 
-        $bannerObj->pre_title       = $preTitle;
-        $bannerObj->pre_title_link  = $preTitleLink;
-        $bannerObj->title           = $title;
-        $bannerObj->title_link      = $titleLink;
-        $bannerObj->post_title      = $postTitle;
-        $bannerObj->post_title_link = $postTitleLink;
-        $bannerObj->box_link        = $boxLink;
-        $bannerObj->position        = $position;
-        $bannerObj->serial          = $serial;
-        $bannerObj->status          = $status;
-        $bannerObj->caption         = $caption;
-        $bannerObj->bg_color        = $bgColor;
+            $bannerObj->title           = $title;
+            $bannerObj->box_link        = $boxLink;
+            $bannerObj->position        = $position;
+            $bannerObj->serial          = $serial;
+            $bannerObj->status          = $status;
+            $bannerObj->bg_color        = $bgColor;
 
-        // Upload banner for web
-        $uploadPath = $bannerObj->_getImageUploadPath();
-        if ($request->hasFile('web_file')) {
-            $webFile = $request->file('web_file');
-            $webPath = Storage::put($uploadPath, $webFile);
-            $bannerObj->img_src = $webPath;
+            // Upload banner for web
+            $uploadPath = $bannerObj->_getImageUploadPath();
+            if ($request->hasFile('web_file')) {
+                $webFile = $request->file('web_file');
+                $webPath = Storage::put($uploadPath, $webFile);
+                $bannerObj->img_src = $webPath;
+            }
+
+            // Upload banner for mobile
+            if ($request->hasFile('mobile_file')) {
+                $mobileFile = $request->file('mobile_file');
+                $mobilePath = Storage::put($uploadPath, $mobileFile);
+                $bannerObj->mobile_img_src = $mobilePath;
+            }
+
+            $bannerObj->save();
+            DB::commit();
+            return redirect()->route('admin.banners')->with('message', 'Banner create seccessfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Banner create seccessfully');
         }
-
-        // Upload banner for mobile
-        if ($request->hasFile('mobile_file')) {
-            $mobileFile = $request->file('mobile_file');
-            $mobilePath = Storage::put($uploadPath, $mobileFile);
-            $bannerObj->mobile_img_src = $mobilePath;
-        }
-
-        $bannerObj->save();
-
-        return redirect()->route('admin.banners')->with('message' , 'Banner create seccessfully');
-    }
-
-    public function show($id)
-    {
-        //
     }
 
     public function edit(Request $request, $id)
@@ -123,32 +115,20 @@ class BannerController extends Controller
             'position'    => ['required']
         ]);
 
-        $preTitle      = $request->input('pre_title', null);
-        $preTitleLink  = $request->input('pre_title_link', null);
         $title         = $request->input('title', null);
-        $titleLink     = $request->input('title_link', null);
-        $postTitle     = $request->input('post_title', null);
-        $postTitleLink = $request->input('post_title_link', null);
         $boxLink       = $request->input('box_link', null);
         $position      = $request->input('position', null);
         $serial        = $request->input('serial', null);
-        $caption       = $request->input('caption', null);
         $status        = $request->input('status', null);
         $bgColor       = $request->input('bg_color', null);
 
         $bannerObj = Banner::find($id);
 
-        $bannerObj->pre_title       = $preTitle;
-        $bannerObj->pre_title_link  = $preTitleLink;
         $bannerObj->title           = $title;
-        $bannerObj->title_link      = $titleLink;
-        $bannerObj->post_title      = $postTitle;
-        $bannerObj->post_title_link = $postTitleLink;
         $bannerObj->box_link        = $boxLink;
         $bannerObj->position        = $position;
         $bannerObj->serial          = $serial;
         $bannerObj->status          = $status;
-        $bannerObj->caption         = $caption;
         $bannerObj->bg_color        = $bgColor;
 
         // Upload banner for web
@@ -184,10 +164,5 @@ class BannerController extends Controller
         $bannerObj->save();
 
         return redirect()->route('admin.banners')->with('message' , 'Banner update seccessfully');
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

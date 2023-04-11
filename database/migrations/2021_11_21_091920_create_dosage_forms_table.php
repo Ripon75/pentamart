@@ -17,12 +17,9 @@ class CreateDosageFormsTable extends Migration
 
         Schema::create('dosage_forms', function (Blueprint $table) use ($status){
             $table->id();
-            // TODO: add unique
-            $table->string('slug', 100);
-            // TODO: add unique
             $table->string('name', 100);
-            $table->enum('status', $status)->default('draft');
-            $table->foreignId('parent_id')->nullable();
+            $table->string('slug', 100);
+            $table->enum('status', $status)->default('active');
             $table->string('description', 1000)->nullable();
             $table->timestamps();
             $table->softDeletes();

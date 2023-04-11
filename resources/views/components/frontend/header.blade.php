@@ -401,10 +401,10 @@
                         <i class="pr-3 fa-solid fa-capsules"></i>
                         Medicine
                     </a>
-                    <a href="{{ route('tag.page', 'personal-care') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
+                    {{-- <a href="{{ route('tag.page', 'personal-care') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-hand-holding-medical"></i></i>
                         Personal Care
-                    </a>
+                    </a> --}}
                     <a href="{{ route('category.page', ['medical-devices']) }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-laptop-medical"></i>
                         Medical Devices
