@@ -38,9 +38,6 @@
                                     <img src="{{$data->image_src}}" style="width: 70px; height:40px" alt="Product Image">
                                 @endif
                             </div>
-                            @php
-                                $selectedCategoryIDs = Arr::pluck($data->categories->toArray(), 'id');
-                            @endphp
 
                             <div class="flex space-x-2">
                                 <div class="form-item w-full">
@@ -56,67 +53,16 @@
                                     @enderror
                                 </div>
                                 <div class="form-item w-full">
-                                    <label for="" class="form-label">Generic <span class="text-red-500 font-medium">*</span></label>
-                                    <select class="form-select w-full form-input select-2" name="generic_id">
-                                        <option value="">Select generic</option>
-                                        @foreach ($generics as $generic)
-                                        <option value="{{ $generic->id }}" {{ $data->generic_id == $generic->id ? "selected" : '' }}>
-                                            {{ $generic->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    @error('generic_id')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Company <span class="text-red-500 font-medium">*</span></label>
-                                    <select class="form-select w-full form-input select-2" name="company_id">
-                                        <option value="">Select brand</option>
-                                        @foreach ($companies as $company)
-                                        <option value="{{ $company->id }}" {{ $data->company_id == $company->id ? 'selected' : '' }}>
-                                            {{ $company->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Dosage Form <span class="text-red-500 font-medium">*</span></label>
-                                    <select class="form-select w-full form-input select-2" name="dosage_form_id">
-                                        <option value="">Select dosage form</option>
-                                        @foreach ($dosageForms as $dosageForm)
-                                        <option value="{{ $dosageForm->id }}" {{ $data->dosage_form_id == $dosageForm->id ? 'selected' : '' }}>
-                                            {{ $dosageForm->name }}
-                                        </option>
-                                        @endforeach
-                                    </select>
-                                    @error('dosage_form_id')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Category</label>
-                                    <select class="form-select w-full select-2" name="category_ids[]" multiple>
+                                    <label for="" class="form-label">Category <span class="text-red-500 font-medium">*</span></label>
+                                    <select class="form-select w-full form-input select-2" name="category_id">
+                                        <option value="">Select category</option>
                                         @foreach ($categories as $category)
-                                            <option
-                                                {{ in_array($category->id, $selectedCategoryIDs) ? "selected" : '' }}
-                                                value="{{ $category->id }}">
-                                                {{ $category->name }}
-                                            </option>
+                                        <option value="{{ $category->id }}" {{ $data->category_id == $category->id ? "selected" : '' }}>
+                                            {{ $category->name }}
+                                        </option>
                                         @endforeach
                                     </select>
-                                    @error('category_ids')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">POS Product ID</label>
-                                    <input type="number" value="{{ $data->pos_product_id }}" name="pos_product_id" class="form-input" />
-                                    @error('pos_product_id')
+                                    @error('category_id')
                                         <span class="form-helper error">{{ $message }}</span>
                                     @enderror
                                 </div>
@@ -125,129 +71,36 @@
                                 <div class="form-item w-full">
                                     <label for="" class="form-label">Status</label>
                                     <select class="form-select w-full form-input" name="status">
-                                        <option value="draft">Select Status</option>
-                                        <option value="draft" {{ $data->status == 'draft' ? "selected" : '' }}>Draft</option>
-                                        <option value="activated" {{ $data->status == 'activated' ? "selected" : '' }}>Activated</option>
-                                        <option value="inactivated" {{ $data->status == 'inactivated' ? "selected" : '' }}>Inactivated</option>
-                                    </select>
-                                </div>
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Counter type</label>
-                                    <select class="form-select w-full form-input" name="counter_type">
-                                        <option value="none">Select</option>
-                                        <option value="none" {{ $data->counter_type === 'none' ? "selected" : '' }}>None</option>
-                                        <option value="otc" {{ $data->counter_type === 'otc' ? "selected" : '' }}>OTC</option>
-                                        <option value="prescribed" {{ $data->counter_type === 'prescribed' ? "selected" : '' }}>Prescribed</option>
-                                    </select>
-                                </div>
-                                <div class="form-item w-full">
-                                    <label class="form-label">Single Sell Allow</label>
-                                    <select class="form-select w-full form-input" name="is_single_sell_allow">
-                                        <option value="0">Select</option>
-                                        <option value="1" {{ $data->is_single_sell_allow == '1' ? "selected" : '' }}>YES</option>
-                                        <option value="0" {{ $data->is_single_sell_allow == '0' ? "selected" : '' }}>NO</option>
+                                        <option value="active">Select Status</option>
+                                        <option value="active" {{ $data->status == 'active' ? "selected" : '' }}>Activated</option>
+                                        <option value="inactive" {{ $data->status == 'inactive' ? "selected" : '' }}>Inactivated</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="flex space-x-2">
-                                    <div class="form-item w-full">
-                                        <label for="" class="form-label">MRP <span class="text-red-500 font-medium">*</span></label>
-                                        <input id="mrp" type="number" step="any" value="{{ $data->mrp }}" name="mrp" class="w-full form-input">
-                                        @error('mrp')
-                                            <span class="form-helper error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-                                    <div class="form-item w-full">
-                                        <label for="" class="form-label">Selling price</label>
-                                        <input id="selling-price" type="number" min="0" step="any" value="{{ $data->selling_price }}" name="selling_price" class="w-full form-input">
-                                    </div>
-                                    <div class="form-item w-full">
-                                        <label for="" class="form-label">Selling percent</label>
-                                        <input id="selling-percent" type="number" min="0" step="any" value="{{ $data->selling_percent }}" name="selling_percent" class="w-full form-input">
-                                    </div>
-                            </div>
-                            <div class="flex space-x-2">
                                 <div class="form-item w-full">
-                                    <label class="form-label">Pack size <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="number" value="{{ $data->pack_size }}" name="pack_size" class="form-input" />
-                                    @error('pack_size')
+                                    <label for="" class="form-label">Price <span class="text-red-500 font-medium">*</span></label>
+                                    <input id="price" type="number" step="any" value="{{ $data->price }}" name="price" class="w-full form-input">
+                                    @error('price')
                                         <span class="form-helper error">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="form-item w-full">
-                                    <label class="form-label">Max Number of Pack <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="number" value="{{ $data->num_of_pack }}" name="num_of_pack" class="form-input" />
-                                    @error('num_of_pack')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
+                                    <label for="" class="form-label">Offer price</label>
+                                    <input id="offer-price" type="number" min="0" step="any" value="{{ $data->offer_price }}" name="offer_price" class="w-full form-input">
                                 </div>
                                 <div class="form-item w-full">
-                                    <label class="form-label">Pack Name <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="text" value="{{ $data->pack_name }}" name="pack_name" class="form-input" />
-                                    @error('pack_name')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
+                                    <label for="" class="form-label">Offer percent</label>
+                                    <input id="offer-percent" type="number" min="0" step="any" value="{{ $data->offer_percent }}" name="offer_percent" class="w-full form-input">
                                 </div>
                             </div>
-                            <div class="flex space-x-2">
-                                <div class="form-item w-full">
-                                    <label class="form-label">UoM <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="text" value="{{ $data->uom }}" name="uom" class="form-input" />
-                                    @error('uom')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-item w-full">
-                                    <label class="form-label">Refrigerated</label>
-                                    <select class="form-select w-full form-input" name="is_refrigerated">
-                                        <option value="0">Select</option>
-                                        <option value="1" {{ $data->is_refrigerated == '1' ? "selected" : '' }}>YES</option>
-                                        <option value="0" {{ $data->is_refrigerated == '0' ? "selected" : '' }}>NO</option>
-                                    </select>
-                                </div>
-                                <div class="form-item w-full">
-                                    <label class="form-label">Eexpress Delivery</label>
-                                    <select class="form-select w-full form-input" name="is_express_delivery">
-                                        <option value="0">Select</option>
-                                        <option value="1" {{ $data->is_express_delivery == '1' ? "selected" : '' }}>YES</option>
-                                        <option value="0" {{ $data->is_express_delivery == '0' ? "selected" : '' }}>NO</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Tags</label>
-                                <input type="text" class="form-input" value="{{ $tagNames }}" name="tag_names" placeholder="Ex: tag name 1, tag name 2, ....">
-                            </div>
-                            @php
-                                $selectedsymptomIDs = Arr::pluck($data->symptoms->toArray(), 'id');
-                            @endphp
-                            <div class="form-item">
-                                <label for="" class="form-label">Symptoms</label>
-                                <select class="form-select w-full select-2" name="symptom_ids[]" multiple>
-                                    @foreach ($symptoms as $symptom)
-                                        <option
-                                            {{ in_array($symptom->id, $selectedsymptomIDs) ? "selected" : '' }}
-                                            value="{{ $symptom->id }}">
-                                            {{ $symptom->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                            <div class="form-item w-full">
+                                <label for="" class="form-label">Current stock</label>
+                                <input type="number" value="{{ $data->current_stock }}" name="current_stock" class="w-full form-input">
                             </div>
                             <div class="form-item">
                                 <label for="" class="form-label">Description</label>
                                 <textarea class="w-full tinymce" name="description">{{ $data->description }}</textarea>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Meta Title</label>
-                                <input type="text" value="{{ $data->meta_title }}" name="meta_title" class="w-full form-input">
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Meta Keyword</label>
-                                <textarea class="w-full form-input" name="meta_keywords">{{ $data->meta_keywords }}</textarea>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Meta Description</label>
-                                <textarea class="w-full tinymce" name="meta_description">{{ $data->meta_description }}</textarea>
                             </div>
                             <button type="submit" class="btn btn-primary">Update</button>
                         </form>

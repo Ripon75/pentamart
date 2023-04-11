@@ -13,9 +13,8 @@ class CreateOrderItemTable extends Migration
      */
     public function up()
     {
-        $status = config('enum.okStatus');
 
-        Schema::create('order_item', function (Blueprint $table) use ($status){
+        Schema::create('order_item', function (Blueprint $table) {
             $table->foreignId('order_id')->nullable()->constrained('orders')
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('item_id')->nullable()->constrained('products')
@@ -28,7 +27,6 @@ class CreateOrderItemTable extends Migration
             $table->decimal('discount', 20, 2)->nullable();
             $table->foreignId('promotion_id')->nullable()->onUpdate('cascade')
                   ->onDelete('cascade');
-            $table->enum('status', $status)->default('ok');
             $table->foreignId('pos_product_id')->nullable()->onUpdate('cascade')
                   ->onDelete('cascade')->commit('Medipos product id');
             $table->timestamps();

@@ -20,10 +20,7 @@ class ProductSeederNew extends Seeder
      */
     public function run()
     {
-        // Product::truncate();
-
         // Artisan::call('scout:flush "App\\Models\\Product"');
-        $numOfPack = [2,5,10,20,50];
 
         $csvFile   = fopen(base_path("database/data/medicalDevices.csv"), "r");
         $firstline = true;
@@ -31,41 +28,14 @@ class ProductSeederNew extends Seeder
 
         while (($data = fgetcsv($csvFile, 2500, ",")) !== false) {
             if (!$firstline) {
-                $posProductID = $data['0'];
                 $name = $data['1'];
                 $slug = Str::slug($name, '-');
-
-                $packSize = $data['2'];
-                $packSize = $packSize ? $packSize : 1;
-                $packSize = (int)$packSize;
-
-                $packName = $data['5'];
-                if ($packName == 'NULL' || $packName == 'null' || $packName == '') {
-                    $packName = 'Pieces';
-                }
 
                 $price = $data['3'];
                 $price = (float)$price;
 
-                $salePrice = $data['7'];
-                $salePrice = (float)$salePrice;
-
-                $dosageFormID = null;
-                $dosageFormName = $data['4'];
-                if ($dosageFormName) {
-                    $dosageForm = DosageForm::where('name', $dosageFormName)->first();
-                    if ($dosageForm) {
-                        $dosageFormID = $dosageForm->id;
-                    } else {
-                        $slug = Str::slug($dosageFormName, '-');
-                        $dosageFormObj = new DosageForm();
-                        $dosageFormObj->slug = $slug;
-                        $dosageFormObj->name = $dosageFormName;
-                        $dosageFormObj->status = 'activated';
-                        $dosageFormObj->save();
-                        $dosageFormID = $dosageFormObj->id;
-                    }
-                }
+                $offerPrice = $data['7'];
+                $offerPrice = (float)$offerPrice;
 
                 $brandID = null;
                 $brandName = $data['10'];
@@ -84,39 +54,15 @@ class ProductSeederNew extends Seeder
                     }
                 }
 
-                $genericID = null;
-                $strength  = $data['5'];
-                $genericName = $data['11'];
-                if ($genericName) {
-                    $generic = Generic::where('name', $genericName)->first();
-                    if ($generic) {
-                        $genericID = $generic->id;
-                    } else {
-                        $slug = Str::slug($genericName, '-');
-                        $genericObj = new Generic();
-                        $genericObj->slug = $slug;
-                        $genericObj->name = $genericName;
-                        $genericObj->strength = $strength;
-                        $genericObj->save();
-                        $genericID = $genericObj->id;
-                    }
-                }
-
                 if ($name && $price) {
                     $productObj                 = new Product();
                     $productObj->name           = $name;
                     $productObj->slug           = $slug;
-                    $productObj->dosage_form_id = $dosageFormID;
                     $productObj->brand_id       = $brandID;
-                    $productObj->generic_id     = $genericID;
-                    $productObj->pos_product_id = $posProductID;
-                    $productObj->mrp            = $price;
-                    $productObj->selling_price  = $salePrice;
-                    $productObj->status         = 'activated';
-                    $productObj->pack_size      = $packSize;
-                    $productObj->pack_name      = $packName;
-                    $productObj->num_of_pack    = $numOfPack[rand(0, 4)];
-                    $productObj->image_src      = "images/products/2022/8/22/{$posProductID}.jpg";
+                    $productObj->price          = $price;
+                    $productObj->offer_price    = $offerPrice;
+                    $productObj->status         = 'active';
+                    $productObj->image_src      = null;
                     $productObj->save();
                 }
             }

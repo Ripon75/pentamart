@@ -22,13 +22,11 @@ class BrandSeeder extends Seeder
         foreach (array_chunk($allData, 500) as $cData) {
             $brands = [];
             foreach ($cData as $sData) {
-                $companyId = $sData['company'] ? $sData['company']['id'] : null;
                 $temp = [
                     'id'         => $sData['id'],
                     'slug'       => $sData['name'],
                     'name'       => $sData['display_name'],
                     'status'     => 'activated',
-                    'company_id' => $companyId,
                     'created_at' => Carbon::now()
                 ];
                 $brands[] = $temp;

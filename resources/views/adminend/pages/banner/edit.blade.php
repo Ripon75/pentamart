@@ -18,31 +18,11 @@
                                 @csrf
                                 @method('PUT')
                                 <div class="form-item">
-                                    <label for="" class="form-label">Pre title</label>
-                                    <input type="text" value="{{ $banner->pre_title }}" name="pre_title" class="w-full">
-                                </div>
-                                <div class="form-item">
-                                    <label for="" class="form-label">Pre title link</label>
-                                    <input type="text" value="{{ $banner->pre_title_link }}" name="pre_title_link" class="w-full">
-                                </div>
-                                <div class="form-item">
                                     <label for="" class="form-label">Title</label>
                                     <input type="text" value="{{ $banner->title }}" name="title" class="w-full">
                                     @error('title')
                                         <span class="form-helper error">{{ $message }}</span>
                                     @enderror
-                                </div>
-                                <div class="form-item">
-                                    <label for="" class="form-label">Title link</label>
-                                    <input type="text" value="{{ $banner->title_link }}" name="title_link" class="w-full">
-                                </div>
-                                <div class="form-item">
-                                    <label for="" class="form-label">Post title</label>
-                                    <input type="text" value="{{ $banner->post_title }}" name="post_title" class="w-full">
-                                </div>
-                                <div class="form-item">
-                                    <label for="" class="form-label">Post title link</label>
-                                    <input type="text" value="{{ $banner->post_title_link }}" name="post_title_link" class="w-full">
                                 </div>
                                 <div class="form-item">
                                     <label for="" class="form-label">Box link</label>
@@ -69,20 +49,15 @@
                                     <input type="text" value="{{ $banner->serial }}" name="serial" class="w-full">
                                 </div>
                                 <div class="form-item">
-                                    <label for="" class="form-label">Caption</label>
-                                    <input type="text" value="{{ $banner->caption }}" name="caption" class="w-full">
-                                </div>
-                                <div class="form-item">
                                     <label for="" class="form-label">BG color</label>
                                     <input type="text" value="{{ $banner->bg_color }}" name="bg_color" class="w-full">
                                 </div>
                                 <div class="form-item">
                                     <label for="" class="form-label">Status</label>
                                     <select class="form-select w-full" name="status">
-                                        <option value="activated">Select Status</option>
-                                        <option value="draft" {{ $banner->status === 'draft' ? "selected" : '' }}>Draft</option>
-                                        <option value="activated" {{ $banner->status === 'activated' ? "selected" : '' }}>Activated</option>
-                                        <option value="inactivated" {{ $banner->status === 'inactivated' ? "selected" : '' }}>Inactivated</option>
+                                        <option value="active">Select Status</option>
+                                        <option value="active" {{ $banner->status === 'active' ? "selected" : '' }}>Active</option>
+                                        <option value="inactive" {{ $banner->status === 'inactive' ? "selected" : '' }}>Inactive</option>
                                     </select>
                                 </div>
                                 <div class="form-item">

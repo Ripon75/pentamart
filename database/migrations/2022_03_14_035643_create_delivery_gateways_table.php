@@ -17,14 +17,14 @@ class CreateDeliveryGatewaysTable extends Migration
 
         Schema::create('delivery_gateways', function (Blueprint $table) use ($status) {
             $table->id();
-            $table->string('slug', 100)->unique();
-            $table->string('name', 100)->unique();
-            $table->string('code', 10)->unique();
+            $table->string('name', 100);
+            $table->string('slug', 100);
+            $table->string('code', 10);
             $table->decimal('price', 8, 2)->nullable();
             $table->integer('min_delivery_time')->nullable();
             $table->integer('max_delivery_time')->nullable();
             $table->string('delivery_time_unit')->nullable();
-            $table->enum('status', $status)->default('draft');
+            $table->enum('status', $status)->default('active');
             $table->string('description', 1000)->nullable();
             $table->timestamps();
             $table->softDeletes();

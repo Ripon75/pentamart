@@ -17,14 +17,10 @@ class CreateBrandsTable extends Migration
 
         Schema::create('brands', function (Blueprint $table) use ($status) {
             $table->id();
-            // TODO : add unique
             $table->string('slug', 100);
-            // TODO : add unique
             $table->string('name', 100);
-            $table->enum('status', $status)->default('draft');
-            $table->string('logo_path', 2048)->nullable();
-            $table->foreignId('company_id')->nullable()->constrained('companies')
-                  ->onUpdate('cascade')->onDelete('cascade');
+            $table->enum('status', $status)->default('active');
+            $table->string('img_src', 2048)->nullable();
             $table->string('description', 1000)->nullable();
             $table->timestamps();
             $table->softDeletes();

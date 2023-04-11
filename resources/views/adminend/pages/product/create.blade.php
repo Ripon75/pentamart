@@ -50,14 +50,14 @@
                                 @enderror
                             </div>
                             <div class="form-item w-full">
-                                <label for="" class="form-label">Generic <span class="text-red-500 font-medium">*</span> </label>
-                                <select class="form-select w-full form-input select-2" name="generic_id">
-                                    <option value="">Select generic</option>
-                                    @foreach ($generics as $generic)
-                                    <option value="{{ $generic->id }}">{{ $generic->name }}</option>
+                                <label for="" class="form-label">Category <span class="text-red-500 font-medium">*</span> </label>
+                                <select class="form-select w-full form-input select-2" name="category_id">
+                                    <option value="">Select category</option>
+                                    @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('generic_id')
+                                @error('category_id')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -90,144 +90,38 @@
                         </div>
                         <div class="flex space-x-2">
                              <div class="form-item w-full">
-                                <label for="" class="form-label">Category</label>
-                                <select class="form-select w-full select-2 form-input" name="category_ids[]" multiple>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-item w-full">
-                                <label for="" class="form-label">POS Product ID</label>
-                                <input type="number" value="{{ old('pos_product_id') }}" name="pos_product_id" class="form-input" />
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                             <div class="form-item w-full">
                                 <label for="" class="form-label">Status</label>
                                 <select class="form-select w-full form-input" name="status">
-                                    <option value="activated">Select Status</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="activated">Activated</option>
-                                    <option value="inactivated">Inactivated</option>
-                                </select>
-                            </div>
-                            <div class="form-item w-full">
-                                <label for="" class="form-label">Counter Type</label>
-                                <select class="form-select form-input w-full" name="counter_type">
-                                    <option value="none">Select</option>
-                                    <option value="none">None</option>
-                                    <option value="otc">OTC</option>
-                                    <option value="prescribe">Prescribe</option>
-                                </select>
-                            </div>
-                            <div class="form-item w-full">
-                                <label for="" class="form-label">Single Sell Allow</label>
-                                <select class="form-select form-input w-full" name="is_single_sell_allow">
-                                    <option value="0">Select</option>
-                                    <option value="1">YES</option>
-                                    <option value="0">NO</option>
+                                    <option value="active">Select Status</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
                                 </select>
                             </div>
                         </div>
                         <div class="flex space-x-2">
                             <div class="form-item w-full">
-                               <label for="" class="form-label">MRP <span class="text-red-500 font-medium">*</span> </label>
-                               <input type="number" step="any" name="mrp" value="{{ old('mrp') }}" id="mrp" class="w-full form-input">
-                               @error('mrp')
+                               <label for="" class="form-label">Price <span class="text-red-500 font-medium">*</span> </label>
+                               <input type="number" step="any" name="price" value="{{ old('price') }}" id="price" class="w-full form-input">
+                               @error('price')
                                    <span class="form-helper error">{{ $message }}</span>
                                @enderror
                            </div>
                            <div class="form-item w-full">
                                <label for="" class="form-label">Offer Price</label>
-                               <input type="number" step="any" name="selling_price" value="{{ old('selling_price') }}" id="selling-price" class="w-full form-input">
+                               <input type="number" step="any" name="offer_price" value="{{ old('offer_price') }}" id="offer-price" class="w-full form-input">
                            </div>
                            <div class="form-item w-full">
                                <label for="" class="form-label">Offer Percent</label>
-                               <input type="number" step="any" name="selling_percent" value="{{ old('selling_percent') }}" id="selling-percent" class="w-full form-input">
+                               <input type="number" step="any" name="offer_percent" value="{{ old('offer_percent') }}" id="offer-percent" class="w-full form-input">
                            </div>
                         </div>
-                        <div class="flex space-x-2">
-                            <div class="form-item w-full">
-                                <label class="form-label">Pack Size <span class="text-red-500 font-medium">*</span> </label>
-                                <input type="number" name="pack_size" value="{{ old('pack_size') }}" class="form-input" />
-                                @error('pack_size')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item w-full">
-                                <label class="form-label">Max Number of Pack <span class="text-red-500 font-medium">*</span> </label>
-                                <input type="number" name="num_of_pack" value="{{ old('num_of_pack') }}" class="form-input" />
-                                @error('num_of_pack')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item w-full">
-                                <label class="form-label">Pack Name <span class="text-red-500 font-medium">*</span> </label>
-                                <input type="text" name="pack_name" value="{{ old('pack_name') }}" class="form-input" />
-                                @error('pack_name')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
-                            <div class="form-item w-full">
-                                <label class="form-label">UoM <span class="text-red-500 font-medium">*</span> </label>
-                                <input type="text" name="uom" value="{{ old('uom') }}" class="form-input" />
-                                @error('uom')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item w-full">
-                                    <label class="form-label">Refrigerated</label>
-                                    <select class="form-select w-full form-input" name="is_refrigerated">
-                                        <option value="0">Select</option>
-                                        <option value="1">YES</option>
-                                        <option value="0">NO</option>
-                                    </select>
-                                </div>
-                                <div class="form-item w-full">
-                                    <label class="form-label">Eexpress Delivery</label>
-                                    <select class="form-select w-full form-input" name="is_express_delivery">
-                                        <option value="0">Select</option>
-                                        <option value="1">YES</option>
-                                        <option value="0">NO</option>
-                                    </select>
-                                </div>
-                        </div>
                         <div class="form-item w-full">
-                            <label for="" class="form-label">Tags</label>
-                            <input class="form-input" type="text" name="tag_names" placeholder="Ex: tag name 1, tag name 2, ....">
-                        </div>
-                        <div class="form-item w-full">
-                            <label for="" class="form-label">Symptoms</label>
-                            <select class="form-select w-full select-2 form-input" name="symptom_ids[]" multiple>
-                                @foreach ($symptoms as $symptom)
-                                    <option
-                                        value="{{ $symptom->id }}">
-                                        {{ $symptom->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('symptom_ids')
-                                <span class="form-helper error">{{ $message }}</span>
-                            @enderror
+                            <label for="" class="form-label">Current Stock</label>
+                            <input type="number" step="any" name="currnet_stock" value="{{ old('currnet_stock') }}" id="offer-percent" class="w-full form-input">
                         </div>
                         <div class="form-item">
                             <label for="" class="form-label">Description</label>
                             <textarea class="w-full tinymce" name="description">{{ old('description') }}</textarea>
-                        </div>
-                        <div class="form-item">
-                            <label for="" class="form-label">Meta Title</label>
-                            <input type="text" name="meta_title" value="{{ old('meta_title') }}" class="w-full form-input">
-                        </div>
-                        <div class="form-item">
-                            <label for="" class="form-label">Meta Keyword</label>
-                            <textarea class="w-full form-input" name="meta_keywords">{{ old('meta_keywords') }}</textarea>
-                        </div>
-                        <div class="form-item">
-                            <label for="" class="form-label">Meta Description</label>
-                            <textarea class="w-full tinymce" name="meta_description">{{ old('meta_description') }}</textarea>
                         </div>
                         <button type="submit" class="btn btn-primary">Create</button>
                     </form>
@@ -257,31 +151,31 @@
                 placeholder: "Select",
             });
 
-            $('#selling-price').keyup(function (e) {
-                var mrp = $('#mrp').val();
-                var sellingPrice = $(this).val();
-                if (sellingPrice > 0 && mrp > 0) {
-                    var discount = mrp - sellingPrice;
+            $('#offer-price').keyup(function (e) {
+                var price = $('#price').val();
+                var offerPrice = $(this).val();
+                if (offerPrice > 0 && price > 0) {
+                    var discount = price - offerPrice;
 
                     // cal. percent
-                    var sellingPercent = (discount * 100) / mrp;
-                    $('#selling-percent').val(sellingPercent);
+                    var offerPercent = (discount * 100) / price;
+                    $('#offer-percent').val(offerPercent);
                 } else {
-                    $('#selling-percent').val(0);
+                    $('#offer-percent').val(0);
                 }
             });
 
-            $('#selling-percent').keyup(function (e) {
-                var mrp = $('#mrp').val();
-                var percent = $('#selling-percent').val();
-                if (percent > 0 && mrp > 0) {
-                    var discount = (percent * mrp) / 100;
-                    var sellingPrice = mrp - discount;
+            $('#offer-percent').keyup(function (e) {
+                var price = $('#price').val();
+                var percent = $('#offer-percent').val();
+                if (percent > 0 && price > 0) {
+                    var discount = (percent * price) / 100;
+                    var offerPrice = price - discount;
 
                     // cal. percent
-                    $('#selling-price').val(sellingPrice);
+                    $('#offer-price').val(offerPrice);
                 } else {
-                    $('#selling-price').val(0);
+                    $('#offer-price').val(0);
                 }
             });
         });

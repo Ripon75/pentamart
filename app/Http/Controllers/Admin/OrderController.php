@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 
-use Setting;
+// use Setting;
 use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\User;
@@ -31,11 +31,13 @@ use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
+    public $util;
     public $currency;
 
     public function __construct()
     {
-        $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
+        // $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
+        $this->currency = 'tk';
         $this->util     = new Utility;
     }
 
@@ -932,10 +934,12 @@ class OrderController extends Controller
         if (in_array(strtolower($extension), $valid_extension)) {
             if ($fileSize <= $maxFileSize) {
             } else {
-                throw new \Exception('No file was uploaded', Response::HTTP_REQUEST_ENTITY_TOO_LARGE); //413 error
+                return 'No file was uploaded';
+                // throw new \Exception('No file was uploaded', Response::HTTP_REQUEST_ENTITY_TOO_LARGE); //413 error
             }
         } else {
-            throw new \Exception('Invalid file extension', Response::HTTP_UNSUPPORTED_MEDIA_TYPE); //415 error
+            return 'Invalid file extension';
+            // throw new \Exception('Invalid file extension', Response::HTTP_UNSUPPORTED_MEDIA_TYPE); //415 error
         }
     }
 
