@@ -113,8 +113,6 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/order/{id}',        [OrderController::class, 'show'])->name('order.show');
         Route::get('/reorder/{orderID}', [OrderController::class, 'reorder'])->name('order.reorder');
         Route::any('/order/payment/{orderID}', [OrderController::class, 'makePayment'])->name('order.payment');
-        Route::get('/latest/delivered/order', [OrderController::class, 'latestDeliveredOrder'])->name('latest.delivered.order');
-        Route::post('/latest/delivered/order/{id}', [OrderController::class, 'latestDeliveredOrderUpdate'])->name('latest.delivered.order.update');
     });
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');

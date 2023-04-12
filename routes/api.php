@@ -15,5 +15,3 @@ Route::get('/current/version', [AppVersionController::class, 'currnetVersion']);
 Route::get('/next/version',   [AppVersionController::class, 'nextVersion']);
 // Offer quantity route
 Route::get('/check/offer/quantity', [SearchController::class, 'checkOfferQty']);
-// Order create api
-Route::post('/orders/create', [OrderController::class, 'orderCreate']);

@@ -600,50 +600,6 @@
 </div>
 {{--./ New Address modal --}}
 
-{{-- ========Review modal====== --}}
-<div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" aria-modal="true" role="dialog" style="background-color: rgba(0,0,0,0.7);">
-  <div class="modal-dialog modal-dialog-centered relative w-auto pointer-events-none">
-    <div class="modal-content border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-      <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-        <h5 class="text-xl font-medium leading-normal text-gray-800" id="exampleModalScrollableLabel">
-          Share your experience with us
-        </h5>
-        <button id="btn-header-rating-close" type="button"
-          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-          data-bs-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body relative p-4">
-       <div class="flex flex-col items-center justify-center">
-           <span class="text-xl font-bold">Order ID: <span id="header-ratings-order-id-label"> </span></span>
-           <span class="mt-2">Your feedback is improve our delivery experience</span>
-           <div class="flex space-x-2">
-                <div class="rate">
-                    <input class="ratings" type="radio" id="star5" name="rate" value="5" />
-                    <label for="star5" title="text">5 stars</label>
-                    <input class="ratings" type="radio" id="star4" name="rate" value="4" />
-                    <label for="star4" title="text">4 stars</label>
-                    <input class="ratings" type="radio" id="star3" name="rate" value="3" />
-                    <label for="star3" title="text">3 stars</label>
-                    <input class="ratings" type="radio" id="star2" name="rate" value="2" />
-                    <label for="star2" title="text">2 stars</label>
-                    <input class="ratings" type="radio" id="star1" name="rate" value="1" />
-                    <label for="star1" title="text">1 star</label>
-                </div>
-           </div>
-           <div class="mt-10 w-64">
-                <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
-                    Submit
-                </button>
-           </div>
-       </div>
-      </div>
-    </div>
-  </div>
-</div>
-{{-- ========Review modal====== --}}
-
 @push('scripts')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -1359,81 +1315,6 @@ id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" 
             .catch(err => {
                 console.log(err);
             });
-    }
-</script>
-
-{{-- Order ratting script --}}
-<script>
-    var latestDeliveredOrderEndPoint = '/my/latest/delivered/order';
-    var btnHeaderRatingSubmit =  $('#btn-header-rating-submit');
-    var btnHeaderRatingClose =  $('#btn-header-rating-close');
-    var ratings = $('.ratings');
-    var ratingsCount = 0;
-
-    // Get latest delivery order
-    @auth
-        latestDeliveredOrder();
-    @endauth
-
-    $(() => {
-        // Event with change starts
-        ratings.change(function(e1) {
-            var ratings =  $(e1.target).val();
-            ratingsCount = ratings;
-        });
-
-        // Event with rating submit button
-        btnHeaderRatingSubmit.click(() => {
-            if (ratingsCount) {
-                var latestDeliveredOrderId =  localStorage.getItem("latest_delivered_order_id");
-                console.log(ratingsCount);
-                console.log(latestDeliveredOrderId);
-                latestDeliveredOrderUpdate(latestDeliveredOrderId, ratingsCount);
-                $("#exampleModalCenter").modal('hide')
-            } else {
-                __showNotification('error', 'please select stars', setAlertTime);
-                return false;
-            }
-        });
-
-        // Event with ratings close button
-        btnHeaderRatingClose.click(() => {
-            var latestDeliveredOrderId =  localStorage.getItem("latest_delivered_order_id");
-            latestDeliveredOrderUpdate(latestDeliveredOrderId, 0);
-        });
-    });
-
-    function latestDeliveredOrder() {
-        axios.get(latestDeliveredOrderEndPoint)
-        .then(res => {
-            if (res.data.success) {
-                var latestDeliveredOrder = res.data.result;
-                if (latestDeliveredOrder) {
-                    var latestDeliveryOrderId = latestDeliveredOrder.id;
-                    localStorage.setItem("latest_delivered_order_id", latestDeliveryOrderId);
-                    $('#header-ratings-order-id-label').text(latestDeliveryOrderId);
-                    $('#exampleModalCenter').modal('show');
-                }
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        });
-    }
-
-    function latestDeliveredOrderUpdate(orderId, ratingsCount) {
-        axios.post(`${latestDeliveredOrderEndPoint}/${orderId}`, {
-            'ratings': ratingsCount
-        })
-        .then(res => {
-            if (res.data.success) {
-                console.log(res);
-                __showNotification('success', res.data.message, setAlertTime);
-            }
-        })
-        .catch(err => {
-            console.log(err);
-        })
     }
 </script>
 @endpush
