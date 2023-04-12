@@ -42,21 +42,21 @@ class PageController extends Controller
 
         $services = [
             [
-                'title'         => 'Instant Doctor',
-                'imgSRC'        => '/images/sample/online-doctor.svg',
-                'postTitle'     => 'Book Now',
+                'title'         => 'Brand 1',
+                'imgSRC'        => '/images/sample/category.jpeg',
+                'postTitle'     => 'Buy Now',
                 'postTitleLink' => ''
             ],
             [
-                'title'         => 'Prescription',
-                'imgSRC'        => '/images/sample/prescription.svg',
-                'postTitle'     => 'Upload',
+                'title'         => 'Brand 2',
+                'imgSRC'        => '/images/sample/category.jpeg',
+                'postTitle'     => 'Buy Now',
                 'postTitleLink' => route('upload.prescription')
             ],
             [
-                'title'         => 'Request Medicine',
-                'imgSRC'        => '/images/sample/24-7.svg',
-                'postTitle'     => 'Call Now',
+                'title'         => 'Brand 3',
+                'imgSRC'        => '/images/sample/category.jpeg',
+                'postTitle'     => 'Buy Now',
                 'postTitleLink' => 'tel:+8809609080706'
             ]
         ];
@@ -64,35 +64,35 @@ class PageController extends Controller
         $feelings = [
             [
                 // 'link' => route('symptom.page',['stomach-pain']),
-                'imgSRC' => '/images/sample/stomachache.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['fever']),
-                'imgSRC' => '/images/sample/fever.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['pregnant']),
-                'imgSRC' => '/images/sample/pregnant.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['joint-pain']),
-                'imgSRC' => '/images/sample/joint-pain.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['headache']),
-                'imgSRC' => '/images/sample/headache.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['newborn-baby']),
-                'imgSRC' => '/images/sample/newborn-baby.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['diabetes']),
-                'imgSRC' => '/images/sample/diabetes.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ],
             [
                 // 'link' => route('symptom.page', ['over-weight']),
-                'imgSRC' => '/images/sample/over-weight.png'
+                'imgSRC' => '/images/sample/category.jpeg'
             ]
         ];
 
@@ -188,33 +188,33 @@ class PageController extends Controller
 
         $topCategories = [
             [
-                'title'         => 'Medicine',
-                'imgSRC'        => '/images/sample/medicine.png',
+                'title'         => 'Category 1',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('products.index')
             ],
             [
-                'title'         => 'Asthma',
-                'imgSRC'        => '/images/sample/Inhaler.png',
+                'title'         => 'Category 2',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('category.page', ['asthma'])
             ],
             [
-                'title'         => 'Baby Products',
-                'imgSRC'        => '/images/sample/baby-head.png',
+                'title'         => 'Category 3',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('category.page', ['baby-mom-care'])
             ],
             [
-                'title'         => 'Skin Care',
-                'imgSRC'        => '/images/sample/skin-care.png',
+                'title'         => 'Category 4',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('category.page', ['skin-care'])
             ],
             [
-                'title'         => 'Cosmetics',
-                'imgSRC'        => '/images/sample/Cosmetics.png',
+                'title'         => 'Category 5',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('category.page', ['cosmetics'])
             ],
             [
-                'title'         => 'Others',
-                'imgSRC'        => '/images/sample/Others.png',
+                'title'         => 'Category 6',
+                'imgSRC'        => '/images/sample/watch.jpeg',
                 'postTitleLink' => route('category.page', ['others'])
             ]
         ];

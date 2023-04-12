@@ -34,24 +34,18 @@ class Header extends Component
         $areas       = Area::orderBy('name', 'asc')->get();
         $userAddress = UserAddress::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [
-            // [ 'label' => 'Home', 'route' => route('home') ],
+            [ 'label' => 'Home', 'route' => route('home') ],
             // [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],
             // [ 'label' => 'Medical Devices', 'route' => route('category.page', ['medical-devices'])],
             [ 'label' => 'Offers', 'route' => route('offers.products')],
         ];
-        $countries  = config('lang.countries');
-        $currencies = config('lang.currencies');
-        $languages  = config('lang.languages');
 
         return view('components.frontend.header', [
             'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.png' ],
             'menus'       => $menus,
             'cart'        => $cart,
             'areas'       => $areas,
-            'userAddress' => $userAddress,
-            'countries'   => $countries,
-            'currencies'  => $currencies,
-            'languages'   => $languages,
+            'userAddress' => $userAddress
         ]);
     }
 }

@@ -11227,6 +11227,10 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(219 68 55 / var(--tw-bg-opacity));
 }
+.bg-primary-light{
+  --tw-bg-opacity: 1;
+  background-color: rgb(86 127 229 / var(--tw-bg-opacity));
+}
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
 }
@@ -13600,6 +13604,10 @@ fieldset legend{
 .group:hover .group-hover\:bg-primary-lightest{
   --tw-bg-opacity: 1;
   background-color: rgb(221 229 250 / var(--tw-bg-opacity));
+}
+.group:hover .group-hover\:bg-primary{
+  --tw-bg-opacity: 1;
+  background-color: rgb(16 41 103 / var(--tw-bg-opacity));
 }
 .group:hover .group-hover\:text-primary{
   --tw-text-opacity: 1;

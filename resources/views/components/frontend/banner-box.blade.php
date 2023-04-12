@@ -37,7 +37,7 @@
                         <span class="text-base lg:text-base xl:text-lg 2xl:text-lg text-primary font-semibold">{{ $title }}</span>
                     </div>
                     <div class="">
-                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-secondary "
+                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-primary"
                             data-mc-on-previous-url="{{ route('upload.prescription') }}"
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             {{ $postTitle }}

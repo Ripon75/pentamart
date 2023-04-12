@@ -111,28 +111,12 @@
         </div>
     </section>
 
-    {{-- ==================Banner-photo============================= --}}
-    {{-- <section class="bg-gray-100 page-section">
-        <section class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-10">Top Category</h1>
-            </div>
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-4 xl:gap-8">
-                @foreach ($banners as $banner)
-                <a href="{{ $banner->box_link }}" class="block rounded hover:shadow-md">
-                    <img class="w-full h-full" src="{{ $banner->img_src }}">
-                </a>
-                @endforeach
-            </div>
-        </section>
-    </section> --}}
-
     {{-- ==================Top Products================== --}}
     @if ($topProducts)
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-10">Best Selling Products</h1> 
+                    <h1 class="section-title mb-10">{{ $topProducts->title }}</h1> 
                 </div>
                 <div class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
                     @foreach ($topProducts->products as $product)
@@ -250,7 +234,7 @@
     </section> --}}
 
     {{-- ==================Features================== --}}
-    <section class="page-section bg-gray-100">
+    {{-- <section class="page-section bg-gray-100">
         <div class="container">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                 @foreach ($features as $feature)
@@ -268,7 +252,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
 @endsection
 @push('scripts')

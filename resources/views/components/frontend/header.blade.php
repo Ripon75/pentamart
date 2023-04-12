@@ -1205,7 +1205,7 @@ id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" 
                                     Tk
                                     <span id="cd-total-price-${product.pivot.item_id}" class="s-totalprice ml-1">
                                         <span id="price-show-${product.pivot.item_pack_id}">
-                                            ${(product.pivot.price * product.pivot.quantity).toFixed(2)}
+                                            ${(product.pivot.item_price * product.pivot.quantity).toFixed(2)}
                                         </span>
                                     </span>
                                 </span>
@@ -1228,7 +1228,6 @@ id="exampleModalCenter" tabindex="-1" aria-labelledby="exampleModalCenterTitle" 
         total = +total;
         var format = total.toLocaleString();
         totalPriceLabel.text(format);
-        // $('#drawer-cart-item-price-label').text(format);
         jQuery({ counter: 0 }).animate({ counter: total }, {
             duration: 1000,
             easing: 'swing',
