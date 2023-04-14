@@ -75,7 +75,7 @@ class Order extends Model implements Auditable
 
     public function shippingAddress()
     {
-        return $this->belongsTo(UserAddress::class, 'shipping_address_id', 'id');
+        return $this->belongsTo(Address::class, 'shipping_address_id', 'id');
     }
 
     public function currentStatus()

@@ -4,7 +4,7 @@ namespace App\View\Components\Frontend;
 
 use App\Models\Cart;
 use App\Models\Area;
-use App\Models\UserAddress;
+use App\Models\Address;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,7 +32,7 @@ class Header extends Component
         $carObj     = new Cart();
         $cart       = $carObj->_getCurrentCustomerCart();
         $areas       = Area::orderBy('name', 'asc')->get();
-        $userAddress = UserAddress::where('user_id', $customerId)->orderBy('id', 'desc')->get();
+        $userAddress = Address::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [
             [ 'label' => 'Home', 'route' => route('home') ],
             // [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],

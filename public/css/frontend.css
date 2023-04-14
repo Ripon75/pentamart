@@ -5592,11 +5592,6 @@ textarea.form-control.is-invalid{
 .modal-body{
   flex: 1 1 auto;
 }
-.modal-fullscreen .modal-content{
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-}
 .modal-fullscreen .modal-header{
   border-radius: 0;
 }
@@ -9243,10 +9238,6 @@ textarea.form-control.is-invalid{
 .bg-socials-google{
   --tw-bg-opacity: 1;
   background-color: rgb(219 68 55 / var(--tw-bg-opacity));
-}
-.bg-primary-light{
-  --tw-bg-opacity: 1;
-  background-color: rgb(86 127 229 / var(--tw-bg-opacity));
 }
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
@@ -20831,11 +20822,6 @@ readers do not read off random characters that represent icons */
 .group:hover .group-hover\:bg-primary-lightest{
   --tw-bg-opacity: 1;
   background-color: rgb(221 229 250 / var(--tw-bg-opacity));
-}
-
-.group:hover .group-hover\:bg-primary{
-  --tw-bg-opacity: 1;
-  background-color: rgb(16 41 103 / var(--tw-bg-opacity));
 }
 
 .group:hover .group-hover\:text-primary{

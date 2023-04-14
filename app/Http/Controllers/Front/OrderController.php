@@ -33,7 +33,7 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
+        $this->currency = 'Tk';
     }
 
     public function dashboard()
@@ -282,7 +282,7 @@ class OrderController extends Controller
     // Execute SSL payment gateway
     public function executeSSLPayment($shippingAddressId, $user, $amount, $trxId, $numOfItems)
     {
-        $shippingAddress = UserAddress::find($shippingAddressId);
+        $shippingAddress  = Address::find($shippingAddressId);
         $productCats      = "ProductCategory";
         $productName      = "Productname";
         $productProfile   = "general";

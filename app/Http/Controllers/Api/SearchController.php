@@ -75,7 +75,7 @@ class SearchController extends Controller
         $userId = $request->input('user_id', null);
 
         if ($userId) {
-            $addresses = UserAddress::where('user_id', $userId)->get();
+            $addresses = Address::where('user_id', $userId)->get();
 
             return $this->_response($addresses, 'Search result');
         }

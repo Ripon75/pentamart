@@ -12,7 +12,7 @@ use App\Models\Product;
 use App\Classes\Utility;
 use App\Models\OrderStatus;
 use Illuminate\Support\Str;
-use App\Models\UserAddress;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Prescription;
 use App\Exports\OrdersExport;
@@ -36,7 +36,6 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        // $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
         $this->currency = 'tk';
         $this->util     = new Utility;
     }
@@ -155,7 +154,7 @@ class OrderController extends Controller
         $areas             = Area::orderBy('name', 'asc')->get();
         $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
-        $shippingAddresses = UserAddress::where('user_id', $order->user_id)->get();
+        $shippingAddresses = Address::where('user_id', $order->user_id)->get();
         $orderStatus       = $order->getNextStatus($order->current_status_id);
 
         return view('adminend.pages.order.edit', [
@@ -206,7 +205,7 @@ class OrderController extends Controller
         $order->setStatus($statusId);
         // Update shipping address
         if ($shippingAddressId) {
-            $shippingAddress               = UserAddress::find($shippingAddressId);
+            $shippingAddress               = Address::find($shippingAddressId);
             $shippingAddress->address      = $address;
             $shippingAddress->phone_number = $phoneNumber;
             $shippingAddress->area_id      = $areaID;
@@ -450,14 +449,14 @@ class OrderController extends Controller
             $addressTitle = $otherTitle ? $otherTitle : $addressTitle;
 
             // Check shipping address was already exist
-            $checkShippingAddress = UserAddress::where('title', $addressTitle)->where('user_id', $userId)->first();
+            $checkShippingAddress = Address::where('title', $addressTitle)->where('user_id', $userId)->first();
             if ($checkShippingAddress) {
                 return back()->with('title_exist', 'The address title already taken');
             }
 
             $phoneNumber = $phoneNumber ? $phoneNumber : $searchPhoneNumber;
 
-            $userAddressObj = new UserAddress();
+            $userAddressObj = new Address();
 
             $userAddressObj->title        = $addressTitle;
             $userAddressObj->address      = $addressLine;
@@ -862,7 +861,7 @@ class OrderController extends Controller
                     $areaID = null;
                     $addresssID = null;
                     if ($address) {
-                        $userAddressObj = UserAddress::where('user_id', $customerID)->first();
+                        $userAddressObj = Address::where('user_id', $customerID)->first();
                         if ($userAddressObj) {
                             $addresssID = $userAddressObj->id;
                         } else {

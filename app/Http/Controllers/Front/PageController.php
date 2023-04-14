@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Front;
 
-// use Setting;
 use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\Cart;
@@ -409,7 +408,7 @@ class PageController extends Controller
         $products = $this->getProducts($request);
 
         $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
             ->orderBy('categories.name', 'ASC')
             ->get();
@@ -572,10 +571,8 @@ class PageController extends Controller
 
         $genericId = $generic->id;
         $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
-            ->where('products.generic_id', $genericId)
             ->orderBy('categories.name', 'ASC')
             ->get();
 
@@ -644,10 +641,8 @@ class PageController extends Controller
 
         $dosageFormId = $dosageForm->id;
         $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
-            ->where('products.dosage_form_id', $dosageFormId)
             ->orderBy('categories.name', 'ASC')
             ->get();
 
@@ -704,11 +699,9 @@ class PageController extends Controller
        $products = $this->getProducts($request, 'company', $companySlug);
 
         $companyId = $company->id;
-        $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
+       $categories = Category::distinct()
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
-            ->where('products.company_id', $companyId)
             ->orderBy('categories.name', 'ASC')
             ->get();
 
@@ -747,10 +740,9 @@ class PageController extends Controller
             $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         }
         $areas            = Area::orderBy('name', 'asc')->get();
-        $userAddress      = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
         $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
         $paymentGateways  = PaymentGateway::where('status', 'active')->get();
-        // $currency         = Setting::getValue('app_currency_symbol', null, 'Tk');
         $currency         = 'Tk';
 
         return view('frontend.pages.cart', [
@@ -1035,33 +1027,15 @@ class PageController extends Controller
         $products = $this->getProducts($request, 'categories', $category->slug);
 
         $categoryId = $category->id;
-        $companies = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
-            ->join('companies', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->where('categories.id', $categoryId)
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
 
-        $dosageForms = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
-            ->join('dosage_forms', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->where('categories.id', $categoryId)
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.category';
 
         return view($viewPage, [
             'slug'                => $slug,
             'products'            => $products,
-            'companies'           => $companies,
-            'dosageForms'         => $dosageForms,
+            'companies'           => [],
+            'dosageForms'         => [],
             'filterCategoryIds'   => $filterCategoryIds,
             'filterCompanyIds'    => $filterCompanyIds,
             'filterDosageFormIds' => $filterDosageFormIds,
@@ -1200,11 +1174,9 @@ class PageController extends Controller
         $products = $this->getProducts($request, 'brand', $brand->slug);
 
         $brandId = $brand->id;
-        $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
+       $categories = Category::distinct()
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
-            ->where('products.brand_id', $brandId)
             ->orderBy('categories.name', 'ASC')
             ->get();
 
@@ -1275,10 +1247,8 @@ class PageController extends Controller
         $products = $this->getOfferProducts($request);
 
         $categories = Category::distinct()
-            ->join('product_category', 'categories.id', '=', 'product_category.category_id')
-            ->join('products', 'products.id', '=', 'product_category.product_id')
+            ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
-            ->where('products.selling_price', '>', 0)
             ->orderBy('categories.name', 'ASC')
             ->get();
 

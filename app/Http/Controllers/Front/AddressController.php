@@ -23,7 +23,7 @@ class AddressController extends Controller
 
     public function index(Request $request)
     {
-        $result  = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $result  = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
         return view('frontend.pages.my-address', [
             'result' => $result
@@ -63,7 +63,7 @@ class AddressController extends Controller
         $title       = $otherTitle ? $otherTitle : $title;
         $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
 
-        $checkShippingAddress = UserAddress::where('title', $title)->where('user_id', $userId)->first();
+        $checkShippingAddress = Address::where('title', $title)->where('user_id', $userId)->first();
         if ($checkShippingAddress) {
             return $this->util->makeResponse(null, 'Address title already taken', 400);
         }
@@ -121,7 +121,7 @@ class AddressController extends Controller
 
         $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
 
-        $checkUserAddress = UserAddress::where('title', $title)
+        $checkUserAddress = Address::where('title', $title)
             ->where('user_id', $userId)->first();
 
         if ($checkUserAddress) {
@@ -150,7 +150,7 @@ class AddressController extends Controller
     public function shippingAddress(Request $request)
     {
         $id = $request->input('address_id', null);
-        $shippingAddress = UserAddress::find($id);
+        $shippingAddress = Address::find($id);
         if ($shippingAddress) {
             $res = [
                 'status' => 'success',
@@ -163,7 +163,7 @@ class AddressController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $data  = UserAddress::find($id);
+        $data  = Address::find($id);
         if (!$data) {
             abort(404);
         }
@@ -186,7 +186,7 @@ class AddressController extends Controller
         $phoneNumber = $request->input('phone_number', null);
         $areaId      = $request->input('area_id', null);
 
-        $userAddress = UserAddress::find($id);
+        $userAddress = Address::find($id);
 
         $userAddress->address      = $address;
         $userAddress->phone_number = $phoneNumber;
@@ -199,7 +199,7 @@ class AddressController extends Controller
 
     public function destroy($id)
     {
-        $userAddress = UserAddress::find($id);
+        $userAddress = Address::find($id);
         if (!$userAddress) {
             abort(404);
         }

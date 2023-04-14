@@ -235,7 +235,6 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
         'Image' => Intervention\Image\Facades\Image::class,
-        'Setting' => App\Models\Setting::class,
     ],
 
     'update' => [

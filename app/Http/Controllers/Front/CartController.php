@@ -109,7 +109,7 @@ class CartController extends Controller
         $cart             = $carObj->_getCurrentCustomerCart();
         $products         = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         $areas            = Area::orderBy('name', 'asc')->get();
-        $userAddress      = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
         $deliveryGateways = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways  = PaymentGateway::where('status', 'activated')->get();
 
