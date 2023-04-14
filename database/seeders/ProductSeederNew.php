@@ -2,14 +2,12 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
+use App\Models\Brand;
+use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use App\Models\DosageForm;
-use App\Models\Generic;
-use App\Models\Product;
-use App\Models\Brand;
-use Carbon\Carbon;
 
 class ProductSeederNew extends Seeder
 {
@@ -22,7 +20,7 @@ class ProductSeederNew extends Seeder
     {
         // Artisan::call('scout:flush "App\\Models\\Product"');
 
-        $csvFile   = fopen(base_path("database/data/medicalDevices.csv"), "r");
+        $csvFile   = fopen(base_path("database/data/NonmediciProduct.csv"), "r");
         $firstline = true;
 
 

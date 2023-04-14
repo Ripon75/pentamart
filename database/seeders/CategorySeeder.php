@@ -2,9 +2,9 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
 
 class CategorySeeder extends Seeder
 {
@@ -20,74 +20,39 @@ class CategorySeeder extends Seeder
         $data = [
             [
                 'id'         => 1,
-                'slug'       => 'medicine',
-                'name'       => 'Medicine',
+                'slug'       => 'Category 1',
+                'name'       => 'category-1',
                 'status'     => 'active',
                 'created_at' => $now
             ],
             [
                 'id'         => 2,
-                'slug'       => 'skin-care',
-                'name'       => 'Skin care',
+                'slug'       => 'Category 2',
+                'name'       => 'category-2',
                 'status'     => 'active',
                 'created_at' => $now
             ],
             [
                 'id'         => 3,
-                'slug'       => 'gastric',
-                'name'       => 'Gastric',
+                'slug'       => 'Category 3',
+                'name'       => 'category-3',
                 'status'     => 'active',
                 'created_at' => $now
             ],
             [
                 'id'         => 4,
-                'slug'       => 'others',
-                'name'       => 'Others',
+                'slug'       => 'Category 4',
+                'name'       => 'category-4',
                 'status'     => 'active',
                 'created_at' => $now
             ],
             [
                 'id'         => 5,
-                'slug'       => 'medical-devices',
-                'name'       => 'Medical Devices',
+                'slug'       => 'Category 5',
+                'name'       => 'category-5',
                 'status'     => 'active',
                 'created_at' => $now
             ],
-            [
-                'id'         => 6,
-                'slug'       => 'men-care',
-                'name'       => 'Men Care',
-                'status'     => 'active',
-                'created_at' => $now
-            ],
-            [
-                'id'         => 7,
-                'slug'       => 'women-care',
-                'name'       => 'Women Care',
-                'status'     => 'active',
-                'created_at' => $now
-            ],
-            [
-                'id'         => 8,
-                'slug'       => 'personal-care',
-                'name'       => 'Personal Care',
-                'status'     => 'active',
-                'created_at' => $now
-            ],
-            [
-                'id'         => 9,
-                'slug'       => 'herbal-homeopathy',
-                'name'       => 'Herbal & Homeopathy',
-                'status'     => 'active',
-                'created_at' => $now
-            ],
-            [
-                'id'         => 10,
-                'slug'       => 'baby-mom-care',
-                'name'       => 'Baby & Mom Care',
-                'status'     => 'active',
-                'created_at' => $now
-            ]
         ];
 
         DB::table('categories')->insert($data);

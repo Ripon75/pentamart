@@ -13,23 +13,25 @@ class CreateOrderItemTable extends Migration
      */
     public function up()
     {
-
         Schema::create('order_item', function (Blueprint $table) {
-            $table->foreignId('order_id')->nullable()->constrained('orders')
-                  ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('item_id')->nullable()->constrained('products')
-                  ->onUpdate('cascade')->onDelete('cascade');
-            $table->integer('quantity')->nullable();
-            $table->integer('pack_size')->nullable();
-            $table->decimal('item_mrp', 20, 2)->nullable();
-            $table->decimal('price', 20, 2)->nullable()
-            ->commit('Price of the item when it`s added into the cart');
-            $table->decimal('discount', 20, 2)->nullable();
-            $table->foreignId('promotion_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->foreignId('pos_product_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade')->commit('Medipos product id');
+            $table->foreignId('order_id')->constrained('orders')->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('item_id')->constrained('products')->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('size_id')->constrained('sizes')->nullable()->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('color_id')->constrained('colors')->nullable()->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->unsignedInteger('quantity')->default(1);
+            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('sell_price', 20, 2)->default(0);
+            $table->decimal('discount', 20, 2)->default(0);
+            $table->decimal('total_price', 20, 2)->default(0);
+            $table->decimal('total_sell_price', 20, 2)->default(0);
+            $table->decimal('total_discount', 20, 2)->default(0);
             $table->timestamps();
+
+            $table->primary(['order_id', 'item_id', 'size_id', 'color_id']);
         });
     }
 

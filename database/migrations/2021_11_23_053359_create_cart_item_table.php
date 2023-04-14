@@ -14,16 +14,24 @@ class CreateCartItemTable extends Migration
     public function up()
     {
         Schema::create('cart_item', function (Blueprint $table) {
-            $table->foreignId('cart_id')->nullable()->constrained('carts')
+            $table->foreignId('cart_id')->constrained('carts')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('item_id')->nullable()->constrained('products')
+            $table->foreignId('item_id')->constrained('products')
                   ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreignId('size_id')->constrained('sizes')->nullable()->onUpdate('cascade')
+                ->onDelete('cascade');
+            $table->foreignId('color_id')->constrained('colors')->nullable()->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->integer('quantity')->default(1);
-            $table->integer('item_pack_size')->nullable();
-            $table->decimal('item_mrp', 20, 2)->default(0);
             $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('sell_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
+            $table->decimal('total_price', 20, 2)->default(0);
+            $table->decimal('total_sell_price', 20, 2)->default(0);
+            $table->decimal('total_discount', 20, 2)->default(0);
             $table->timestamps();
+
+            $table->primary(['cart_id', 'item_id', 'size_id', 'color_id']);
         });
     }
 

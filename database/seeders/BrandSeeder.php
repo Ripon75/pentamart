@@ -15,23 +15,24 @@ class BrandSeeder extends Seeder
      */
     public function run()
     {
-        $filePath = database_path('data/brands.json');
-        $jsonData = file_get_contents($filePath);
-        $allData  = json_decode($jsonData, true);
+        $brands = [
+            [
+                'name' => 'Brand 1',
+                'slug' => 'brand-1',
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Brand 2',
+                'slug' => 'brand-2',
+                'status' => 'active',
+            ],
+            [
+                'name' => 'Brand 3',
+                'slug' => 'brand-3',
+                'status' => 'active',
+            ]
+        ];
 
-        foreach (array_chunk($allData, 500) as $cData) {
-            $brands = [];
-            foreach ($cData as $sData) {
-                $temp = [
-                    'id'         => $sData['id'],
-                    'slug'       => $sData['name'],
-                    'name'       => $sData['display_name'],
-                    'status'     => 'activated',
-                    'created_at' => Carbon::now()
-                ];
-                $brands[] = $temp;
-            }
-            DB::table('brands')->insert($brands);
-        }
+        DB::table('brands')->insert($brands);
     }
 }

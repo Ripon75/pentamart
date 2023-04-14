@@ -7,12 +7,10 @@ use App\Classes\Model;
 use App\Models\Product;
 use App\Classes\Utility;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
-    use SoftDeletes;
     use HasFactory;
 
     protected $className = 'Cart';
@@ -63,13 +61,13 @@ class Cart extends Model
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-                    ->withPivot('quantity', 'item_pack_size', 'item_price', 'item_offer_price', 'discount')
-                    ->withTimestamps();
+            ->withPivot('size_id', 'color_id', 'quantity', 'price', 'sell_price', 'discount',
+            'total_price', 'total_sell_price', 'total_discount')->withTimestamps();
     }
 
-    public function userAddress()
+    public function address()
     {
-        return $this->belongsTo(UserAddress::class, 'shipping_address_id', 'id');
+        return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
     public function deliveryGateway()
@@ -237,11 +235,6 @@ class Cart extends Model
         }
 
         return false;
-    }
-
-    private function _itemExist($cart, $itemId, $packID)
-    {
-        return 'Item Exist';
     }
 
     public function _getSubTotalAmount()

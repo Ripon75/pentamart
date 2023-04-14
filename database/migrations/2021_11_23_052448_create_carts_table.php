@@ -25,7 +25,6 @@ class CreateCartsTable extends Migration
                   ->onDelete('cascade');
             $table->string('note', 1024)->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

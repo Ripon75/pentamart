@@ -23,8 +23,6 @@ class CreateAreasTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('parent_id')->nullable()->constrained('areas')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('country_id')->nullable()->constrained('countries')
-                  ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });
