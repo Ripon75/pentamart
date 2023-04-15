@@ -20,6 +20,7 @@ class CreateCategoriesTable extends Migration
             $table->string('name', 100);
             $table->string('slug', 100);
             $table->enum('status', $status)->default('active');
+            $table->string('img_src')->nullable();
             $table->string('description', 1000)->nullable();
             $table->timestamps();
             $table->softDeletes();

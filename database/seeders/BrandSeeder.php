@@ -17,19 +17,22 @@ class BrandSeeder extends Seeder
     {
         $brands = [
             [
-                'name' => 'Brand 1',
-                'slug' => 'brand-1',
-                'status' => 'active',
+                'name'    => 'Brand 1',
+                'slug'    => 'brand-1',
+                'status'  => 'active',
+                'img_src' => '/images/sample/brand.jpeg'
             ],
             [
-                'name' => 'Brand 2',
-                'slug' => 'brand-2',
-                'status' => 'active',
+                'name'    => 'Brand 2',
+                'slug'    => 'brand-2',
+                'status'  => 'active',
+                'img_src' => '/images/sample/brand.jpeg'
             ],
             [
-                'name' => 'Brand 3',
-                'slug' => 'brand-3',
-                'status' => 'active',
+                'name'    => 'Brand 3',
+                'slug'    => 'brand-3',
+                'status'  => 'active',
+                'img_src' => '/images/sample/brand.jpeg'
             ]
         ];
 

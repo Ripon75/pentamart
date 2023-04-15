@@ -42,19 +42,19 @@ class PageController extends Controller
         $services = [
             [
                 'title'         => 'Brand 1',
-                'imgSRC'        => '/images/sample/category.jpeg',
+                'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
                 'postTitleLink' => ''
             ],
             [
                 'title'         => 'Brand 2',
-                'imgSRC'        => '/images/sample/category.jpeg',
+                'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
                 'postTitleLink' => route('upload.prescription')
             ],
             [
                 'title'         => 'Brand 3',
-                'imgSRC'        => '/images/sample/category.jpeg',
+                'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
                 'postTitleLink' => 'tel:+8809609080706'
             ]
@@ -103,48 +103,6 @@ class PageController extends Controller
 
         $productObj      = new Product();
         $defaultQuantity = 12;
-
-        // Man care prducts
-        // $mCareProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'men-care');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
-
-        // Women care prducts
-        // $wCareProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'women-care');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
-
-        // Sexual wellness prducts
-        // $swProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'sexual-wellness');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
-
-        // Herbal homeopathy prducts
-        // $hProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'herbal-homeopathy');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
-
-        // Baby mom care prducts
-        // $bProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'baby-mom-care');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
-
-        // Personal care prducts
-        // $pProducts = $productObj->whereHas('categories', function($query) {
-        //         $query->where('slug', 'personal-care');
-        //     })
-        //     ->getDefaultMetaData()
-        //     ->take($defaultQuantity)->get();
 
         $categories = [
             [
@@ -243,12 +201,6 @@ class PageController extends Controller
             'feelings'        => $feelings,
             'hotSales'        => $hotSales,
             'topProducts'     => $topProducts,
-            // 'mCareProducts'   => $mCareProducts,
-            // 'wCareProducts'   => $wCareProducts,
-            // 'swProducts'      => $swProducts,
-            // 'hProducts'       => $hProducts,
-            // 'bProducts'       => $bProducts,
-            // 'pProducts'       => $pProducts,
             'categories'      => $categories,
             'topCategories'   => $topCategories,
             'features'        => $features,
@@ -841,7 +793,7 @@ class PageController extends Controller
 
     private function getOfferProducts($request, $relation = null, $slug = null)
     {
-        $orderBy = 'unit_price';
+        $orderBy = 'price';
         $searchKey           = $request->input('search_key', null);
         $order               = $request->input('order', null);
         $percent             = $request->input('percent', null);
@@ -851,11 +803,11 @@ class PageController extends Controller
         $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
 
         $products = Product::getDefaultMetaData();
-        $products = $products->where('selling_price', '>', 0);
+        $products = $products->where('offer_price', '>', 0);
 
         if ($relation && $relation === 'categories' && $slug) {
             if ($percent) {
-                $products = $products->where('selling_percent', '<=', $percent);
+                $products = $products->where('offer_price', '<=', $percent);
                 if ($subCategorySlug) {
                     $products = $products->whereHas('categories', function($query) use ($subCategorySlug) {
                         $query->where('slug', $subCategorySlug);
@@ -876,21 +828,21 @@ class PageController extends Controller
             });
         }
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
+        // if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
+        //     $filterCompanyIds = explode(",", $filterCompanyIds);
 
-            $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
-                $query->whereIn('id', $filterCompanyIds);
-            });
-        }
+        //     $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
+        //         $query->whereIn('id', $filterCompanyIds);
+        //     });
+        // }
 
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
+        // if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
+        //     $filterDosageFormIds = explode(",", $filterDosageFormIds);
 
-            $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
-                $query->whereIn('id', $filterDosageFormIds);
-            });
-        }
+        //     $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
+        //         $query->whereIn('id', $filterDosageFormIds);
+        //     });
+        // }
 
         $order = $order === 'desc' ? 'desc' : 'asc';
         $products = $products->orderBy($orderBy, $order);
@@ -899,101 +851,11 @@ class PageController extends Controller
         if ($searchKey) {
             $products = Product::search($searchKey)->paginate($paginate);
         } else {
-            $products = $products->where('mrp', '>', 0)->paginate($paginate);
+            $products = $products->where('price', '>', 0)->paginate($paginate);
         }
 
         return $products;
     }
-
-    // public function tagPage(Request $request, $slug, $thumbOnly = false)
-    // {
-    //     Utility::setUserEvent('pageview', [
-    //         'page' => 'tag',
-    //         'tag' => $slug,
-    //         'request' => $request->all()
-    //     ]);
-
-    //     $tag = Tag::where('slug', $slug)->first();
-        
-    //     if (!$tag) {
-    //         abort(404);
-    //     }
-
-    //     $searchKey           = $request->input('search_key', null);
-    //     $filterCategoryIds   = $request->input('filter_category_ids', []);
-    //     $filterCompanyIds    = $request->input('filter_company_ids', []);
-    //     $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-    //     $companyList         = [];
-    //     $categoryList        = [];
-    //     $dosageFormList      = [];
-
-    //     if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-    //         $filterCategoryIds = explode(",", $filterCategoryIds);
-    //     } else {
-    //         $filterCategoryIds = [];
-    //     }
-
-    //     if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-    //         $filterCompanyIds = explode(",", $filterCompanyIds);
-    //     } else {
-    //         $filterCompanyIds = [];
-    //     }
-
-    //     if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-    //         $filterDosageFormIds = explode(",", $filterDosageFormIds);
-    //     } else {
-    //         $filterDosageFormIds = [];
-    //     }
-
-    //     $products = $this->getProducts($request, 'tags', $tag->slug);
-
-    //     $tagSlug = $tag->slug;
-    //     $allProduct = Product::whereHas('tags', function($query) use ($tagSlug){
-    //         $query->where('slug', $tagSlug);
-    //     })->where('status', 'activated')->get();
-
-    //     // Create category, company and dosateform list from products list
-    //     foreach ($allProduct as $key => $product) {
-    //         $cats = $product->categories ?? null;
-    //         if ($cats) {
-    //             $cats = $cats->where('status', 'activated');
-    //             foreach ($cats as $cat) {
-    //                 $categoryList[$cat->id] = $cat;
-    //             }
-    //         }
-
-    //         $company = $product->company ?? null;
-    //         if ($company) {
-    //             $companyList[$company->id] = $company;
-    //         }
-
-    //         $dForm = $product->dosageForm ?? null;
-    //         if ($dForm) {
-    //             $dosageFormList[$dForm->id] = $dForm;
-    //         }
-    //     }
-
-    //     // Category sort
-    //     $categories = $this->getSortData($categoryList);
-    //     // Company sort
-    //     $companies = $this->getSortData($companyList);
-    //     // Dosage form sort
-    //     $dosageForms = $this->getSortData($dosageFormList);
-
-    //     $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.tag';
-
-    //     return view($viewPage, [
-    //         'products'            => $products,
-    //         'companies'           => $companies,
-    //         'categories'          => $categories,
-    //         'dosageForms'         => $dosageForms,
-    //         'filterCategoryIds'   => $filterCategoryIds,
-    //         'filterCompanyIds'    => $filterCompanyIds,
-    //         'filterDosageFormIds' => $filterDosageFormIds,
-    //         'pageTitle'           => $tag->name,
-    //         'slug'                => $slug
-    //     ]);
-    // }
 
     public function categoryPage(Request $request, $slug, $thumbOnly = false)
     {
@@ -1042,99 +904,6 @@ class PageController extends Controller
             'pageTitle'           => $category->name
         ]);
     }
-
-    // public function symptomPage(Request $request, $slug, $thumbOnly = false)
-    // {
-    //     Utility::setUserEvent('pageview', [
-    //         'page' => 'symptom'
-    //     ]);
-
-    //     $symptom = Symptom::where('slug', $slug)->first();
-
-    //     if (!$symptom) {
-    //         abort(404);
-    //     }
-
-    //     $searchKey           = $request->input('search_key', null);
-    //     $filterCategoryIds   = $request->input('filter_category_ids', []);
-    //     $filterCompanyIds    = $request->input('filter_company_ids', []);
-    //     $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-    //     $categoryList        = [];
-    //     $companyList         = [];
-    //     $dosageFormList      = [];
-
-    //     if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-    //         $filterCategoryIds = explode(",", $filterCategoryIds);
-    //     } else {
-    //         $filterCategoryIds = [];
-    //     }
-
-    //     if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-    //         $filterCompanyIds = explode(",", $filterCompanyIds);
-    //     } else {
-    //         $filterCompanyIds = [];
-    //     }
-
-    //     if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-    //         $filterDosageFormIds = explode(",", $filterDosageFormIds);
-    //     } else {
-    //         $filterDosageFormIds = [];
-    //     }
-
-    //     $products = $this->getProducts($request, 'symptoms', $symptom->slug);
-
-    //     $symptomSlug = $symptom->slug;
-    //     $allProduct = Product::whereHas('symptoms', function($query) use ($symptomSlug) {
-    //         $query->where('slug', $symptomSlug);
-    //     })->where('status', 'activated')->get();
-
-    //     // Create category , company and dosageFrom list from produt list
-    //     $categoryList   = [];
-    //     $companyList    = [];
-    //     $dosageFormList = [];
-    //     foreach ($allProduct as $key => $product) {
-    //         $cats = $product->categories ?? null;
-    //         if ($cats) {
-    //             $cats = $cats->where('status', 'activated');
-    //             foreach ($cats as $cat) {
-    //                 $categoryList[$cat->id] = $cat;
-    //             }
-    //         }
-
-    //         $com = $product->company ?? null ;
-    //         if ($com) {
-    //             $companyList[$com->id] = $com;
-    //         }
-
-    //         $dForm = $product->dosageForm;
-    //         if($dForm) {
-    //             if ($dForm->status == 'activated') {
-    //                 $dosageFormList[$dForm->id] = $dForm;
-    //             }
-    //         }
-    //     }
-
-    //     // Category sort
-    //     $categories = $this->getSortData($categoryList);
-    //     // Company sort
-    //     $companies = $this->getSortData($companyList);
-    //     // Dosage form sort
-    //     $dosageForms = $this->getSortData($dosageFormList);
-
-    //     $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.symptom';
-
-    //     return view($viewPage, [
-    //         'products'            => $products,
-    //         'companies'           => $companies,
-    //         'categories'          => $categories,
-    //         'dosageForms'         => $dosageForms,
-    //         'filterCategoryIds'   => $filterCategoryIds,
-    //         'filterCompanyIds'    => $filterCompanyIds,
-    //         'filterDosageFormIds' => $filterDosageFormIds,
-    //         'pageTitle'           => $symptom->name,
-    //         'slug'                => $slug
-    //     ]);
-    // }
 
     public function brandPage(Request $request, $slug, $thumbOnly = false)
     {

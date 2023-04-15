@@ -35,28 +35,18 @@ class ProductSeederNew extends Seeder
                 $offerPrice = $data['7'];
                 $offerPrice = (float)$offerPrice;
 
-                $brandID = null;
-                $brandName = $data['10'];
-                if ($brandName) {
-                    $brand = Brand::where('name', $brandName)->first();
-                    if ($brand) {
-                        $brandID = $brand->id;
-                    } else {
-                        $slug = Str::slug($brandName, '-');
-                        $brandObj = new Brand();
-                        $brandObj->slug = $slug;
-                        $brandObj->name = $brandName;
-                        $brandObj->status = 'activated';
-                        $brandObj->save();
-                        $brandID = $brandObj->id;
-                    }
+                if ($price > $offerPrice) {
+                    $offerPrice = $offerPrice;
+                } else {
+                    $offerPrice = 0;
                 }
 
                 if ($name && $price) {
                     $productObj                 = new Product();
                     $productObj->name           = $name;
                     $productObj->slug           = $slug;
-                    $productObj->brand_id       = $brandID;
+                    $productObj->brand_id       = rand(1, 3);
+                    $productObj->category_id    = rand(1, 4);
                     $productObj->price          = $price;
                     $productObj->offer_price    = $offerPrice;
                     $productObj->status         = 'active';
