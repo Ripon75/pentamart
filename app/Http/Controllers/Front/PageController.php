@@ -335,8 +335,7 @@ class PageController extends Controller
 
         $searchKey           = $request->input('search_key', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -344,16 +343,10 @@ class PageController extends Controller
             $filterCategoryIds = [];
         }
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
         } else {
-            $filterCompanyIds = [];
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
+            $filterBrandIds = [];
         }
 
         $products = $this->getProducts($request);
@@ -361,66 +354,30 @@ class PageController extends Controller
         $categories = Category::distinct()
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
+            ->where('categories.status', 'active')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $categories = [
-            [
-                'id' => 1,
-                'name' => 'Category 1'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Category 2'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Category 3'
-            ]
-        ];
-
-        // $dosageForms = DosageForm::distinct()
-        //     ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-        //     ->select('dosage_forms.id', 'dosage_forms.name')
-        //     ->whereNull('products.deleted_at')
-        //     ->where('products.status', 'activated')
-        //     ->orderBy('dosage_forms.name', 'ASC')
-        //     ->get();
-
-        // $companies = Company::distinct()
-        //     ->join('products', 'companies.id', '=', 'products.company_id')
-        //     ->select('companies.id', 'companies.name')
-        //     ->whereNull('products.deleted_at')
-        //     ->where('products.status', 'activated')
-        //     ->orderBy('companies.name', 'ASC')
-        //     ->get();
-
-        $companies = [
-            [
-                'id' => 1,
-                'name' => 'Brand 1'
-            ],
-            [
-                'id' => 2,
-                'name' => 'Brand 2'
-            ],
-            [
-                'id' => 3,
-                'name' => 'Brand 3'
-            ]
-        ];
+        $barnds = Brand::distinct()
+            ->join('products', 'brands.id', '=', 'products.brand_id')
+            ->select('brands.id', 'brands.name')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
+            ->where('brands.status', 'active')
+            ->orderBy('brands.name', 'ASC')
+            ->get();
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.product-index';
 
         return view($viewPage, [
-            'products'            => $products,
-            'companies'           => $companies,
-            'categories'          => $categories,
-            // 'dosageForms'         => $dosageForms,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds,
-            'pageTitle'           => 'All product'
+            'products'          => $products,
+            'brands'            => $barnds,
+            'categories'        => $categories,
+            'filterCategoryIds' => $filterCategoryIds,
+            'filterBrandIds'    => $filterBrandIds,
+            'pageTitle'         => 'All product'
         ]);
     }
 
@@ -733,8 +690,8 @@ class PageController extends Controller
         // $percent             = $request->input('percent', null);
         $searchKey           = $request->input('search_key', null);
         // $order               = $request->input('order', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
         $filterBrandIds      = $request->input('filter_brand_ids', []);
+        $filterCategoryIds   = $request->input('filter_category_ids', []);
 
         $products = Product::getDefaultMetaData();
 
