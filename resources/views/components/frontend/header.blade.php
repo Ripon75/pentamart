@@ -249,7 +249,7 @@
                         <div class="">
                             <div id="menu-item" style="display: none" class="category-list mobile-nav w-64">
                                 <a class="mobile-nav-item" href="{{ route('products.index') }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/medicine.png') }}"> All Products
+                                    <img class="img-wrapper" src="{{ asset('images/icons/watch_icon.png') }}"> All Products
                                 </a>
                                 {{-- <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/mencare.png') }}"> Men Care
@@ -307,7 +307,7 @@
                         <li class="border-b">
                             <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                                 href="{{ route('products.index') }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/medicine.png') }}">All Products
+                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/watch_icon.png') }}">All Products
                             </a>
                         </li>
                         {{-- <li class="border-b">
