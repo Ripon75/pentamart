@@ -677,8 +677,11 @@ class PageController extends Controller
        $categories = Category::distinct()
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
+            ->where('brand_id', $id)
             ->orderBy('categories.name', 'ASC')
             ->get();
+
+        info($categories);
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.brand';
 

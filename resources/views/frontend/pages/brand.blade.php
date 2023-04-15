@@ -111,11 +111,15 @@
             route = `${route}&search_key=${searchKey}`;
         }
 
-        const filterInputOrder      = $("#input-short-order");
-        const filterInputCategories = $('input[name="categories[]"]');
+        const filterInputOrder        = $("#input-short-order");
+        const filterInputCategories   = $('input[name="categories[]"]');
 
         $(function() {
             filterInputOrder.on("change", (event) => {
+                filterProducts(route);
+            });
+
+            filterInputCategories.on("click", (event) => {
                 filterProducts(route);
             });
         });
