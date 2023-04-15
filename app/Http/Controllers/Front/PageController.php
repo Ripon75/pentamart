@@ -10,7 +10,6 @@ use App\Models\Banner;
 use App\Models\Section;
 use App\Models\Company;
 use App\Models\Product;
-use App\Models\Generic;
 use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
@@ -493,161 +492,45 @@ class PageController extends Controller
         ]);
     }
 
-    private function getProducts($request, $relation = null, $id = null)
-    {
-        // $percent             = $request->input('percent', null);
-        $searchKey           = $request->input('search_key', null);
-        // $order               = $request->input('order', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-
-        $products = Product::getDefaultMetaData();
-
-        // Brand wise product find
-        if ($relation && $relation === 'brand') {
-            $products = $products->where('brand_id', $id);
-        }
-
-        // Category wise product find
-        if ($relation && $relation === 'categories') {
-            $products = $products->where('category_id', $id);
-        }
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-
-            $products = $products->whereIn('category_id', $filterCategoryIds);
-
-            // $products = $products->whereHas('categories', function($query) use ($filterCategoryIds) {
-            //     $query->whereIn('id', $filterCategoryIds);
-            // });
-        }
-
-        // $order = $order === 'desc' ? 'desc' : 'asc';
-        // $products = $products->orderBy($orderBy, $order);
-
-        $paginate = config('crud.paginate.default');
-        if ($searchKey) {
-            $products = Product::search($searchKey)->query(function($query) {
-                $query->where('status', 'active');
-            })->paginate($paginate);
-        } else {
-            $products = $products->where('price', '>', 0)->paginate($paginate);
-        }
-
-        return $products;
-    }
-
-    private function getOfferProducts($request, $relation = null, $slug = null)
-    {
-        $orderBy = 'price';
-        $searchKey           = $request->input('search_key', null);
-        $order               = $request->input('order', null);
-        $percent             = $request->input('percent', null);
-        $subCategorySlug     = $request->input('sub_category', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-
-        $products = Product::getDefaultMetaData();
-        $products = $products->where('offer_price', '>', 0);
-
-        if ($relation && $relation === 'categories' && $slug) {
-            if ($percent) {
-                $products = $products->where('offer_price', '<=', $percent);
-                if ($subCategorySlug) {
-                    $products = $products->whereHas('categories', function($query) use ($subCategorySlug) {
-                        $query->where('slug', $subCategorySlug);
-                    });
-                }
-            } else {
-                $products = $products->whereHas('categories', function($query) use ($slug) {
-                    $query->where('slug', $slug);
-                });
-            }
-        }
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-
-            $products = $products->whereHas('categories', function($query) use ($filterCategoryIds) {
-                $query->whereIn('id', $filterCategoryIds);
-            });
-        }
-
-        // if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-        //     $filterCompanyIds = explode(",", $filterCompanyIds);
-
-        //     $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
-        //         $query->whereIn('id', $filterCompanyIds);
-        //     });
-        // }
-
-        // if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-        //     $filterDosageFormIds = explode(",", $filterDosageFormIds);
-
-        //     $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
-        //         $query->whereIn('id', $filterDosageFormIds);
-        //     });
-        // }
-
-        $order = $order === 'desc' ? 'desc' : 'asc';
-        $products = $products->orderBy($orderBy, $order);
-
-        $paginate = config('crud.paginate.default');
-        if ($searchKey) {
-            $products = Product::search($searchKey)->paginate($paginate);
-        } else {
-            $products = $products->where('price', '>', 0)->paginate($paginate);
-        }
-
-        return $products;
-    }
-
-    public function categoryPage(Request $request, $slug, $thumbOnly = false)
+    public function categoryPage(Request $request, $id, $thumbOnly = false)
     {
         Utility::setUserEvent('pageview', [
             'page' => 'category'
         ]);
 
-        $category = Category::with(['companies'])->where('slug', $slug)->first();
+        $category = Category::find($id);
 
         if(!$category) {
             abort(404);
         }
 
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
+        $searchKey        = $request->input('search_key', null);
+        $filterBrandIds = $request->input('filter_brand_ids', []);
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
         } else {
-            $filterCompanyIds = [];
+            $filterBrandIds = [];
         }
 
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
+        $products = $this->getProducts($request, 'category', $id);
 
-        $products = $this->getProducts($request, 'categories', $category->slug);
-
-        $categoryId = $category->id;
+        $brands = Brand::distinct()
+            ->join('products', 'brands.id', '=', 'products.brand_id')
+            ->select('brands.id', 'brands.name')
+            ->where('category_id', $id)
+            ->orderBy('brands.name', 'ASC')
+            ->get();
 
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.category';
 
         return view($viewPage, [
-            'slug'                => $slug,
-            'products'            => $products,
-            'companies'           => [],
-            'dosageForms'         => [],
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds,
-            'pageTitle'           => $category->name
+            'id'             => $id,
+            'products'       => $products,
+            'brands'         => $brands,
+            'filterBrandIds' => $filterBrandIds,
+            'pageTitle'      => $category->name
         ]);
     }
 
@@ -843,6 +726,119 @@ class PageController extends Controller
             'filterDosageFormIds' => $filterDosageFormIds,
             'pageTitle'           => $category->name
         ]);
+    }
+
+    private function getProducts($request, $relation = null, $id = null)
+    {
+        // $percent             = $request->input('percent', null);
+        $searchKey           = $request->input('search_key', null);
+        // $order               = $request->input('order', null);
+        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $filterBrandIds      = $request->input('filter_brand_ids', []);
+
+        $products = Product::getDefaultMetaData();
+
+        // Brand wise product find
+        if ($relation && $relation === 'brand') {
+            $products = $products->where('brand_id', $id);
+        }
+
+        // Category wise product find
+        if ($relation && $relation === 'category') {
+            $products = $products->where('category_id', $id);
+        }
+
+        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
+            $filterCategoryIds = explode(",", $filterCategoryIds);
+
+            $products = $products->whereIn('category_id', $filterCategoryIds);
+        }
+
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
+
+            $products = $products->whereIn('brand_id', $filterBrandIds);
+        }
+
+        // $order = $order === 'desc' ? 'desc' : 'asc';
+        // $products = $products->orderBy($orderBy, $order);
+
+        $paginate = config('crud.paginate.default');
+        if ($searchKey) {
+            $products = Product::search($searchKey)->query(function ($query) {
+                $query->where('status', 'active');
+            })->paginate($paginate);
+        } else {
+            $products = $products->where('price', '>', 0)->paginate(5);
+        }
+
+        return $products;
+    }
+
+    private function getOfferProducts($request, $relation = null, $slug = null)
+    {
+        $orderBy = 'price';
+        $searchKey           = $request->input('search_key', null);
+        $order               = $request->input('order', null);
+        $percent             = $request->input('percent', null);
+        $subCategorySlug     = $request->input('sub_category', null);
+        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $filterCompanyIds    = $request->input('filter_company_ids', []);
+        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
+
+        $products = Product::getDefaultMetaData();
+        $products = $products->where('offer_price', '>', 0);
+
+        if ($relation && $relation === 'categories' && $slug) {
+            if ($percent) {
+                $products = $products->where('offer_price', '<=', $percent);
+                if ($subCategorySlug) {
+                    $products = $products->whereHas('categories', function ($query) use ($subCategorySlug) {
+                        $query->where('slug', $subCategorySlug);
+                    });
+                }
+            } else {
+                $products = $products->whereHas('categories', function ($query) use ($slug) {
+                    $query->where('slug', $slug);
+                });
+            }
+        }
+
+        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
+            $filterCategoryIds = explode(",", $filterCategoryIds);
+
+            $products = $products->whereHas('categories', function ($query) use ($filterCategoryIds) {
+                $query->whereIn('id', $filterCategoryIds);
+            });
+        }
+
+        // if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
+        //     $filterCompanyIds = explode(",", $filterCompanyIds);
+
+        //     $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
+        //         $query->whereIn('id', $filterCompanyIds);
+        //     });
+        // }
+
+        // if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
+        //     $filterDosageFormIds = explode(",", $filterDosageFormIds);
+
+        //     $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
+        //         $query->whereIn('id', $filterDosageFormIds);
+        //     });
+        // }
+
+        $order = $order === 'desc' ? 'desc' : 'asc';
+        $products = $products->orderBy($orderBy, $order);
+
+        $paginate = config('crud.paginate.default');
+        if ($searchKey) {
+            $products = Product::search($searchKey)->paginate($paginate);
+        } else {
+            $products = $products->where('price', '>', 0)->paginate($paginate);
+        }
+
+        return $products;
     }
 
     public function getSortData($data, $sortBy = 'name')
