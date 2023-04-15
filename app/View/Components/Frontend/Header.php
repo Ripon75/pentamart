@@ -30,7 +30,7 @@ class Header extends Component
         // TODO: Get all data from config or db
         $customerId = Auth::id();
         $carObj     = new Cart();
-        $cart       = $carObj->_getCurrentCustomerCart();
+        $cart       = $carObj->getCurrentCustomerCart();
         $areas       = Area::orderBy('name', 'asc')->get();
         $userAddress = Address::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [

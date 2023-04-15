@@ -25,19 +25,17 @@ class CreateOrdersTable extends Migration
                     ->onDelete('cascade');
             $table->decimal('coupon_value', 20, 2)->default(0)->nullable();
             $table->decimal('delivery_charge', 20, 2)->default(0);
-            $table->decimal('order_price', 20, 2)->default(0);
-            $table->decimal('order_sell_price', 20, 2)->default(0);
-            $table->decimal('order_discount', 20, 2)->default(0);
-            $table->decimal('order_payable_price', 20, 2)->default(0);
+            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('sell_price', 20, 2)->default(0);
+            $table->decimal('discount', 20, 2)->default(0);
+            $table->decimal('payable_price', 20, 2)->default(0);
             $table->boolean('is_paid')->default(false);
             $table->timestamp('paid_at')->nullable();
-            $table->foreignId('current_status_id')->nullable()->constrained('statuses')
+            $table->foreignId('status_id')->nullable()->constrained('statuses')
                 ->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamp('current_status_at')->nullable();
-            $table->foreignId('created_by_id')->nullable();
+            $table->foreignId('created_by')->nullable();
             $table->string('note', 1024)->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -10,7 +10,7 @@
         <div class="p-8">
             {{-- Header section --}}
             <div class="flex border-2 border-black items-center justify-between p-2">
-                <img class="h-12 w-auto" src="/images/logos/logo-full-color.svg" alt="">
+                <img class="h-12 w-auto" src="/images/logos/logo.png" alt="">
                 <div class="flex flex-col items-center">
                     <label class="font-medium">Order Date</label>
                     <div class="text-right">

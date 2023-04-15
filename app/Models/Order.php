@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Carbon\Carbon;
 use App\Traits\BaseStatusMap;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -102,9 +102,9 @@ class Order extends Model implements Auditable
     {
         $statusObj = null;
         if(is_numeric($status)) {
-            $statusObj = OrderStatus::find($status);
+            $statusObj = Status::find($status);
         } else {
-            $statusObj = OrderStatus::where('slug', $status)->first();
+            $statusObj = Status::where('slug', $status)->first();
         }
 
         if (!$statusObj) {

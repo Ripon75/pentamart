@@ -25,6 +25,7 @@ class CreateProductsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('price', 20, 2)->default(0);
             $table->decimal('offer_price', 20, 2)->default(0);
+            $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('offer_percent', 20, 2)->default(0);
             $table->bigInteger('current_stock')->default(0);
             $table->enum('status', $status)->default('active');

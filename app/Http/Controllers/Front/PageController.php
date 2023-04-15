@@ -428,7 +428,7 @@ class PageController extends Controller
 
         $products = [];
         $carObj   = new Cart();
-        $cart     = $carObj->_getCurrentCustomerCart();
+        $cart     = $carObj->getCurrentCustomerCart();
         if ($cart) {
             $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         }

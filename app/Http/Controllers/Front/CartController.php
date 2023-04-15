@@ -7,7 +7,7 @@ use App\Models\Area;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Classes\Utility;
-use App\Models\UserAddress;
+use App\Models\Address;
 use App\Events\OrderCreate;
 use Illuminate\Http\Request;
 use App\Models\Prescription;
@@ -74,7 +74,7 @@ class CartController extends Controller
     public function cartItemCount()
     {
         $cartCount = 0;
-        $cart      = $this->cartObj->_getCurrentCustomerCart();
+        $cart      = $this->cartObj->getCurrentCustomerCart();
         if ($cart) {
             $cartCount = $cart->items->count() ?? 0;
         }
@@ -90,7 +90,7 @@ class CartController extends Controller
 
         $shippingAddressId = $request->input('shipping_address_id', null);
 
-        $cart = $this->cartObj->_getCurrentCustomerCart();
+        $cart = $this->cartObj->getCurrentCustomerCart();
         if ($shippingAddressId) {
             $cart->shipping_address_id = $shippingAddressId;
             $res = $cart->save();
@@ -106,7 +106,7 @@ class CartController extends Controller
     public function uploadPrescription()
     {
         $carObj           = new Cart();
-        $cart             = $carObj->_getCurrentCustomerCart();
+        $cart             = $carObj->getCurrentCustomerCart();
         $products         = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         $areas            = Area::orderBy('name', 'asc')->get();
         $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
@@ -139,7 +139,7 @@ class CartController extends Controller
         $note              = $request->input('note', null);
         $userId            = Auth::id();
         $now               = Carbon::now();
-        $cart              = Cart::where('customer_id', $userId)->first();
+        $cart              = Cart::where('user_id', $userId)->first();
         $deliveryCharge    = 0;
         if ($cart) {
             $deliveryCharge = $cart->deliveryGateway->price ?? 0;
@@ -211,7 +211,7 @@ class CartController extends Controller
     {
         $products = [];
         $cartObj  = new Cart();
-        $cart     = $cartObj->_getCurrentCustomerCart();
+        $cart     = $cartObj->getCurrentCustomerCart();
         if ($cart) {
             $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         }

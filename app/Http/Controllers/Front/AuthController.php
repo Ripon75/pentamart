@@ -177,11 +177,11 @@ class AuthController extends Controller
 
             if(Auth::attempt(['phone_number' => $phone, 'password' => $password, 'ac_active' => true], $isRemember)) {
                 $user  = Auth::user();
-                $cart  = $user->cart;
-                if (!$cart) {
-                    $cartObj = new Cart();
-                    $cartObj->_createAndAssignCustomer($user->id);
-                }
+                // $cart  = $user->cart;
+                // if (!$cart) {
+                //     $cartObj = new Cart();
+                //     $cartObj->_createAndAssignCustomer($user->id);
+                // }
                 $request->session()->regenerate();
 
                 Utility::setUserEvent('customer-login', [
@@ -207,10 +207,10 @@ class AuthController extends Controller
             if ($user) {
                 $code = $user->code;
                 Auth::login($user);
-                if (!$user->cart) {
-                    $cartObj = new Cart();
-                    $cartObj->_createAndAssignCustomer($user->id);
-                }
+                // if (!$user->cart) {
+                //     $cartObj = new Cart();
+                //     $cartObj->_createAndAssignCustomer($user->id);
+                // }
 
                 Utility::setUserEvent('customer-login', [
                     'user' => $user,

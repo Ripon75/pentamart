@@ -262,7 +262,6 @@
     var selectedPackSingle     = $('.selected-pack-single');
     var priceLabel             = $('#item-price-label');
     var itemMRPLabel           = $('#item-mrp-label');
-    // var inputPacksize          = $('#input-pack-size');
     var inputPrice             = $('#input-price');
     var inputProductMRP        = $('#input-product-mrp');
     var inputQty               = $('#input-qty');
@@ -271,7 +270,6 @@
     var wishButton             = $('#wish-button');
     var undoWishButton         = $('#undo-wish-button');
     var packQtyLavel           = $('#pack-quantity-label');
-    // var inputNegativeSellAllow = $('#input-negative-sell-allow');
     var sUserID                = {{ Auth::id() }}
 
     @auth
@@ -280,7 +278,7 @@
 
         // Automatically product added to cart if local storage have cart_product_id
         if (cartStorageProductID) {
-            __addCartItem(cartStorageProductID, 1, null, true);
+            __addCartItem(cartStorageProductID, 1, null);
             localStorage.removeItem('cart_product_id');
         }
         // Automatically product added to wishcart if local storage have wish_product_id
@@ -351,7 +349,7 @@
         });
     });
 
-    function __addCartItem(productID, productQty, btn, isLocalStoreage = false) {
+    function __addCartItem(productID, productQty, btn) {
         if (btn) {
             btn.prop("disabled", true);
         }
@@ -360,12 +358,11 @@
 
         axios.post(cartAddItemEndPoint, {
             item_id: productID,
-            item_quantity: productQty,
-            is_local_storage: isLocalStoreage
+            quantity: productQty,
         })
         .then((response) => {
             if (response.data.res) {
-                drawerCartItemRender();
+                // drawerCartItemRender();
                 __totalPriceCalculation();
             } else {
                 __showNotification('error', response.data.message, 1000);

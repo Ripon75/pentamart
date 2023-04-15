@@ -120,7 +120,7 @@ class OrderController extends Controller
         $now      = Carbon::now();
 
         // Get current customer cart
-        $cart = $cartObj->_getCurrentCustomerCart();
+        $cart = $cartObj->getCurrentCustomerCart();
         $cart = Cart::find($cart->id);
         if (count($cart->items) == 0) {
             return back();
@@ -415,7 +415,7 @@ class OrderController extends Controller
 
         if ($order && ($order->user_id === $userId)) {
             $cart = new Cart();
-            $cart = $cart->_getCurrentCustomerCart();
+            $cart = $cart->getCurrentCustomerCart();
             $cart->items()->detach();
 
             $itemIds = [];

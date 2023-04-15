@@ -171,7 +171,7 @@
                 <div class="flex-1">
                     {{-- TODO: Make a logo component --}}
                     <a href="{{ route('home') }}">
-                        <img class="logo h-[28px] md:h-[32px] mx-auto" src="/images/logos/logo-full-color.svg">
+                        <img class="logo h-[28px] md:h-[32px] mx-auto" src="/images/logos/logo.png">
                     </a>
                 </div>
                 {{-- =====Mobile user profile========= --}}
@@ -376,7 +376,7 @@
         <div class="w-60 h-full bg-white">
             <div class="header h-14 flex space-x-4 items-center bg-gray-300 shadow">
                 <a href="{{ route('home') }}" class="flex-1">
-                    <img class="w-[8.375rem] pl-4" src="/images/logos/logo-full-color.svg">
+                    <img class="w-[8.375rem] pl-4" src="/images/logos/logo.png">
                 </a>
                 <div class=""id="menu" onclick="toggleMenu()">
                     <button class="rounded px-4 py-2"><i class="text-lg fa-solid fa-xmark"></i></button>
@@ -437,7 +437,7 @@
     </div>
 </section>
 {{-- ========Cart Drawer=========== --}}
-<div class="fixed inset-y-0 right-0 z-40 content-center hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex">
+{{-- <div class="fixed inset-y-0 right-0 z-40 content-center hidden sm:hidden md:flex lg:flex xl:flex 2xl:flex">
     <button id="btn-cart-drawer" class="rounded-l-md rounded-tl-md group group:transition-all group:duration-300 group:ease-in-out w-16 h-20 mt-auto mb-auto shadow-lg hover:shadow-xl
         flex flex-col" type="button" data-bs-toggle="offcanvas" data-bs-target="#drawerCart" aria-controls="drawerCart">
         <div class="rounded-tl-md flex-1 flex flex-col items-center justify-center w-full space-y-2 bg-secondary-light group-hover:bg-secondary group-hover:transition-all group-hover:duration-300 group-hover:ease-in-out">
@@ -450,12 +450,11 @@
             </span>
         </span>
     </button>
-</div>
+</div> --}}
 
-<div style="z-index: 99999" class="offcanvas offcanvas-end fixed bottom-0 flex flex-col max-w-full bg-white invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 top-0 right-0 border-none w-[400px]"
+{{-- <div style="z-index: 99999" class="offcanvas offcanvas-end fixed bottom-0 flex flex-col max-w-full bg-white invisible bg-clip-padding shadow-sm outline-none transition duration-300 ease-in-out text-gray-700 top-0 right-0 border-none w-[400px]"
     tabindex="-1" id="drawerCart" aria-labelledby="drawerCartLabel">
     <div class="offcanvas-header flex items-center justify-between bg-secondary px-4 py-2">
-        {{-- <h5 class="offcanvas-title mb-0 leading-normal font-semibold" id="offcanvasRightLabel">Cart</h5> --}}
         <span class="font-medium">
             <i class="mr-2 fa-solid fa-basket-shopping"></i>
             <span class="cart-count">0</span> Items
@@ -466,7 +465,6 @@
         <div class="list border-t flex-1 overflow-y-auto">
         </div>
     </div>
-    {{-- =======Footer======== --}}
     <div class="p-4">
         <a href="{{ route('checkout') }}" class="flex items-center justify-center">
             <button class="flex-1 bg-secondary-light py-2.5 rounded-l">
@@ -478,7 +476,7 @@
             </button>
         </a>
     </div>
-</div>
+</div> --}}
 
 {{-- ========Login modal=========== --}}
 @php

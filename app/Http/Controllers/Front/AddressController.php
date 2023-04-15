@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Front;
 
-use Auth;
 use App\Models\Area;
 use App\Models\Cart;
 use App\Models\User;
-use App\Models\Order;
 use App\Classes\Utility;
-use App\Models\UserAddress;
+use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
+    protected $util;
     public function __construct()
     {
         $this->util = new Utility();
@@ -68,7 +68,7 @@ class AddressController extends Controller
             return $this->util->makeResponse(null, 'Address title already taken', 400);
         }
 
-        $obj = new UserAddress();
+        $obj = new Address();
 
         $obj->title        = $title;
         $obj->address      = $address;
@@ -79,7 +79,7 @@ class AddressController extends Controller
 
         if ($res) {
             $cartObj = new Cart();
-            $cart    = $cartObj->_getCurrentCustomerCart();
+            $cart    = $cartObj->getCurrentCustomerCart();
             $cart->shipping_address_id = $obj->id;
             $cart->save();
 
@@ -128,7 +128,7 @@ class AddressController extends Controller
             return back()->with('title_exist', 'Address title already taken');
         }
 
-        $obj = new UserAddress();
+        $obj = new Address();
 
         $obj->title        = $title;
         $obj->address      = $address;
@@ -139,7 +139,7 @@ class AddressController extends Controller
 
         if ($res) {
             $cartObj = new Cart();
-            $cart    = $cartObj->_getCurrentCustomerCart();
+            $cart    = $cartObj->getCurrentCustomerCart();
             $cart->shipping_address_id = $obj->id;
             $cart->save();
 
