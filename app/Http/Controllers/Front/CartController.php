@@ -50,7 +50,7 @@ class CartController extends Controller
 
     public function removeItem(Request $request)
     {
-        $this->cartObj->_removeItem($request);
+        $this->cartObj->removeItem($request);
 
         Utility::setUserEvent('remove-from-cart', $request->all());
 

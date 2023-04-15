@@ -25,19 +25,19 @@ class DashboardController extends Controller
         // Current order report
         $orderReport = Order::select(DB::raw('
             count(*) as order_count,
-            SUM(order_payable_price) as order_value,
+            SUM(payable_price) as order_value,
             SUM((CASE WHEN is_paid = 1 THEN 1 ELSE 0 END)) as paid_order,
-            SUM((CASE WHEN is_paid = 1 THEN order_payable_price ELSE 0 END)) as paid_order_value,
+            SUM((CASE WHEN is_paid = 1 THEN payable_price ELSE 0 END)) as paid_order_value,
             SUM((CASE WHEN is_paid = 0 THEN 1 ELSE 0 END)) as unpaid_order,
-            SUM((CASE WHEN is_paid = 0 THEN order_payable_price ELSE 0 END)) as unpaid_order_value,
-            SUM((CASE WHEN current_status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
-            SUM((CASE WHEN current_status_id = 1 THEN order_payable_price ELSE 0 END)) as submitted_order_value,
-            SUM((CASE WHEN current_status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
-            SUM((CASE WHEN current_status_id = 3 THEN order_payable_price ELSE 0 END)) as canceled_order_value,
-            SUM((CASE WHEN current_status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
-            SUM((CASE WHEN current_status_id = 7 THEN order_payable_price ELSE 0 END)) as delivered_order_value,
-            SUM((CASE WHEN current_status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
-            SUM((CASE WHEN current_status_id = 9 THEN order_payable_price ELSE 0 END)) as returned_order_value
+            SUM((CASE WHEN is_paid = 0 THEN payable_price ELSE 0 END)) as unpaid_order_value,
+            SUM((CASE WHEN status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
+            SUM((CASE WHEN status_id = 1 THEN payable_price ELSE 0 END)) as submitted_order_value,
+            SUM((CASE WHEN status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
+            SUM((CASE WHEN status_id = 3 THEN payable_price ELSE 0 END)) as canceled_order_value,
+            SUM((CASE WHEN status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
+            SUM((CASE WHEN status_id = 7 THEN payable_price ELSE 0 END)) as delivered_order_value,
+            SUM((CASE WHEN status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
+            SUM((CASE WHEN status_id = 9 THEN payable_price ELSE 0 END)) as returned_order_value
         '))->whereBetween('created_at', [$startDate, $endDate])->first();
 
         // For previous report
@@ -49,19 +49,19 @@ class DashboardController extends Controller
         // Previous order report
         $pOrderReport = Order::select(DB::raw('
             count(*) as order_count,
-            SUM(order_payable_price) as order_value,
+            SUM(payable_price) as order_value,
             SUM((CASE WHEN is_paid = 1 THEN 1 ELSE 0 END)) as paid_order,
-            SUM((CASE WHEN is_paid = 1 THEN order_payable_price ELSE 0 END)) as paid_order_value,
+            SUM((CASE WHEN is_paid = 1 THEN payable_price ELSE 0 END)) as paid_order_value,
             SUM((CASE WHEN is_paid = 0 THEN 1 ELSE 0 END)) as unpaid_order,
-            SUM((CASE WHEN is_paid = 0 THEN order_payable_price ELSE 0 END)) as unpaid_order_value,
-            SUM((CASE WHEN current_status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
-            SUM((CASE WHEN current_status_id = 1 THEN order_payable_price ELSE 0 END)) as submitted_order_value,
-            SUM((CASE WHEN current_status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
-            SUM((CASE WHEN current_status_id = 3 THEN order_payable_price ELSE 0 END)) as canceled_order_value,
-            SUM((CASE WHEN current_status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
-            SUM((CASE WHEN current_status_id = 7 THEN order_payable_price ELSE 0 END)) as delivered_order_value,
-            SUM((CASE WHEN current_status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
-            SUM((CASE WHEN current_status_id = 9 THEN order_payable_price ELSE 0 END)) as returned_order_value
+            SUM((CASE WHEN is_paid = 0 THEN payable_price ELSE 0 END)) as unpaid_order_value,
+            SUM((CASE WHEN status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
+            SUM((CASE WHEN status_id = 1 THEN payable_price ELSE 0 END)) as submitted_order_value,
+            SUM((CASE WHEN status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
+            SUM((CASE WHEN status_id = 3 THEN payable_price ELSE 0 END)) as canceled_order_value,
+            SUM((CASE WHEN status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
+            SUM((CASE WHEN status_id = 7 THEN payable_price ELSE 0 END)) as delivered_order_value,
+            SUM((CASE WHEN status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
+            SUM((CASE WHEN status_id = 9 THEN payable_price ELSE 0 END)) as returned_order_value
         '))->whereBetween('created_at', [$pStartDate, $pEndDate])->first();
 
         // Calculate order value percentage
@@ -86,7 +86,7 @@ class DashboardController extends Controller
         $totalUser = User::count();
 
         // Calculate cart items value
-        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(total_sell_price) as cart_value"))->first();
+        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(sell_price) as cart_value"))->first();
 
         // Calculate number of login and current login user
         $userEvent = UserEvent::select(

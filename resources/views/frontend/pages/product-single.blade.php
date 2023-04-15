@@ -65,37 +65,21 @@
                        <div class="mt-1 pt-1 pb-1">
                            <div class="flex mb-2">
                                <strong>Colors:&nbsp;</strong>&nbsp;
-                               <div class="flex items-center mr-4">
-                                   <input id="red-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="red-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Red</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="green-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="green-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Green</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="yellow-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="yellow-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yellow</label>
-                               </div>
+                               @foreach ($productColors as $color)
+                                <div class="flex items-center mr-4">
+                                    <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
+                                </div>
+                               @endforeach
                            </div>
                            <div class="flex">
                                <strong>Sizes:&nbsp;</strong>&nbsp;
-                               <div class="flex items-center mr-4">
-                                   <input id="m-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="m-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">M</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="l-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="l-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">L</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="xl-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="xl-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XL</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="xll-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="xll-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XLL</label>
-                               </div>
+                               @foreach ($productSizes as $size)
+                                <div class="flex items-center mr-4">
+                                    <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                    <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
+                                </div>
+                               @endforeach
                            </div>
                        </div>
                     </div>
@@ -172,9 +156,6 @@
                                 @endif
                             </div>
                         </div>
-                        <h6 class="text-sm font-semibold text-gray-500">
-                            * Delivery will be done in Dhaka city only.
-                        </h6>
                     </div>
                 </div>
             </div>

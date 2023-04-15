@@ -157,6 +157,16 @@ class Product extends Model implements Auditable
         return $this->belongsToMany(Section::class, 'section_item', 'item_id', 'section_id')->withTimestamps();
     }
 
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_sizes', 'product_id', 'size_id')->withTimestamps();
+    }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id')->withTimestamps();
+    }
+
     // Relation end ======================================================================
 
     public function getImageSrcAttribute($value)
@@ -194,7 +204,9 @@ class Product extends Model implements Auditable
         )
         ->with([
             'brand:id,name,slug',
-            'category:id,name,slug'
+            'category:id,name,slug',
+            'sizes',
+            'colors'
         ])
         ->where('status', 'active')
         ->where('price', '>', 0);

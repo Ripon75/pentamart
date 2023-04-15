@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
             DeliveryGatewaySeeder::class,
             StatusSeeder::class,
             SectionSeeder::class,
+            SizeSeeder::class,
+            ColorSeeder::class,
+            ProductSizeSeeder::class,
+            ProductColorSeeder::class,
         ]);
     }
 }

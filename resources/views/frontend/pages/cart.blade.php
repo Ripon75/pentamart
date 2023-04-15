@@ -27,8 +27,14 @@
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                         Product
                                     </th>
+                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                        Size
+                                    </th>
+                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                        Color
+                                    </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
-                                        Unit MRP
+                                        Price
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center border-r">
                                         Qty
@@ -56,69 +62,42 @@
                                             </div>
                                         </td>
                                         <td class="border text-left pl-1 sm:pl-1 md:pl-2">
-                                            <div class="flex space-x-2">
-                                                @if ($product->dosageForm)
-                                                    <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="block pt-1 text-xs text-gray-500">{{ $product->dosageForm->name }}</a>
-                                                @endif
-                                                @if ($product->counter_type === 'prescribed')
-                                                    <span class="text-secondary text-xs pt-1">Prescription required</span>
-                                                @endif
-                                            </div>
                                             @if ($product->name)
                                             <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block text-primary text-xs sm:text-xs md:text-base font-medium" title="{{ $product->name }}">
                                                 {{ $product->name }}
                                             </a>
                                             @endif
-                                            @if ($product->company_id)
-                                                <a href="{{ route('companies.show', $product->company->slug) }}" class="block text-gray-600 text-xs font-medium italic" title="{{ $product->company->name }}">
-                                                    {{ $product->company->name }}
-                                                </a>
-                                            @else
-                                                @if ($product->brand && $product->brand->company)
-                                                    <a href="{{ route('companies.show', $product->brand->company->slug) }}" class="text-gray-600 text-sm italic">
-                                                        {{ $product->brand->company->name }}
-                                                    </a>
-                                                @endif
-                                            @endif
                                         </td>
                                         <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            <span>{{ $currency }}</span>
                                             <span class="ml-1">
-                                                {{ $product->pivot->item_mrp }}
+                                                Size
+                                            </span>
+                                        </td>
+                                        <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                            <span class="ml-1">
+                                                Color
+                                            </span>
+                                        </td>
+                                        <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                            <span class="ml-1">
+                                                {{ $product->pivot->item_price }}
                                             </span>
                                         </td>
                                         <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
-                                            @php
-                                                $itemDiscountCalculate = 0;
-                                                if ($product->offer_price > 0) {
-                                                    $itemDiscountCalculate = $product->mrp - $product->offer_price;
-                                                }
-                                            @endphp
                                             <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
                                                 data-item-id="{{ $product->id }}"
                                                 data-unit-price="{{ $product->offer_price }}"
-                                                data-item-pack-size="{{ $product->pack_size }}"
                                                 data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
                                                 data-total-item-mrp-label="total-mrp-{{ $product->pivot->item_id }}"
-                                                data-item-discount="{{ $itemDiscountCalculate }}"
+                                                data-item-discount="{{ $product->discount }}"
                                                 data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
                                                 data-unit-mrp="{{ $product->price }}">
 
                                                 @for ($i = 1; $i <= 5; $i++)
-                                                    <option value="{{ $i }}"
-                                                        {{ $i == $product->pivot->quantity ? 'selected' : '' }}>
-                                                        {{ $i }} {{ $product->uom }}
+                                                    <option value="{{ $i }}">
+                                                        {{ $i }}
                                                     </option>
                                                 @endfor
-                                                {{-- @if ($product->is_single_sell_allow)
-                                                @else
-                                                    @for ($i = 1; $i <= $product->num_of_pack; $i++)
-                                                        <option value="{{ $product->pack_size * $i }}"
-                                                            {{ ($product->pack_size * $i) == $product->pivot->quantity ? 'selected' : '' }}>
-                                                            {{ $product->pack_size * $i }} {{ $product->uom }}
-                                                        </option>
-                                                    @endfor
-                                                @endif --}}
                                             </select>
                                         </td>
                                         <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
@@ -143,10 +122,9 @@
                                             </span>
                                         </td>
 
-                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
-                                            >{{ $currency }}
+                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                             @php
-                                                $itemTotalPrice = $product->pivot->item_offer_price * $product->pivot->quantity;
+                                                $itemTotalPrice = $product->pivot->sell_price * $product->pivot->quantity;
                                                 $itemTotalPrice = number_format( (float) $itemTotalPrice, 2, '.', '');
                                             @endphp
                                             <span id="total-price-{{ $product->pivot->item_id }}" class="s-cart-total-price ml-1">
@@ -156,8 +134,7 @@
                                             </span>
                                         </td>
 
-                                        <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
-                                            >{{ $currency }}
+                                        <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                             @php
                                                 $itemTotalMRP = $product->pivot->item_price * $product->pivot->quantity;
                                             @endphp
@@ -176,7 +153,7 @@
                                             </button>
                                         </td>
                                         @php
-                                            $subTotal += $product->pivot->item_offer_price * $product->pivot->quantity;
+                                            $subTotal += $product->pivot->sell_price * $product->pivot->quantity;
                                         @endphp
                                     </tr>
                                 @endforeach
@@ -245,8 +222,8 @@
                             <span>{{ $currency }} 0.00</span>
                         </div>
                     </div>
-                    <div class="bg-secondary p-2 rounded-b">
-                        <div class="flex justify-between text-primary font-medium">
+                    <div class="bg-[#00798c] p-2 rounded-b">
+                        <div class="flex justify-between text-white font-medium">
                             <span class="text-base sm:text-base md:text-lg">Total</span>
                             <span class="text-base sm:text-base md:text-lg font-medium">
                                 @php
@@ -262,12 +239,12 @@
                         </div>
                     </div>
                 </section>
-                <form action="{{ route('my.order.store') }}" method="POST" enctype="multipart/form-data" id="form-checkout">
+                <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
                     @csrf
                     {{-- ========Choose Delivery Type===== --}}
                     <section class="mt-4">
                         <div class="card border-2">
-                            <div class="header">
+                            {{-- <div class="header">
                                 <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
                             </div>
                             <div class="p-2 flex space-x-2 first:space-x-0">
@@ -286,7 +263,7 @@
                                         </span>
                                     </button>
                                 @endfor
-                            </div>
+                            </div> --}}
                             <div class="p-2">
                                 <div class="flex justify-between items-center">
                                     <div class="flex space-x-2 items-center">
@@ -295,7 +272,7 @@
                                         </div>
                                         <div class="">
                                             <div class="text-sm sm:text-sm md:text-sm font-semibold">
-                                                Select Shipping Address
+                                                Select Address
                                                 <span class="text-red-500 ml-1">*</span>
                                             </div>
                                             <input type="hidden" class="shipping-address-id" name="shipping_address_id"
@@ -306,7 +283,7 @@
                                         </div>
                                     </div>
                                     <div class="">
-                                        <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-secondary"
+                                        <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
                                         data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth
                                         @guest data-bs-target="#loginModalCenter" @endguest>Choose</button>
                                     </div>
@@ -315,7 +292,7 @@
                         </div>
                     </section>
                     {{-- =========Choose Payment Method======= --}}
-                    <section class="mt-4">
+                    {{-- <section class="mt-4">
                         <div class="card border-2">
                             <div class="header">
                                 <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
@@ -341,7 +318,7 @@
                                 @endfor
                             </div>
                         </div>
-                    </section>
+                    </section> --}}
                     {{-- ===========Use coupon==================== --}}
                     <section class="mt-4">
                         <div class="card border-2">
@@ -355,7 +332,7 @@
                                             <input id="input-coupon-code-id" type="hidden" value="" name="coupon_code_id">
                                             <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
                                         </div>
-                                        <button id="btn-check-coupon" type="button" class="btn btn-md btn-secondary">Apply</button>
+                                        <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
                                     </div>
                                 </div>
                                 <div id="active-coupon-box" class="hidden">
@@ -373,28 +350,7 @@
                     {{-- ===============Checkout================== --}}
                     <section class="mt-4">
                         <div class="card border-2">
-                            {{-- <div class="header">
-                                <h1 class="title">Upload prescriptions<i class="ml-3 fa-solid fa-file-arrow-up"></i></h1>
-                            </div> --}}
                             <div class="px-4 py-2">
-                                {{-- <div class="mt-4">
-                                    <input id="input-cart-prescription-id" name="files[]" multiple type="file"
-                                        class="block w-full text-sm text-slate-500
-                                        focus:outline-none focus:ring-0
-                                        file:mr-4 file:py-2 file:px-8
-                                        file:rounded file:border
-                                        file:border-primary
-                                        file:text-sm file:font-medium
-                                        file:bg-violet-50 file:text-primary
-                                        hover:file:bg-violet-100
-                                    "/>
-                                </div> --}}
-                                {{-- <div class="flex space-x-2 mt-2">
-                                    <input id="input-prescription-checkbox" class="focus:ring-0" type="checkbox" value="">
-                                    <span class="text-primary text-xs">
-                                        I will give prescription at time of delivery
-                                    </span>
-                                </div> --}}
                                 <div class="mt-4">
                                     <label class="text-sm" for="">Write note here</label><br>
                                     <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
@@ -404,8 +360,7 @@
                                     <span class="text-gray-500 text-xs">
                                         I agree with
                                         <a href="/terms-and-conditions" class="text-primary">Terms and Conditions</a>,
-                                        <a href="/privacy-policy" class="text-primary">Privacy Policy</a>,
-                                        <a href="{{ route('return-policy') }}" class="text-primary">Return & Refund</a>
+                                        {{-- <a href="/privacy-policy" class="text-primary">Privacy Policy</a>, --}}
                                     </span>
                                 </div>
                                 <div class="mt-4">
@@ -451,13 +406,13 @@
         var cartAddItemEndPoint     = '/cart/item/add';
         var cartAddMetaDataEndPoint = '/cart/meta/add';
         // For cart page
-        var aleartTime                = '{{ config('crud.alear_time') }}';
-        var freeDeliveryCartAmount    = '{{ config('crud.free_delivery_cart_amount') }}';
-        var deleteCartItemBtn         = $('.delete-cart-item-btn');
+        var aleartTime             = '{{ config('crud.alear_time') }}';
+        var freeDeliveryCartAmount = '{{ config('crud.free_delivery_cart_amount') }}';
+        var deleteCartItemBtn      = $('.delete-cart-item-btn');
         // icon
-        var iconLoadding              = $('.loadding-icon');
-        var iconTrash                 = $('.trash-icon');
-        var continueCartIcon          = $('#continue-cart-icon');
+        var iconLoadding     = $('.loadding-icon');
+        var iconTrash        = $('.trash-icon');
+        var continueCartIcon = $('#continue-cart-icon');
         //end icon
         var emptyCart                 = $('#empty-cart');
         var cartInputItemQty          = $('.cart-input-item-qty');
@@ -493,12 +448,6 @@
         iconTrash.show();
         iconLoadding.hide();
 
-        // For prescription
-        var isPrescriptionNedded = false;
-        var inputPrescriptionCheckbox = $("#input-prescription-checkbox");
-        var inputCartPrescriptionId = $('#input-cart-prescription-id');
-        __checkPrescribeProduct();
-
         // Check first order
         var userOrderCount = {{ count(Auth::user()->orders) }};
         if (!userOrderCount) {
@@ -506,7 +455,7 @@
             deliveryGatewayPriceLabel.text('0.00');
         }
 
-        cart__totalPriceCalculation();
+        cartTotalPriceCalculation();
 
         $(function() {
             // Remove cart drawer & button
@@ -548,35 +497,6 @@
                 var totalItemMRPLabelID  = $(this).data('total-item-mrp-label');
                 var itemDiscount         = $(this).data('item-discount');
                 var totalDiscountLabelID = $(this).data('total-item-discount-label');
-
-                __cartCheckProductOfferQty(itemID, qty).then(res => {
-                    var productOfferQtyPrice = 0;
-                    if (res.data.success) {
-                        productOfferQtyPrice = res.data.result;
-                    } else {
-                        productOfferQtyPrice = 0;
-                    }
-                    productOfferQtyPrice = parseFloat(productOfferQtyPrice);
-
-                    unitPrice = productOfferQtyPrice > 0 ? productOfferQtyPrice : unitPrice;
-                    itemDiscount = productOfferQtyPrice > 0 ? (unitMRP - productOfferQtyPrice) : itemDiscount;
-
-                    // Check single sell allow or not
-                    itemTotalPrice       = parseFloat(unitPrice * qty);
-                    itemTotalMRP         = parseFloat(unitMRP * qty);
-                    itemTotalDiscount    = parseFloat(itemDiscount * qty);
-
-                    itemTotalPrice = itemTotalPrice ? itemTotalPrice : itemTotalMRP;
-    
-                    itemTotalDiscount        = itemTotalDiscount.toFixed(2);
-                    itemTotalPrice           = itemTotalPrice.toFixed(2);
-                    $(`#${totalItemLabelID}`).text(itemTotalPrice);
-                    $(`#${totalDiscountLabelID}`).text(itemTotalDiscount);
-                    $(`#${totalItemMRPLabelID}`).text(itemTotalMRP);
-    
-                    __removedCouponCode();
-                    cart__totalPriceCalculation();
-                });
             });
 
             // On Choose Delivery Type item
@@ -590,7 +510,7 @@
                 deliveryGatewayPriceLabel.text(gatewayPrice);
                 inputDeliveryGateway.val(gatewayID);
 
-                cart__totalPriceCalculation();
+                cartTotalPriceCalculation();
                 __addCartMetaData('delevery_type_id', gatewayID);
             });
 
@@ -609,10 +529,6 @@
             });
 
             btnOrderSubmit.click(function () {
-                if (isPrescriptionNedded) {
-                    __showNotification('error', 'Please choose prescription', aleartTime);
-                    return false;
-                }
                 var addressID = $('.header-shipping-address').find(":selected").val();
                 if (addressID) {
                     var checked = $('input[name=terms_and_conditons]:checked').val();
@@ -645,7 +561,7 @@
             // On remove coupon code
             btnRemoveCouponCode.click(function() {
                 __removedCouponCode();
-                cart__totalPriceCalculation();
+                cartTotalPriceCalculation();
             });
 
             $('#terms-and-conditons').click(function() {
@@ -680,16 +596,6 @@
                 $(this).find(iconLoadding).show();
                 continueCartIcon.hide();
             });
-
-            // input event with prescription checkbox
-            inputPrescriptionCheckbox.click(function () {
-                __checkPrescribeProduct();
-            });
-
-            // check prescription is seledted or not
-            inputCartPrescriptionId.change(function() {
-                __checkPrescribeProduct();
-            });
         });
 
         // Check coupon code function
@@ -713,10 +619,6 @@
                     if (coupon.applicable_on === 'cart') {
                         couponCodeOnCart(coupon);
                     }
-
-                    if (coupon.applicable_on === 'products' && coupon.discount_type === 'percentage') {
-                        couponCodeOnProducts(coupon);
-                    }
                 }
             })
             .catch((error) => {
@@ -735,9 +637,8 @@
                 .then(function (response) {
                     btn.parent().parent().remove();
                     __removedCouponCode();
-                    cart__totalPriceCalculation();
+                    cartTotalPriceCalculation();
                     __cartItemCount();
-                    __checkPrescribeProduct();
                 })
                 .catch(function (error) {
                     btn.find(iconLoadding).hide();
@@ -798,7 +699,7 @@
         }
 
           // Calculate total price
-        function cart__totalPriceCalculation(couponForProduct = false) {
+        function cartTotalPriceCalculation(couponForProduct = false) {
             var total                   = 0;
             var discount                = 0;
             var itemTotalDiscount       = 0;
@@ -884,7 +785,7 @@
             discountLabel.text(0.0);
             mInputDiscount.val(0.0);
             inputDelivaryCharge.val(deliveryGatewayPrice);
-            cart__totalPriceCalculation();
+            cartTotalPriceCalculation();
         }
 
         function couponCodeOnCart(coupon) {
@@ -911,90 +812,7 @@
             couponCode     = couponCode.toUpperCase();
             $('#coupon-discount-div').show();
             $('#coupon-discount-label').text(couponAmount.toFixed(2));
-            cart__totalPriceCalculation();
+            cartTotalPriceCalculation();
         }
-
-        function couponCodeOnProducts(coupon) {
-            var total        = 0;
-            var couponAmount = 0;
-            $(".product-discount-percent").each(function() {
-                var productMRP      = $(this).data('product-mrp');
-                var productQuantity = $(this).data('product-quantity');
-                var productDiscountPercent = parseFloat($(this).text());
-                var couponDiscountPercent = coupon.discount_amount;
-
-                // Casting integer value
-                productMRP = +productMRP;
-                productQuantity = +productQuantity;
-                productDiscountPercent = +productDiscountPercent;
-
-                if(productDiscountPercent < couponDiscountPercent){
-                    var productDiscount = (productMRP * couponDiscountPercent) /100;
-                    productDiscount = productDiscount * productQuantity;
-                    couponAmount += productDiscount;
-                } else {
-                    var productDiscount = (productMRP * productDiscountPercent) /100;
-                    productDiscount = productDiscount * productQuantity;
-                    couponAmount += productDiscount;
-                }
-            });
-            couponAmount = parseFloat(couponAmount);
-
-            applyCouponBox.hide();
-            activeCouponBox.show();
-            labelCouponCode.text(coupon.code);
-            inputCouponCodeId.val(coupon.id);
-            discountLabel.text(0);
-            mInputDiscount.val(couponAmount)
-            var couponCode = coupon.code;
-            couponCode     = couponCode.toUpperCase();
-            $('#coupon-discount-div').show();
-            $('#coupon-discount-label').text(couponAmount.toFixed(2));
-            cart__totalPriceCalculation(true);
-        }
-
-        function __checkPrescribeProduct() {
-            var isPrescriptionCheckboxChecked = inputPrescriptionCheckbox.prop("checked")
-            var isPrescriptionSelected = document.getElementById("input-cart-prescription-id").files.length;
-            if (isPrescriptionCheckboxChecked || isPrescriptionSelected) {
-                isPrescriptionNedded = false;
-                inputCartPrescriptionId.css({"color": "black"});
-                return false;
-            }else {
-                $('.input-counter-type').each(function () {
-                    var counterType = $(this).val();
-                    if (counterType === 'prescribed') {
-                        isPrescriptionNedded = true;
-                        inputCartPrescriptionId.css({"color": "red"});
-                        return false;
-                    } else {
-                        isPrescriptionNedded = false;
-                        inputCartPrescriptionId.css({"color": "black"});
-                    }
-                });
-            }
-        }
-
-        async function __cartCheckProductOfferQty(selectedProductId, selectedProductQty) {
-            var checkOfferQtyEndpoint = '/api/check/offer/quantity';
-            try {
-                let res = await axios({
-                    url: checkOfferQtyEndpoint,
-                    method: 'get',
-                    params: {
-                        'product_id': selectedProductId,
-                        'quantity': selectedProductQty
-                    },
-                    headers: {
-                        'Content-Type': 'application/json',
-                    }
-                    })
-                return res
-            }
-            catch (err) {
-                console.error(err);
-            }
-        }
-
     </script>
 @endpush

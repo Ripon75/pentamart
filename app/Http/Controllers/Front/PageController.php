@@ -389,13 +389,14 @@ class PageController extends Controller
 
         $currentURL = url()->current();
         Utility::saveIntendedURL($currentURL);
-        $product = Product::where('status', 'active')->find($id);
+        $product = Product::where('status', 'active')->getDefaultMetaData()->find($id);
+        $productSizes  = $product->sizes;
+        $productColors =  $product->colors;
 
         if(!$product) {
             abort(404);
         }
 
-        $productDetail = $product->detail;
         $userId  = Auth::id();
         $wishlistedProduct = null;
 
@@ -412,7 +413,8 @@ class PageController extends Controller
 
         return view('frontend.pages.product-single', [
             'product'         => $product,
-            'productDetail'   => $productDetail,
+            'productSizes'    => $productSizes,
+            'productColors'   => $productColors,
             'relatedProducts' => $relatedProducts,
             'isWishListed'    => $isWishListed,
             'otherProducts'   => $otherProducts,
@@ -432,6 +434,7 @@ class PageController extends Controller
         if ($cart) {
             $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         }
+
         $areas            = Area::orderBy('name', 'asc')->get();
         $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
         $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
