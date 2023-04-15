@@ -23,7 +23,7 @@ class CreateCartItemTable extends Migration
             $table->foreignId('color_id')->constrained('colors')->nullable()->onUpdate('cascade')
                 ->onDelete('cascade');
             $table->integer('quantity')->default(1);
-            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('item_price', 20, 2)->default(0);
             $table->decimal('sell_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('total_price', 20, 2)->default(0);
