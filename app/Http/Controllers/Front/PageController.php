@@ -531,7 +531,7 @@ class PageController extends Controller
                 $query->where('status', 'active');
             })->paginate($paginate);
         } else {
-            $products = $products->where('price', '>', 0)->paginate(5);
+            $products = $products->where('price', '>', 0)->paginate($paginate);
         }
 
         return $products;
