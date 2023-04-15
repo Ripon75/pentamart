@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Classes\Model;
 use App\Rules\NotNumeric;
 use Laravel\Scout\Searchable;
-use Illuminate\Support\Facades\DB;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
 {
-    use SoftDeletes, Searchable, HasFactory;
+    use SoftDeletes, Searchable, HasFactory, Userstamps;
     use \OwenIt\Auditing\Auditable;
 
     protected $table      = 'products';
@@ -86,6 +86,12 @@ class Product extends Model implements Auditable
         ],
         'description' => [
             'cast'     => 'string',
+            'fillable' => true
+        ],
+        'created_by' => [
+            'fillable' => true
+        ],
+        'updated_by' => [
             'fillable' => true
         ],
         'created_at' => [

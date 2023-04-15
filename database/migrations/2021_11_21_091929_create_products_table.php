@@ -23,8 +23,6 @@ class CreateProductsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('created_by_id')->nullable()->constrained('users')
-                  ->onUpdate('cascade')->onDelete('cascade');
             $table->decimal('price', 20, 2)->default(0);
             $table->decimal('offer_price', 20, 2)->default(0);
             $table->decimal('offer_percent', 20, 2)->default(0);
@@ -32,6 +30,8 @@ class CreateProductsTable extends Migration
             $table->enum('status', $status)->default('active');
             $table->string('image_src', 1000)->nullable();
             $table->text('description')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
