@@ -12,14 +12,8 @@
                         <div class="flex justify-between">
                             <div class="">
                                 @if ($product->offer_price > 0)
-                                    @php
-                                        $price          = $product->price;
-                                        $discountAmount = $product->price - $product->offer_price;
-
-                                        $discountPercent = ($discountAmount/$price) * 100
-                                    @endphp
                                     <span class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
-                                        {{ (number_format($discountPercent, 0)) }}
+                                        {{ (number_format($product->offer_percent, 0)) }}
                                         <span>%</span>
                                     </span>
                                 @endif
@@ -36,15 +30,9 @@
                         <div class="flex justify-between">
                             <div class="">
                                 @if ($product->offer_price > 0)
-                                    @php
-                                        $price          = $product->price;
-                                        $discountAmount = $product->price - $product->offer_price;
-
-                                        $discountPercent = ($discountAmount/$price) * 100
-                                    @endphp
                                     <span
                                         class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
-                                        {{ (number_format($discountPercent, 0)) }}
+                                        {{ (number_format($product->offer_percent, 0)) }}
                                         <span>%</span>
                                     </span>
                                 @endif
@@ -59,24 +47,24 @@
                 <div class="flex justify-between">
                     <div class="">
                         <h1 class="text-lg lg:text-2xl font-medium text-primary-dark mb-2 mt-2">{{ $product->name }}</h1>
-                        {{-- show dosage form --}}
-                        @if ($product->dosageForm)
-                            <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="text-base text-gray-500 block my-2">
-                                {{ $product->dosageForm->name }} (Brand name)
+                        {{-- show brand form --}}
+                        @if ($product->brand)
+                            <a href="{{ route('dosage-forms.show', $product->brand->slug) }}" class="text-base text-gray-500 block my-2">
+                                {{ $product->brand->name }}
                             </a>
                         @endif
-                        {{-- show generic --}}
-                        @if ($product->generic)
+                        {{-- show category --}}
+                        @if ($product->category_id)
                             <div class="text-sm text-gray-600">
-                                <strong>Generics :&nbsp;</strong>&nbsp;
-                                <a href="{{ route('generics.show', $product->generic->slug) }}">
-                                    {{ $product->generic->name }} (Category name)
+                                {{-- <strong>Category :&nbsp;</strong>&nbsp; --}}
+                                <a href="{{ route('generics.show', $product->category->slug) }}">
+                                    {{ $product->category->name }}
                                 </a>
                             </div>
                         @endif
 
-                       <div class="mt-1">
-                           <div class="flex">
+                       <div class="mt-1 pt-1 pb-1">
+                           <div class="flex mb-2">
                                <strong>Colors:&nbsp;</strong>&nbsp;
                                <div class="flex items-center mr-4">
                                    <input id="red-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
@@ -89,10 +77,6 @@
                                <div class="flex items-center mr-4">
                                    <input id="yellow-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
                                    <label for="yellow-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yellow</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="orange-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="orange-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Orange</label>
                                </div>
                            </div>
                            <div class="flex">

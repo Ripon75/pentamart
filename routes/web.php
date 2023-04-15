@@ -11,8 +11,6 @@ use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CustomerController;
 use App\Http\Controllers\Front\WishlistController;
 
-use Illuminate\Support\Facades\Http;
-
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
 
 Route:: get('/',                     [PageController::class, 'home'])->name('home');
@@ -24,12 +22,8 @@ Route:: get('/promotion-offers', [PageController::class, 'promotionOffers'])->na
 Route:: get('/privacy-policy',   [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 Route:: get('/return-policy',    [PageController::class, 'returnPolicy'])->name('return-policy');
 Route:: get('/contact',          [PageController::class, 'contact'])->name('contact');
-Route:: get('/brand/{slug}',     [PageController::class, 'brand'])->name('brands.show');
-Route:: get('/generic/{slug}/{thumbOnly?}',     [PageController::class, 'generic'])->name('generics.show');
-Route:: get('/dosage-form/{slug}/{thumbOnly?}', [PageController::class, 'dosageForm'])->name('dosage-forms.show');
-Route:: get('/company/{slug}/{thumbOnly?}',     [PageController::class, 'company'])->name('companies.show');
-Route:: get('/products/{thumbOnly?}',           [PageController::class, 'index'])->name('products.index');
-Route:: get('/products/{id}/{slug?}',           [PageController::class, 'productShow'])->name('products.show');
+Route:: get('/products/{thumbOnly?}', [PageController::class, 'index'])->name('products.index');
+Route:: get('/products/{id}/{slug?}', [PageController::class, 'productShow'])->name('products.show');
 Route:: get('/offers/categories/{slug}/{thumbOnly?}', [PageController::class, 'offerCategoryProduct'])->name('offers.categories.products');
 Route:: get('/offers/{thumbOnly?}', [PageController::class, 'offerProduct'])->name('offers.products');
 
@@ -59,10 +53,8 @@ Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCal
 // Cart items and wishlist count route
 Route::get('/cart/count', [CartController::class, 'cartItemCount']);
 // Personal care route
-// Route::get('tags/{slug}/{thumbOnly?}',       [PageController::class, 'tagPage'])->name('tag.page');
-Route::get('categories/{slug}/{thumbOnly?}', [PageController::class, 'categoryPage'])->name('category.page');
-// Route::get('symptoms/{slug}/{thumbOnly?}',   [PageController::class, 'symptomPage'])->name('symptom.page');
-Route::get('brands/{slug}/{thumbOnly?}',     [PageController::class, 'brandPage'])->name('brand.page');
+Route::get('categories/{id}/{thumbOnly?}', [PageController::class, 'categoryPage'])->name('category.page');
+Route::get('brands/{id}/{thumbOnly?}',       [PageController::class, 'brandPage'])->name('brand.page');
 // Get area
 Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');
 

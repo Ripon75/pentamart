@@ -11290,6 +11290,9 @@ textarea.form-control.is-invalid{
 .p-0{
   padding: 0px;
 }
+.p-3{
+  padding: 0.75rem;
+}
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;

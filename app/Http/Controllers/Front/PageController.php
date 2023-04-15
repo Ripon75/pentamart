@@ -15,7 +15,7 @@ use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\DosageForm;
-use App\Models\UserAddress;
+use App\Models\Address;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
@@ -464,221 +464,6 @@ class PageController extends Controller
         ]);
     }
 
-    public function brand(Request $request, $brandSlug)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'brand'
-        ]);
-
-        $brand = Brand::where('slug', $brandSlug)->first();
-
-        if(!$brand) {
-            abort(404);
-        }
-
-        $products = $this->getProducts($request, 'brand', $brandSlug);
-
-        return view('frontend.pages.brand', [
-            'products' => $products,
-            'brand'    => $brand
-        ]);
-    }
-
-    public function generic(Request $request, $genericSlug, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'generic'
-        ]);
-
-        $generic = Generic::where('slug', $genericSlug)->first();
-
-        if(!$generic) {
-            abort(404);
-        }
-
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-        } else {
-            $filterCompanyIds = [];
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-        $products = $this->getProducts($request, 'generic', $genericSlug);
-
-        $genericId = $generic->id;
-        $categories = Category::distinct()
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->select('categories.id', 'categories.name')
-            ->orderBy('categories.name', 'ASC')
-            ->get();
-
-        $companies = Company::distinct()
-            ->join('products', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.generic_id', $genericId)
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
-
-        $dosageForms = DosageForm::distinct()
-            ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.generic_id', $genericId)
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.generic';
-
-        return view($viewPage, [
-            'slug'                => $genericSlug,
-            'generic'             => $generic,
-            'products'            => $products,
-            'companies'           => $companies,
-            'categories'          => $categories,
-            'dosageForms'         => $dosageForms,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds
-        ]);
-    }
-
-    public function dosageForm(Request $request, $dosageFormSlug, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'dosage-form'
-        ]);
-
-        $dosageForm = DosageForm::where('slug', $dosageFormSlug)->first();
-
-        if(!$dosageForm) {
-            abort(404);
-        }
-
-        $searchKey         = $request->input('search_key', null);
-        $filterCategoryIds = $request->input('filter_category_ids', []);
-        $filterCompanyIds  = $request->input('filter_company_ids', []);
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-        } else {
-            $filterCompanyIds = [];
-        }
-
-       $products = $this->getProducts($request, 'dosageForm', $dosageFormSlug);
-
-        $dosageFormId = $dosageForm->id;
-        $categories = Category::distinct()
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->select('categories.id', 'categories.name')
-            ->orderBy('categories.name', 'ASC')
-            ->get();
-
-        $companies = Company::distinct()
-            ->join('products', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.dosage_form_id', $dosageFormId)
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.dosage-form';
-
-        return view($viewPage, [
-            'slug'              => $dosageFormSlug,
-            'dosageForm'        => $dosageForm,
-            'products'          => $products,
-            'categories'        => $categories,
-            'companies'         => $companies,
-            'filterCategoryIds' => $filterCategoryIds,
-            'filterCompanyIds'  => $filterCompanyIds
-        ]);
-    }
-
-    public function company(Request $request, $companySlug, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'company'
-        ]);
-
-        $company = Company::where('slug', $companySlug)->first();
-
-        if(!$company) {
-            return view('frontend.pages.not-found');
-        }
-
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-       $products = $this->getProducts($request, 'company', $companySlug);
-
-        $companyId = $company->id;
-       $categories = Category::distinct()
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->select('categories.id', 'categories.name')
-            ->orderBy('categories.name', 'ASC')
-            ->get();
-
-        $dosageForms = DosageForm::distinct()
-            ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.company_id', $companyId)
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.company';
-
-        return view($viewPage, [
-            'slug'                => $companySlug,
-            'company'             => $company,
-            'products'            => $products,
-            'categories'          => $categories,
-            'dosageForms'         => $dosageForms,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterDosageFormIds' => $filterDosageFormIds
-        ]);
-    }
-
     public function checkout(Request $request)
     {
         Utility::setUserEvent('pageview', [
@@ -708,81 +493,42 @@ class PageController extends Controller
         ]);
     }
 
-    private function getProducts($request, $relation = null, $slug = null)
+    private function getProducts($request, $relation = null, $id = null)
     {
-        $orderBy = 'price';
-        $percent             = $request->input('percent', null);
+        // $percent             = $request->input('percent', null);
         $searchKey           = $request->input('search_key', null);
-        $order               = $request->input('order', null);
+        // $order               = $request->input('order', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
 
         $products = Product::getDefaultMetaData();
 
         // Brand wise product find
-        if ($relation && $relation === 'brand' && $slug) {
-            if ($percent) {
-                $products = $products->where('selling_price', '>', 0);
-                $products = $products->where('selling_percent', '<=', $percent);
-            }
-            $products = $products->whereHas('brand', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
+        if ($relation && $relation === 'brand') {
+            $products = $products->where('brand_id', $id);
         }
 
         // Category wise product find
-        if ($relation && $relation === 'categories' && $slug) {
-            $products = $products->whereHas('categories', function($query) use ($slug) {
-                $query->where('slug', $slug);
-            });
+        if ($relation && $relation === 'categories') {
+            $products = $products->where('category_id', $id);
         }
-
-        // dosage form wise product filter
-        // if ($relation && $relation === 'dosageForm' && $slug) {
-        //     $products = $products->whereHas('dosageForm', function($query) use ($slug) {
-        //         $query->where('slug', $slug);
-        //     });
-        // }
-
-        // company wise product filter
-        // if ($relation && $relation === 'company' && $slug) {
-        //     $products = $products->whereHas('company', function($query) use ($slug) {
-        //         $query->where('slug', $slug);
-        //     });
-        // }
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
 
-            $products = $products->whereHas('categories', function($query) use ($filterCategoryIds) {
-                $query->whereIn('id', $filterCategoryIds);
-            });
+            $products = $products->whereIn('category_id', $filterCategoryIds);
+
+            // $products = $products->whereHas('categories', function($query) use ($filterCategoryIds) {
+            //     $query->whereIn('id', $filterCategoryIds);
+            // });
         }
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-
-            $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
-                $query->whereIn('id', $filterCompanyIds);
-            });
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-
-            $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
-                $query->whereIn('id', $filterDosageFormIds);
-            });
-        }
-
-        $order = $order === 'desc' ? 'desc' : 'asc';
-        $products = $products->orderBy($orderBy, $order);
+        // $order = $order === 'desc' ? 'desc' : 'asc';
+        // $products = $products->orderBy($orderBy, $order);
 
         $paginate = config('crud.paginate.default');
         if ($searchKey) {
             $products = Product::search($searchKey)->query(function($query) {
-                $query->where('status', 'activated');
+                $query->where('status', 'active');
             })->paginate($paginate);
         } else {
             $products = $products->where('price', '>', 0)->paginate($paginate);
@@ -905,13 +651,13 @@ class PageController extends Controller
         ]);
     }
 
-    public function brandPage(Request $request, $slug, $thumbOnly = false)
+    public function brandPage(Request $request, $id, $thumbOnly = false)
     {
         Utility::setUserEvent('pageview', [
             'page' => 'brand'
         ]);
 
-        $brand = Brand::where('slug', $slug)->first();
+        $brand = Brand::find($id);
 
         if(!$brand) {
             abort(404);
@@ -919,8 +665,6 @@ class PageController extends Controller
 
         $searchKey           = $request->input('search_key', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -928,57 +672,22 @@ class PageController extends Controller
             $filterCategoryIds = [];
         }
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-        } else {
-            $filterCompanyIds = [];
-        }
+        $products = $this->getProducts($request, 'brand', $id);
 
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-        $products = $this->getProducts($request, 'brand', $brand->slug);
-
-        $brandId = $brand->id;
        $categories = Category::distinct()
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $companies = Company::distinct()
-            ->join('products', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.brand_id', $brandId)
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
-
-        $dosageForms = DosageForm::distinct()
-            ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.brand_id', $brandId)
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
-
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.brand';
 
         return view($viewPage, [
             'products'            => $products,
-            'companies'           => $companies,
             'categories'          => $categories,
-            'dosageForms'         => $dosageForms,
             'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds,
             'pageTitle'           => $brand->name,
-            'slug'                => $slug
+            'id'                  => $id
         ]);
     }
 
