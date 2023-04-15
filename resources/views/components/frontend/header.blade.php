@@ -11,7 +11,7 @@
                             data-mc-on-previous-url="{{ url()->current() }}"
                             @auth data-bs-toggle="modal" data-bs-target="#address-modal" @endauth
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                           <i class="mr-2 fa-solid fa-location-dot" style="font-size: 10px;"></i>Change
+                           Change
                        </button>
                     </span>
                 </div>
@@ -74,11 +74,11 @@
                                 @endphp
                                 @if ($wishlists > 0)
                                     <button class="block" type="button">
-                                        <i class="text-secondary fa-solid fa-heart"></i>
+                                        <i class="text-primaryPositive-darkest fa-solid fa-heart"></i>
                                     </button>
                                 @else
                                     <button class="block" type="button">
-                                        <i class="icon fa-regular fa-heart"></i>
+                                        <i class="icon text-primaryPositive-darkest fa-regular fa-heart"></i>
                                     </button>
                                 @endif
                             </div>
@@ -89,7 +89,7 @@
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative">
                                 <button class="block" type="button">
-                                    <i class="icon fa-solid fa-cart-shopping"></i>
+                                    <i class="icon fa-solid fa-cart-shopping text-primaryPositive-darkest"></i>
                                 </button>
                                 <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#00798c] rounded-full w-6 h-6 text-center">
                                     <span class="cart-count flex items-center justify-center h-full text-white text-xs">0</span>

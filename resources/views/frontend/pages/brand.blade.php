@@ -81,9 +81,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-center mt-8">
+                    {{-- ========Scroll============ --}}
+                    {{-- <div class="flex items-center justify-center mt-8">
                         <i id="product-loading-icon" class="text-4xl fa-solid fa-spinner fa-spin mr-2"></i>
-                    </div>
+                    </div> --}}
+                    {{-- ========Pagination============ --}}
+                    @if ($products->hasPages())
+                        <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
+                            {{ $products->appends(request()->input())->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -149,43 +156,43 @@
 
     {{-- On scroll product load --}}
     <script>
-        var onScrollProductRoute = "{{ route('brand.page', [$id, 'true']) }}";
-        var productLoddingIcon = $('#product-loading-icon').hide();
-        var order = "{{ request()->query('order') }}";
-        var currentPage = {{ $products->currentPage() }};
-        var lastPage = {{ $products->lastPage() }};
-        var canCall = true;
-        currentPage++;
+        // var onScrollProductRoute = "{{ route('brand.page', [$id, 'true']) }}";
+        // var productLoddingIcon = $('#product-loading-icon').hide();
+        // var order = "{{ request()->query('order') }}";
+        // var currentPage = {{ $products->currentPage() }};
+        // var lastPage = {{ $products->lastPage() }};
+        // var canCall = true;
+        // currentPage++;
 
         $(window).on('scroll', function() {
-            if (currentPage <= lastPage && canCall) {
-                var scrollLeft = $(document).height() - $(window).scrollTop();
-                if (scrollLeft <= 1200) {
-                    productLoddingIcon.show();
-                    getProductThumbsOnScroll();
-                }
-            }
+            // if (currentPage <= lastPage && canCall) {
+            //     var scrollLeft = $(document).height() - $(window).scrollTop();
+            //     if (scrollLeft <= 1200) {
+            //         productLoddingIcon.show();
+            //         getProductThumbsOnScroll();
+            //     }
+            // }
         });
 
-        function getProductThumbsOnScroll() {
-            canCall = false;
-            axios.get(onScrollProductRoute, {
-                params: {
-                    page: currentPage,
-                    order: order
-                }
-            })
-            .then((response) => {
-                var products = response.data;
-                $('.product-grid').append(products);
-                currentPage++;
-                canCall = true;
-                productLoddingIcon.hide();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
+        // function getProductThumbsOnScroll() {
+        //     canCall = false;
+        //     axios.get(onScrollProductRoute, {
+        //         params: {
+        //             page: currentPage,
+        //             order: order
+        //         }
+        //     })
+        //     .then((response) => {
+        //         var products = response.data;
+        //         $('.product-grid').append(products);
+        //         currentPage++;
+        //         canCall = true;
+        //         productLoddingIcon.hide();
+        //     })
+        //     .catch((error) => {
+        //         console.log(error);
+        //     });
+        // }
     </script>
     @endpush
 @endonce

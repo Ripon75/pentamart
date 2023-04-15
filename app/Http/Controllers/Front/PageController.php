@@ -531,7 +531,7 @@ class PageController extends Controller
                 $query->where('status', 'active');
             })->paginate($paginate);
         } else {
-            $products = $products->where('price', '>', 0)->paginate($paginate);
+            $products = $products->where('price', '>', 0)->paginate(5);
         }
 
         return $products;
@@ -680,8 +680,6 @@ class PageController extends Controller
             ->where('brand_id', $id)
             ->orderBy('categories.name', 'ASC')
             ->get();
-
-        info($categories);
 
         $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.brand';
 

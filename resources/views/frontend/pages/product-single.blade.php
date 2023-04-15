@@ -49,15 +49,14 @@
                         <h1 class="text-lg lg:text-2xl font-medium text-primary-dark mb-2 mt-2">{{ $product->name }}</h1>
                         {{-- show brand form --}}
                         @if ($product->brand)
-                            <a href="{{ route('dosage-forms.show', $product->brand->slug) }}" class="text-base text-gray-500 block my-2">
+                            <a href="{{ route('brand.page', $product->brand_id) }}" class="text-base text-gray-500 block my-2">
                                 {{ $product->brand->name }}
                             </a>
                         @endif
                         {{-- show category --}}
                         @if ($product->category_id)
                             <div class="text-sm text-gray-600">
-                                {{-- <strong>Category :&nbsp;</strong>&nbsp; --}}
-                                <a href="{{ route('generics.show', $product->category->slug) }}">
+                                <a href="{{ route('category.page', $product->category_id) }}">
                                     {{ $product->category->name }}
                                 </a>
                             </div>
@@ -122,17 +121,17 @@
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                <span id="item-price-label" class="text-primaryPositive-darkest text-xl font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
                                     {{ $product->price }}
                                 </span>
                             @else
-                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                <span id="item-price-label" class="text-primaryPositive-darkest text-xl font-medium">
                                     {{ number_format(($product->price), 2) }}
                                 </span>
-                                <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
+                                <span id="item-mrp-label" class="line-through text-primaryPositive-darkest text-xl font-medium">
                                 </span>
                             @endif
                         </span>
@@ -145,7 +144,7 @@
                                 @endfor
                             </select>
                             <div class="flex space-x-4">
-                                <button class="btn-add-to-car-single h-[36px] bg-primary text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                <button class="btn-add-to-car-single h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                     data-mc-on-previous-url="{{ url()->current() }}"
                                     @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                                     <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
@@ -154,21 +153,21 @@
                                 </button>
                                 @if ($isWishListed)
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
-                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primaryPositive-darkest fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primaryPositive-darkest fa-regular fa-heart"></i>
                                     </button>
                                 @else
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
-                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primaryPositive-darkest fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primaryPositive-darkest fa-regular fa-heart"></i>
                                     </button>
                                 @endif
                             </div>
