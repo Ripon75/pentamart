@@ -1,7 +1,7 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
     <div class="top-header-bar">
-        <div class="bg-[#00798c] h-8 sm:h-8 md:h-10">
+        <div class="bg-secondary h-8 sm:h-8 md:h-10">
             <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-white h-full">
                 <div class="address flex-1 hidden sm:hidden md:block">
                     <span class="text-xs font-light">DELIVER TO : </span>
@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div class="border-b bg-white">
+    <div class="border-b bg-[#00798c]">
         <header class="page-header container hidden sm:hidden md:hidden lg:block xl:block">
             <div class="grid grid-cols-8 h-full gap-2">
                 <div class="col-span-2">
@@ -197,13 +197,6 @@
                                 </a>
                                 <a href="{{ route('my.address.index') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                     <i class="mr-2 fa-solid fa-location-dot"></i>My Address
-                                </a>
-                                <a href="#" class="relative border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    {{-- <div class="absolute rounded-full bg-red-500 w-4 h-4 flex items-center justify-center -mt-2 ml-1">
-                                        <span class="text-white text-xxs">0</span>
-                                    </div> --}}
-                                    <i class="mr-2 fa-solid fa-bell"></i>
-                                    Notification
                                 </a>
                                 <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                     <i class="mr-2 fa-solid fa-lock"></i>Change Password
@@ -399,24 +392,12 @@
                     </a>
                     <a href="{{ route('products.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-capsules"></i>
-                        Medicine
-                    </a>
-                    {{-- <a href="{{ route('tag.page', 'personal-care') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
-                        <i class="pr-3 fa-solid fa-hand-holding-medical"></i></i>
-                        Personal Care
-                    </a> --}}
-                    <a href="{{ route('category.page', ['medical-devices']) }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
-                        <i class="pr-3 fa-solid fa-laptop-medical"></i>
-                        Medical Devices
+                        All Products
                     </a>
                     <a href="{{ route('offers.products') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-percent"></i>
                         Offers
                     </a>
-                    {{-- <a href="#" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
-                        <i class="pr-3 fa-solid fa-kit-medical"></i>
-                        instaMed
-                    </a> --}}
                     @auth
                         <a href="{{ route('logout') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                             <i class="pr-3 fa-solid fa-arrow-right-from-bracket"></i>
@@ -710,9 +691,6 @@
     // hidden div for title othes
     var othersTitleDiv = $('#others-title-div').hide();
 
-    // get geo location using latitude and longitude
-    getLocation();
-
     @auth
         __cartItemCount();
         __getShippingAddress(inputShippingId, true);
@@ -946,52 +924,6 @@
         .catch(function (error) {
             console.log(error);
         });
-    }
-
-    // Get latitude and longitude
-    function getLocation() {
-        if(navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(showPosition);
-        } else {
-            alert("Sorry, your browser does not support HTML5 geolocation.");
-        }
-    }
-
-    function showPosition(position) {
-        var apiKey = `{{ config('app.google_map_api_key') }}`;
-        var lat    = position.coords.latitude;
-        var longi  = position.coords.longitude;
-        if (lat && longi) {
-            $.get({
-                url: `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${longi}&sensor=false&key=${apiKey}`,
-                success(data) {
-                    var address = null;
-                    var areaName = null;
-                    if (data.results[0]) {
-                        areaName    = data.results[0].address_components[1] ? data.results[0].address_components[1].long_name : '';
-                        address     = data.results[0].formatted_address ? data.results[0].formatted_address : '';
-                    }
-                    if (address) {
-                        addressLine.text(address);
-                    }
-                    if (areaName) {
-                        const appBaseURL = '{{ config("app.url") }}';
-                        const endpoint = `${appBaseURL}/area/${areaName}`;
-                        axios.get(endpoint)
-                        .then(res => {
-                            if (res) {
-                                if (res.data.result) {
-                                    headerAreaId.val(res.data.result.id).change();
-                                }
-                            }
-                        })
-                        .catch(err => {
-                            console.log(err);
-                        });
-                    }
-                }
-            });
-        }
     }
 </script>
 

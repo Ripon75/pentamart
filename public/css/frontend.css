@@ -8055,7 +8055,7 @@ textarea.form-control.is-invalid{
 }
 .btn.btn-primary{
   --tw-bg-opacity: 1;
-  background-color: rgb(13 148 136 / var(--tw-bg-opacity));
+  background-color: rgb(0 121 140 / var(--tw-bg-opacity));
   background-image: linear-gradient(to top, var(--tw-gradient-stops));
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -9178,6 +9178,10 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
+.bg-secondary{
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 156 11 / var(--tw-bg-opacity));
+}
 .bg-\[\#00798c\]{
   --tw-bg-opacity: 1;
   background-color: rgb(0 121 140 / var(--tw-bg-opacity));
@@ -9199,10 +9203,6 @@ textarea.form-control.is-invalid{
 .bg-secondary-light{
   --tw-bg-opacity: 1;
   background-color: rgb(255 205 133 / var(--tw-bg-opacity));
-}
-.bg-secondary{
-  --tw-bg-opacity: 1;
-  background-color: rgb(255 156 11 / var(--tw-bg-opacity));
 }
 .bg-green-100{
   --tw-bg-opacity: 1;
@@ -9605,6 +9605,10 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(30 58 138 / var(--tw-text-opacity));
 }
+.text-primaryPositive-darkest{
+  --tw-text-opacity: 1;
+  color: rgb(4 120 87 / var(--tw-text-opacity));
+}
 .text-black{
   --tw-text-opacity: 1;
   color: rgb(0 0 0 / var(--tw-text-opacity));
@@ -9655,10 +9659,6 @@ textarea.form-control.is-invalid{
 .text-red-700{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
-}
-.text-primaryPositive-darkest{
-  --tw-text-opacity: 1;
-  color: rgb(4 120 87 / var(--tw-text-opacity));
 }
 .underline{
   -webkit-text-decoration-line: underline;
@@ -20356,14 +20356,6 @@ readers do not read off random characters that represent icons */
   border-radius: 9999px;
 }
 
-.file\:rounded::-webkit-file-upload-button{
-  border-radius: 0.25rem;
-}
-
-.file\:rounded::file-selector-button{
-  border-radius: 0.25rem;
-}
-
 .file\:border::-webkit-file-upload-button{
   border-width: 1px;
 }
@@ -20386,16 +20378,6 @@ readers do not read off random characters that represent icons */
 
 .file\:border-secondary\/50::file-selector-button{
   border-color: rgb(255 156 11 / 0.5);
-}
-
-.file\:border-primary::-webkit-file-upload-button{
-  --tw-border-opacity: 1;
-  border-color: rgb(16 41 103 / var(--tw-border-opacity));
-}
-
-.file\:border-primary::file-selector-button{
-  --tw-border-opacity: 1;
-  border-color: rgb(16 41 103 / var(--tw-border-opacity));
 }
 
 .file\:bg-violet-50::-webkit-file-upload-button{
@@ -20426,16 +20408,6 @@ readers do not read off random characters that represent icons */
 .file\:px-4::file-selector-button{
   padding-left: 1rem;
   padding-right: 1rem;
-}
-
-.file\:px-8::-webkit-file-upload-button{
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.file\:px-8::file-selector-button{
-  padding-left: 2rem;
-  padding-right: 2rem;
 }
 
 .file\:text-sm::-webkit-file-upload-button{
@@ -20472,16 +20444,6 @@ readers do not read off random characters that represent icons */
 .file\:text-secondary::file-selector-button{
   --tw-text-opacity: 1;
   color: rgb(255 156 11 / var(--tw-text-opacity));
-}
-
-.file\:text-primary::-webkit-file-upload-button{
-  --tw-text-opacity: 1;
-  color: rgb(16 41 103 / var(--tw-text-opacity));
-}
-
-.file\:text-primary::file-selector-button{
-  --tw-text-opacity: 1;
-  color: rgb(16 41 103 / var(--tw-text-opacity));
 }
 
 .file\:text-violet-700::-webkit-file-upload-button{
@@ -21351,11 +21313,11 @@ readers do not read off random characters that represent icons */
   .md\:gap-2{
     gap: 0.5rem;
   }
-  .md\:gap-8{
-    gap: 2rem;
-  }
   .md\:gap-0{
     gap: 0px;
+  }
+  .md\:gap-8{
+    gap: 2rem;
   }
   .md\:space-x-4 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
