@@ -111,7 +111,7 @@
                                 </a>
                                 <div class="hidden absolute top-full left-0 z-20 group-hover:block">
                                     <div class="flex flex-col bg-gray-50 rounded-lg rounded-t-none w-40 shadow">
-                                        @role('superadministrator|administrator')
+                                        @role('superadministrator')
                                             <a href="/admin/dashboard" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                                 <i class="mr-3 text-xs fa-solid fa-user"></i>Admin Panel
                                             </a>
@@ -124,10 +124,6 @@
                                         </a>
                                         <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
-                                        </a>
-                                        <a href="#" class="relative border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-bell"></i>
-                                            Notification
                                         </a>
                                         <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-lock"></i>Change Password
@@ -244,24 +240,6 @@
                                 <a class="mobile-nav-item" href="{{ route('products.index') }}">
                                     <img class="img-wrapper" src="{{ asset('images/icons/watch_icon.png') }}"> All Products
                                 </a>
-                                {{-- <a class="mobile-nav-item" href="{{ route('tag.page', ['men-care']) }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/mencare.png') }}"> Men Care
-                                </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['women-care']) }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/women-care.png') }}"> Women Care
-                                </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['sexual-wellness']) }} ">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/sexual.png') }}"> Sexual Wellness
-                                </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['herbal-homeopathy']) }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/herbal.png') }}"> Herbal & Homeopathy
-                                </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['baby-mom-care']) }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/babymom.png') }}"> Baby & Mom Care
-                                </a>
-                                <a class="mobile-nav-item" href="{{ route('tag.page', ['personal-care']) }}">
-                                    <img class="img-wrapper" src="{{ asset('images/icons/personal-care.png') }}"> Personal Care
-                                </a> --}}
                             </div>
                         </div>
                     </div>
@@ -303,42 +281,6 @@
                                 <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/watch_icon.png') }}">All Products
                             </a>
                         </li>
-                        {{-- <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['men-care']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/mencare.png') }}">Men Care
-                            </a>
-                        </li>
-                        <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['women-care']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/women-care.png') }}">Women Care
-                            </a>
-                        </li>
-                        <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['sexual-wellness']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/sexual.png') }}">Sexual Wellness
-                            </a>
-                        </li>
-                        <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['herbal-homeopathy']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/herbal.png') }}">Herbal & Homeopathy
-                            </a>
-                        </li>
-                        <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['baby-mom-care']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/babymom.png') }}">Baby & Mom Care
-                            </a>
-                        </li>
-                        <li class="">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('tag.page', ['personal-care']) }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/personal-care.png') }}">Personal Care
-                            </a>
-                        </li> --}}
                     </ul>
                 </div>
                 <div class="flex-1">
@@ -687,7 +629,6 @@
             $("#address-modal").modal('hide')
         });
 
-
         // event with address change
         btnAddressChange.click(function () {
             @auth
@@ -882,102 +823,6 @@
         })
         .catch(function (error) {
             console.log(error);
-        });
-    }
-</script>
-
-{{-- Product thumb scripts --}}
-<script>
-    @auth
-        var storageProductID = localStorage.getItem('product_id');
-        if (storageProductID) {
-            __addCartItemToCart(storageProductID, 1, null);
-            localStorage.removeItem('product_id');
-        }
-    @endauth
-    @guest
-        var userID = null;
-    @endguest
-
-    var packQty             = 0;
-    var cartAddItemEndPoint = '/cart/item/add';
-    var selectedPack        = $('.selected-pack');
-    var iconLoadding        = $('.loadding-icon');
-    var iconAddToCart       = $('.add-to-cart-icon');
-
-    iconAddToCart.show()
-    iconLoadding.hide();
-
-    $(function() {
-        selectedPack.on('change', function() {
-            packQty = $(this).val();
-            var headerProductId = $(this).data('header-product-id');
-            var headerProductMRP = $(this).data('header-product-mrp');
-            var headerProductSellingPrice = parseFloat($(this).data('header-product-selling-price'));
-            var headerProductPrice = headerProductSellingPrice > 0 ? headerProductSellingPrice : headerProductMRP;
-            headerProductPrice = headerProductPrice * packQty;
-            headerProductMRP = headerProductMRP * packQty;
-
-            $(`.product-grid #header-product-price-label-${headerProductId}`).text(headerProductPrice.toFixed(2));
-            if (headerProductSellingPrice) {
-                $(`.product-grid #header-product-mrp-label-${headerProductId}`).text('Tk '+ headerProductMRP);
-            }
-        });
-
-        // Add product to cart
-        $('.product-grid').on('click', '.btn-add-to-cart', function () {
-            var qtySelect = $(this).parent().parent().children().children('select');
-            packQty = qtySelect.val();
-            if (!userID) {
-                var productID = $(this).data('product-id');
-                localStorage.setItem('product_id', productID);
-            } else {
-                // Get product id from the hidden input
-                var productID = $(this).data('product-id');
-                if (packQty == 0) {
-                    __showNotification('error', 'Please select quantity', setAlertTime);
-                    return false;
-                }
-                if (productID != 0 && packQty != 0) {
-                    __addCartItemToCart(productID, packQty, $(this));
-                }
-            }
-        });
-    });
-
-    function __addCartItemToCart(productID, productQty, btn) {
-        if (btn) {
-            btn.prop("disabled", true);
-            btn.find('.loadding-icon').show();
-            btn.find('.add-to-cart-icon').hide();
-        }
-
-        axios.post(cartAddItemEndPoint, {
-            item_id: productID,
-            item_quantity: productQty
-        })
-        .then((response) => {
-            if (response.data.res) {
-                __cartItemCount();
-                drawerCartItemRender();
-            } else {
-                __showNotification('error', response.data.message, setAlertTime);
-                return false;
-            }
-            if (btn) {
-                btn.prop("disabled", false);
-                btn.find('.loadding-icon').hide();
-                btn.find('.add-to-cart-icon').show();
-            }
-        })
-        .catch((error) => {
-            if (btn) {
-                btn.prop("disabled", false);
-                btn.find('.loadding-icon').hide();
-                btn.find('.add-to-cart-icon').show();
-            }
-            __showNotification('error', response.data.message, setAlertTime);
-            return false;
         });
     }
 </script>

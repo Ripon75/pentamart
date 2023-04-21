@@ -63,24 +63,28 @@
                         @endif
 
                        <div class="mt-1 pt-1 pb-1">
-                           <div class="flex mb-2">
-                               <strong>Colors:&nbsp;</strong>&nbsp;
-                               @foreach ($productColors as $color)
-                                <div class="flex items-center mr-4">
-                                    <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
+                            @if (count($productColors))
+                                <div class="flex mb-2">
+                                    <strong>Colors:&nbsp;</strong>&nbsp;
+                                    @foreach ($productColors as $color)
+                                    <div class="flex items-center mr-4">
+                                        <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="color_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
+                                    </div>
+                                    @endforeach
                                 </div>
-                               @endforeach
-                           </div>
-                           <div class="flex">
-                               <strong>Sizes:&nbsp;</strong>&nbsp;
-                               @foreach ($productSizes as $size)
-                                <div class="flex items-center mr-4">
-                                    <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                    <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
-                                </div>
-                               @endforeach
-                           </div>
+                            @endif
+                            @if (count($productSizes))
+                            <div class="flex">
+                                <strong>Sizes:&nbsp;</strong>&nbsp;
+                                @foreach ($productSizes as $size)
+                                 <div class="flex items-center mr-4">
+                                     <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                     <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
+                                 </div>
+                                @endforeach
+                            </div>
+                            @endif
                        </div>
                     </div>
                 </div>
@@ -96,9 +100,7 @@
                         @else
                             <input type="hidden" value="{{ $product->price }}" id="input-price">
                         @endif
-                        {{-- <input type="hidden" value="{{ $product->pack_size }}" id="input-pack-size"> --}}
                         <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
-                        {{-- <input type="hidden" value="{{ $product->is_single_sell_allow }}" id="input-negative-sell-allow"> --}}
                     </div>
                     <div class="prices flex space-x-2 items-center mb-2">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
@@ -254,15 +256,8 @@
     var sUserID                = {{ Auth::id() }}
 
     @auth
-        var cartStorageProductID = localStorage.getItem('cart_product_id');
-        var wishStorageProductID = localStorage.getItem('wish_product_id');
-
-        // Automatically product added to cart if local storage have cart_product_id
-        if (cartStorageProductID) {
-            __addCartItem(cartStorageProductID, 1, null);
-            localStorage.removeItem('cart_product_id');
-        }
         // Automatically product added to wishcart if local storage have wish_product_id
+        var wishStorageProductID = localStorage.getItem('wish_product_id');
         if (wishStorageProductID) {
             __addWishlist(wishStorageProductID);
             localStorage.removeItem('wish_product_id');
@@ -278,10 +273,8 @@
     $(function() {
         selectedPackSingle.on('change', function() {
             var productQty        = inputQty.val();
-            // var packSize          = inputPacksize.val();
             var productPrice      = inputPrice.val();
             var productMRP        = inputProductMRP.val();
-            // var negativeSellAllow = inputNegativeSellAllow.val()
             var totalPrice        = 0;
             var totalMRP          = 0;
 
@@ -296,21 +289,16 @@
             if (totalMRP !== totalPrice) {
                 itemMRPLabel.text(totalMRP.toFixed(2));
             }
-
-            // __SPcheckProductOfferQty(productID, productQty, totalMRP, totalPrice);
         });
 
         // Add product to cart
         btnAddToCartSingle.click(function () {
-            // Get product id from the hidden input
             var productQty = inputQty.val();
-
-            if (!sUserID) {
-                localStorage.setItem('cart_product_id', productID);
-            } else {
-                if (productID != 0 && productQty != 0) {
-                    __addCartItem(productID, productQty, $(this));
-                }
+            var colorId    = $('input[name="color_id"]:checked').val();
+            var sizeId     = $('input[name="size_id"]:checked').val();
+            
+            if (productID != 0 && productQty != 0) {
+                __addCartItem(productID, productQty, colorId, sizeId, $(this));
             }
         });
 
@@ -330,7 +318,7 @@
         });
     });
 
-    function __addCartItem(productID, productQty, btn) {
+    function __addCartItem(productID, productQty, colorId = null, sizeId = null, btn = null) {
         if (btn) {
             btn.prop("disabled", true);
         }
@@ -340,13 +328,19 @@
         axios.post(cartAddItemEndPoint, {
             item_id: productID,
             quantity: productQty,
+            color_id: colorId,
+            size_id: sizeId,
         })
         .then((response) => {
             if (response.data.res) {
-                // drawerCartItemRender();
-                __totalPriceCalculation();
+                // __totalPriceCalculation();
             } else {
                 __showNotification('error', response.data.message, 1000);
+                iconLoadding.hide();
+                iconAddToCart.show();
+                if (btn) {
+                    btn.prop("disabled", false);
+                }
                 return false;
             }
             iconLoadding.hide();
@@ -391,30 +385,5 @@
             console.log(error);
         });
     }
-
-    // function __SPcheckProductOfferQty(selectedProductId, selectedProductQty, productMRP = 0, productPrice = 0) {
-    //     var checkOfferQtyEndpoint = '/api/check/offer/quantity';
-    //     axios.get(checkOfferQtyEndpoint, {
-    //             params: {
-    //                 'product_id': selectedProductId,
-    //                 'quantity': selectedProductQty
-    //             }
-    //         })
-    //         .then(res => {
-    //             if (res.data.success) {
-    //                 var productOfferAmount = parseFloat(res.data.result);
-    //                 productOfferAmount = (productOfferAmount * selectedProductQty).toFixed(2);
-    //                 $(`#item-price-label`).text(productOfferAmount);
-    //                 $(`#item-mrp-label`).text('Tk '+ productMRP);
-    //             } else {
-    //                 if (productPrice === productMRP) {
-    //                     $(`#item-mrp-label`).text('');
-    //                 }
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // }
 </script>
 @endpush

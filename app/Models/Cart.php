@@ -89,7 +89,6 @@ class Cart extends Model
         $quantity = $request->input('quantity');
         $sizeId   = $request->input('size_id');
         $colorId  = $request->input('color_id');
-        // $isLocalStoreage = $request->input('is_local_storage', false);
 
         if ($quantity <= 0) {
             return $this->removeItem($request);
@@ -101,10 +100,10 @@ class Cart extends Model
             return $this->_makeResponse(false, null, 'Product not found');
         }
 
-        $itemPrice = $product->price;
-        $sellPrice = $product->offer_price;
-        $discount  = $product->discount;
-        $sellPrice = $sellPrice > 0 ? $sellPrice : $itemPrice;
+        $itemPrice  = $product->price;
+        $offerPrice = $product->offer_price;
+        $discount   = $product->discount;
+        $sellPrice  = $offerPrice > 0 ? $offerPrice : $itemPrice;
 
         $cart = $this->getCurrentCustomerCart();
         if (count($cart->items)) {

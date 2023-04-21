@@ -27,8 +27,6 @@ class CreateCartItemTable extends Migration
             $table->decimal('sell_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
             $table->timestamps();
-
-            $table->primary(['cart_id', 'item_id']);
         });
     }
 

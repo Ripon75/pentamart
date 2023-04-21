@@ -28,10 +28,10 @@
                                         Product
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
-                                        Size
+                                        Color
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
-                                        Color
+                                        Size
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
                                         Price
@@ -53,7 +53,7 @@
 
                             <tbody class="">
                                 @php $subTotal = 0; @endphp
-                                @foreach ($products as $product)
+                                @foreach ($products as $key => $product)
                                     <tr class="item-row border">
                                         <input type="hidden" value="{{ $product->counter_type }}" class="input-counter-type">
                                         <td class="hidden sm:hidden md:block p-1 w-14 h-14 mx-auto">
@@ -69,14 +69,26 @@
                                             @endif
                                         </td>
                                         <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            <span class="ml-1">
-                                                Size
-                                            </span>
+                                            @if ($product->pivot->color_id)
+                                                <span class="ml-1">
+                                                    {{ $product->colors[$product->pivot->color_id - 1]->name ?? '' }}
+                                                </span>
+                                            @else
+                                                <span class="ml-1">
+                                                    N/A
+                                                </span>
+                                            @endif
                                         </td>
                                         <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            <span class="ml-1">
-                                                Color
-                                            </span>
+                                            @if ($product->pivot->size_id)
+                                                    <span class="ml-1">
+                                                    {{ $product->sizes[$product->pivot->size_id - 1]->name ?? '' }}
+                                                </span>
+                                            @else
+                                                <span class="ml-1">
+                                                    N/A
+                                                </span>
+                                            @endif
                                         </td>
                                         <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                             <span class="ml-1">
@@ -387,8 +399,7 @@
                     <h1 class="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-wide text-primary">Your cart is empty</h1>
                 </div>
                 <div class="text-center mt-2 sm:mt-2 md:mt-4 text-sm sm:text-sm md:text-base">
-                    <h6 class="text-gray-600">You have no items in your shopping cart.</h6>
-                    <h6 class="text-gray-600">Let's go buy something!</h6>
+                    <h6 class="text-gray-600">No items in your shopping cart.</h6>
                 </div>
                 <a href="{{ route('products.index') }}" class="mt-4 sm:mt-4 md:mt-6">
                     <button class="btn btn-sm sm:btn-sm md:btn-md btn-primary">Shop Now</button>
