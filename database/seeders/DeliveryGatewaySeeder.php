@@ -25,22 +25,10 @@ class DeliveryGatewaySeeder extends Seeder
                 'name'               => 'Basic',
                 'code'               => 'DG101',
                 'price'              => 10,
-                'status'             => 'activated',
+                'status'             => 'active',
                 'min_delivery_time'  => 1,
                 'max_delivery_time'  => 2,
                 'delivery_time_unit' => 'Days',
-                'created_at'         => $now
-            ],
-            [
-                'id'                 => 2,
-                'slug'               => 'express',
-                'name'               => 'Express',
-                'code'               => 'DG102',
-                'price'              => 20,
-                'status'             => 'draft',
-                'min_delivery_time'  => 1,
-                'max_delivery_time'  => 2,
-                'delivery_time_unit' => 'Hours',
                 'created_at'         => $now
             ]
         ]);

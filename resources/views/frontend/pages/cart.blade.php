@@ -98,61 +98,53 @@
                                         <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
                                             <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
                                                 data-item-id="{{ $product->id }}"
-                                                data-unit-price="{{ $product->offer_price }}"
+                                                data-unit-sell-price="{{ $product->offer_price }}"
+                                                data-total-item-sell-price-label="total-sell-price-{{ $product->pivot->item_id }}"
                                                 data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
-                                                data-total-item-mrp-label="total-mrp-{{ $product->pivot->item_id }}"
                                                 data-item-discount="{{ $product->discount }}"
                                                 data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
-                                                data-unit-mrp="{{ $product->price }}">
+                                                data-unit-price="{{ $product->price }}"
+                                                data-color-id="{{ $product->pivot->color_id }}"
+                                                data-size-id="{{ $product->pivot->size_id }}">
 
                                                 @for ($i = 1; $i <= 5; $i++)
-                                                    <option value="{{ $i }}">
+                                                    <option value="{{ $i }}" {{ $product->pivot->quantity == $i ? 'selected' : '' }}>
                                                         {{ $i }}
                                                     </option>
                                                 @endfor
                                             </select>
                                         </td>
-                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2"
-                                            >{{ $currency }}
+                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                             @php
-                                                $productDiscount = 0;
-                                                $itemDiscount    = $product->pivot->discount * $product->pivot->quantity;
-                                                $productDiscount = ($product->pivot->discount * 100) / $product->pivot->item_price;
-                                                $itemDiscount    = number_format( (float) $itemDiscount, 2, '.', '');
+                                                $itemTotalDiscount = $product->pivot->item_discount * $product->pivot->quantity;
+                                                $itemTotalDiscount = number_format((float)$itemTotalDiscount, 2);
                                             @endphp
-                                            <span id="total-discount-{{ $product->pivot->item_id }}" class="s-totalDiscount ml-1">
+                                            <span id="total-discount-{{ $product->pivot->item_id }}" class="sub-total-discount ml-1">
                                                 <span id="discount-show-{{ $product->pivot->item_id}}">
-                                                    {{ $itemDiscount }}
+                                                    {{ $itemTotalDiscount }}
                                                 </span>
-                                            </span>
-                                            <span
-                                                id="product-discount-percent-id-{{ $product->id }}"
-                                                class="product-discount-percent hidden"
-                                                data-product-mrp="{{ $product->pivot->item_price }}"
-                                                data-product-quantity="{{ $product->pivot->quantity }}">
-                                                {{ $productDiscount }}
                                             </span>
                                         </td>
 
                                         <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                             @php
-                                                $itemTotalPrice = $product->pivot->sell_price * $product->pivot->quantity;
-                                                $itemTotalPrice = number_format( (float) $itemTotalPrice, 2, '.', '');
+                                                $itemTotalSellPrice = $product->pivot->sell_price * $product->pivot->quantity;
+                                                $itemTotalSellPrice = number_format((float)$itemTotalSellPrice, 2);
                                             @endphp
-                                            <span id="total-price-{{ $product->pivot->item_id }}" class="s-cart-total-price ml-1">
+                                            <span id="total-sell-price-{{ $product->pivot->item_id }}" class="sub-total-sell-price ml-1">
                                                 <span id="price-show-{{ $product->pivot->item_id}}">
-                                                    {{ ($itemTotalPrice) }}
+                                                    {{ ($itemTotalSellPrice) }}
                                                 </span>
                                             </span>
                                         </td>
 
                                         <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                             @php
-                                                $itemTotalMRP = $product->pivot->item_price * $product->pivot->quantity;
+                                                $itemTotalPrice = $product->pivot->item_price * $product->pivot->quantity;
                                             @endphp
-                                            <span id="total-mrp-{{ $product->pivot->item_id }}" class="s-cart-total-mrp ml-1">
+                                            <span id="total-price-{{ $product->pivot->item_id }}" class="sub-total-price ml-1">
                                                 <span id="mrp-show-{{ $product->pivot->item_id}}">
-                                                    {{ ($itemTotalMRP) }}
+                                                    {{ ($itemTotalPrice) }}
                                                 </span>
                                             </span>
                                         </td>
@@ -164,9 +156,10 @@
                                                 <i class="trash-icon text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-white fa-regular fa-trash-can"></i>
                                             </button>
                                         </td>
-                                        @php
+                                        {{-- @php
                                             $subTotal += $product->pivot->sell_price * $product->pivot->quantity;
-                                        @endphp
+                                            info($subTotal);
+                                        @endphp --}}
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -197,24 +190,29 @@
                 <section class="card border-2">
                     <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
                         <div class="flex justify-between">
-                            <span>Sub Total Cost ({{ count($products) }} Items)</span>
+                            <span>Total Cost</span>
                             <span>{{ $currency }}
-                                <span id="sub-total-price-label" class="ml-1">{{ $subTotal }}
-                                </span>
+                                <span id="sub-total-price-label" class="ml-1"></span>
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Discount (-)</span>
+                            <span>{{ $currency }}
+                                <input id="input-items-discount" type="hidden" value="">
+                                <span id="items-total-discount-label" class="ml-1"></span>
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Total Cost(-Discount)</span>
+                            <span>{{ $currency }}
+                                <span id="sub-total-sell-price-label" class="ml-1"></span>
                             </span>
                         </div>
                         <div class="flex justify-between">
                             <span>Delivery Charge (+)</span>
                             <span>{{ $currency }}
                                 <span id="delivery-charge-lavel" class="ml-1"></span>
-                                <input id="input-delivery-charge" type="hidden" value="">
-                            </span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Discount (-)</span>
-                            <span>{{ $currency }}
-                                <input id="m-input-discount" type="hidden" value="">
-                                <span id="discount-label" class="ml-1">0.00</span>
+                                <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
                             </span>
                         </div>
                         <div id="coupon-discount-div" class="hidden">
@@ -226,25 +224,13 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span>VAT 0% (+)</span>
-                            {{-- @php
-                                $vat = ($total*2)/100
-                            @endphp --}}
-                            <span>{{ $currency }} 0.00</span>
-                        </div>
                     </div>
                     <div class="bg-[#00798c] p-2 rounded-b">
                         <div class="flex justify-between text-white font-medium">
                             <span class="text-base sm:text-base md:text-lg">Total</span>
                             <span class="text-base sm:text-base md:text-lg font-medium">
-                                @php
-                                    // $total = $subTotal + $deliveryGateways[0]->price;
-                                    $total = $subTotal + 50;
-                                @endphp
                                 <span>{{ $currency }}
                                     <span id="cart-total-price-label" class="ml-1">
-                                        {{ $total }}
                                     </span>
                                 </span>
                             </span>
@@ -258,8 +244,8 @@
                         <div class="card border-2">
                             {{-- <div class="header">
                                 <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
-                            </div>
-                            <div class="p-2 flex space-x-2 first:space-x-0">
+                            </div> --}}
+                            <div class="p-2 space-x-2 first:space-x-0 hidden">
                                 <input type="hidden" id="input-delivery-gateway-id" value="">
                                 @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
                                     <button
@@ -275,7 +261,7 @@
                                         </span>
                                     </button>
                                 @endfor
-                            </div> --}}
+                            </div>
                             <div class="p-2">
                                 <div class="flex justify-between items-center">
                                     <div class="flex space-x-2 items-center">
@@ -413,18 +399,13 @@
 
 @push('scripts')
     <script>
-        // End point
-        var cartAddItemEndPoint     = '/cart/item/add';
-        var cartAddMetaDataEndPoint = '/cart/meta/add';
-        // For cart page
-        var aleartTime             = '{{ config('crud.alear_time') }}';
-        var freeDeliveryCartAmount = '{{ config('crud.free_delivery_cart_amount') }}';
-        var deleteCartItemBtn      = $('.delete-cart-item-btn');
-        // icon
-        var iconLoadding     = $('.loadding-icon');
-        var iconTrash        = $('.trash-icon');
-        var continueCartIcon = $('#continue-cart-icon');
-        //end icon
+        var aleartTime                = '{{ config('crud.alear_time') }}';
+        var cartAddItemEndPoint       = '/cart/item/add';
+        var cartAddMetaDataEndPoint   = '/cart/meta/add';
+        var deleteCartItemBtn         = $('.delete-cart-item-btn');
+        var iconLoadding              = $('.loadding-icon');
+        var iconTrash                 = $('.trash-icon');
+        var continueCartIcon          = $('#continue-cart-icon');
         var emptyCart                 = $('#empty-cart');
         var cartInputItemQty          = $('.cart-input-item-qty');
         var btnDeliveryGateway        = $('.btn-delivery-gateway');
@@ -442,29 +423,22 @@
         var btnAddressChangeCart = $('#btn-address-change');
         var btnContinueShopping  = $('#btn-shopping-continue');
         // Coupon code
-        var inputCouponCode     = $('#input-coupon-code');
-        var btnApplyCoupon      = $('#btn-check-coupon');
-        var applyCouponBox      = $('#apply-coupon-box');
-        var activeCouponBox     = $('#active-coupon-box');
-        var labelCouponCode     = $('.label-coupon-code');
-        var btnRemoveCouponCode = $('#btn-remove-coupon-code');
-        var inputCouponCodeId   = $('#input-coupon-code-id');
-        // Discount label
-        var discountLabel  = $('#discount-label');
-        var mInputDiscount = $('#m-input-discount');
+        var inputCouponCode         = $('#input-coupon-code');
+        var btnApplyCoupon          = $('#btn-check-coupon');
+        var applyCouponBox          = $('#apply-coupon-box');
+        var activeCouponBox         = $('#active-coupon-box');
+        var labelCouponCode         = $('.label-coupon-code');
+        var btnRemoveCouponCode     = $('#btn-remove-coupon-code');
+        var inputCouponCodeId       = $('#input-coupon-code-id');
+        var itemsTotalDiscountLabel = $('#items-total-discount-label');
+        var subTotalSellPriceLabel  = $('#sub-total-sell-price-label');
+        var inputItemsDiscount      = $('#input-items-discount');
         // disable order submit button
         btnOrderSubmit.prop("disabled", true);
         btnOrderSubmit.addClass('disabled:opacity-50');
         // Trash and loading icon
         iconTrash.show();
         iconLoadding.hide();
-
-        // Check first order
-        var userOrderCount = {{ count(Auth::user()->orders) }};
-        if (!userOrderCount) {
-            inputDelivaryCharge.val(0);
-            deliveryGatewayPriceLabel.text('0.00');
-        }
 
         cartTotalPriceCalculation();
 
@@ -489,25 +463,36 @@
 
             // Event with pack size
             cartInputItemQty.change(function() {
-                var qty    = $(this).val();
-                var itemID = $(this).data('item-id');
-                qty = +qty;
+                var quantity = $(this).val();
+                var itemId   = $(this).data('item-id');
+                var colorId  = $(this).data('color-id');
+                var sizeId   = $(this).data('size-id');
 
-                __addCartItem(itemID, qty);
+                addCartItem(itemId, quantity, colorId, sizeId);
 
-                // Update product discount percent quantity
-                $(`#product-discount-percent-id-${itemID}`).data('product-quantity', qty);
+                var itemTotalSellPrice        = 0;
+                var itemTotalPrice            = 0;
+                var itemTotalDiscount         = 0;
+                var unitSellPrice             = $(this).data('unit-sell-price');
+                var unitPrice                 = $(this).data('unit-price');
+                var totalItemSellPriceLabelID = $(this).data('total-item-sell-price-label');
+                var totalItemPriceLabelID     = $(this).data('total-item-price-label');
+                var itemDiscount              = $(this).data('item-discount');
+                var totalDiscountLabelID      = $(this).data('total-item-discount-label');
 
-                var itemTotalPrice       = 0;
-                var itemTotalMRP         = 0;
-                var itemTotalDiscount    = 0;
-                var unitPrice            = $(this).data('unit-price');
-                var unitMRP              = $(this).data('unit-mrp');
-                var itemPackSize         = $(this).data('item-pack-size');
-                var totalItemLabelID     = $(this).data('total-item-price-label');
-                var totalItemMRPLabelID  = $(this).data('total-item-mrp-label');
-                var itemDiscount         = $(this).data('item-discount');
-                var totalDiscountLabelID = $(this).data('total-item-discount-label');
+                itemTotalSellPrice = parseFloat(unitSellPrice * quantity);
+                itemTotalPrice     = parseFloat(unitPrice * quantity);
+                itemTotalDiscount  = parseFloat(itemDiscount * quantity);
+
+                itemTotalSellPrice = itemTotalSellPrice ? itemTotalSellPrice : itemTotalPrice;
+
+                itemTotalDiscount  = itemTotalDiscount.toFixed(2);
+                itemTotalSellPrice = itemTotalSellPrice.toFixed(2);
+                $(`#${totalItemSellPriceLabelID}`).text(itemTotalSellPrice);
+                $(`#${totalDiscountLabelID}`).text(itemTotalDiscount);
+                $(`#${totalItemPriceLabelID}`).text(itemTotalPrice);
+
+                removedCouponCode();
             });
 
             // On Choose Delivery Type item
@@ -566,12 +551,12 @@
             // Check coupon code
             btnApplyCoupon.click(function() {
                 var couponCode = inputCouponCode.val();
-                __applyCouponCode(couponCode);
+                applyCouponCode(couponCode);
             });
 
             // On remove coupon code
             btnRemoveCouponCode.click(function() {
-                __removedCouponCode();
+                removedCouponCode();
                 cartTotalPriceCalculation();
             });
 
@@ -610,7 +595,7 @@
         });
 
         // Check coupon code function
-        function __applyCouponCode(couponCode) {
+        function applyCouponCode(couponCode) {
             var endpoint = "{{ route('coupon.check') }}";
             axios.post(endpoint, {
                 coupon_code: couponCode
@@ -637,7 +622,7 @@
             });
         }
 
-         // Remove single cart item
+        // Remove single cart item
         function __removeCartItem(itemID, btn) {
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
@@ -647,7 +632,7 @@
                 })
                 .then(function (response) {
                     btn.parent().parent().remove();
-                    __removedCouponCode();
+                    removedCouponCode();
                     cartTotalPriceCalculation();
                     __cartItemCount();
                 })
@@ -671,13 +656,16 @@
         }
 
         // Add cart item
-        function __addCartItem(productID, productQty) {
+        function addCartItem(productID, productQty, colorId, sizeId) {
             axios.post(cartAddItemEndPoint, {
                 item_id: productID,
-                item_quantity: productQty
+                quantity: productQty,
+                color_id: colorId,
+                size_id: sizeId,
+                is_update: true
             })
             .then((response) => {
-                // location.reload();
+                cartTotalPriceCalculation();
             })
             .catch((error) => {
                 console.log(error);
@@ -710,73 +698,50 @@
         }
 
           // Calculate total price
-        function cartTotalPriceCalculation(couponForProduct = false) {
-            var total                   = 0;
-            var discount                = 0;
+        function cartTotalPriceCalculation() {
+            var itemsTotalPrice         = 0;
             var itemTotalDiscount       = 0;
             var deliveryCharge          = 0;
             var totalWithDeliveryCharge = 0;
-            $(".s-cart-total-mrp").each(function() {
-                total = +total;
-                var st = $(this).text();
-                st = +st;
-                total = total + st;
+            $(".sub-total-price").each(function() {
+                var itemPrice = parseFloat($(this).text());
+                itemsTotalPrice = itemsTotalPrice + itemPrice;
             });
 
-            $(".s-totalDiscount").each(function() {
+            $(".sub-total-discount").each(function() {
                 itemTotalDiscount = +itemTotalDiscount;
-                var subTotal = $(this).text();
-                subTotal = +subTotal;
-                itemTotalDiscount = itemTotalDiscount + subTotal;
+                var subDiscount = parseFloat($(this).text());
+                itemTotalDiscount = itemTotalDiscount + subDiscount;
             });
+
+            var itemsTotalSellPrice = itemsTotalPrice - itemTotalDiscount;
 
             // Get seltected delivery charge text
-            deliveryCharge = inputDelivaryCharge.val();
-            // Convert delivery charge to integer
-            deliveryCharge = +deliveryCharge;
+            deliveryCharge = parseFloat(inputDelivaryCharge.val());
+            deliveryGatewayPriceLabel.text(deliveryCharge.toFixed(2));
 
             // get discount
-            itemTotalDiscount = +itemTotalDiscount;
-            discount          = mInputDiscount.val();
-            discount          = +discount;
-            if (couponForProduct) {
-                var totalDiscount = discount;
-                $('#discount-label').text('0.00');
-            } else {
-                var totalDiscount     = discount + itemTotalDiscount;
-                $('#discount-label').text(itemTotalDiscount.toFixed(2));
-            }
+            // discount          = inputItemsDiscount.val();
+            // discount          = +discount;
+            itemsTotalDiscountLabel.text(itemTotalDiscount.toFixed(2));
+            subTotalSellPriceLabel.text(itemsTotalSellPrice.toFixed(2));
 
-            // Calculate cart total amount
-            var cartTotalAmount = parseFloat(total - totalDiscount);
-            if (cartTotalAmount >= freeDeliveryCartAmount) {
-                totalWithDeliveryCharge = cartTotalAmount;
-                deliveryGatewayPriceLabel.text('0.00');
-            } else {
-                totalWithDeliveryCharge = (total + deliveryCharge) - totalDiscount;
-            }
+            totalWithDeliveryCharge = (itemsTotalPrice + deliveryCharge) - itemTotalDiscount;
 
-            // Calculate total price with delivery charge
-            totalWithDeliveryCharge = +totalWithDeliveryCharge;
-            // set total price with delivery charge
-            total                   = total.toFixed(2);
+            itemsTotalPrice         = itemsTotalPrice.toFixed(2);
             totalWithDeliveryCharge = totalWithDeliveryCharge.toFixed(2);
-            subTotalPriceLabel.text(total);
+            subTotalPriceLabel.text(itemsTotalPrice);
             cartTotalPriceLabel.text(totalWithDeliveryCharge);
         }
 
-        function __removedCouponCode() {
+        function removedCouponCode() {
             var deliveryGatewayPrice = btnDeliveryGateway.data('delivery-gateway-price');
             applyCouponBox.show();
             activeCouponBox.hide();
             inputCouponCodeId.val('');
             inputCouponCode.val('');
             discountLabel.text('0.00');
-            mInputDiscount.val(0);
-            if (userOrderCount) {
-                inputDelivaryCharge.val(deliveryGatewayPrice);
-                deliveryGatewayPriceLabel.text(deliveryGatewayPrice);
-            }
+            inputItemsDiscount.val(0);
             $('#coupon-discount-div').hide();
         }
 
@@ -789,12 +754,12 @@
             labelCouponCode.text(coupon.code);
             inputCouponCodeId.val(coupon.id);
             discountLabel.text(couponAmount);
-            mInputDiscount.val(couponAmount)
+            inputItemsDiscount.val(couponAmount)
             var couponCode = coupon.code;
             couponCode     = couponCode.toUpperCase();
             deliveryGatewayPriceLabel.text(deliveryGatewayPrice.toFixed(2));
             discountLabel.text(0.0);
-            mInputDiscount.val(0.0);
+            inputItemsDiscount.val(0.0);
             inputDelivaryCharge.val(deliveryGatewayPrice);
             cartTotalPriceCalculation();
         }
@@ -806,7 +771,7 @@
                 couponAmount = coupon.discount_amount;
             } else {
                 var couponPercent = coupon.discount_amount;
-                $(".s-cart-total-price").each(function() {
+                $(".sub-total-sell-price").each(function() {
                     var st = parseFloat($(this).text());
                     total = total + st;
                 });
@@ -818,7 +783,7 @@
             labelCouponCode.text(coupon.code);
             inputCouponCodeId.val(coupon.id);
             discountLabel.text(couponAmount.toFixed(2));
-            mInputDiscount.val(couponAmount)
+            inputItemsDiscount.val(couponAmount)
             var couponCode = coupon.code;
             couponCode     = couponCode.toUpperCase();
             $('#coupon-discount-div').show();

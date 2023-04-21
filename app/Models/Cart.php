@@ -5,7 +5,7 @@ namespace App\Models;
 use App\Models\User;
 use App\Classes\Model;
 use App\Models\Product;
-use App\Classes\Utility;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -61,7 +61,7 @@ class Cart extends Model
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-            ->withPivot('size_id', 'color_id', 'quantity', 'item_price', 'sell_price', 'discount')
+            ->withPivot('size_id', 'color_id', 'quantity', 'item_price', 'sell_price', 'item_discount')
             ->withTimestamps();
     }
 
@@ -81,14 +81,15 @@ class Cart extends Model
         $request->validate([
             'item_id'  => ['required', 'integer'],
             'quantity' => ['required', 'integer'],
-            'size_id'  => ['nullable', 'integer'],
-            'color_id' => ['nullable', 'integer']
+            'color_id' => ['nullable', 'integer'],
+            'size_id'  => ['nullable', 'integer']
         ]);
 
         $itemId   = $request->input('item_id');
         $quantity = $request->input('quantity');
-        $sizeId   = $request->input('size_id');
         $colorId  = $request->input('color_id');
+        $sizeId   = $request->input('size_id');
+        $isUpdate = $request->input('is_update');
 
         if ($quantity <= 0) {
             return $this->removeItem($request);
@@ -106,25 +107,26 @@ class Cart extends Model
         $sellPrice  = $offerPrice > 0 ? $offerPrice : $itemPrice;
 
         $cart = $this->getCurrentCustomerCart();
-        if (count($cart->items)) {
-            foreach ($cart->items as $item) {
-                if ($item->id == $itemId && $item->pivot->size_id == $sizeId && $item->pivot->color_id == $colorId) {
-                    return $this->_makeResponse(false, null, 'Product already added to cart');
+        if (!$isUpdate) {
+            if (count($cart->items)) {
+                foreach ($cart->items as $item) {
+                    if ($item->id == $itemId && $item->pivot->size_id == $sizeId && $item->pivot->color_id == $colorId) {
+                        return $this->_makeResponse(false, null, 'Product already added to cart');
+                    }
                 }
             }
+    
+            $res = $cart->items()->attach($itemId, [
+                'size_id'       => $sizeId,
+                'color_id'      => $colorId,
+                'quantity'      => $quantity,
+                'item_price'    => $itemPrice,
+                'sell_price'    => $sellPrice,
+                'item_discount' => $discount
+            ]);
+        } else {
+            $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
         }
-
-        // $cart->items()->detach($itemId);
-        $res = $cart->items()->attach($itemId, [
-                'size_id'    => $sizeId,
-                'color_id'   => $colorId,
-                'quantity'   => $quantity,
-                'item_price' => $itemPrice,
-                'sell_price' => $sellPrice,
-                'discount'   => $discount
-            ]
-        );
-
         return $this->_makeResponse(true, $res, 'Item added successfully');
     }
 

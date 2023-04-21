@@ -25,7 +25,7 @@ class CreateCartItemTable extends Migration
             $table->integer('quantity')->default(1);
             $table->decimal('item_price', 20, 2)->default(0);
             $table->decimal('sell_price', 20, 2)->default(0);
-            $table->decimal('discount', 20, 2)->default(0);
+            $table->decimal('item_discount', 20, 2)->default(0);
             $table->timestamps();
         });
     }

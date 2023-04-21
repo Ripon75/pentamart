@@ -7,14 +7,14 @@
         <title>@yield('title') - Pentamart</title>
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFNPPDYKBW"></script>
+        {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFNPPDYKBW"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
 
             gtag('config', 'G-CFNPPDYKBW');
-        </script>
+        </script> --}}
 
         {{-- Facebook sdk --}}
         {{-- <script>
