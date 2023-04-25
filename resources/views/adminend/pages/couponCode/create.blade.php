@@ -33,9 +33,9 @@
                             <div class="form-item">
                                 <label for="" class="form-label">Status</label>
                                 <select class="form-select w-full" name="status">
-                                    <option value="activated">Select Status</option>
-                                    <option value="activated" {{ old('status') === 'activated' ? 'selected' : ''}}>Activated</option>
-                                    <option value="inactivated" {{ old('status') === 'inactivated' ? 'selected' : ''}}>Inactivated</option>
+                                    <option value="active">Select Status</option>
+                                    <option value="active" {{ old('status') === 'active' ? 'selected' : ''}}>Active</option>
+                                    <option value="inactive" {{ old('status') === 'inactive' ? 'selected' : ''}}>Inactive</option>
                                 </select>
                             </div>
                             <div class="form-item">

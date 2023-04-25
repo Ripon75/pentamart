@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'Medicart'),
+    'name' => env('APP_NAME', 'Pentamart'),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,11 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
 
-    'pos_api_base_url' => env('POS_API_BASE_URL', 'http://192.168.11.7/coreapi/public/index.php'),
-
     'asset_url' => env('ASSET_URL', null),
-
-    'google_map_api_key' => env('GOOGLE_MAP_API_KEY'),
 
     /*
     |--------------------------------------------------------------------------

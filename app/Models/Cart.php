@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Models\User;
 use App\Classes\Model;
 use App\Models\Product;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -213,10 +212,10 @@ class Cart extends Model
     public function _getSubTotalAmount()
     {
         $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $price    = $item->pivot->price;
+            $itemPrice    = $item->pivot->item_price;
             $quantity = $item->pivot->quantity;
 
-            return $price * $quantity;
+            return $itemPrice * $quantity;
         });
 
         return $itemsSubtotalAmount;

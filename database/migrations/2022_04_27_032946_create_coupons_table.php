@@ -17,7 +17,7 @@ class CreateCouponsTable extends Migration
             $table->id();
             $table->string('name')->nullable();
             $table->string('code')->nullable();
-            $table->string('status')->default('activated');
+            $table->string('status')->default('active');
             $table->string('discount_type')->default('fixed');
             $table->decimal('discount_amount', 20, 2)->nullable();
             $table->decimal('min_cart_amount', 20, 2)

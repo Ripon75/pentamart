@@ -202,6 +202,15 @@
                                 <span id="items-total-discount-label" class="ml-1"></span>
                             </span>
                         </div>
+                        <div id="coupon-discount-div" class="hidden">
+                            <div class="flex justify-between">
+                                <span>Coupon Discount (-)</span>
+                                <span>{{ $currency }}
+                                    <input type="hidden" value="">
+                                    <span id="coupon-discount-label" class="ml-1">0.00</span>
+                                </span>
+                            </div>
+                        </div>
                         <div class="flex justify-between">
                             <span>Total Cost(-Discount)</span>
                             <span>{{ $currency }}
@@ -214,15 +223,6 @@
                                 <span id="delivery-charge-lavel" class="ml-1"></span>
                                 <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
                             </span>
-                        </div>
-                        <div id="coupon-discount-div" class="hidden">
-                            <div class="flex justify-between">
-                                <span>Coupon Discount (-)</span>
-                                <span>{{ $currency }}
-                                    <input type="hidden" value="">
-                                    <span id="coupon-discount-label" class="ml-1">0.00</span>
-                                </span>
-                            </div>
                         </div>
                     </div>
                     <div class="bg-[#00798c] p-2 rounded-b">
@@ -451,14 +451,14 @@
             deleteCartItemBtn.click(function() {
                 var itemID = $(this).data('item-id');
 
-                __removeCartItem(itemID, $(this));
+                removeCartItem(itemID, $(this));
             });
 
             // Empty item
             emptyCart.click(function() {
                 $(this).find(iconTrash).hide()
                 $(this).find(iconLoadding).show();
-                __emptyCart();
+                emptyCart();
             });
 
             // Event with pack size
@@ -507,7 +507,7 @@
                 inputDeliveryGateway.val(gatewayID);
 
                 cartTotalPriceCalculation();
-                __addCartMetaData('delevery_type_id', gatewayID);
+                addCartMetaData('delevery_type_id', gatewayID);
             });
 
             // On choose payment method
@@ -517,7 +517,7 @@
 
                 var paymentID = $(this).data('payment-method-id');
                 inputPaymentMethod.val(paymentID);
-                __addCartMetaData('payment_method_id', paymentID);
+                addCartMetaData('payment_method_id', paymentID);
             });
 
             btnAddressChangeCart.click(function () {
@@ -623,7 +623,7 @@
         }
 
         // Remove single cart item
-        function __removeCartItem(itemID, btn) {
+        function removeCartItem(itemID, btn) {
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
 
@@ -643,7 +643,7 @@
         }
 
          // Empty cart
-        function __emptyCart(){
+        function emptyCart(){
             axios.get('/cart/empty')
                 .then(function (response) {
                     // handle success
@@ -673,7 +673,7 @@
         }
 
         // Add cart meta data
-        function __addCartMetaData(inputName, value) {
+        function addCartMetaData(inputName, value) {
             var data = {};
 
             if (inputName === 'delevery_type_id') {
@@ -697,7 +697,7 @@
             });
         }
 
-          // Calculate total price
+        // Calculate total price
         function cartTotalPriceCalculation() {
             var itemsTotalPrice         = 0;
             var itemTotalDiscount       = 0;
@@ -714,19 +714,22 @@
                 itemTotalDiscount = itemTotalDiscount + subDiscount;
             });
 
-            var itemsTotalSellPrice = itemsTotalPrice - itemTotalDiscount;
-
+            
             // Get seltected delivery charge text
             deliveryCharge = parseFloat(inputDelivaryCharge.val());
             deliveryGatewayPriceLabel.text(deliveryCharge.toFixed(2));
+            
+            // get coupon discount
+            couponDiscount = inputItemsDiscount.val();
+            couponDiscount = +couponDiscount;
 
-            // get discount
-            // discount          = inputItemsDiscount.val();
-            // discount          = +discount;
+            // Items total sell price
+            var itemsTotalSellPrice = itemsTotalPrice - (itemTotalDiscount + couponDiscount);
+
             itemsTotalDiscountLabel.text(itemTotalDiscount.toFixed(2));
             subTotalSellPriceLabel.text(itemsTotalSellPrice.toFixed(2));
 
-            totalWithDeliveryCharge = (itemsTotalPrice + deliveryCharge) - itemTotalDiscount;
+            totalWithDeliveryCharge = (itemsTotalPrice + deliveryCharge) - (itemTotalDiscount + couponDiscount);
 
             itemsTotalPrice         = itemsTotalPrice.toFixed(2);
             totalWithDeliveryCharge = totalWithDeliveryCharge.toFixed(2);
@@ -782,7 +785,7 @@
             activeCouponBox.show();
             labelCouponCode.text(coupon.code);
             inputCouponCodeId.val(coupon.id);
-            discountLabel.text(couponAmount.toFixed(2));
+            // discountLabel.text(couponAmount.toFixed(2));
             inputItemsDiscount.val(couponAmount)
             var couponCode = coupon.code;
             couponCode     = couponCode.toUpperCase();
