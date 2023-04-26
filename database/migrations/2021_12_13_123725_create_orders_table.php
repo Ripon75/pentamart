@@ -19,11 +19,14 @@ class CreateOrdersTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('pg_id')->nullable()->onUpdate('cascade')
                   ->onDelete('cascade')->comment('Payment gateway id');
+            $table->foreignId('status_id')->nullable()->constrained('statuses')
+                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('address_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade');
+                  ->onDelete('cascade')->comment('Shipping address id');
+            $table->text('address')->nullable()->comment('Shipping address');
             $table->foreignId('coupon_id')->nullable()->onUpdate('cascade')
                     ->onDelete('cascade');
-            $table->decimal('coupon_value', 20, 2)->default(0)->nullable();
+            $table->decimal('coupon_value', 20, 2)->default(0);
             $table->decimal('delivery_charge', 20, 2)->default(0);
             $table->decimal('price', 20, 2)->default(0);
             $table->decimal('sell_price', 20, 2)->default(0);
@@ -31,8 +34,6 @@ class CreateOrdersTable extends Migration
             $table->decimal('payable_price', 20, 2)->default(0);
             $table->boolean('is_paid')->default(false);
             $table->timestamp('paid_at')->nullable();
-            $table->foreignId('status_id')->nullable()->constrained('statuses')
-                ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('created_by')->nullable();
             $table->string('note', 1024)->nullable();
             $table->timestamps();

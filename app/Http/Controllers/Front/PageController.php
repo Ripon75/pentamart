@@ -43,19 +43,19 @@ class PageController extends Controller
                 'title'         => 'Brand 1',
                 'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
-                'postTitleLink' => ''
+                'postTitleLink' => '#'
             ],
             [
                 'title'         => 'Brand 2',
                 'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
-                'postTitleLink' => route('upload.prescription')
+                'postTitleLink' => '#'
             ],
             [
                 'title'         => 'Brand 3',
                 'imgSRC'        => '/images/sample/brand.jpeg',
                 'postTitle'     => 'Buy Now',
-                'postTitleLink' => 'tel:+8809609080706'
+                'postTitleLink' => '#'
             ]
         ];
 

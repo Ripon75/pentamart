@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\BannerController;
+use App\Http\Controllers\Admin\StatusController;
 use App\Http\Controllers\Admin\GenericController;
 use App\Http\Controllers\Admin\CompanyController;
 use App\Http\Controllers\Admin\ProductController;
@@ -18,7 +19,6 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\DosageFormController;
 use App\Http\Controllers\Admin\CouponCodeController;
 use App\Http\Controllers\Admin\PermissionController;
-use App\Http\Controllers\Admin\OrderStatusController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
 use App\Http\Controllers\Admin\DeliveryGatewayController;
 use App\Http\Controllers\Admin\ProductPriceLogController;
@@ -138,12 +138,12 @@ Route::middleware(['auth'])->group(function() {
     Route::put('/coupon-codes/{id}',      [CouponCodeController::class, 'update'])->name('coupon-codes.update')->middleware(['permission:coupon-codes-update']);
     
     // All order status route
-    Route::get('/order-statuses',           [OrderStatusController::class, 'index'])->name('order-statuses.index')->middleware(['permission:order-status-read']);
-    Route::get('/order-statuses/create',    [OrderStatusController::class, 'create'])->name('order-statuses.create')->middleware(['permission:order-status-create']);
-    Route::post('/order-statuses',          [OrderStatusController::class, 'store'])->name('order-statuses.store')->middleware(['permission:order-status-create']);
-    Route::get('/order-statuses/{id}',      [OrderStatusController::class, 'show'])->name('order-statuses.show')->middleware(['permission:order-status-read']);
-    Route::get('/order-statuses/{id}/edit', [OrderStatusController::class, 'edit'])->name('order-statuses.edit')->middleware(['permission:order-status-update']);
-    Route::put('/order-statuses/{id}',      [OrderStatusController::class, 'update'])->name('order-statuses.update')->middleware(['permission:order-status-update']);
+    Route::get('/order-statuses',           [StatusController::class, 'index'])->name('order-statuses.index')->middleware(['permission:order-status-read']);
+    Route::get('/order-statuses/create',    [StatusController::class, 'create'])->name('order-statuses.create')->middleware(['permission:order-status-create']);
+    Route::post('/order-statuses',          [StatusController::class, 'store'])->name('order-statuses.store')->middleware(['permission:order-status-create']);
+    Route::get('/order-statuses/{id}',      [StatusController::class, 'show'])->name('order-statuses.show')->middleware(['permission:order-status-read']);
+    Route::get('/order-statuses/{id}/edit', [StatusController::class, 'edit'])->name('order-statuses.edit')->middleware(['permission:order-status-update']);
+    Route::put('/order-statuses/{id}',      [StatusController::class, 'update'])->name('order-statuses.update')->middleware(['permission:order-status-update']);
     
     // All role route
     Route::get('roles',           [RoleController::class, 'index'])->name('roles')->middleware(['permission:roles-read']);

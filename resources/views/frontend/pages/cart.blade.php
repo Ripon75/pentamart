@@ -43,7 +43,7 @@
                                         Discount
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
-                                        Subtotal
+                                        Item total
                                     </th>
                                     <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center">
                                         Action
@@ -273,7 +273,7 @@
                                                 Select Address
                                                 <span class="text-red-500 ml-1">*</span>
                                             </div>
-                                            <input type="hidden" class="shipping-address-id" name="shipping_address_id"
+                                            <input type="hidden" class="shipping-address-id" name="address_id"
                                                 value="{{ ($cart->userAddress->id) ?? null }}">
                                             <div id="" class="shipping-address-label text-sm text-gray-500">
                                                 {{ ($cart->userAddress->title) ?? null }}
@@ -296,7 +296,7 @@
                                 <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
                             </div>
                             <div class="flex p-2 space-x-2">
-                                <input type="hidden" name="payment_method_id" id="input-payment-method-id" value="">
+                                <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
                                 @for ($i=0 ; $i < count($paymentGateways) ; $i++)
                                     <button
                                         type="button"
@@ -327,7 +327,7 @@
                                 <div id="apply-coupon-box">
                                     <div class="flex space-x-2">
                                         <div class="flex-1">
-                                            <input id="input-coupon-code-id" type="hidden" value="" name="coupon_code_id">
+                                            <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
                                             <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
                                         </div>
                                         <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
@@ -517,7 +517,7 @@
 
                 var paymentID = $(this).data('payment-method-id');
                 inputPaymentMethod.val(paymentID);
-                addCartMetaData('payment_method_id', paymentID);
+                addCartMetaData('pg_id', paymentID);
             });
 
             btnAddressChangeCart.click(function () {
@@ -682,9 +682,9 @@
                 };
             }
 
-            if (inputName === 'payment_method_id') {
+            if (inputName === 'pg_id') {
                 data = {
-                    'payment_method_id': value
+                    'pg_id': value
                 };
             }
 

@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Http\Request;
-use App\Rules\NotNumeric;
 use App\Models\User;
-use Auth;
+use App\Rules\NotNumeric;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Controllers\Controller;
 
 class CustomerController extends Controller
 {

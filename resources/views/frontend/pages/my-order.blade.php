@@ -200,7 +200,7 @@
                     return false;
                 }
                 if (selectedOrderID && selectedPaymentMethodId) {
-                    location.href=`order/payment/${selectedOrderID}?payment_method_id=${selectedPaymentMethodId}`;
+                    location.href=`order/payment/${selectedOrderID}?pg_id=${selectedPaymentMethodId}`;
                 }
             });
         });

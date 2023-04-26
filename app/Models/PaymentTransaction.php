@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
-use Auth;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PaymentTransaction extends Model
 {
@@ -14,26 +14,26 @@ class PaymentTransaction extends Model
         'order_id',
         'amount',
         'type',
-        'payment_method_id',
+        'pg_id',
         'payment_id',
-        'payment_gateway_trxid',
+        'pg_trxid',
         'status',
         'remark',
         'trx_by_id'
     ];
 
     protected $casts = [
-        'order_id'              => 'integer',
-        'amount'                => 'decimal:2',
-        'type'                  => 'string',
-        'payment_method_id'     => 'integer',
-        'payment_id'            => 'string',
-        'payment_gateway_trxid' => 'string',
-        'status'                => 'string',
-        'remark'                => 'string',
-        'trx_by_id'             => 'integer',
-        'created_at'            => 'datetime:Y-m-d H:i:s',
-        'updated_at'            => 'datetime:Y-m-d H:i:s',
+        'order_id'   => 'integer',
+        'amount'     => 'decimal:2',
+        'type'       => 'string',
+        'pg_id'      => 'integer',
+        'payment_id' => 'string',
+        'pg_trxid'   => 'string',
+        'status'     => 'string',
+        'remark'     => 'string',
+        'trx_by_id'  => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     public function order()
@@ -54,18 +54,18 @@ class PaymentTransaction extends Model
         $status = $status ?? 'completed';
         $userID = Auth::id();
 
-        $amount = $amount ?? round($order->payable_order_value);
+        $amount = $amount ?? round($order->payable_price);
 
         $trxObj = new Self();
 
-        $trxObj->order_id          = $orderID;
-        $trxObj->amount            = $amount;
-        $trxObj->type              = $type;
-        $trxObj->payment_method_id = $method;
-        $trxObj->status            = $status;
-        $trxObj->remark            = $remark;
-        $trxObj->trx_by_id         = $userID;
-        $res                       = $trxObj->save();
+        $trxObj->order_id  = $orderID;
+        $trxObj->amount    = $amount;
+        $trxObj->type      = $type;
+        $trxObj->pg_id     = $method;
+        $trxObj->status    = $status;
+        $trxObj->remark    = $remark;
+        $trxObj->trx_by_id = $userID;
+        $res               = $trxObj->save();
         if ($res) {
             return $trxObj;
         }

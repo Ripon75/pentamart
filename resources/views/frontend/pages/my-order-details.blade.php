@@ -39,13 +39,13 @@
                                 </button>
                             </div>
                             <div class="flex flex-col">
-                                <select name="payment_method_id" class="border-gray-300 focus:ring-0 focus:outline-none rounded">
+                                <select name="pg_id" class="border-gray-300 focus:ring-0 focus:outline-none rounded">
                                     <option value="">Select Payment method</option>
                                     @foreach ($paymentGateways as $pg)
                                         <option value="{{ $pg->id }}">{{ $pg->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('payment_method_id')
+                                @error('pg_id')
                                     <span class="form-helper error text-red-500 text-sm my-2">{{ $message }}</span>
                                 @enderror
                             </div>

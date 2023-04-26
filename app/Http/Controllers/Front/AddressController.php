@@ -80,7 +80,7 @@ class AddressController extends Controller
         if ($res) {
             $cartObj = new Cart();
             $cart    = $cartObj->getCurrentCustomerCart();
-            $cart->shipping_address_id = $obj->id;
+            $cart->address_id = $obj->id;
             $cart->save();
 
             return redirect()->back()->with('success', 'Address create sucessfully');
@@ -140,7 +140,7 @@ class AddressController extends Controller
         if ($res) {
             $cartObj = new Cart();
             $cart    = $cartObj->getCurrentCustomerCart();
-            $cart->shipping_address_id = $obj->id;
+            $cart->address_id = $obj->id;
             $cart->save();
 
             return redirect()->back()->with('success', 'Address create successfylly');

@@ -412,7 +412,7 @@
                         <select class="header-shipping-address form-input w-full">
                             <option class="text-xs md:text-sm" value="">Select address</option>
                             @foreach ($userAddress as $address)
-                                <option value="{{ $address->id }}" {{ $cart->shipping_address_id == $address->id ? "selected" : '' }}>
+                                <option value="{{ $address->id }}" {{ $cart->address_id == $address->id ? "selected" : '' }}>
                                     {{ $address->title }}
                                 </option>
                             @endforeach
@@ -728,7 +728,7 @@
 
     function __addShippingAddress(addressId) {
         axios.post(shippingAddressEndPoint, {
-            shipping_address_id: addressId
+            address_id: addressId
         })
         .then((response) => {
             // __showNotification('success', response.data.message, setAlertTime);

@@ -17,13 +17,13 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('delivery_type_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->foreignId('payment_method_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->foreignId('shipping_address_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade');
-            $table->string('note', 1024)->nullable();
+            $table->foreignId('dg_id')->nullable()->onUpdate('cascade')
+                  ->onDelete('cascade')->comment('Delivery gateway id');
+            $table->foreignId('pg_id')->nullable()->onUpdate('cascade')
+                  ->onDelete('cascade')->comment('Payment gateway id');
+            $table->foreignId('address_id')->nullable()->onUpdate('cascade')
+                  ->onDelete('cascade')->comment('Shipping address id');
+            $table->text('note')->nullable();
             $table->timestamps();
         });
     }

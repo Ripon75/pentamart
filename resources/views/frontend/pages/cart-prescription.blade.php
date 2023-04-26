@@ -79,7 +79,7 @@
                                         <div class="text-sm sm:text-sm md:text-sm font-semibold">
                                             Select Shipping Address <span class="text-red-500 text-xl">*</span>
                                         </div>
-                                        <input type="hidden" class="shipping-address-id" name="shipping_address_id"
+                                        <input type="hidden" class="shipping-address-id" name="address_id"
                                             value="{{ ($cart->userAddress->id) ?? null }}">
                                         <div id="shipping-address-title" class="shipping-address-label text-sm text-gray-500">
                                             {{ ($cart->userAddress->title) ?? null }}
@@ -102,7 +102,7 @@
                             <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
                         </div>
                         <div class="flex p-2 space-x-2">
-                            <input type="hidden" name="payment_method_id" id="input-payment-method-id" value="{{ $paymentGateways[0]->id }}">
+                            <input type="hidden" name="pg_id" id="input-payment-method-id" value="{{ $paymentGateways[0]->id }}">
                             @for ($i=0 ; $i < count($paymentGateways) ; $i++)
                                 <button
                                     type="button"
@@ -211,7 +211,7 @@
 
                 var paymentID = $(this).data('payment-method-id');
                 inputPaymentMethod.val(paymentID);
-                __addCartMetaData('payment_method_id', paymentID);
+                __addCartMetaData('pg_id', paymentID);
             });
 
             $('#terms-and-conditons').click(function() {
@@ -253,9 +253,9 @@
                 };
             }
 
-            if (inputName === 'payment_method_id') {
+            if (inputName === 'pg_id') {
                 data = {
-                    'payment_method_id': value
+                    'pg_id': value
                 };
             }
 

@@ -48,7 +48,7 @@ class EventServiceProvider extends ServiceProvider
         ],
         OrderCreate::class => [
             SetOrderStatusSubmit::class,
-            SendOrderSubmitSMS::class
+            // SendOrderSubmitSMS::class
         ],
         ManualOrderCreate::class => [
             SetManualOrderStatusSubmit::class

@@ -74,7 +74,6 @@ class LaratrustSeeder extends Seeder
                 $user->attachRole($role);
                 $users[] = $user;
             }
-
         }
 
         foreach ($users as $user) {

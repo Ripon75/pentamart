@@ -2,31 +2,26 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
+use App\Models\Status;
+use App\Rules\NotNumeric;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
-use App\Models\OrderStatus;
-use App\Rules\NotNumeric;
+use App\Http\Controllers\Controller;
 
-class OrderStatusController extends Controller
+class StatusController extends Controller
 {
     public function index(Request $request)
     {
-        $orderStatuses = OrderStatus::orderBy('id', 'desc')->get();
+        $statuses = Status::orderBy('id', 'desc')->get();
 
-        return view('adminend.pages.orderStatus.index', [
-            'orderStatuses' => $orderStatuses
+        return view('adminend.pages.status.index', [
+            'statuses' => $statuses
         ]);
-    }
-
-    public function Show($id)
-    {
-        return 'show';
     }
 
     public function create(Request $request)
     {
-        return view('adminend.pages.orderStatus.create');
+        return view('adminend.pages.status.create');
     }
 
     public function store(Request $request)
@@ -42,25 +37,24 @@ class OrderStatusController extends Controller
         $sellerVisibility   = $request->input('seller_visibility', false);
         $description        = $request->input('description', null);
 
-        $orderStatusObj = new OrderStatus();
+        $statusObj = new Status();
 
-        $orderStatusObj->name                = $name;
-        $orderStatusObj->slug                = Str::slug($name);
-        $orderStatusObj->customer_visibility = $customerVisibility;
-        $orderStatusObj->seller_visibility   = $sellerVisibility;
-        $orderStatusObj->description         = $description;
-        $res = $orderStatusObj->save();
+        $statusObj->name                = $name;
+        $statusObj->slug                = Str::slug($name);
+        $statusObj->customer_visibility = $customerVisibility;
+        $statusObj->seller_visibility   = $sellerVisibility;
+        $statusObj->description         = $description;
+        $statusObj->save();
 
         return redirect()->route('admin.order-statuses.index')->with('message', 'Order status create successfully');
-
     }
 
     public function edit(Request $request, $id)
     {
-        $orderStatus = OrderStatus::find($id);
+        $status = Status::find($id);
 
-        return view('adminend.pages.orderStatus.edit', [
-            'orderStatus' => $orderStatus
+        return view('adminend.pages.status.edit', [
+            'status' => $status
         ]);
     }
 
@@ -77,14 +71,14 @@ class OrderStatusController extends Controller
         $sellerVisibility   = $request->input('seller_visibility', false);
         $description        = $request->input('description', null);
 
-        $orderStatusObj = OrderStatus::find($id);
+        $statusObj = Status::find($id);
 
-        $orderStatusObj->name                = $name;
-        $orderStatusObj->slug                = Str::slug($name);
-        $orderStatusObj->customer_visibility = $customerVisibility;
-        $orderStatusObj->seller_visibility   = $sellerVisibility;
-        $orderStatusObj->description         = $description;
-        $res = $orderStatusObj->save();
+        $statusObj->name                = $name;
+        $statusObj->slug                = Str::slug($name);
+        $statusObj->customer_visibility = $customerVisibility;
+        $statusObj->seller_visibility   = $sellerVisibility;
+        $statusObj->description         = $description;
+        $res = $statusObj->save();
 
         return redirect()->route('admin.order-statuses.index')->with('message', 'Order status updated successfully');
     }

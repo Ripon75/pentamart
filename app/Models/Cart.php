@@ -22,15 +22,15 @@ class Cart extends Model
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'delivery_type_id' => [
+        'dg_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'payment_method_id' => [
+        'pg_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'shipping_address_id' => [
+        'address_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
@@ -71,7 +71,7 @@ class Cart extends Model
 
     public function deliveryGateway()
     {
-        return $this->belongsTo(DeliveryGateway::class, 'delivery_type_id', 'id');
+        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
     }
     // Relation end
 
@@ -154,8 +154,8 @@ class Cart extends Model
         $cart = $this->getCurrentCustomerCart();
         $res = $cart->items()->detach();
 
-        $cart->delivery_type_id    = 1;
-        $cart->payment_method_id   = 1;
+        $cart->dg_id    = 1;
+        $cart->pg_id   = 1;
         $cart->note                = null;
         $cart->save();
 
@@ -165,7 +165,7 @@ class Cart extends Model
     public function _addMetaData($request)
     {
         $deliveryTypeId  = $request->input('delevery_type_id', null);
-        $paymentMethodId = $request->input('payment_method_id', null);
+        $paymentMethodId = $request->input('pg_id', null);
         $note            = $request->input('note', null);
 
         $cart = $this->getCurrentCustomerCart();
@@ -174,10 +174,10 @@ class Cart extends Model
             $cart->note = $note;
         }
         if ($deliveryTypeId) {
-            $cart->delivery_type_id = $deliveryTypeId;
+            $cart->dg_id = $deliveryTypeId;
         }
         if ($paymentMethodId) {
-            $cart->payment_method_id = $paymentMethodId;
+            $cart->pg_id = $paymentMethodId;
         }
         $res = $cart->save();
 

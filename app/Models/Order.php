@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use App\Traits\BaseStatusMap;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -16,9 +15,9 @@ class Order extends Model implements Auditable
 
     protected $fillable = [
         'user_id',
-        'delivery_type_id',
-        'payment_method_id',
-        'shipping_address_id',
+        'dg_id',
+        'pg_id',
+        'address_id',
         'terms_and_condition',
         'note'
     ];
@@ -26,9 +25,9 @@ class Order extends Model implements Auditable
     protected $casts = [
         'id'                  => 'integer',
         'user_id'             => 'integer',
-        'delivery_type_id'    => 'integer',
-        'payment_method_id'   => 'integer',
-        'shipping_address_id' => 'integer',
+        'dg_id'               => 'integer',
+        'pg_id'               => 'integer',
+        'address_id'          => 'integer',
         'terms_and_condition' => 'string',
         'current_status_id'   => 'integer',
         'note'                => 'string',
@@ -48,14 +47,15 @@ class Order extends Model implements Auditable
     public function items()
     {
         return $this->belongsToMany(Product::class, 'order_item', 'order_id', 'item_id')
-            ->withPivot('quantity', 'pack_size', 'item_mrp', 'price', 'discount', 'status', 'pos_product_id')
+            ->withPivot('quantity', 'item_price', 'sell_price', 'item_discount')
             ->withTimestamps();
     }
 
     public function status()
     {
-        return $this->belongsToMany(OrderStatus::class, 'order_status_map', 'order_id', 'status_id')
-                    ->withPivot('created_by_id', 'created_at')->orderBy('order_status_map.created_at', 'asc');
+        return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')
+            ->withPivot('created_by', 'created_at')->orderBy('order_status.created_at', 'asc')
+            ->withTimestamps();
     }
 
     public function user()
@@ -65,17 +65,17 @@ class Order extends Model implements Auditable
 
     public function deliveryGateway()
     {
-        return $this->belongsTo(DeliveryGateway::class, 'delivery_type_id', 'id');
+        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
     }
 
     public function paymentGateway()
     {
-        return $this->belongsTo(PaymentGateway::class, 'payment_method_id', 'id');
+        return $this->belongsTo(PaymentGateway::class, 'pg_id', 'id');
     }
 
     public function shippingAddress()
     {
-        return $this->belongsTo(Address::class, 'shipping_address_id', 'id');
+        return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
     public function currentStatus()
@@ -112,24 +112,21 @@ class Order extends Model implements Auditable
         }
 
         $userId   = Auth::id();
-        $now      = $orderDatetime ?? Carbon::now();
         $statusId = $statusObj->id;
 
         $this->status()->attach([
             $statusId => [
-                'created_by_id' => $userId,
-                'created_at'    => $now
+                'created_by' => $userId
             ]
         ]);
 
-        $this->current_status_id = $statusId;
-        $this->current_status_at = $now;
+        $this->status_id = $statusId;
         $this->save();
     }
     // End relation
 
     // Helper function
-    public function _getCouponValue()
+    public function getCouponValue()
     {
         $couponAmount = 0;
 
@@ -145,28 +142,9 @@ class Order extends Model implements Auditable
                     if ($coupon->discount_type == 'fixed') {
                         $couponAmount = $coupon->discount_amount;
                     } else {
-                        $itemsSubtotalAmount = $this->_getSubTotalAmount();
+                        $itemsSubtotalAmount = $this->getTotalPrice();
                         $couponPercent       = $coupon->discount_amount;
                         $couponAmount        = ($couponPercent * $itemsSubtotalAmount)/100;
-                    }
-                }
-                // Check coupon code applied on product
-                if ($coupon->applicable_on === 'products' && $coupon->discount_type === 'percentage') {
-                    foreach ($this->items as $item) {
-                        $itemMRP      = $item->pivot->item_mrp;
-                        $itemDiscount = $item->pivot->discount;
-                        $itemQuantity = $item->pivot->quantity;
-                        $itemDiscountPercent = ($itemDiscount * 100) / $itemMRP;
-                        $couponDiscountPercent = $coupon->discount_amount;
-                        if ($itemDiscountPercent < $couponDiscountPercent) {
-                            $itemDiscountCalculate = ($itemMRP * $couponDiscountPercent) /100;
-                            $itemDiscountCalculate = $itemDiscountCalculate * $itemQuantity;
-                            $couponAmount += $itemDiscountCalculate;
-                        } else {
-                            $itemDiscountCalculate = ($itemMRP * $itemDiscountPercent) /100;
-                            $itemDiscountCalculate = $itemDiscountCalculate * $itemQuantity;
-                            $couponAmount += $itemDiscountCalculate;
-                        }
                     }
                 }
             }
@@ -175,104 +153,87 @@ class Order extends Model implements Auditable
     }
 
     // Calculate items total price
-    public function _getSubTotalAmount()
+    public function getTotalPrice()
     {
-        $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $price    = $item->pivot->price;
-            $quantity = $item->pivot->quantity;
+        $totalPrice = $this->items->sum(function ($item) {
+            $itemPrice = $item->pivot->item_price;
+            $quantity  = $item->pivot->quantity;
 
-            return $price * $quantity;
+            return $itemPrice * $quantity;
         });
 
-        return $itemsSubtotalAmount;
+        return $totalPrice;
     }
 
     // Calculate iems total MRP
-    public function _getSubTotalMRP()
+    public function getTotalSellPrice()
     {
-        $itemsSubtotalMRP = $this->items->sum(function ($item) {
-            $itemMRP  = $item->pivot->item_mrp;
-            $quantity = $item->pivot->quantity;
+        $totalSellPrice = $this->items->sum(function ($item) {
+            $sellPrice = $item->pivot->sell_price;
+            $quantity  = $item->pivot->quantity;
 
-            return $itemMRP * $quantity;
+            return $sellPrice * $quantity;
         });
 
-        return $itemsSubtotalMRP;
+        return $totalSellPrice;
     }
 
     // Get total items discount
-    public function _getItemsDiscount()
+    public function getTotalDiscount()
     {
         $totalDiscount = $this->items->sum(function ($item) {
-            $ssum = 0;
-            $itemDiscount = $item->pivot->discount;
-            $quantity     = $item->pivot->quantity;
-            $ssum         = $itemDiscount * $quantity;
-            return $ssum;
+            $discount = $item->pivot->item_discount;
+            $quantity = $item->pivot->quantity;
+            return $discount * $quantity;
         });
 
         return $totalDiscount;
     }
 
-    public function deliveryCharge()
+    public function getTotalWithDeliveryCharge()
     {
-        $deliveryCharge = $this->delivery_charge;
-
-        return $deliveryCharge;
-    }
-
-    // Calculate items total amount with delivery charge
-    public function _getSubTotalAmountWithDeliveryCharge()
-    {
-        $deliveryCharge          = $this->deliveryCharge();
-        $itemsSubtotalAmount     = $this->_getSubTotalAmount();
-        $totalWithDeliveryCharge = $itemsSubtotalAmount + $deliveryCharge;
+        $totalSellPrice = $this->getTotalSellPrice();
+        $totalWithDeliveryCharge = $totalSellPrice + $this->delivery_charge;
 
         return $totalWithDeliveryCharge;
     }
 
-    public function _getGrandTotal()
+    public function getGrandTotal()
     {
-        $subTotalAmountWithDeliveryCharge = $this->_getSubTotalAmountWithDeliveryCharge();
-        $couponAmount = $this->_getCouponValue();
+        $totalWithDeliveryCharge = $this->getTotalWithDeliveryCharge();
+        $couponValue = $this->getCouponValue();
 
-        if ($this->coupon && $this->coupon->applicable_on === 'products' ) {
-            $subTotalAmountWithDeliveryCharge = $subTotalAmountWithDeliveryCharge + $this->_getItemsDiscount();
-        }
-
-        $grandTotal = $subTotalAmountWithDeliveryCharge - $couponAmount;
+        $grandTotal = $totalWithDeliveryCharge - $couponValue;
         return $grandTotal;
     }
 
-    public function _getPayableTotal($roundType = null)
+    public function getPayablePrice($roundType = null)
     {
-        $grandTotal           = $this->_getGrandTotal();
-        $totalSpecialDiscount = $this->total_special_discount;
-        $payableTotal         = $grandTotal - $totalSpecialDiscount;
+        $grandTotal = $this->getGrandTotal();
         if ($roundType === 'ceil') {
-            return ceil($payableTotal);
+            return ceil($grandTotal);
         } else if ($roundType === 'floor') {
-            return floor($payableTotal);
+            return floor($grandTotal);
         } else if ($roundType === 'round') {
-            return round($payableTotal);
+            return round($grandTotal);
         } else {
-            return $payableTotal;
+            return $grandTotal;
         }
     }
 
     public function updateOrderValue($orderObj)
     {
-        $subTotalMRP       = $orderObj->_getSubTotalMRP();
-        $subTotalAmount    = $orderObj->_getSubTotalAmount();
-        $couponValue       = $orderObj->_getCouponValue();
-        $itemsDiscount     = $orderObj->_getItemsDiscount();
-        $payableOrderValue = $orderObj->_getPayableTotal();
+        $totalPrice     = $orderObj->getTotalPrice() ?? 0;
+        $totalSellPrice = $orderObj->getTotalSellPrice() ?? 0;
+        $couponValue    = $orderObj->getCouponValue() ?? 0;
+        $totalDiscount  = $orderObj->getTotalDiscount() ?? 0;
+        $payablePrice   = $orderObj->getPayablePrice() ?? 0;
 
-        $orderObj->coupon_value         = $couponValue ?? 0;
-        $orderObj->total_items_discount = $itemsDiscount ?? 0;
-        $orderObj->order_items_value    = $subTotalAmount ?? 0;
-        $orderObj->order_items_mrp      = $subTotalMRP ?? 0;
-        $orderObj->payable_order_value  = $payableOrderValue ?? 0;
+        $orderObj->coupon_value  = $couponValue;
+        $orderObj->price         = $totalPrice;
+        $orderObj->sell_price    = $totalSellPrice;
+        $orderObj->discount      = $totalDiscount;
+        $orderObj->payable_price = $payablePrice;
         $orderObj->save();
     }
 }
