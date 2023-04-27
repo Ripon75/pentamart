@@ -24,7 +24,7 @@ class CartController extends Controller
 
     public function addItem(Request $request)
     {
-        $res = $this->cartObj->_addItem($request);
+        $res = $this->cartObj->addItem($request);
 
         Utility::setUserEvent('add-to-cart', $request->all());
 
@@ -33,7 +33,7 @@ class CartController extends Controller
 
     public function addMetaData(Request $request)
     {
-        $res = $this->cartObj->_addMetaData($request);
+        $res = $this->cartObj->addMetaData($request);
         return $res;
     }
 
@@ -48,7 +48,7 @@ class CartController extends Controller
 
     public function emptyCart(Request $request)
     {
-        $res = $this->cartObj->_emptyCart();
+        $res = $this->cartObj->emptyCart();
 
         Utility::setUserEvent('empty-cart', $request->all());
 

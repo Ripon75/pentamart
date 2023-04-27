@@ -26,7 +26,7 @@
                             type="else"
                             title="Wishlist"
                             bgImageSrc=""
-                            bgColor="#102967"
+                            bgColor="#00798c"
                         />
                     </div>
                 </div>

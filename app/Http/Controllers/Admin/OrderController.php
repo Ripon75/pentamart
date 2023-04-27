@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\admin;
 
-// use Setting;
 use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\User;
 use App\Models\Order;
 use App\Classes\Bkash;
-use App\Models\Product;
 use App\Classes\Utility;
 use App\Models\Status;
-use Illuminate\Support\Str;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Prescription;
@@ -26,7 +23,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -155,7 +151,7 @@ class OrderController extends Controller
         $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
-        $orderStatus       = $order->getNextStatus($order->current_status_id);
+        $orderStatus       = $order->getNextStatus($order->status_id);
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,

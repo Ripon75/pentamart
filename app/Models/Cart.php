@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Classes\Model;
 use App\Models\Product;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
@@ -75,7 +76,7 @@ class Cart extends Model
     }
     // Relation end
 
-    public function _addItem($request)
+    public function addItem($request)
     {
         $request->validate([
             'item_id'  => ['required', 'integer'],
@@ -132,52 +133,51 @@ class Cart extends Model
     public function removeItem($request)
     {
         $request->validate([
-            'item_id'      => ['required', 'integer'],
+            'item_id' => ['required', 'integer'],
         ]);
 
-        $itemId = $request->input('item_id');
+        $itemId  = $request->input('item_id');
+        $colorId = $request->input('color_id');
+        $sizeId  = $request->input('size_id');
 
-        $product = Product::find($itemId);
+        $res = DB::table('cart_item')->where('item_id', $itemId)->where('size_id', $sizeId)
+        ->where('color_id', $colorId)->delete();
 
-        if(!$product) {
-            return $this->_makeResponse(false, null, 'Product not found');
-        }
-
-        $cart = $this->getCurrentCustomerCart();
-        $res  = $cart->items()->detach($itemId);
+        // $cart = $this->getCurrentCustomerCart();
+        // $res  = $cart->items()->detach($itemId);
 
         return $this->_makeResponse(true, $res, 'Item removed successfuly');
     }
 
-    public function _emptyCart()
+    public function emptyCart()
     {
         $cart = $this->getCurrentCustomerCart();
         $res = $cart->items()->detach();
 
-        $cart->dg_id    = 1;
-        $cart->pg_id   = 1;
-        $cart->note                = null;
+        $cart->dg_id = 1;
+        $cart->pg_id = 1;
+        $cart->note  = null;
         $cart->save();
 
         return $this->_makeResponse(true, $res, 'Cart empty successfuly');
     }
 
-    public function _addMetaData($request)
+    public function addMetaData($request)
     {
-        $deliveryTypeId  = $request->input('delevery_type_id', null);
-        $paymentMethodId = $request->input('pg_id', null);
-        $note            = $request->input('note', null);
+        $dgId = $request->input('dg_id', null);
+        $pgId = $request->input('pg_id', null);
+        $note = $request->input('note', null);
 
         $cart = $this->getCurrentCustomerCart();
 
         if ($note) {
             $cart->note = $note;
         }
-        if ($deliveryTypeId) {
-            $cart->dg_id = $deliveryTypeId;
+        if ($dgId) {
+            $cart->dg_id = $dgId;
         }
-        if ($paymentMethodId) {
-            $cart->pg_id = $paymentMethodId;
+        if ($pgId) {
+            $cart->pg_id = $pgId;
         }
         $res = $cart->save();
 
@@ -209,11 +209,11 @@ class Cart extends Model
         return $cart;
     }
 
-    public function _getSubTotalAmount()
+    public function getSubTotalAmount()
     {
         $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $itemPrice    = $item->pivot->item_price;
-            $quantity = $item->pivot->quantity;
+            $itemPrice = $item->pivot->item_price;
+            $quantity  = $item->pivot->quantity;
 
             return $itemPrice * $quantity;
         });
@@ -221,10 +221,10 @@ class Cart extends Model
         return $itemsSubtotalAmount;
     }
 
-    public function _getSubTotalAmountWithDeliveryCharge()
+    public function getSubTotalAmountWithDeliveryCharge()
     {
-        $itemsSubtotalAmount = $this->_getSubTotalAmount();
-        $deliveryCharge      = $this->deliveryGateway->price;
+        $itemsSubtotalAmount     = $this->getSubTotalAmount();
+        $deliveryCharge          = $this->deliveryGateway->price;
         $totalWithDeliveryCharge = $itemsSubtotalAmount + $deliveryCharge;
 
         return $totalWithDeliveryCharge;

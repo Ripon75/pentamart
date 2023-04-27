@@ -151,15 +151,13 @@
 
                                         <td class="text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-center">
                                             <button class="delete-cart-item-btn btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"
-                                                data-item-id="{{ $product->id }}">
+                                                data-item-id="{{ $product->id }}"
+                                                data-color-id="{{ $product->pivot->color_id }}"
+                                                data-size-id="{{ $product->pivot->size_id }}">
                                                 <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
                                                 <i class="trash-icon text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-white fa-regular fa-trash-can"></i>
                                             </button>
                                         </td>
-                                        {{-- @php
-                                            $subTotal += $product->pivot->sell_price * $product->pivot->quantity;
-                                            info($subTotal);
-                                        @endphp --}}
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -449,9 +447,11 @@
 
             // Delete item
             deleteCartItemBtn.click(function() {
-                var itemID = $(this).data('item-id');
+                var itemId = $(this).data('item-id');
+                var colorId = $(this).data('color-id');
+                var sizeId = $(this).data('size-id');
 
-                removeCartItem(itemID, $(this));
+                removeCartItem(itemId, colorId, sizeId, $(this));
             });
 
             // Empty item
@@ -623,12 +623,14 @@
         }
 
         // Remove single cart item
-        function removeCartItem(itemID, btn) {
+        function removeCartItem(itemId, colorId, sizeId, btn) {
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
 
             axios.post('/cart/item/remove', {
-                    item_id: itemID
+                    item_id: itemId,
+                    color_id: colorId,
+                    size_id: sizeId,
                 })
                 .then(function (response) {
                     btn.parent().parent().remove();

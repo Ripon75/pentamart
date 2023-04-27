@@ -10752,6 +10752,9 @@ textarea.form-control.is-invalid{
 .grid-cols-6{
   grid-template-columns: repeat(6, minmax(0, 1fr));
 }
+.grid-cols-9{
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+}
 .flex-row{
   flex-direction: row;
 }

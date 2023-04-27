@@ -26,7 +26,7 @@
                             type="else"
                             title="My Profile"
                             bgImageSrc=""
-                            bgColor="#102967"
+                            bgColor="#00798c"
                         />
                     </div>
                 </div>

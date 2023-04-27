@@ -24,7 +24,7 @@
                     type="else"
                     title="Order Update"
                     bgImageSrc=""
-                    bgColor="#102967"
+                    bgColor="#00798c"
                 />
             </div>
             <div class="col-span-4 px-4 bg-gray-200">
@@ -341,7 +341,7 @@
                 type="else"
                 title="Create New Address"
                 bgImageSrc=""
-                bgColor="#102967"
+                bgColor="#00798c"
                 />
                 {{-- =========create new address=========== --}}
                 <form action="{{ route('my.address.other.store') }}" method="POST">

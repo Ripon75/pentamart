@@ -19,7 +19,7 @@
                                 type="else"
                                 title="Order"
                                 bgImageSrc=""
-                                bg-Color="#102967"
+                                bg-Color="#00798c"
                            />
                         </div>
                         <div class="card p-4">
@@ -64,7 +64,7 @@
                                     type="else"
                                     title="Order Details"
                                     bgImageSrc=""
-                                    bg-Color="#102967"
+                                    bg-Color="#00798c"
                                />
                             </div>
                             <div class="card p-4">
@@ -218,7 +218,7 @@
                                          type="else"
                                          title="Order Status"
                                          bgImageSrc=""
-                                         bg-Color="#102967"
+                                         bg-Color="#00798c"
                                     />
                                  </div>
                                 @if (count($order->status) > 0)

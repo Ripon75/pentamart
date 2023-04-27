@@ -80,7 +80,7 @@ class Order extends Model implements Auditable
 
     public function currentStatus()
     {
-        return $this->belongsTo(OrderStatus::class, 'current_status_id', 'id');
+        return $this->belongsTo(Status::class, 'status_id', 'id');
     }
 
     public function coupon()

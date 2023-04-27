@@ -67,10 +67,10 @@
                                 <div class="flex mb-2">
                                     <strong>Colors:&nbsp;</strong>&nbsp;
                                     @foreach ($productColors as $color)
-                                    <div class="flex items-center mr-4">
-                                        <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="color_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
-                                    </div>
+                                        <div class="flex items-center mr-4">
+                                            <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="color_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
+                                        </div>
                                     @endforeach
                                 </div>
                             @endif
@@ -78,10 +78,10 @@
                             <div class="flex">
                                 <strong>Sizes:&nbsp;</strong>&nbsp;
                                 @foreach ($productSizes as $size)
-                                 <div class="flex items-center mr-4">
-                                     <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                     <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
-                                 </div>
+                                    <div class="flex items-center mr-4">
+                                        <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
+                                    </div>
                                 @endforeach
                             </div>
                             @endif
@@ -107,17 +107,17 @@
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-primaryPositive-darkest text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-xl font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
                                     {{ $product->price }}
                                 </span>
                             @else
-                                <span id="item-price-label" class="text-primaryPositive-darkest text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-xl font-medium">
                                     {{ number_format(($product->price), 2) }}
                                 </span>
-                                <span id="item-mrp-label" class="line-through text-primaryPositive-darkest text-xl font-medium">
+                                <span id="item-mrp-label" class="line-through text-primary text-xl font-medium">
                                 </span>
                             @endif
                         </span>
@@ -139,21 +139,21 @@
                                 </button>
                                 @if ($isWishListed)
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
-                                        <i class="text-4xl text-primaryPositive-darkest fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-primaryPositive-darkest fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @else
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
-                                        <i class="text-4xl text-primaryPositive-darkest fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-primaryPositive-darkest fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @endif
                             </div>
@@ -239,27 +239,30 @@
         easing: true,
     });
 
-    var cartAddItemEndPoint    = '/cart/item/add';
-    var btnAddToCartSingle     = $('.btn-add-to-car-single');
-    var productID              = $('#product-id').val();
-    var selectedPackSingle     = $('.selected-pack-single');
-    var priceLabel             = $('#item-price-label');
-    var itemMRPLabel           = $('#item-mrp-label');
-    var inputPrice             = $('#input-price');
-    var inputProductMRP        = $('#input-product-mrp');
-    var inputQty               = $('#input-qty');
-    var iconLoadding           = $('.loadding-icon');
-    var iconAddToCart          = $('#add-to-cart-icon');
-    var wishButton             = $('#wish-button');
-    var undoWishButton         = $('#undo-wish-button');
-    var packQtyLavel           = $('#pack-quantity-label');
-    var sUserID                = {{ Auth::id() }}
+    var aleartTime          = {{ config("crud.alear_time") }};
+    var cartAddItemEndPoint = '/cart/item/add';
+    var btnAddToCartSingle  = $('.btn-add-to-car-single');
+    var productID           = $('#product-id').val();
+    var selectedPackSingle  = $('.selected-pack-single');
+    var priceLabel          = $('#item-price-label');
+    var itemMRPLabel        = $('#item-mrp-label');
+    var inputPrice          = $('#input-price');
+    var inputProductMRP     = $('#input-product-mrp');
+    var inputQty            = $('#input-qty');
+    var iconLoadding        = $('.loadding-icon');
+    var iconAddToCart       = $('#add-to-cart-icon');
+    var wishButton          = $('#wish-button');
+    var undoWishButton      = $('#undo-wish-button');
+    var packQtyLavel        = $('#pack-quantity-label');
+    var sUserID             = {{ Auth::id() }};
+    var productColorsCount  = {{ count($productColors) }};
+    var productSizesCount   = {{ count($productSizes) }};
 
     @auth
         // Automatically product added to wishcart if local storage have wish_product_id
         var wishStorageProductID = localStorage.getItem('wish_product_id');
         if (wishStorageProductID) {
-            __addWishlist(wishStorageProductID);
+            addWishlist(wishStorageProductID);
             localStorage.removeItem('wish_product_id');
         }
     @endauth
@@ -296,9 +299,19 @@
             var productQty = inputQty.val();
             var colorId    = $('input[name="color_id"]:checked').val();
             var sizeId     = $('input[name="size_id"]:checked').val();
-            
+
+            if (productColorsCount > 0 && !colorId) {
+                __showNotification('error', 'Please select color', aleartTime);
+                return false;
+            }
+
+            if (productSizesCount > 0 && !sizeId) {
+                __showNotification('error', 'Please select size', aleartTime);
+                return false;
+            }
+
             if (productID != 0 && productQty != 0) {
-                __addCartItem(productID, productQty, colorId, sizeId, $(this));
+                addCartItem(productID, productQty, colorId, sizeId, $(this));
             }
         });
 
@@ -307,18 +320,18 @@
             if (!sUserID) {
                 localStorage.setItem('wish_product_id', productID);
             } else {
-                __addWishlist(productID);
+                addWishlist(productID);
             }
         });
 
         undoWishButton.click(function () {
             if (sUserID) {
-                __undoWishList(productID);
+                undoWishList(productID);
             }
         });
     });
 
-    function __addCartItem(productID, productQty, colorId = null, sizeId = null, btn = null) {
+    function addCartItem(productID, productQty, colorId = null, sizeId = null, btn = null) {
         if (btn) {
             btn.prop("disabled", true);
         }
@@ -358,7 +371,7 @@
         });
     }
 
-    function __addWishlist(productID) {
+    function addWishlist(productID) {
         axios.post('/my/wishlist', {
             product_id: productID
         })
@@ -371,7 +384,7 @@
         });
     }
 
-    function __undoWishList(productId) {
+    function undoWishList(productId) {
         axios.get('/my/wishlist/undo', {
             params: {
                 product_id: productID

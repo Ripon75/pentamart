@@ -30,7 +30,7 @@ class OrderController extends Controller
             'page' => 'customer-dashboard',
         ]);
 
-        $orders = Order::withSum('items as total_amount', DB::raw('order_item.price * order_item.quantity'))
+        $orders = Order::withSum('items as total_amount', DB::raw('order_item.sell_price * order_item.quantity'))
             ->where('user_id', Auth::id())
             ->get();
 
@@ -59,11 +59,11 @@ class OrderController extends Controller
         ]);
 
         $paginate = config('crud.paginate.default');
-
-        $orders = Order::withSum('items as total_amount', DB::raw('(order_item.price * order_item.quantity)'))
-            ->where('user_id', Auth::id())
-            ->latest()
-            ->paginate($paginate);
+        
+        $orders = Order::withSum('items as total_amount', DB::raw('(order_item.sell_price * order_item.quantity)'))
+        ->where('user_id', Auth::id())
+        ->latest()
+        ->paginate($paginate);
 
         $paymentGateways = PaymentGateway::whereNotIn('id', [1])->orderBy('name', 'asc')->get();
 
@@ -144,7 +144,7 @@ class OrderController extends Controller
                 // Update order total_items_discount, order_net_value and coupon_value
                 $orderObj->updateOrderValue($orderObj);
 
-                $cart->_emptyCart();
+                $cart->emptyCart();
                 // Dispatch order create event
                 OrderCreate::dispatch($orderObj);
 

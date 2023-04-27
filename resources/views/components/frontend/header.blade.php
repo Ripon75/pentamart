@@ -30,7 +30,7 @@
     </div>
     <div class="border-b bg-[#00798c]">
         <header class="page-header container hidden sm:hidden md:hidden lg:block xl:block">
-            <div class="grid grid-cols-8 h-full gap-2">
+            <div class="grid grid-cols-9 h-full gap-2">
                 <div class="col-span-2">
                     <div class="logo-wrapper">
                         <a href="{{ route('home') }}">
@@ -60,7 +60,7 @@
                     </div>
                 </div>
 
-                <div class="col-span-2">
+                <div class="col-span-3">
                     <div class="actions">
                         <a href="{{ route('my.wishlist') }}" class="flex items-center space-x-2"
                             data-mc-on-previous-url="{{ route('my.wishlist') }}"
@@ -74,7 +74,7 @@
                                 @endphp
                                 @if ($wishlists > 0)
                                     <button class="block" type="button">
-                                        <i class="text-primary fa-solid fa-heart"></i>
+                                        <i class="icon text-primary fa-solid fa-heart"></i>
                                     </button>
                                 @else
                                     <button class="block" type="button">
