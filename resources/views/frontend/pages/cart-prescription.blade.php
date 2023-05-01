@@ -4,13 +4,7 @@
     @csrf
 
     @section('content')
-
-    <!--========Cart page Banner========-->
-    <section class="page-top-gap">
-        <x-frontend.header-title height="250px" bgColor="linear-gradient( #112f7a, rgba(111, 111, 211, 0.52))"
-            bgImageSrc="/images/banners/cart-banner.png" title="Shopping Cart" />
-    </section>
-    <section class="container page-section">
+    <section class="container page-section page-top-gap">
         <div
             class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-8">
             <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-2">

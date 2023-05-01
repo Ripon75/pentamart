@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Image;
+// use Image;
+use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use App\Classes\Model;
 use App\Rules\NotNumeric;

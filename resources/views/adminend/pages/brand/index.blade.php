@@ -17,6 +17,7 @@
         @if(Session::has('message'))
         <div class="alert mb-8 success">{{ Session::get('message') }}</div>
         @endif
+
         <form class="mb-3" action="{{ route('admin.brands.index') }}" method="GET">
             <input class="" value="{{ request()->input('search_keyword') }}" name="search_keyword" type="search" placeholder="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -27,26 +28,46 @@
                 <thead>
                 <tr class="">
                     <th>ID</th>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Status</th>
-                    <th>Company</th>
+                    <th>Top</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($brands as $data)
+                    @foreach ($brands as $brand)
                     <tr class="">
-                        <td class="text-center">{{ $data->id }}</td>
-                        <td>{{ $data->name }}</td>
-                        <td class="text-center">
-                            <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">
-                                {{ $data->status }}
-                            </button>
+                        <td>{{ $brand->id }}</td>
+                        <td class="text-center w-20">
+                            <img class="h-16 w-16" src="{{ $brand->img_src }}" alt="{{ $brand->name }}">
                         </td>
-                        <td>{{ ($data->company->name) ?? null }}</td>
+                        <td>{{ $brand->name }}</td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.brands.edit', $data->id) }}">Edit</a>
-                            <a class="btn btn-primary btn-sm" href="{{ route('admin.brands.show', $data->id) }}">Show</a>
+                            @if ($brand->status == 'active')
+                                <button class="border px-1 py-1 rounded text-white bg-green-400 text-sm">
+                                    {{ $brand->status }}
+                                </button>
+                            @else
+                                <button class="border px-1 py-1 rounded text-white bg-red-400 text-sm">
+                                    {{ $brand->status }}
+                                </button>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            @if ($brand->is_top == 0)
+                                <button class="border px-1 py-1 rounded text-white bg-red-400 text-sm">
+                                    NO
+                                </button>
+                            @else
+                                <button class="border px-1 py-1 rounded text-white bg-green-400 text-sm">
+                                    YES
+                                </button>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.brands.edit', $brand->id) }}">Edit</a>
+                            {{-- <a class="btn btn-primary btn-sm" href="{{ route('admin.brands.show', $brand->id) }}">Show</a> --}}
                         </td>
                     </tr>
                     @endforeach

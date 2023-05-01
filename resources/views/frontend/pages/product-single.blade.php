@@ -22,7 +22,7 @@
                         {{-- end --}}
                     </div>
                     <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->image_src }}">
-               </div>
+                </div>
                {{-- ======================product single image for mobile============================ --}}
                 <div class="block md:hidden aspect-w-1 aspect-h-1 border rounded-md">
                     <div class="absolute top-0 right-0 p-2 z-20">
@@ -167,9 +167,9 @@
                 <div class="overflow-auto h-[384px] p-2">
                     <div class="">
                         @foreach ($relatedProducts as $rProduct)
-                        <div>
-                            <x-frontend.product-thumb type="list" :product="$rProduct" />
-                        </div>
+                            <div>
+                                <x-frontend.product-thumb type="list" :product="$rProduct" />
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -194,28 +194,62 @@
                         </div>
                     </div>
                 @endif
-                {{-- ===========Disclaimer============= --}}
-                {{-- <div class="col-span-3 mt-3">
-                    <div>
-                        <div class="bg-gradient-to-t to-gray-200 from-gray-100 h-10 flex items-center rounded-t-md">
-                            <h1 class="text-base text-red-500 font-medium pl-4"><i class="mr-3 fa-solid fa-bookmark"></i>Disclaimer</h1>
-                        </div>
-                        <div class=" mb-4 p-4 bg-white">
-                            <p class="text-sm text-gray-600">The information provided herein are for informational purposes only and not intended to be a substitute for professional medical advice, diagnosis, or treatment. Please note that this information should not be treated as a replacement for physical medical consultation or advice. Great effort has been placed to provide accurate and comprehensive data. However, Medicart along with its authors and editors make no representations or warranties and specifically disclaim all liability for any medical information provided on the site. The absence of any information and/or warning to any drug shall not be considered and assumed as an implied assurance of the Company.</p>
-                        </div>
-                    </div>
-                </div> --}}
             </div>
-            {{-- <div class="col-span-6 lg:col-span-6 xl:col-span-2">
-                <h1 class="text-xl font-medium">Others Product</h1>
-                <div class="mt-3 product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 gap-2">
+            <div class="col-span-6 lg:col-span-6 xl:col-span-2">
+                <h1 class="text-xl font-medium">Product ratings</h1>
+                {{-- <div class="mt-3 product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 gap-2">
                     @foreach ($otherProducts as $oProduct)
-                    <div>
-                        <x-frontend.product-thumb type="default" :product="$oProduct" />
-                    </div>
+                        <div>
+                            <x-frontend.product-thumb type="default" :product="$oProduct" />
+                        </div>
                     @endforeach
+                </div> --}}
+
+
+                <div class="overflow-auto h-[384px] p-2">
+                    <div class="">
+                        @foreach ($otherProducts as $oProduct)
+                            <div>
+                                {{-- <x-frontend.product-thumb type="list" :product="$oProduct" /> --}}
+
+
+
+                                <div class="border-b last:border-b-0">
+                                    <a href="#" class="block">
+                                        <div class="flex items-center">
+                                            {{-- <div class="thumb-image-wrapper w-28 h-28 p-2">
+                                                <img class="w-full h-full object-center object-cover"
+                                                    src="{{ $product->image_src }}" />
+                                            </div> --}}
+                                            <div class="content px-3 py-2 flex-1">
+                                                <div class="flex thumb-image-wrapper w-8 h-8">
+                                                    <img class="w-full h-full object-center object-cover"
+                                                        src="/images/sample/star.png" />
+                                                    <img class="w-full h-full object-center object-cover"
+                                                        src="/images/sample/star.png" />
+                                                    <img class="w-full h-full object-center object-cover"
+                                                        src="/images/sample/star.png" />
+                                                    <img class="w-full h-full object-center object-cover"
+                                                        src="/images/sample/star.png" />
+                                                    <img class="w-full h-full object-center object-cover"
+                                                        src="/images/sample/star.png" />
+                                                </div>
+                                                <p class="block text-gray-600 text-xs font-medium italic">By Ripon Ahmed</p>
+                                                <p class="block text-primary text-base md:text-sm lg:text-sm xl:text-base font-medium">
+                                                    Nice product and nice delivery
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+
+
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
-            </div> --}}
+
+            </div>
         </div>
     </div>
 </section>

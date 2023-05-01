@@ -34,7 +34,7 @@ class PageController extends Controller
 
         $banners  = Banner::where('position', 'offer')->where('status', 'active')->get();
 
-        $brands   = Banner::where('position', 'top-brand-offer')->where('status', 'active')->get();
+        // $brands   = Banner::where('position', 'top-brand-offer')->where('status', 'active')->get();
 
         $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
@@ -58,6 +58,8 @@ class PageController extends Controller
                 'postTitleLink' => '#'
             ]
         ];
+
+        $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
 
         $feelings = [
             [
@@ -406,7 +408,7 @@ class PageController extends Controller
 
         $isWishListed = $wishlistedProduct ? true : false;
 
-        $relatedProducts = Product::getDefaultMetaData()->take(5)->get();
+        $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
 
         $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
         ->where('id', '<>', $product->id)->take(4)->get();
@@ -494,7 +496,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function brandPage(Request $request, $id, $thumbOnly = false)
+    public function brandPage(Request $request, $id, $slug)
     {
         Utility::setUserEvent('pageview', [
             'page' => 'brand'
@@ -506,8 +508,7 @@ class PageController extends Controller
             abort(404);
         }
 
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $filterCategoryIds = $request->input('filter_category_ids', []);
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -524,7 +525,7 @@ class PageController extends Controller
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.brand';
+        $viewPage = 'frontend.pages.brand';
 
         return view($viewPage, [
             'products'            => $products,

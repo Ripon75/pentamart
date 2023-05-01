@@ -77,15 +77,14 @@
     <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
         <div class="container">
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
-                @foreach ($services as $service)
+                @foreach ($brands as $brand)
                     <x-frontend.banner-box
                         type="service"
                         :bg-color="'#fff'"
-                        pre-title=""
-                        :title="$service['title']"
-                        :img-src="$service['imgSRC']"
-                        :post-title="$service['postTitle']"
-                        :post-title-link="$service['postTitleLink']"
+                        :title="$brand->name"
+                        link-title="Buy Now"
+                        :link="route('brand.page', [$brand->id, $brand->slug])"
+                        :img-src="$brand->img_src"
                     />
                 @endforeach
             </div>
@@ -100,11 +99,10 @@
                     <x-frontend.banner-box
                         type="service-card"
                         :bg-color="'#fff'"
-                        pre-title=""
                         :title="$service['title']"
+                        link-title=""
+                        :link="$service['postTitleLink']"
                         :img-src="$service['imgSRC']"
-                        :post-title="$service['postTitle']"
-                        :post-title-link="$service['postTitleLink']"
                     />
                 @endforeach
             </div>
@@ -179,10 +177,9 @@
                     <x-frontend.banner-box
                         type="default"
                         :bg-color="$hotSale->bg_color"
-                        :pre-title="$hotSale->pre_title"
                         :title="$hotSale->title"
-                        :post-title-link="$hotSale->box_link"
-                        :post-title="$hotSale->post_title"
+                        :link-title="$hotSale->post_title"
+                        :link="$hotSale->box_link"
                         :img-src="$hotSale->img_src"
                     />
                 </div>
@@ -202,10 +199,10 @@
                     <x-frontend.banner-box
                         type="categories-banner"
                         :bg-color="'#fff'"
-                        pre-title=""
-                        :post-title-link="$topCategory['postTitleLink']"
+                        title=""
+                        link-title=""
+                        :link="$topCategory['postTitleLink']"
                         :img-src="$topCategory['imgSRC']"
-                        :title="$topCategory['title']"
                     />
                 @endforeach
             </div>
@@ -223,10 +220,10 @@
                     <x-frontend.banner-box
                         type="brands-banner"
                         :bg-color="'#fff'"
-                        pre-title=""
-                        :post-title-link="$brand->box_link"
-                        :img-src="$brand->img_src"
                         title=""
+                        link-title=""
+                        :link="$brand->box_link"
+                        :img-src="$brand->img_src"
                     />
                 @endforeach
             </div>

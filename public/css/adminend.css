@@ -10251,6 +10251,9 @@ textarea.form-control.is-invalid{
 .col-start-5{
   grid-column-start: 5;
 }
+.float-right{
+  float: right;
+}
 .float-left{
   float: left;
 }

@@ -1,18 +1,9 @@
 @extends('frontend.layouts.default')
 @section('title', 'Signup')
 @section('content')
-    <!--========Banner start========-->
-    <section class="page-top-gap">
-        <x-frontend.header-title
-            type="default"
-            bgColor="linear-gradient( #112f7a, rgba(111, 111, 211, 0.52))"
-            bgImageSrc="/images/banners/home-banner.jpg"
-            title="Signup"
-        />
-    </section>
     {{-- ==========Signup Form============== --}}
     <section class="">
-        <div class="container page-section">
+        <div class="container page-section page-top-gap">
             <div class="sm:[w-500px] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] mx-auto">
                 <div class="card shadow">
                     <div class="body p-4">

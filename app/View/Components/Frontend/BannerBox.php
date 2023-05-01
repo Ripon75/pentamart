@@ -6,27 +6,25 @@ use Illuminate\View\Component;
 
 class BannerBox extends Component
 {   public $type;
-    public $preTitle;
     public $title;
+    public $linkTitle;
+    public $link;
     public $bgColor;
     public $imgSrc;
-    public $postTitle;
-    public $postTitleLink;
 
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct ($type = 'default', $bgColor = null, $preTitle = null, $title, $imgSrc, $postTitle = null, $postTitleLink = null )
+    public function __construct ($type = 'default', $title = null, $linkTitle = null, $link = null, $bgColor = null, $imgSrc = null )
     {
-        $this->type          = $type;
-        $this->bgColor       = $bgColor ?? '#fff';
-        $this->preTitle      = $preTitle;
-        $this->title         = $title;
-        $this->imgSrc        = $imgSrc;
-        $this->postTitle     = $postTitle;
-        $this->postTitleLink = $postTitleLink;
+        $this->type      = $type;
+        $this->title     = $title;
+        $this->linkTitle = $linkTitle;
+        $this->link      = $link;
+        $this->bgColor   = $bgColor ?? '#fff';
+        $this->imgSrc    = $imgSrc;
     }
 
     /**
