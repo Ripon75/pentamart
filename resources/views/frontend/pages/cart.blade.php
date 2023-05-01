@@ -3,394 +3,384 @@
 @section('content')
 
     @if (count($products))
-    <!--========Cart page Banner========-->
-    <section class="page-top-gap">
-        <x-frontend.header-title
-            type="default"
-            height="250px"
-            bgColor="linear-gradient( #112f7a, rgba(111, 111, 211, 0.52))"
-            bgImageSrc="/images/banners/cart-banner.png"
-            title="Shopping Cart"
-        />
-    </section>
-    <section class="container page-section">
-        <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-8">
-            <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-2">
-                <div>
-                    <div class="overflow-auto">
-                        <table class="table-auto w-full bg-white">
-                            <thead class="border bg-gray-300">
-                                <tr class="text-sm sm:text-sm md:text-sm lg:text-base">
-                                    <th class="hidden sm:hidden md:block text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r">
-                                        Image
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
-                                        Product
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
-                                        Color
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
-                                        Size
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
-                                        Price
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center border-r">
-                                        Qty
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-right border-r pr-0 sm:pr-0 md:pr-2">
-                                        Discount
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
-                                        Item total
-                                    </th>
-                                    <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center">
-                                        Action
-                                    </th>
-                                </tr>
-                            </thead>
-
-                            <tbody class="">
-                                @php $subTotal = 0; @endphp
-                                @foreach ($products as $key => $product)
-                                    <tr class="item-row border">
-                                        <input type="hidden" value="{{ $product->counter_type }}" class="input-counter-type">
-                                        <td class="hidden sm:hidden md:block p-1 w-14 h-14 mx-auto">
-                                            <div class="">
-                                                <img class="" src="{{ $product->image_src }}" alt="Product Image">
-                                            </div>
-                                        </td>
-                                        <td class="border text-left pl-1 sm:pl-1 md:pl-2">
-                                            @if ($product->name)
-                                            <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block text-primary text-xs sm:text-xs md:text-base font-medium" title="{{ $product->name }}">
-                                                {{ $product->name }}
-                                            </a>
-                                            @endif
-                                        </td>
-                                        <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            @if ($product->pivot->color_id)
-                                                <span class="ml-1">
-                                                    {{ $product->colors[$product->pivot->color_id - 1]->name ?? '' }}
-                                                </span>
-                                            @else
-                                                <span class="ml-1">
-                                                    N/A
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            @if ($product->pivot->size_id)
-                                                    <span class="ml-1">
-                                                    {{ $product->sizes[$product->pivot->size_id - 1]->name ?? '' }}
-                                                </span>
-                                            @else
-                                                <span class="ml-1">
-                                                    N/A
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
-                                            <span class="ml-1">
-                                                {{ $product->pivot->item_price }}
-                                            </span>
-                                        </td>
-                                        <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
-                                            <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
-                                                data-item-id="{{ $product->id }}"
-                                                data-unit-sell-price="{{ $product->offer_price }}"
-                                                data-total-item-sell-price-label="total-sell-price-{{ $product->pivot->item_id }}"
-                                                data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
-                                                data-item-discount="{{ $product->discount }}"
-                                                data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
-                                                data-unit-price="{{ $product->price }}"
-                                                data-color-id="{{ $product->pivot->color_id }}"
-                                                data-size-id="{{ $product->pivot->size_id }}">
-
-                                                @for ($i = 1; $i <= 5; $i++)
-                                                    <option value="{{ $i }}" {{ $product->pivot->quantity == $i ? 'selected' : '' }}>
-                                                        {{ $i }}
-                                                    </option>
-                                                @endfor
-                                            </select>
-                                        </td>
-                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
-                                            @php
-                                                $itemTotalDiscount = $product->pivot->item_discount * $product->pivot->quantity;
-                                                $itemTotalDiscount = number_format((float)$itemTotalDiscount, 2);
-                                            @endphp
-                                            <span id="total-discount-{{ $product->pivot->item_id }}" class="sub-total-discount ml-1">
-                                                <span id="discount-show-{{ $product->pivot->item_id}}">
-                                                    {{ $itemTotalDiscount }}
-                                                </span>
-                                            </span>
-                                        </td>
-
-                                        <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
-                                            @php
-                                                $itemTotalSellPrice = $product->pivot->sell_price * $product->pivot->quantity;
-                                                $itemTotalSellPrice = number_format((float)$itemTotalSellPrice, 2);
-                                            @endphp
-                                            <span id="total-sell-price-{{ $product->pivot->item_id }}" class="sub-total-sell-price ml-1">
-                                                <span id="price-show-{{ $product->pivot->item_id}}">
-                                                    {{ ($itemTotalSellPrice) }}
-                                                </span>
-                                            </span>
-                                        </td>
-
-                                        <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
-                                            @php
-                                                $itemTotalPrice = $product->pivot->item_price * $product->pivot->quantity;
-                                            @endphp
-                                            <span id="total-price-{{ $product->pivot->item_id }}" class="sub-total-price ml-1">
-                                                <span id="mrp-show-{{ $product->pivot->item_id}}">
-                                                    {{ ($itemTotalPrice) }}
-                                                </span>
-                                            </span>
-                                        </td>
-
-                                        <td class="text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-center">
-                                            <button class="delete-cart-item-btn btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"
-                                                data-item-id="{{ $product->id }}"
-                                                data-color-id="{{ $product->pivot->color_id }}"
-                                                data-size-id="{{ $product->pivot->size_id }}">
-                                                <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                                                <i class="trash-icon text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-white fa-regular fa-trash-can"></i>
-                                            </button>
-                                        </td>
+        <section class="container page-section page-top-gap">
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-8">
+                <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-2">
+                    <div>
+                        <div class="overflow-auto">
+                            <table class="table-auto w-full bg-white">
+                                <thead class="border bg-gray-300">
+                                    <tr class="text-sm sm:text-sm md:text-sm lg:text-base">
+                                        <th class="hidden sm:hidden md:block text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r">
+                                            Image
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            Product
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            Color
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            Size
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
+                                            Price
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center border-r">
+                                            Qty
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-right border-r pr-0 sm:pr-0 md:pr-2">
+                                            Discount
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
+                                            Item total
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center">
+                                            Action
+                                        </th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                </thead>
 
-                    <div class="flex justify-between sm:justify-between md:justify-between lg:justify-end xl:justify-end 2xl:justify-end space-x-6 mt-4">
-                        <div class="">
-                            <button id="btn-shopping-continue" class="btn btn-md btn-primary">
-                                <a class="hover:text-white" href="{{ route('products.index') }}">
-                                    Continue shopping
-                                    <i id="continue-cart-icon" class="ml-2 fa-solid fa-cart-plus"></i></a>
-                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                            </button>
+                                <tbody class="">
+                                    @php $subTotal = 0; @endphp
+                                    @foreach ($products as $key => $product)
+                                        <tr class="item-row border">
+                                            <input type="hidden" value="{{ $product->counter_type }}" class="input-counter-type">
+                                            <td class="hidden sm:hidden md:block p-1 w-14 h-14 mx-auto">
+                                                <div class="">
+                                                    <img class="" src="{{ $product->image_src }}" alt="Product Image">
+                                                </div>
+                                            </td>
+                                            <td class="border text-left pl-1 sm:pl-1 md:pl-2">
+                                                @if ($product->name)
+                                                <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block text-primary text-xs sm:text-xs md:text-base font-medium" title="{{ $product->name }}">
+                                                    {{ $product->name }}
+                                                </a>
+                                                @endif
+                                            </td>
+                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                @if ($product->pivot->color_id)
+                                                    <span class="ml-1">
+                                                        {{ $product->colors[$product->pivot->color_id - 1]->name ?? '' }}
+                                                    </span>
+                                                @else
+                                                    <span class="ml-1">
+                                                        N/A
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                @if ($product->pivot->size_id)
+                                                        <span class="ml-1">
+                                                        {{ $product->sizes[$product->pivot->size_id - 1]->name ?? '' }}
+                                                    </span>
+                                                @else
+                                                    <span class="ml-1">
+                                                        N/A
+                                                    </span>
+                                                @endif
+                                            </td>
+                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                <span class="ml-1">
+                                                    {{ $product->pivot->item_price }}
+                                                </span>
+                                            </td>
+                                            <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
+                                                <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
+                                                    data-item-id="{{ $product->id }}"
+                                                    data-unit-sell-price="{{ $product->offer_price }}"
+                                                    data-total-item-sell-price-label="total-sell-price-{{ $product->pivot->item_id }}"
+                                                    data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
+                                                    data-item-discount="{{ $product->discount }}"
+                                                    data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
+                                                    data-unit-price="{{ $product->price }}"
+                                                    data-color-id="{{ $product->pivot->color_id }}"
+                                                    data-size-id="{{ $product->pivot->size_id }}">
+
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <option value="{{ $i }}" {{ $product->pivot->quantity == $i ? 'selected' : '' }}>
+                                                            {{ $i }}
+                                                        </option>
+                                                    @endfor
+                                                </select>
+                                            </td>
+                                            <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                @php
+                                                    $itemTotalDiscount = $product->pivot->item_discount * $product->pivot->quantity;
+                                                    $itemTotalDiscount = number_format((float)$itemTotalDiscount, 2);
+                                                @endphp
+                                                <span id="total-discount-{{ $product->pivot->item_id }}" class="sub-total-discount ml-1">
+                                                    <span id="discount-show-{{ $product->pivot->item_id}}">
+                                                        {{ $itemTotalDiscount }}
+                                                    </span>
+                                                </span>
+                                            </td>
+
+                                            <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                @php
+                                                    $itemTotalSellPrice = $product->pivot->sell_price * $product->pivot->quantity;
+                                                    $itemTotalSellPrice = number_format((float)$itemTotalSellPrice, 2);
+                                                @endphp
+                                                <span id="total-sell-price-{{ $product->pivot->item_id }}" class="sub-total-sell-price ml-1">
+                                                    <span id="price-show-{{ $product->pivot->item_id}}">
+                                                        {{ ($itemTotalSellPrice) }}
+                                                    </span>
+                                                </span>
+                                            </td>
+
+                                            <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                @php
+                                                    $itemTotalPrice = $product->pivot->item_price * $product->pivot->quantity;
+                                                @endphp
+                                                <span id="total-price-{{ $product->pivot->item_id }}" class="sub-total-price ml-1">
+                                                    <span id="mrp-show-{{ $product->pivot->item_id}}">
+                                                        {{ ($itemTotalPrice) }}
+                                                    </span>
+                                                </span>
+                                            </td>
+
+                                            <td class="text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-center">
+                                                <button class="delete-cart-item-btn btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"
+                                                    data-item-id="{{ $product->id }}"
+                                                    data-color-id="{{ $product->pivot->color_id }}"
+                                                    data-size-id="{{ $product->pivot->size_id }}">
+                                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                                    <i class="trash-icon text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-white fa-regular fa-trash-can"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
-                        <div class="">
-                            <button id="empty-cart" class="btn btn-md btn-danger">
-                                Clear cart
-                                <i class="ml-2 trash-icon text-white fa-regular fa-trash-can"></i>
-                                <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                            </button>
+
+                        <div class="flex justify-between sm:justify-between md:justify-between lg:justify-end xl:justify-end 2xl:justify-end space-x-6 mt-4">
+                            <div class="">
+                                <button id="btn-shopping-continue" class="btn btn-md btn-primary">
+                                    <a class="hover:text-white" href="{{ route('products.index') }}">
+                                        Continue shopping
+                                        <i id="continue-cart-icon" class="ml-2 fa-solid fa-cart-plus"></i></a>
+                                        <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                </button>
+                            </div>
+                            <div class="">
+                                <button id="empty-cart" class="btn btn-md btn-danger">
+                                    Clear cart
+                                    <i class="ml-2 trash-icon text-white fa-regular fa-trash-can"></i>
+                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="col-span-1">
-                <section class="card border-2">
-                    <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
-                        <div class="flex justify-between">
-                            <span>Total Cost</span>
-                            <span>{{ $currency }}
-                                <span id="sub-total-price-label" class="ml-1"></span>
-                            </span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Discount (-)</span>
-                            <span>{{ $currency }}
-                                <input id="input-items-discount" type="hidden" value="">
-                                <span id="items-total-discount-label" class="ml-1"></span>
-                            </span>
-                        </div>
-                        <div id="coupon-discount-div" class="hidden">
+                <div class="col-span-1">
+                    <section class="card border-2">
+                        <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
                             <div class="flex justify-between">
-                                <span>Coupon Discount (-)</span>
+                                <span>Total Cost</span>
                                 <span>{{ $currency }}
-                                    <input type="hidden" value="">
-                                    <span id="coupon-discount-label" class="ml-1">0.00</span>
+                                    <span id="sub-total-price-label" class="ml-1"></span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Discount (-)</span>
+                                <span>{{ $currency }}
+                                    <input id="input-items-discount" type="hidden" value="">
+                                    <span id="items-total-discount-label" class="ml-1"></span>
+                                </span>
+                            </div>
+                            <div id="coupon-discount-div" class="hidden">
+                                <div class="flex justify-between">
+                                    <span>Coupon Discount (-)</span>
+                                    <span>{{ $currency }}
+                                        <input type="hidden" value="">
+                                        <span id="coupon-discount-label" class="ml-1">0.00</span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Total Cost(-Discount)</span>
+                                <span>{{ $currency }}
+                                    <span id="sub-total-sell-price-label" class="ml-1"></span>
+                                </span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span>Delivery Charge (+)</span>
+                                <span>{{ $currency }}
+                                    <span id="delivery-charge-lavel" class="ml-1"></span>
+                                    <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
                                 </span>
                             </div>
                         </div>
-                        <div class="flex justify-between">
-                            <span>Total Cost(-Discount)</span>
-                            <span>{{ $currency }}
-                                <span id="sub-total-sell-price-label" class="ml-1"></span>
-                            </span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Delivery Charge (+)</span>
-                            <span>{{ $currency }}
-                                <span id="delivery-charge-lavel" class="ml-1"></span>
-                                <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
-                            </span>
-                        </div>
-                    </div>
-                    <div class="bg-[#00798c] p-2 rounded-b">
-                        <div class="flex justify-between text-white font-medium">
-                            <span class="text-base sm:text-base md:text-lg">Total</span>
-                            <span class="text-base sm:text-base md:text-lg font-medium">
-                                <span>{{ $currency }}
-                                    <span id="cart-total-price-label" class="ml-1">
+                        <div class="bg-[#00798c] p-2 rounded-b">
+                            <div class="flex justify-between text-white font-medium">
+                                <span class="text-base sm:text-base md:text-lg">Total</span>
+                                <span class="text-base sm:text-base md:text-lg font-medium">
+                                    <span>{{ $currency }}
+                                        <span id="cart-total-price-label" class="ml-1">
+                                        </span>
                                     </span>
                                 </span>
-                            </span>
-                        </div>
-                    </div>
-                </section>
-                <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
-                    @csrf
-                    {{-- ========Choose Delivery Type===== --}}
-                    <section class="mt-4">
-                        <div class="card border-2">
-                            {{-- <div class="header">
-                                <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
-                            </div> --}}
-                            <div class="p-2 space-x-2 first:space-x-0 hidden">
-                                <input type="hidden" id="input-delivery-gateway-id" value="">
-                                @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
-                                    <button
-                                        type="button"
-                                        data-delivery-gateway-price="{{ $deliveryGateways[$i]->price }}"
-                                        data-delivery-gateway-id="{{ $deliveryGateways[$i]->id }}"
-                                        class="btn-delivery-gateway
-                                         {{ $i === 0 ? 'active' : '' }}">
-                                        <span class="text-sm tracking-wide font-bold">{{ $deliveryGateways[$i]->name }}</span>
-                                        <span class="text-xs">
-                                            {{ $deliveryGateways[$i]->min_delivery_time }} to {{ $deliveryGateways[$i]->max_delivery_time }}
-                                            &nbsp;{{ $deliveryGateways[$i]->delivery_time_unit }}
-                                        </span>
-                                    </button>
-                                @endfor
                             </div>
-                            <div class="p-2">
-                                <div class="flex justify-between items-center">
-                                    <div class="flex space-x-2 items-center">
-                                        <div class="h-8 w-8 border rounded flex items-center justify-center">
-                                            <i class="text-lg text-gray-500 fa-solid fa-location-dot"></i>
+                        </div>
+                    </section>
+                    <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
+                        @csrf
+                        {{-- ========Choose Delivery Type===== --}}
+                        <section class="mt-4">
+                            <div class="card border-2">
+                                {{-- <div class="header">
+                                    <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
+                                </div> --}}
+                                <div class="p-2 space-x-2 first:space-x-0 hidden">
+                                    <input type="hidden" id="input-delivery-gateway-id" value="">
+                                    @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
+                                        <button
+                                            type="button"
+                                            data-delivery-gateway-price="{{ $deliveryGateways[$i]->price }}"
+                                            data-delivery-gateway-id="{{ $deliveryGateways[$i]->id }}"
+                                            class="btn-delivery-gateway
+                                            {{ $i === 0 ? 'active' : '' }}">
+                                            <span class="text-sm tracking-wide font-bold">{{ $deliveryGateways[$i]->name }}</span>
+                                            <span class="text-xs">
+                                                {{ $deliveryGateways[$i]->min_delivery_time }} to {{ $deliveryGateways[$i]->max_delivery_time }}
+                                                &nbsp;{{ $deliveryGateways[$i]->delivery_time_unit }}
+                                            </span>
+                                        </button>
+                                    @endfor
+                                </div>
+                                <div class="p-2">
+                                    <div class="flex justify-between items-center">
+                                        <div class="flex space-x-2 items-center">
+                                            <div class="h-8 w-8 border rounded flex items-center justify-center">
+                                                <i class="text-lg text-gray-500 fa-solid fa-location-dot"></i>
+                                            </div>
+                                            <div class="">
+                                                <div class="text-sm sm:text-sm md:text-sm font-semibold">
+                                                    Select Address
+                                                    <span class="text-red-500 ml-1">*</span>
+                                                </div>
+                                                <input type="hidden" class="shipping-address-id" name="address_id"
+                                                    value="{{ ($cart->userAddress->id) ?? null }}">
+                                                <div id="" class="shipping-address-label text-sm text-gray-500">
+                                                    {{ ($cart->userAddress->title) ?? null }}
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="">
-                                            <div class="text-sm sm:text-sm md:text-sm font-semibold">
-                                                Select Address
-                                                <span class="text-red-500 ml-1">*</span>
-                                            </div>
-                                            <input type="hidden" class="shipping-address-id" name="address_id"
-                                                value="{{ ($cart->userAddress->id) ?? null }}">
-                                            <div id="" class="shipping-address-label text-sm text-gray-500">
-                                                {{ ($cart->userAddress->title) ?? null }}
-                                            </div>
+                                            <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
+                                            data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth
+                                            @guest data-bs-target="#loginModalCenter" @endguest>Choose</button>
                                         </div>
-                                    </div>
-                                    <div class="">
-                                        <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
-                                        data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth
-                                        @guest data-bs-target="#loginModalCenter" @endguest>Choose</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                    {{-- =========Choose Payment Method======= --}}
-                    {{-- <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="header">
-                                <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
+                        </section>
+                        {{-- =========Choose Payment Method======= --}}
+                        {{-- <section class="mt-4">
+                            <div class="card border-2">
+                                <div class="header">
+                                    <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
+                                </div>
+                                <div class="flex p-2 space-x-2">
+                                    <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
+                                    @for ($i=0 ; $i < count($paymentGateways) ; $i++)
+                                        <button
+                                            type="button"
+                                            data-payment-method-id="{{ $paymentGateways[$i]->id }}"
+                                            class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
+                                            @if ($paymentGateways[$i]->img_src)
+                                                <div class="icon text-xl">
+                                                    <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
+                                                </div>
+                                            @else
+                                                <div class="icon text-xl">
+                                                    <i class="{{ $paymentGateways[$i]->icon }}"></i>
+                                                </div>
+                                            @endif
+                                            <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
+                                        </button>
+                                    @endfor
+                                </div>
                             </div>
-                            <div class="flex p-2 space-x-2">
-                                <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
-                                @for ($i=0 ; $i < count($paymentGateways) ; $i++)
-                                    <button
-                                        type="button"
-                                        data-payment-method-id="{{ $paymentGateways[$i]->id }}"
-                                        class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
-                                        @if ($paymentGateways[$i]->img_src)
-                                            <div class="icon text-xl">
-                                                <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
+                        </section> --}}
+                        {{-- ===========Use coupon==================== --}}
+                        <section class="mt-4">
+                            <div class="card border-2">
+                                <div class="header">
+                                    <h1 class="title">Have a coupon code? <i class="ml-3 fa-solid fa-tag"></i></h1>
+                                </div>
+                                <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
+                                    <div id="apply-coupon-box">
+                                        <div class="flex space-x-2">
+                                            <div class="flex-1">
+                                                <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
+                                                <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
                                             </div>
-                                        @else
-                                            <div class="icon text-xl">
-                                                <i class="{{ $paymentGateways[$i]->icon }}"></i>
-                                            </div>
-                                        @endif
-                                        <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
-                                    </button>
-                                @endfor
-                            </div>
-                        </div>
-                    </section> --}}
-                    {{-- ===========Use coupon==================== --}}
-                    <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="header">
-                                <h1 class="title">Have a coupon code? <i class="ml-3 fa-solid fa-tag"></i></h1>
-                            </div>
-                            <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
-                                <div id="apply-coupon-box">
-                                    <div class="flex space-x-2">
-                                        <div class="flex-1">
-                                            <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
-                                            <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
+                                            <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
                                         </div>
-                                        <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
+                                    </div>
+                                    <div id="active-coupon-box" class="hidden">
+                                        <div class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
+                                            <span class="text-sm">
+                                                <span class="label-coupon-code font-medium ml-2 uppercase">FREE10</span>
+                                                &nbsp;Applied
+                                            </span>
+                                            <button type="button" id="btn-remove-coupon-code" class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
+                                        </div>
                                     </div>
                                 </div>
-                                <div id="active-coupon-box" class="hidden">
-                                    <div class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
-                                        <span class="text-sm">
-                                            <span class="label-coupon-code font-medium ml-2 uppercase">FREE10</span>
-                                            &nbsp;Applied
+                            </div>
+                        </section>
+                        {{-- ===============Checkout================== --}}
+                        <section class="mt-4">
+                            <div class="card border-2">
+                                <div class="px-4 py-2">
+                                    <div class="mt-4">
+                                        <label class="text-sm" for="">Write note here</label><br>
+                                        <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                    </div>
+                                    <div class="flex space-x-2 mt-2">
+                                        <input id="terms-and-conditons" class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
+                                        <span class="text-gray-500 text-xs">
+                                            I agree with
+                                            <a href="/terms-and-conditions" class="text-primary">Terms and Conditions</a>,
+                                            {{-- <a href="/privacy-policy" class="text-primary">Privacy Policy</a>, --}}
                                         </span>
-                                        <button type="button" id="btn-remove-coupon-code" class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
+                                    </div>
+                                    <div class="mt-4">
+                                        <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
+                                            <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                            SUBMIT ORDER
+                                        </button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </section>
-                    {{-- ===============Checkout================== --}}
-                    <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="px-4 py-2">
-                                <div class="mt-4">
-                                    <label class="text-sm" for="">Write note here</label><br>
-                                    <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
-                                </div>
-                                <div class="flex space-x-2 mt-2">
-                                    <input id="terms-and-conditons" class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
-                                    <span class="text-gray-500 text-xs">
-                                        I agree with
-                                        <a href="/terms-and-conditions" class="text-primary">Terms and Conditions</a>,
-                                        {{-- <a href="/privacy-policy" class="text-primary">Privacy Policy</a>, --}}
-                                    </span>
-                                </div>
-                                <div class="mt-4">
-                                    <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
-                                        <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                                        SUBMIT ORDER
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                </form>
+                        </section>
+                    </form>
+                </div>
             </div>
-        </div>
-    </section>
+        </section>
     @else
-    <section class="container page-section page-top-gap">
-        <div class="card p-8">
-            <div class="flex flex-col items-center justify-center">
-                <div class="w-60">
-                    <img class="max-w-full h-auto" src="/images/sample/emptycart.png">
+        <section class="container page-section page-top-gap">
+            <div class="card p-8">
+                <div class="flex flex-col items-center justify-center">
+                    <div class="w-60">
+                        <img class="max-w-full h-auto" src="/images/sample/emptycart.png">
+                    </div>
+                    <div class="mt-8 text-center">
+                        <h1 class="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-wide text-primary">Your cart is empty</h1>
+                    </div>
+                    <div class="text-center mt-2 sm:mt-2 md:mt-4 text-sm sm:text-sm md:text-base">
+                        <h6 class="text-gray-600">No items in your shopping cart.</h6>
+                    </div>
+                    <a href="{{ route('products.index') }}" class="mt-4 sm:mt-4 md:mt-6">
+                        <button class="btn btn-sm sm:btn-sm md:btn-md btn-primary">Shop Now</button>
+                    </a>
                 </div>
-                <div class="mt-8 text-center">
-                    <h1 class="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-wide text-primary">Your cart is empty</h1>
-                </div>
-                <div class="text-center mt-2 sm:mt-2 md:mt-4 text-sm sm:text-sm md:text-base">
-                    <h6 class="text-gray-600">No items in your shopping cart.</h6>
-                </div>
-                <a href="{{ route('products.index') }}" class="mt-4 sm:mt-4 md:mt-6">
-                    <button class="btn btn-sm sm:btn-sm md:btn-md btn-primary">Shop Now</button>
-                </a>
             </div>
-        </div>
-    </section>
+        </section>
     @endif
 
 @endsection

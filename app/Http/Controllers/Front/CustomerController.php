@@ -30,24 +30,27 @@ class CustomerController extends Controller
             'phone_number' => ['required', "unique:users,phone_number,$id"],
         ]);
 
+
         $name   = $request->input('name', null);
         $email  = $request->input('email', null);
         $phone  = $request->input('phone_number', null);
-        $gender = $request->input('gender', null);
 
         $user = User::find($id);
+
+        if (!$user) {
+            abort(404);
+        }
 
         $user->name         = $name;
         $user->email        = $email;
         $user->phone_number = $phone;
-        $user->gender       = $gender;
         $res = $user->save();
 
         // Return response
         if($res) {
             return back()->with('message', 'Profile update successfully');
         } else {
-            return back()->with('failed', 'Profile update failed');
+            return back()->with('error', 'Profile update failed');
 
         }
     }

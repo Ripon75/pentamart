@@ -45,11 +45,11 @@
                 @endif
 
                 @if ($product->name)
-                    <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block h-10 font-medium text-primary text-sm line-clamp-2" title="{{ $product->name }}">
+                    <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block h-5 font-medium text-primary text-sm line-clamp-2" title="{{ $product->name }}">
                         {{ $product->name }}
                     </a>
                 @else
-                    <div class="h-10"></div>
+                    <div class="h-5"></div>
                 @endif
 
                 @if ($product->category_id)

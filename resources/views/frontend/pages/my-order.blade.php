@@ -84,8 +84,9 @@
                                         <td class="border border-l-0 p-2 flex flex-wrap space-y-1 md:space-y-0 space-x-2 items-center justify-center">
                                             {{-- Order details --}}
                                             <a href="{{ route('my.order.show', $order->id) }}" class="">
-                                                <button title="View" class="btn btn-sm btn-icon-only">
-                                                    <i class="fa-regular fa-eye"></i>
+                                                <button title="View" class="btn px-2 py-1">
+                                                    {{-- <i class="fa-regular fa-eye"></i> --}}
+                                                    Show
                                                 </button>
                                             </a>
                                         </td>

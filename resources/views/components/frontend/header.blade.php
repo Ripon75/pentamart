@@ -1,13 +1,13 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
     <div class="top-header-bar">
-        <div class="bg-secondary h-8 sm:h-8 md:h-10">
-            <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-white h-full">
+        <div class="bg-[#ffc42d] h-8 sm:h-8 md:h-10">
+            <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-black h-full">
                 <div class="address flex-1 hidden sm:hidden md:block">
-                    <span class="text-xs font-light">DELIVER TO : </span>
-                    <span id="show-address-top-nav" class="text-xs font-light"></span>
+                    <span class="text-xs font-normal">DELIVER TO : </span>
+                    <span id="show-address-top-nav" class="text-xs font-normal"></span>
                     <span class="ml-2 sm:ml-2 lg:ml-4">
-                        <button id="btn-address-change" type="button" class="border py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-light"
+                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal"
                             data-mc-on-previous-url="{{ url()->current() }}"
                             @auth data-bs-toggle="modal" data-bs-target="#address-modal" @endauth
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
@@ -91,8 +91,8 @@
                                 <button class="block" type="button">
                                     <i class="icon fa-solid fa-cart-shopping text-primary"></i>
                                 </button>
-                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#00798c] rounded-full w-6 h-6 text-center">
-                                    <span class="cart-count flex items-center justify-center h-full text-white text-xs">0</span>
+                                <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#ffc42d] rounded-full w-6 h-6 text-center">
+                                    <span class="cart-count flex items-center justify-center h-full text-black text-xs font-medium">0</span>
                                 </div>
                             </div>
                         </a>
@@ -117,7 +117,7 @@
                                             </a>
                                         @endrole
                                         <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-chart-line"></i>My Dashboard
+                                            <i class="mr-3 text-xs fa-solid fa-gauge"></i>My Dashboard
                                         </a>
                                         <a href="{{ route('my.profile') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-user"></i>My Profile
@@ -219,8 +219,8 @@
                             <button class="block">
                                 <i class="icon text-lg text-secondary fa-solid fa-cart-shopping"></i>
                             </button>
-                            <div class="cart-dev absolute -top-3 -right-3 bg-primary rounded-full w-5 h-5 text-center flex items-center justify-center">
-                                <span class="cart-count text-white text-xxs">0</span>
+                            <div class="cart-dev absolute -top-3 -right-3 bg-secondary rounded-full w-5 h-5 text-center flex items-center justify-center">
+                                <span class="cart-count text-black font-normal text-xxs">0</span>
                             </div>
                         </div>
                     </a>

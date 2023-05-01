@@ -40,24 +40,10 @@
                                 <div class="alert mb-8 success">{{ Session::get('message') }}</div>
                             @endif
 
-                            @if(Session::has('failed'))
-                            <div class="alert mb-8 error">{{ Session::get('failed') }}</div>
+                            @if(Session::has('error'))
+                            <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
-                           {{-- <div class="flex items-center space-x-6">
-                                <div class="shrink-0">
-                                    <img class="h-36 w-36 object-cover rounded-full" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1361&q=80" alt="Current profile photo" />
-                                </div>
-                                <label class="block">
-                                    <input type="file" class="block w-full text-sm text-slate-500
-                                        file:mr-4 file:py-2 file:px-4
-                                        file:rounded-full file:border-0
-                                        file:text-sm file:font-semibold
-                                        file:bg-violet-50 file:text-violet-700
-                                        hover:file:bg-violet-100
-                                    "/>
-                                </label>
-                           </div> --}}
                            <div class="form-item">
                                 <label class="form-label">Full Name</label>
                                 <input type="text" name="name" class="form-input" value="{{ $user->name }}"/>
@@ -81,25 +67,7 @@
                                 @enderror
                            </div>
                             <div class="form-item">
-                                <label class="form-label">Gender </label>
-                                <div class="flex">
-                                    <label
-                                        class="flex justify-start items-center text-truncate rounded-lg bg-gray-100 pl-4 pr-6 py-2 shadow-sm mr-4">
-                                        <div class="text-teal-600 mr-3">
-                                            <input type="radio" name="gender" value="male" {{ $user->gender === 'male' ? 'checked' : '' }} class="form-radio focus:outline-none focus:shadow-outline" />
-                                        </div>
-                                        <div class="select-none text-gray-700">Male</div>
-                                    </label>
-
-                                    <label
-                                        class="flex justify-start items-center text-truncate rounded-lg bg-gray-100 pl-4 pr-6 py-2 shadow-sm">
-                                        <div class="text-teal-600 mr-3">
-                                            <input type="radio" name="gender" value="female" {{ $user->gender === 'female' ? 'checked' : '' }} class="form-radio focus:outline-none focus:shadow-outline" />
-                                        </div>
-                                        <div class="select-none text-gray-700">Female</div>
-                                    </label>
-                                </div>
-                                <div class="mt-4 text-right">
+                                <div class="mt-1 text-right">
                                     <button type="submit" class="btn btn-md btn-primary">
                                         Update
                                     </button>

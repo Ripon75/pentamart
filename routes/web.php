@@ -64,7 +64,7 @@ Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.sin
 // Check auth
 Route::middleware(['auth'])->group(function(){
     // All Cart route
-    Route::get('/checkout',                   [PageController::class, 'checkout'])->name('checkout');
+    Route::get('/cart',                       [PageController::class, 'checkout'])->name('checkout');
     Route::post('/cart/item/add',             [CartController::class, 'addItem'])->name('cart.item.add');
     Route::post('/cart/item/remove',          [CartController::class, 'removeItem'])->name('cart.item.remove');
     Route::get('/cart/empty',                 [CartController::class, 'emptyCart']);

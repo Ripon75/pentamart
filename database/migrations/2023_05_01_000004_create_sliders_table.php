@@ -1,10 +1,10 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 
-class CreateBrandsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -15,8 +15,7 @@ class CreateBrandsTable extends Migration
     {
         $status = config('enum.status');
 
-        Schema::create('brands', function (Blueprint $table) use ($status) {
-            $table->id();
+        Schema::create('sliders', function (Blueprint $table) use ($status) {
             $table->string('slug', 100);
             $table->string('name', 100);
             $table->enum('status', $status)->default('active');
@@ -34,6 +33,6 @@ class CreateBrandsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('brands');
+        Schema::dropIfExists('sliders');
     }
-}
+};

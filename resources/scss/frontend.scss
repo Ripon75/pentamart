@@ -319,7 +319,7 @@
             @apply bg-gradient-to-t bg-[#00798c] text-white hover:bg-teal-900 transition duration-300 ease-in-out;
         }
         &.btn-secondary {
-            @apply bg-secondary text-white hover:bg-secondary-dark transition duration-300 ease-in-out;
+            @apply bg-[#ffc42d] text-white hover:bg-secondary-dark transition duration-300 ease-in-out;
         }
         &.btn-success {
             @apply bg-primaryPositive text-white hover:bg-primaryPositive-darker;
