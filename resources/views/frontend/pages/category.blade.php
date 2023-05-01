@@ -39,53 +39,33 @@
                             </span> --}}
                         </div>
 
-                        <div class="flex space-x-2 items-center">
+                        {{-- <div class="flex space-x-2 items-center">
                             <span class="hidden sm:hidden md:block text-gray-800 text-sm">Sort by</span>
                             <select id="input-short-order" class="h-8 border border-gray-300 rounded bg-gray-200 text-xs">
                                 <option value="asc" {{ request()->get('order') === 'asc' ? "selected" : '' }}>Price Low to High</option>
                                 <option value="desc" {{ request()->get('order') === 'desc' ? "selected" : '' }}>Price High to Low</option>
                             </select>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
                 {{-- Filter Column --}}
                 <div id="category-filter" class="col-span-4 sm:col-span-4 lg:col-span-1 hidden sm:hidden lg:block">
                     <div class="filter-card">
-                        @if (count($companies))
+                        @if (count($brands))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Manufacturer</span>
+                                <span class="box-title">Brand</span>
                                 </div>
                                 <div class="filter-list">
-                                    @foreach ($companies as $company)
+                                    @foreach ($brands as $brand)
                                     <label class="item">
                                         <input
                                             type="checkbox"
-                                            name="companies[]"
-                                            value="{{ $company->id }}"
+                                            name="brands[]"
+                                            value="{{ $brand->id }}"
                                             class="focus:ring-0 input-checkbox"
-                                            {{ in_array($company->id, $filterCompanyIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $company->name }}</span>
-                                    </label>
-                                    @endforeach
-                                </div>
-                            </div>
-                        @endif
-                        @if (count($dosageForms))
-                            <div class="filter-box">
-                                <div class="box-wrapper">
-                                <span class="box-title">Dosage Forms</span>
-                                </div>
-                                <div class="filter-list">
-                                    @foreach ($dosageForms as $dosageForm)
-                                    <label class="item">
-                                        <input
-                                            type="checkbox"
-                                            name="dosageForms[]"
-                                            value="{{ $dosageForm->id }}"
-                                            class="focus:ring-0 input-checkbox"
-                                            {{ in_array($dosageForm->id, $filterDosageFormIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $dosageForm->name }}</span>
+                                            {{ in_array($brand->id, $filterBrandIds) ? 'checked' : '' }}/>
+                                        <span class="ml-3 text-sm">{{ $brand->name }}</span>
                                     </label>
                                     @endforeach
                                 </div>
@@ -108,9 +88,16 @@
                             </div>
                         </div>
                     </div>
-                    <div class="flex items-center justify-center mt-8">
+                    {{-- ========Scroll============ --}}
+                    {{-- <div class="flex items-center justify-center mt-8">
                         <i id="product-loading-icon" class="text-4xl fa-solid fa-spinner fa-spin mr-2"></i>
-                    </div>
+                    </div> --}}
+                    {{-- ========Pagination============ --}}
+                    @if ($products->hasPages())
+                        <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
+                            {{ $products->appends(request()->input())->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
@@ -132,68 +119,50 @@
         };
 
         var searchKey = '{{ request()->get('search_key') ?? '' }}';
-        var route     = "{{ route('category.page', $slug) }}?page={{ $products->currentPage() }}";
+        var route     = "{{ route('category.page', $id) }}?page={{ $products->currentPage() }}";
 
         if (searchKey) {
             route = `${route}&search_key=${searchKey}`;
         }
 
-        const filterInputOrder        = $("#input-short-order");
-        const filterInputCompanies    = $('input[name="companies[]"]');
-        const filterInputDosageForms  = $('input[name="dosageForms[]"]');
+        // const filterInputOrder     = $("#input-short-order");
+        const filterInputBrands = $('input[name="brands[]"]');
 
         $(function() {
-            filterInputOrder.on("change", (event) => {
-                filterProducts(route);
-            });
+            // filterInputOrder.on("change", (event) => {
+            //     filterProducts(route);
+            // });
 
-            filterInputCompanies.on("click", (event) => {
-                filterProducts(route);
-            });
-
-            filterInputDosageForms.on("click", (event) => {
+            filterInputBrands.on("click", (event) => {
                 filterProducts(route);
             });
         });
 
         function filterProducts(route) {
-            var selectedFilterCompanyIds    = getFilterCompanyIds();
-            var selectedFilterDosageFormIds = getFilterDosageFormIds();
-            var order                       = filterInputOrder.val();
+            var selectedFilterBrandIds = getFilterBrandIds();
+            // var order = filterInputOrder.val();
 
-            if (order) {
-                route = `${route}&order=${order}`;
-            }
-            if (selectedFilterCompanyIds) {
-                route = `${route}&filter_company_ids=${selectedFilterCompanyIds}`;
-            }
-            if (selectedFilterDosageFormIds) {
-                route = `${route}&filter_dosageForm_ids=${selectedFilterDosageFormIds}`;
+            // if (order) {
+            //     route = `${route}&order=${order}`;
+            // }
+            if (selectedFilterBrandIds) {
+                route = `${route}&filter_brand_ids=${selectedFilterBrandIds}`;
             }
             window.location.href = route;
         }
 
-        function getFilterCompanyIds() {
-            var selectedCompanyIds = null;
-            $.each($('input[name="companies[]"]:checked'), function() {
+        function getFilterBrandIds() {
+            var selectedBrandIds = null;
+            $.each($('input[name="brands[]"]:checked'), function() {
                 const id = $(this).val();
-                selectedCompanyIds = selectedCompanyIds ? `${selectedCompanyIds},${id}` : id ;
+                selectedBrandIds = selectedBrandIds ? `${selectedBrandIds},${id}` : id ;
             });
-            return selectedCompanyIds;
-        }
-
-        function getFilterDosageFormIds() {
-            var selectedDosageFormIds = null;
-            $.each($('input[name="dosageForms[]"]:checked'), function() {
-                const id = $(this).val();
-                selectedDosageFormIds = selectedDosageFormIds ? `${selectedDosageFormIds},${id}` : id ;
-            });
-            return selectedDosageFormIds;
+            return selectedBrandIds;
         }
     </script>
 
     {{-- On scroll product load --}}
-    <script>
+    {{-- <script>
         var onScrollProductRoute = "{{ route('category.page', [$slug, 'true']) }}";
         var order = "{{ request()->query('order') }}";
         var currentPage = {{ $products->currentPage() }};
@@ -231,6 +200,6 @@
                 console.log(error);
             });
         }
-    </script>
+    </script> --}}
     @endpush
 @endonce

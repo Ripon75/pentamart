@@ -26,7 +26,7 @@
                             type="else"
                             title="Address"
                             bgImageSrc=""
-                            bgColor="#102967"
+                            bgColor="#00798c"
                         />
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                                     <td class="border p-2">{{ $data->phone_number }}</td>
                                     <td class="border p-2">{{ ($data->area->name) ?? null }}</td>
                                     <td class="text-center border p-2">
-                                        <a href="{{ route('my.address.edit', $data->id) }}" class="text-center btn btn-sm btn-icon-only"><i class="fa-solid fa-pen"></i></a>
+                                        <a href="{{ route('my.address.edit', $data->id) }}" class="text-center btn px-2 py-1">Edit</a>
                                         {{-- <a href="{{ route('my.address.destroy', $data->id) }}" class="text-center btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 hover:text-white text-white">
                                             <i class="fa-regular fa-trash-can"></i>
                                         </a> --}}

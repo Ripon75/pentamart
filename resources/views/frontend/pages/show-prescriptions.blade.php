@@ -25,7 +25,7 @@
                         <x-frontend.header-title
                             type="else"
                             title="Your Prescriptions"
-                            bg-Color="#102967"
+                            bg-Color="#00798c"
                         />
                     </div>
                 </div>

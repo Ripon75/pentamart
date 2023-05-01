@@ -53,18 +53,18 @@
                         Submit
                     </button>
                 </div>
-                <div class="text-center mt-2">
+                {{-- <div class="text-center mt-2">
                     <span class="text-sm">OR</span>
-                </div>
-                <div class="flex gap-2 mt-2">
+                </div> --}}
+                {{-- <div class="flex gap-2 mt-2">
                     <button id="btn-otp" type="button" class="btn btn-secondary btn-block">Login with OTP</button>
                     <button type="button" class="btn-change-account-number btn btn-success btn-block">Change Number</button>
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
 
-    <div id="login-step-3" class="steps md:w-[500px] lg:w-[500px] xl:w-[500px] mx-auto hidden">
+    {{-- <div id="login-step-3" class="steps md:w-[500px] lg:w-[500px] xl:w-[500px] mx-auto hidden">
         <div class="">
             <div class="body px-4">
                 <div class="form-item flex justify-between">
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 </section>
 {{-- .//==============Login New Form================ --}}
 

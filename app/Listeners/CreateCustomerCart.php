@@ -29,6 +29,6 @@ class CreateCustomerCart
     {
         $customerId = $event->customer->id;
         $cartObj = new Cart();
-        $cartObj->_createAndAssignCustomer($customerId);
+        $cartObj->createCustomerCart($customerId);
     }
 }

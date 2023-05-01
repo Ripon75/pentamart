@@ -264,7 +264,7 @@
 // ==============filter-card===================
 .filter-card {
     .title-wrapper {
-        @apply p-3 bg-primary rounded;
+        @apply p-3 bg-[#00798c] rounded;
         .title {
             @apply tracking-wide font-medium text-white uppercase;
         }
@@ -316,10 +316,10 @@
             @apply bg-transparent border border-dashed text-gray-500 hover:text-gray-700;
         }
         &.btn-primary {
-            @apply bg-gradient-to-t bg-teal-600 text-white hover:bg-teal-900 transition duration-300 ease-in-out;
+            @apply bg-gradient-to-t bg-[#00798c] text-white hover:bg-teal-900 transition duration-300 ease-in-out;
         }
         &.btn-secondary {
-            @apply bg-secondary text-white hover:bg-secondary-dark transition duration-300 ease-in-out;
+            @apply bg-[#ffc42d] text-white hover:bg-secondary-dark transition duration-300 ease-in-out;
         }
         &.btn-success {
             @apply bg-primaryPositive text-white hover:bg-primaryPositive-darker;

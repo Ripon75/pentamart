@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Product;
 use App\Classes\Utility;
 use App\Models\SearchLog;
-use App\Models\UserAddress;
+use App\Models\Address;
 // Event
 use Illuminate\Http\Request;
 use App\Events\ProductSearch;
@@ -27,13 +27,9 @@ class SearchController extends Controller
         if ($seachQuery) {
             $products = Product::search($seachQuery)
             ->query(fn ($query) => $query->with([
-                    'brand:id,slug,company_id,name',
-                    'brand.company:id,slug,name',
-                    'generic:id,slug,name',
-                    'categories:id,name,slug',
-                    'dosageForm:id,slug,name',
-                    'company:id,slug,name'
-                ])->where('status', 'activated')
+                    'brand:id,slug,name',
+                    'category:id,name,slug',
+                ])->where('status', 'active')
             );
         }
 
@@ -75,7 +71,7 @@ class SearchController extends Controller
         $userId = $request->input('user_id', null);
 
         if ($userId) {
-            $addresses = UserAddress::where('user_id', $userId)->get();
+            $addresses = Address::where('user_id', $userId)->get();
 
             return $this->_response($addresses, 'Search result');
         }

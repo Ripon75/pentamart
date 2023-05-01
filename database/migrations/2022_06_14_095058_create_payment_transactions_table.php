@@ -18,10 +18,10 @@ class CreatePaymentTransactionsTable extends Migration
             $table->foreignId('order_id');
             $table->decimal('amount', 20, 2)->default(0);
             $table->string('type')->nullable();
-            $table->foreignId('payment_method_id')->default(1);
+            $table->foreignId('pg_id')->default(1);
             $table->string('payment_id')->nullable()
                 ->comment('This data will come from the gateway api.');
-            $table->string('payment_gateway_trxid')->nullable()
+            $table->string('pg_trxid')->nullable()
                 ->comment('This data will come from the gateway api.');
             $table->string('status')->default('submitted');
             $table->string('remark', 1000)->nullable();

@@ -24,7 +24,7 @@
                     type="else"
                     title="Order Update"
                     bgImageSrc=""
-                    bgColor="#102967"
+                    bgColor="#00798c"
                 />
             </div>
             <div class="col-span-4 px-4 bg-gray-200">
@@ -53,42 +53,6 @@
                     @enderror
                 </div>
                 <div class="flex space-x-2">
-                    {{-- Delivery gateway --}}
-                    <div class="form-item w-full">
-                        <label for="" class="form-label">Delivery Type <span class="text-red-500 font-medium">*</span> </label>
-                        <select id="input-delivery-gateway" class="form-select form-input w-full" name="delivery_type_id">
-                            <option data-delivery-charge="0" value="-1" {{ $order->delivery_type_id == 'null' ? "selected" : '' }}>Custom Delivery</option>
-                            <option data-delivery-charge="0" value="0" {{ $order->delivery_type_id == '0' ? "selected" : '' }}>Free Delivery</option>
-                            @foreach ($deliveryGateways as $deliveryGateway)
-                                <option value="{{ $deliveryGateway->id }}"
-                                    {{ $order->delivery_type_id == $deliveryGateway->id ? "selected" : '' }}
-                                    data-delivery-charge="{{ $deliveryGateway->price }}">
-                                    {{ $deliveryGateway->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('delivery_type_id')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    {{-- Paymnet gateway --}}
-                    <div class="form-item w-full">
-                        <label for="" class="form-label">Payment Type <span class="text-red-500 font-medium">*</span> </label>
-                        <select class="form-select form-input w-full" name="payment_method_id">
-                            <option value="">Select</option>
-                            @foreach ($paymentGateways as $paymentGateway)
-                            <option value="{{ $paymentGateway->id }}"
-                                {{ $order->payment_method_id == $paymentGateway->id ? "selected" : '' }}>
-                                {{ $paymentGateway->name }}
-                            </option>
-                            @endforeach
-                        </select>
-                        @error('payment_method_id')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="flex space-x-2">
                     {{-- Order date --}}
                     <div class="form-item w-full">
                         <label for="" class="form-label">Order Date <span class="text-red-500 font-medium">*</span> </label>
@@ -97,16 +61,16 @@
                     {{-- Shipping address --}}
                     <div class="form-item w-full">
                         <label for="" class="form-label">Address Title</label>
-                        <select id="area-shipping-address-id" class="form-select form-input w-full" name="shipping_address_id">
+                        <select id="area-shipping-address-id" class="form-select form-input w-full" name="address_id">
                             <option value="">Select Title</option>
                             @foreach ($shippingAddresses as $shippingAddress)
                             <option value="{{ $shippingAddress->id }}"
-                                {{ $order->shipping_address_id == $shippingAddress->id ? "selected" : '' }}>
+                                {{ $order->address_id == $shippingAddress->id ? "selected" : '' }}>
                                 {{ $shippingAddress->title }}
                             </option>
                             @endforeach
                         </select>
-                        @error('shipping_address_id')
+                        @error('address_id')
                             <span class="form-helper error">{{ $message }}</span>
                         @enderror
                     </div>
@@ -377,7 +341,7 @@
                 type="else"
                 title="Create New Address"
                 bgImageSrc=""
-                bgColor="#102967"
+                bgColor="#00798c"
                 />
                 {{-- =========create new address=========== --}}
                 <form action="{{ route('my.address.other.store') }}" method="POST">
@@ -470,7 +434,7 @@
         var posToken                          = localStorage.getItem('pos_token');
         var deliveryChargeLabel               = $('#delivery-charge-label');
         var inputDeliveryGateway              = $('#input-delivery-gateway');
-        var deliveryGatewayId                 = "{{ $order->delivery_type_id }}";
+        var deliveryGatewayId                 = "{{ $order->dg_id }}";
         var inputProductQuantity              = $('#product-quantity');
         var couponForProduct                  = false;
 

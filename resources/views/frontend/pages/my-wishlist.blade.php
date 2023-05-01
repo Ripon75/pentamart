@@ -26,7 +26,7 @@
                             type="else"
                             title="Wishlist"
                             bgImageSrc=""
-                            bgColor="#102967"
+                            bgColor="#00798c"
                         />
                     </div>
                 </div>
@@ -36,9 +36,9 @@
                             <thead class="">
                                 <tr class="bg-gray-100">
                                     <th class="text-left border p-2 w-20">Image</th>
-                                    <th class="text-left border p-2">Dosage Form</th>
                                     <th class="text-left border p-2">Product</th>
-                                    <th class="text-left border p-2">Generic</th>
+                                    <th class="text-left border p-2">Brand</th>
+                                    <th class="text-left border p-2">Category</th>
                                     <th class="text-center border p-2 w-40">Actions</th>
                                 </tr>
                             </thead>
@@ -49,14 +49,15 @@
                                             <td class="border p-1">
                                                 <img class="w-16 h-16" src="{{ $data->product->image_src }}" alt="Product Image">
                                             </td>
-                                            <td class="border p-1">{{ ($data->product->dosageForm->name) ?? null }}</td>
                                             <td class="border p-1">{{ $data->product->name }}</td>
-                                            <td class="border p-1">{{ ($data->product->generic->name) ?? null }}</td>
+                                            <td class="border p-1">{{ ($data->product->category->name) ?? null }}</td>
+                                            <td class="border p-1">{{ ($data->product->brand->name) ?? null }}</td>
                                             <td class="border p-1">
                                                 <div class="flex space-x-2 justify-center">
                                                     <button>
-                                                        <a href="{{ route('products.show',[$data->product->id, $data->product->slug]) }}" class="btn btn-sm btn-icon-only">
-                                                            <i class="fa-regular fa-eye"></i>
+                                                        <a href="{{ route('products.show',[$data->product->id, $data->product->slug]) }}" class="btn p-1">
+                                                            {{-- <i class="fa-regular fa-eye"></i> --}}
+                                                            Show
                                                         </a>
                                                     </button>
                                                     <button class="delete-cart-item-btn btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"

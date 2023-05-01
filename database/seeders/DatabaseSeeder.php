@@ -18,21 +18,19 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ImageConveter::class,
             LaratrustSeeder::class,
-            CountrySeeder::class,
             AreaTypeSeeder::class,
             AreaSeeder::class,
-            CompanySeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
-            DosageFormSeeder::class,
-            GenericSeeder::class,
-            // ProductSeeder::class,
             ProductSeederNew::class,
             PaymentGatewaySeeder::class,
             DeliveryGatewaySeeder::class,
-            OrderStatusSeeder::class,
-            SettingSeeder::class,
+            StatusSeeder::class,
             SectionSeeder::class,
+            SizeSeeder::class,
+            ColorSeeder::class,
+            ProductSizeSeeder::class,
+            ProductColorSeeder::class,
         ]);
     }
 }

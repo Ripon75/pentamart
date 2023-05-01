@@ -79,7 +79,7 @@ class Coupon extends Model
 
         $now    = Carbon::now();
         $coupon = Self::where('code', $code)
-            ->where('status', 'activated')
+            ->where('status', 'active')
             ->whereDate('started_at', '<=', $now )
             ->whereDate('ended_at', '>=', $now)->first();
 

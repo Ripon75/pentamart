@@ -2,30 +2,18 @@
 
 namespace App\Http\Controllers\Front;
 
-use DB;
-use Auth;
-use Setting;
-use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
-use App\Classes\Bkash;
-use App\Classes\Nagad;
 use App\Classes\Utility;
 use App\Events\OrderCreate;
-use App\Models\UserAddress;
-use App\Classes\SSLGateway;
 use Illuminate\Http\Request;
-use App\Models\Prescription;
-use App\Exports\OrdersExport;
 use App\Models\PaymentGateway;
 use App\Models\DeliveryGateway;
 use App\Models\PaymentTransaction;
-use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
@@ -33,7 +21,7 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
+        $this->currency = 'Tk';
     }
 
     public function dashboard()
@@ -42,8 +30,9 @@ class OrderController extends Controller
             'page' => 'customer-dashboard',
         ]);
 
-        $orders = Order::withSum('items as total_amount', DB::raw('order_item.price * order_item.quantity'))
-            ->where('user_id', Auth::id())->get();
+        $orders = Order::withSum('items as total_amount', DB::raw('order_item.sell_price * order_item.quantity'))
+            ->where('user_id', Auth::id())
+            ->get();
 
         $totalAmount = 0;
 
@@ -62,7 +51,7 @@ class OrderController extends Controller
             'totalAmount' => $totalAmount
         ]);
     }
-    // Get all order
+
     public function index(Request $request)
     {
         Utility::setUserEvent('pageview', [
@@ -70,9 +59,12 @@ class OrderController extends Controller
         ]);
 
         $paginate = config('crud.paginate.default');
+        
+        $orders = Order::withSum('items as total_amount', DB::raw('(order_item.sell_price * order_item.quantity)'))
+        ->where('user_id', Auth::id())
+        ->latest()
+        ->paginate($paginate);
 
-        $orders = Order::withSum('items as total_amount', DB::raw('(order_item.price * order_item.quantity)'))
-            ->where('user_id', Auth::id())->latest()->paginate($paginate);
         $paymentGateways = PaymentGateway::whereNotIn('id', [1])->orderBy('name', 'asc')->get();
 
         return view('frontend.pages.my-order', [
@@ -82,272 +74,103 @@ class OrderController extends Controller
         ]);
     }
 
-    // Create order
     public function store(Request $request)
     {
-        $request->validate([
-            'shipping_address_id' => ['required', 'integer'],
-            'payment_method_id'   => ['required', 'integer']
-        ]);
+        $note     = $request->input('note', null);
+        $couponId = $request->input('coupon_id', null);
 
-        $paymentMethodId   = $request->input('payment_method_id', null);
-        $shippingAddressId = $request->input('shipping_address_id', null);
-        $prescriptionId    = $request->input('prescription_id', null);
-        $status            = $request->input('status', null);
-        $note              = $request->input('note', null);
-        $couponId          = $request->input('coupon_code_id', null);
+        try {
+            DB::beginTransaction();
 
+            $user     = Auth::user();
+            $orderObj = new Order();
+            $cartObj  = new Cart();
 
-        // Check first order
-        $isFirstOrder = false;
-        $userOrderCount = count(Auth::user()->orders) ?? 0;
-        if (!$userOrderCount) {
-            $isFirstOrder = true;
-        }
-
-        // Check coupon code applied on delivery charge
-        $deliveryCharge = 0;
-        if ($couponId) {
-            $coupon = Coupon::find($couponId);
-            if ($coupon && $coupon->applicable_on === 'delivery_fee') {
-                $deliveryCharge = $coupon->discount_amount;
-            }
-        }
-
-        $user     = Auth::user();
-        $orderObj = new Order();
-        $cartObj  = new Cart();
-        $now      = Carbon::now();
-
-        // Get current customer cart
-        $cart = $cartObj->_getCurrentCustomerCart();
-        $cart = Cart::find($cart->id);
-        if (count($cart->items) == 0) {
-            return back();
-        }
-
-        // Save note inside cart
-        $cart->note = $note;
-        $cart->save();
-
-        $deliveryGatewayCharge = $cart->deliveryGateway->price ?? 0;
-        $deliveryCharge = $deliveryGatewayCharge - $deliveryCharge;
-        $deliveryCharge = $isFirstOrder ? 0 : $deliveryCharge;
-
-        // Check cart amount greater than 1000
-        // if true than delivery charge will be zero
-        $freeDeliveryCartAmount = config('crud.free_delivery_cart_amount');
-        $cartTotalAmount = $cart->_getSubTotalAmount();
-        if ($cartTotalAmount >= $freeDeliveryCartAmount) {
-            $deliveryCharge = 0;
-        }
-
-        $orderObj->user_id             = $user->id;
-        $orderObj->delivery_type_id    = ($cart->delivery_type_id) ?? 1;
-        $orderObj->payment_method_id   = ($cart->payment_method_id) ?? 1;
-        $orderObj->shipping_address_id = ($cart->shipping_address_id) ?? null;
-        $orderObj->coupon_id           = $couponId ?? null;
-        $orderObj->is_paid             = 0;
-        $orderObj->delivery_charge     = $deliveryCharge;
-        $orderObj->note                = $note;
-        $orderObj->ordered_at          = $now;
-        $orderObj->created_by          = $user->id;
-        $orderRes = $orderObj->save();
-
-        if ($orderRes) {
-            $itemIds = [];
-            foreach ($cart->items as $item) {
-                $itemIds[$item->pivot->item_id] = [
-                    'quantity'          => $item->pivot->quantity,
-                    'pack_size'         => $item->pivot->item_pack_size,
-                    'item_mrp'          => $item->pivot->item_mrp,
-                    'price'             => $item->pivot->price,
-                    'discount'          => $item->pivot->discount,
-                    'pos_product_id'    => $item->pos_product_id
-                ];
+            // Get current customer cart
+            $cart = $cartObj->getCurrentCustomerCart();
+            $cart = Cart::find($cart->id);
+            if (count($cart->items) == 0) {
+                return back();
             }
 
-            $res = $orderObj->items()->sync($itemIds);
+            // Save note inside cart
+            $cart->note = $note;
+            $cart->save();
 
-            // Update order total_items_discount, order_net_value and coupon_value
-            $orderObj->updateOrderValue($orderObj);
+            $deliveryGatewayCharge = 0;
+            $deliveryGateway = DeliveryGateway::where('status', 'active')->first();
+            if ($deliveryGateway) {
+                $deliveryGatewayCharge = $deliveryGateway->price;
+            }
 
+            // Check coupon code applied on delivery charge
+            $deliveryChargeDiscount = 0;
+            if ($couponId) {
+                $coupon = Coupon::find($couponId);
+                if ($coupon && $coupon->applicable_on === 'delivery_fee') {
+                    $deliveryChargeDiscount = $coupon->discount_amount;
+                }
+            }
+
+            if ($deliveryGatewayCharge >= $deliveryChargeDiscount) {
+                $deliveryCharge = $deliveryGatewayCharge - $deliveryChargeDiscount;
+            }
+
+            $orderObj->user_id         = $user->id;
+            $orderObj->pg_id           = 1;
+            $orderObj->address_id      = $cart->address_id;
+            $orderObj->address         = $cart->address->address ?? null;
+            $orderObj->coupon_id       = $couponId;
+            $orderObj->is_paid         = 0;
+            $orderObj->delivery_charge = $deliveryCharge;
+            $orderObj->note            = $note;
+            $orderObj->created_by      = $user->id;
+            $res = $orderObj->save();
             if ($res) {
-                 // Upload prescription
-                if ($request->hasFile('files')) {
-                    $files           = $request->file('files');
-                    $prescriptionObj = new Prescription();
-                    $uploadPath      = $prescriptionObj->_getImageUploadPath();
-                    foreach ($files as $file) {
-                        $path = Storage::put($uploadPath, $file);
-                        Prescription::insert([
-                            'order_id' => $orderObj->id,
-                            'user_id'  => $user->id,
-                            'status'   => 'submitted',
-                            'img_src'  => $path
-                        ]);
-                    }
+                $itemIds = [];
+                foreach ($cart->items as $item) {
+                    $itemIds[$item->pivot->item_id] = [
+                        'size_id'       => $item->pivot->size_id,
+                        'color_id'      => $item->pivot->color_id,
+                        'quantity'      => $item->pivot->quantity,
+                        'item_price'    => $item->pivot->item_price,
+                        'sell_price'    => $item->pivot->sell_price,
+                        'item_discount' => $item->pivot->item_discount
+                    ];
                 }
 
-                $cart->_emptyCart();
+                $res = $orderObj->items()->sync($itemIds);
+                
+                // Update order total_items_discount, order_net_value and coupon_value
+                $orderObj->updateOrderValue($orderObj);
+
+                $cart->emptyCart();
                 // Dispatch order create event
-                OrderCreate::dispatch($orderObj, $now);
+                OrderCreate::dispatch($orderObj);
 
                 // Create payment transaction
-                $orderId       = $orderObj->id;
-                $paymentTrx    = new PaymentTransaction();
-                $paymentTrxRes = $paymentTrx->make($orderId, null, 'sale', $paymentMethodId, 'pending');
-                $amount        = $paymentTrxRes->amount;
-                $trxId         = $paymentTrxRes->id;
-                $customerPhone = $user->phone_number;
+                $orderId    = $orderObj->id;
+                $paymentTrx = new PaymentTransaction();
+                $paymentTrx->make($orderId, null, 'sale', 1, 'pending');
 
                 Utility::setUserEvent('order-submit', [
                     'order' => $orderObj,
                     'user'  => $user
                 ]);
 
-                // Here 1 is the COD payment gateway ID
-                if ($paymentMethodId == 1) {
-                    return redirect()->route('my.order.success');
-                } else if($paymentMethodId == 2) {
-                    $numOfItems = count($itemIds);
-                    return $this->executeSSLPayment($shippingAddressId, $user, $amount, $trxId, $numOfItems);
-                } else if($paymentMethodId == 3) {
-                    // $customerPhone = payerReference;
-                    return $this->executeBkashPayment($amount, $trxId, $customerPhone);
-                } else if ($paymentMethodId == 4){
-                    return $this->executeNagadPayment($orderId, $amount);
-                }else {
-                    return redirect()->route('my.order.success');
-                }
+                DB::commit();
+                return redirect()->route('my.order.success');
             }
-        } else {
+
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
             Utility::setUserEvent('order-failed', [
                 'user'  => $user
             ]);
 
             return redirect()->route('my.order.failed');
         }
-    }
-
-    public function makePayment(Request $request, $id)
-    {
-        $request->validate([
-            'payment_method_id' => ['required']
-        ]);
-
-        $order = Order::with(['items' => function($query) {
-            $query->withTrashed();
-        }])->find($id);
-
-        $paymentMethodId = $request->input('payment_method_id', null);
-        if ($paymentMethodId) {
-            $order->payment_method_id = $paymentMethodId;
-            $order->save();
-        }
-
-        Utility::setUserEvent('make-payment', [
-            'order' => $order
-        ]);
-
-        if ($order && !$order->is_paid) {
-            $paymentMethodId   = $order->payment_method_id;
-            $shippingAddressId = $order->shipping_address_id;
-            $user              = Auth::user();
-            $numOfItems        = count($order->items);
-            $customerPhone     = $user->phone_number;
-
-            $paymentTrx = PaymentTransaction::where('order_id', $id)->first();
-            if (!$paymentTrx) {
-                abort(404);
-            }
-            $amount = $paymentTrx->amount;
-            $trxId  = $paymentTrx->id;
-
-            if ($paymentMethodId === 2) {
-                return $this->executeSSLPayment($shippingAddressId, $user, $amount, $trxId, $numOfItems);
-            } else if($paymentMethodId === 3){
-                // $customerPhone = payerReference
-                return $this->executeBkashPayment($amount, $trxId, $customerPhone);
-            } else if ($paymentMethodId === 4){
-                return $this->executeNagadPayment($id, $amount);
-            } else {
-                abort(404);
-            }
-        } else {
-            abort(404);
-        }
-    }
-
-    // Execute SSL payment gateway
-    public function executeSSLPayment($shippingAddressId, $user, $amount, $trxId, $numOfItems)
-    {
-        $shippingAddress = UserAddress::find($shippingAddressId);
-        $productCats      = "ProductCategory";
-        $productName      = "Productname";
-        $productProfile   = "general";
-        $customerName     = $user->name;
-        $customerPhone    = $user->phone_number;
-        $customerEmail    = $user->email;
-        $customerAddress  = $shippingAddress->address;
-        $customerCity     = "City";
-        $customerPostcode = "0000";
-        $customerCountry  = "Bangladesh";
-        // $numOfItems       = count($itemIds);
-        $multiCardName    = "";
-
-        $sslGatewayObj = new SSLGateway();
-        $paymentRes = $sslGatewayObj->requestSession(
-            $amount, $trxId, $productCats, $productName, $productProfile,
-            $customerName, $customerEmail, $customerAddress, $customerCity, $customerPostcode, $customerCountry, $customerPhone,
-            $numOfItems, $multiCardName
-        );
-
-        $paymentResStatus = $paymentRes['status'];
-
-        if ($paymentResStatus === "SUCCESS") {
-            $redirectGatewayURL = $paymentRes['redirectGatewayURL'];
-            // Redirect outside of my project route
-            return redirect()->away($redirectGatewayURL);
-        } else {
-            return redirect()->route('callback.payment_gateway', ['ssl', 'failed']);
-        }
-    }
-
-    // Execute bKash payment gateway
-    public function executeBkashPayment($amount, $invoiceNumber, $payerReference)
-    {
-        $bKashObj = new Bkash();
-
-        $paymentRes = $bKashObj->createPayment(
-            $amount,
-            $invoiceNumber,
-            $payerReference,
-            $currency = 'BDT',
-            $mode = '0011',
-            $intent = 'sale'
-        );
-
-        if ($paymentRes['statusCode'] === '0000') {
-            $redirectGatewayURL = $paymentRes['bkashURL'];
-            // Redirect outside of my project route
-            return redirect()->away($redirectGatewayURL);
-        } else {
-            return redirect()->route('callback.payment_gateway', ['bkash', 'failed']);
-        }
-    }
-
-    // Execute nagad payment gateway
-    public function executeNagadPayment($orderId, $amount)
-    {
-        $randomNumber = rand();
-        $orderId      = $orderId . "MC" . $randomNumber;
-
-        $_SESSION['orderId'] = $orderId;
-
-        $nagadObj = new Nagad();
-        $response = $nagadObj->nagadPaymentRequest($orderId, $amount);
-        return $response;
     }
 
     public function show($id)
@@ -415,7 +238,7 @@ class OrderController extends Controller
 
         if ($order && ($order->user_id === $userId)) {
             $cart = new Cart();
-            $cart = $cart->_getCurrentCustomerCart();
+            $cart = $cart->getCurrentCustomerCart();
             $cart->items()->detach();
 
             $itemIds = [];
@@ -440,187 +263,6 @@ class OrderController extends Controller
             }
         } else {
             abort(404);
-        }
-    }
-
-    public function latestDeliveredOrder()
-    {
-        $deliveredStatusId = config('crud.delivered_status_id');
-
-        $latestDeliveredOrder = Order::where('user_id', Auth::id())->where('current_status_id', $deliveredStatusId)
-        ->whereNull('ratings')->latest()->first();
-
-        return $this->_response($latestDeliveredOrder, 'Latest delivered order');
-    }
-
-    public function latestDeliveredOrderUpdate(Request $request, $id)
-    {
-        $request->validate([
-            'ratings' => ['required']
-        ]);
-
-        $ratings = $request->input('ratings', null);
-
-        $latestDeliveredOrder = Order::find($id);
-        if (!$latestDeliveredOrder) {
-            abort(404);
-        }
-
-        $latestDeliveredOrder->ratings = $ratings;
-        $res = $latestDeliveredOrder->save();
-        if ($res) {
-            if ($ratings) {
-                return $this->_response($latestDeliveredOrder, "Order ID {$id} ratings successfully");
-            } else {
-                return $latestDeliveredOrder;
-            }
-        } else {
-            return $this->_response(null, 'Something went to wrong');
-        }
-    }
-
-    public function orderCreate(Request $request)
-    {
-        $utility = new Utility();
-
-        $validator = Validator::make($request->all(), [
-            'shipping_address_id' => ['required', 'integer'],
-            'items'               => ['required', 'array'],
-            'phone_number'        => ['required'],
-            'user_name'           => ['required'],
-            'is_paid'             => ['required']
-        ]);
-        
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $utility->appError(null, $validator->errors());
-        }
-
-        $shippingAddressId = $request->input('shipping_address_id', null);
-        $phoneNumber       = $request->input('phone_number', null);
-        $items             = $request->input('items', []);
-        $isPaid            = $request->input('is_paid', null);
-        $userName          = $request->input('user_name', null);
-        $now               = Carbon::now();
-        $deliveryCharge    = 0;
-        $userId            = null;
-
-        if (count($items)) {
-            foreach ($items as $key => $item) {
-                if (!array_key_exists('item_id', $item) || !$item['item_id']) {
-                    return $utility->appError(null, "item_id not found on line $key");
-                }
-                if (!array_key_exists('quantity', $item) || !$item['quantity']) {
-                    return $utility->appError(null, "quantity not found on line $key");
-                }
-                if (!array_key_exists('item_mrp', $item) || !$item['item_mrp']) {
-                    return $utility->appError(null, "item_mrp not found on line $key");
-                }
-                if (!array_key_exists('price', $item) || !$item['price']) {
-                    return $utility->appError(null, "price not found on line $key");
-                }
-            }
-        }
-
-        $itemIds = [];
-        foreach ($items as $item) {
-            $itemIds[$item['item_id']] = [
-                'quantity'          => $item['quantity'],
-                'item_mrp'          => $item['item_mrp'],
-                'price'             => $item['price'],
-                'discount'          => $item['discount'] ?? 0,
-                'pack_size'         => 1,
-                'pos_product_id'    => null
-            ];
-        }
-
-        $deliveryGateway = DeliveryGateway::where('status', 'activated')->first();
-        if ($deliveryGateway) {
-            $deliveryCharge = $deliveryGateway->price;
-        }
-
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
-
-        try {
-            DB::beginTransaction();
-            // Check first order
-            $user = User::where('phone_number', $phoneNumber)->first();
-            if ($user) {
-                $userId = $user->id;
-            } else {
-                $userObj = new User();
-
-                $userObj->name                = $userName;
-                $userObj->phone_number        = $phoneNumber;
-                $userObj->terms_and_conditons = 1;
-                $userObj->password            = null;
-                $userObj->ac_active           = 1;
-                // $userObj->identity           = null;
-                $res = $userObj->save();
-                if ($res) {
-                    $userId = $userObj->id;
-                }
-            }
-
-            $orderObj = new Order();
-
-            $orderObj->user_id             = $userId;
-            $orderObj->delivery_type_id    = 1;
-            $orderObj->payment_method_id   = 1;
-            $orderObj->shipping_address_id = $shippingAddressId ?? null;
-            $orderObj->is_paid             = $isPaid;
-            $orderObj->delivery_charge     = $deliveryCharge;
-            $orderObj->ordered_at          = $now;
-            $orderObj->created_by          = 1;
-            $res = $orderObj->save();
-
-            if ($res) {
-                $res = $orderObj->items()->sync($itemIds);
-
-                // Update order total_items_discount, order_net_value and coupon_value
-                $orderObj->updateOrderValue($orderObj);
-
-                // Dispatch order create event
-                OrderCreate::dispatch($orderObj, $now);
-
-                // Create payment transaction
-                $orderId       = $orderObj->id;
-                $paymentTrx    = new PaymentTransaction();
-                $paymentTrxRes = $paymentTrx->make($orderId, null, 'sale', 1, 'pending');
-                $amount        = $paymentTrxRes->amount;
-                $trxId         = $paymentTrxRes->id;
-                $customerPhone = $phoneNumber;
-
-                Utility::setUserEvent('order-submit', [
-                    'order' => $orderObj,
-                    'user'  => "user"
-                ]);
-            } else {
-                Utility::setUserEvent('order-failed', [
-                    'user'  => 'user'
-                ]);
-                return $utility->appError(null, 'Order failed');
-            }
-            DB::commit();
-
-            return $utility->appResponse($orderObj, 'Order created successfully');
-        } catch (\Exeption $e) {
-            info($e);
-            return $utility->appError(null, 'Order create failed');
-        }
-    }
-
-    public function formatPhoneNumber($phoneNumber)
-    {
-        if (str_starts_with($phoneNumber, '0')) {
-            return $phoneNumber = '88'.$phoneNumber;
-        } elseif (str_starts_with($phoneNumber, '1')) {
-            return $phoneNumber = '880'.$phoneNumber;
-        }elseif (str_starts_with($phoneNumber, '80')) {
-            return $phoneNumber = '8'.$phoneNumber;
-        } elseif(str_starts_with($phoneNumber, '+88')) {
-            return $phoneNumber = substr($phoneNumber, 1);
-        } else {
-            return $phoneNumber = $phoneNumber;
         }
     }
 }

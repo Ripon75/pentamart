@@ -25,39 +25,16 @@
                         <x-frontend.header-title
                             type="else"
                             title="Order #{{ $order->id }}"
-                            bg-Color="#102967"
+                            bg-Color="#00798c"
                         />
                     </div>
                 </div>
-                @if (!$order->is_paid && !($order->current_status_id == 3 || $order->current_status_id == 8 || $order->current_status_id == 9))
-                    <div class="my-4 rounded bg-white p-4">
-                        <form class="flex flex-row-reverse" action="{{ route('my.order.payment', $order->id) }}">
-                            {{-- Paid option --}}
-                            <div>
-                                <button class="btn bg-green-400 hover:bg-green-500 text-gray-600 ml-4">
-                                    Make Payment
-                                </button>
-                            </div>
-                            <div class="flex flex-col">
-                                <select name="payment_method_id" class="border-gray-300 focus:ring-0 focus:outline-none rounded">
-                                    <option value="">Select Payment method</option>
-                                    @foreach ($paymentGateways as $pg)
-                                        <option value="{{ $pg->id }}">{{ $pg->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('payment_method_id')
-                                    <span class="form-helper error text-red-500 text-sm my-2">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </form>
-                    </div>
-                @endif
                 <div class="bg-white">
-                    <div class="p-2 md:p-12">
+                    <div class="p-2 md:p-6">
                         {{-- Info section --}}
                         <div class="flex-wrap md:flex justify-between">
                             <div>
-                                <div class="font-bold">Order Info</div>
+                                {{-- <div class="font-bold">Order Info</div> --}}
                                 <div>
                                     <span class="text-sm font-medium">Order ID:</span> <span class="text-sm">{{ $order->id }}</span>
                                 </div>
@@ -81,7 +58,7 @@
                                 </div>
                             </div>
                             <div class="mt-2 md:mt-0 text-left md:text-right">
-                                <div class="font-bold">Delivery Address</div>
+                                {{-- <div class="font-bold">Delivery Address</div> --}}
                                 <div>
                                     <span class="text-sm font-medium">Name:</span> <span class="text-sm">{{ ($order->user->name) ?? null }}</span>
                                 </div>
@@ -102,9 +79,9 @@
                                         <th width="32px" class="border-r border-black text-center">SN</th>
                                         <th width="auto" class="border-r border-black text-left pl-1">Product</th>
                                         <th width="100px" class="border-r border-black text-right pr-1">Quantity</th>
-                                        <th width="110px" class="border-r border-black text-right pr-1">MRP (Tk.)</th>
-                                        <th width="110px" class="border-r border-black text-right pr-1">Discount (Tk.)</th>
-                                        <th width="120px" class="text-right pr-1">Sub Total (Tk.)</th>
+                                        <th width="110px" class="border-r border-black text-right pr-1">Price</th>
+                                        <th width="110px" class="border-r border-black text-right pr-1">Discount</th>
+                                        <th width="120px" class="text-right pr-1">Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -112,25 +89,25 @@
                                         <tr class="border border-black text-sm">
                                             <td width="40px" class="border-black border text-center">{{ ++$key }}</td>
                                             <td width="auto" class="text-xs md:text-sm border-black border text-left font-medium pl-1">
-                                                {{ $item->name }} (Pack size: {{ $item->pivot->pack_size }})
+                                                {{ $item->name }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
                                                 {{ $item->pivot->quantity }}
                                             </td>
                                             @php
-                                                $itemQuantity      = $item->pivot->quantity;
-                                                $itemTotalMRP      = $item->pivot->item_mrp * $itemQuantity;
-                                                $itemTotalPrice    = $item->pivot->price * $itemQuantity;
-                                                $itemTotalDiscount = $itemTotalMRP - $itemTotalPrice;
+                                                $quantity           = $item->pivot->quantity;
+                                                $itemTotalPrice     = $item->pivot->item_price * $quantity;
+                                                $itemTotalSellPrice = $item->pivot->sell_price * $quantity;
+                                                $itemTotalDiscount  = $itemTotalPrice - $itemTotalSellPrice;
                                             @endphp
                                             <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemTotalMRP, 2) }}
+                                                {{ number_format($itemTotalPrice, 2) }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
                                                 {{ number_format($itemTotalDiscount, 2) }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemTotalPrice, 2) }}
+                                                {{ number_format($itemTotalSellPrice, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -139,9 +116,9 @@
                                     <tr class="text-sm border border-black">
                                         <td class="text-center"colspan="1">#</td>
                                         <td class="font-medium border border-black pl-1 text-right pr-2" colspan="2">Total</td>
-                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->order_items_mrp, 2) }}</td>
-                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->total_items_discount, 2) }}</td>
-                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->order_items_value, 2) }}</td>
+                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->price, 2) }}</td>
+                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->discount, 2) }}</td>
+                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->sell_price, 2) }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -155,7 +132,7 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    <div class="">
+                                    {{-- <div class="">
                                         <table class="w-full">
                                             <tfoot class=" ">
                                                 <span class="font-medium text-sm">Cannot return if:</span><br>
@@ -169,7 +146,7 @@
                                                 </ul>
                                             </tfoot>
                                         </table>
-                                    </div>
+                                    </div> --}}
                                 </div>
 
                                 <div class="w-full col-start-5 col-span-8 md:col-span-4">
@@ -178,7 +155,7 @@
                                             <tr class="text-sm text-right">
                                                 <td class="text-left font-medium" colspan="4"></td>
                                                 <td class="border border-black pr-1 font-medium">Total</td>
-                                                <td class="border pr-1 border-black">{{ number_format($order->order_items_mrp, 2) }} Tk.</td>
+                                                <td class="border pr-1 border-black">{{ number_format($order->price, 2) }} Tk.</td>
                                             </tr>
                                             <tr class="text-sm text-right">
                                                 <td class="" colspan="4"></td>
@@ -191,13 +168,7 @@
                                                 <td class="" colspan="4"></td>
                                                 <td class="border border-black pr-1 font-medium">Items Discount</td>
                                                 <td class="border pr-1 border-black"> -
-                                                    @if ($order->coupon && $order->coupon->applicable_on === 'products')
-                                                        <span class="line-through">
-                                                            {{ number_format($order->total_items_discount, 2) }}Tk.
-                                                        </span>
-                                                    @else
-                                                        {{ number_format($order->total_items_discount, 2) }}Tk.
-                                                    @endif
+                                                    {{ number_format($order->discount, 2) }}Tk.
                                                 </td>
                                             </tr>
                                             @if($order->coupon)
@@ -207,25 +178,13 @@
                                                     <td class="border pr-1 border-black"> - {{ number_format($order->coupon_value, 2) }} Tk.</td>
                                                 </tr>
                                             @endif
-                                            @if($order->total_special_discount > 0)
-                                                <tr class="text-sm text-right">
-                                                    <td class="" colspan="4"></td>
-                                                    <td class="border border-black pr-1 font-medium">Special Discount</td>
-                                                    <td class="border pr-1 border-black"> - {{ number_format($order->total_special_discount, 2) }} Tk.</td>
-                                                </tr>
-                                            @endif
-                                            <tr class="text-sm text-right">
-                                                <td class="" colspan="4"></td>
-                                                <td class="border border-black pr-1 font-medium">Grand Total</td>
-                                                <td class="border pr-1 border-black">{{ number_format($order->payable_order_value, 2) }} Tk.</td>
-                                            </tr>
                                             <tr class="text-sm text-right">
                                                 <td class="" colspan="4"></td>
                                                 <td class="border border-black font-bold pr-1">Payable</td>
                                                 @if ($order->is_paid)
                                                     <td class="border-b border-r pr-2 bg-gray-300 font-bold"> 0 Tk.</td>
                                                 @else
-                                                    <td class="border pr-1 border-black font-bold">{{ number_format(round($order->payable_order_value), 2) }} Tk.</td>
+                                                    <td class="border pr-1 border-black font-bold">{{ number_format(round($order->payable_price), 2) }} Tk.</td>
                                                 @endif
                                             </tr>
                                         </tfoot>

@@ -5,14 +5,12 @@ namespace App\Models;
 use App\Models\User;
 use App\Classes\Model;
 use App\Models\Product;
-use App\Classes\Utility;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
-    use SoftDeletes;
     use HasFactory;
 
     protected $className = 'Cart';
@@ -21,19 +19,19 @@ class Cart extends Model
         'id' => [
             'cast'     => 'integer'
         ],
-        'customer_id' => [
+        'user_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'delivery_type_id' => [
+        'dg_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'payment_method_id' => [
+        'pg_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
-        'shipping_address_id' => [
+        'address_id' => [
             'cast'     => 'integer',
             'fillable' => true
         ],
@@ -57,209 +55,176 @@ class Cart extends Model
     // Relation start
     public function customer()
     {
-        return $this->belongsTo(User::class, 'customer_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-                    ->withPivot('quantity', 'item_pack_size', 'item_price', 'item_offer_price', 'discount')
-                    ->withTimestamps();
+            ->withPivot('size_id', 'color_id', 'quantity', 'item_price', 'sell_price', 'item_discount')
+            ->withTimestamps();
     }
 
-    public function userAddress()
+    public function address()
     {
-        return $this->belongsTo(UserAddress::class, 'shipping_address_id', 'id');
+        return $this->belongsTo(Address::class, 'address_id', 'id');
     }
 
     public function deliveryGateway()
     {
-        return $this->belongsTo(DeliveryGateway::class, 'delivery_type_id', 'id');
+        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
     }
     // Relation end
 
-    public function _addItem($request)
+    public function addItem($request)
     {
         $request->validate([
-            'item_id'       => ['required', 'integer'],
-            'item_quantity' => ['required', 'integer'],
+            'item_id'  => ['required', 'integer'],
+            'quantity' => ['required', 'integer'],
+            'color_id' => ['nullable', 'integer'],
+            'size_id'  => ['nullable', 'integer']
         ]);
 
-        $itemId          = $request->input('item_id');
-        $itemQuantity    = $request->input('item_quantity');
-        $isLocalStoreage = $request->input('is_local_storage', false);
+        $itemId   = $request->input('item_id');
+        $quantity = $request->input('quantity');
+        $colorId  = $request->input('color_id');
+        $sizeId   = $request->input('size_id');
+        $isUpdate = $request->input('is_update');
 
-        if ($itemQuantity <= 0) {
-            return $this->_removeItem($request);
+        if ($quantity <= 0) {
+            return $this->removeItem($request);
         }
 
-        $cart       = false;
-        $price      = 0;
-        $offerPrice = 0;
-        $discount   = 0;
-
-        // Step 01: Check the item/product is exist in products table
         $product = Product::find($itemId);
 
         if(!$product) {
             return $this->_makeResponse(false, null, 'Product not found');
         }
 
-        if ($isLocalStoreage) {
-            $itemQuantity = $product->pack_size;
+        $itemPrice  = $product->price;
+        $offerPrice = $product->offer_price;
+        $discount   = $product->discount;
+        $sellPrice  = $offerPrice > 0 ? $offerPrice : $itemPrice;
+
+        $cart = $this->getCurrentCustomerCart();
+        if (!$isUpdate) {
+            if (count($cart->items)) {
+                foreach ($cart->items as $item) {
+                    if ($item->id == $itemId && $item->pivot->size_id == $sizeId && $item->pivot->color_id == $colorId) {
+                        return $this->_makeResponse(false, null, 'Product already added to cart');
+                    }
+                }
+            }
+    
+            $res = $cart->items()->attach($itemId, [
+                'size_id'       => $sizeId,
+                'color_id'      => $colorId,
+                'quantity'      => $quantity,
+                'item_price'    => $itemPrice,
+                'sell_price'    => $sellPrice,
+                'item_discount' => $discount
+            ]);
+        } else {
+            $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
         }
-
-        $price    = $product->price;
-        $packSize = $product->pack_size;
-
-        $utility = new Utility ();
-
-        
-        if ($product->offer_price > 0) {
-            $discount   = $price - $product->offer_price;
-            $offerPrice = $price - $discount;
-        }
-
-        $res = $utility->checkOffer($itemId, $itemQuantity);
-        if ($res) {
-            $discount   = $price - $res['result'];
-            $offerPrice = $price - $discount;
-        }
-
-        $price = $discount > 0 ? $offerPrice : $price;
-
-        if (!$price) {
-            return $this->_makeResponse(false, null, 'Product have no price');
-        }
-
-        // Step 02:A: Check that customer is login or not
-        $cart = $this->_getCurrentCustomerCart();
-
-        if (!$cart) {
-            $customerId = Auth::id();
-            $cart = $this->_createAndAssignCustomer($customerId);
-        }
-
-        // Step 05: Check the item is already exist in that cart?
-        // $item = $cart->items()->where('id', $itemId)->first(); // <- No need to check that item is exist or not, because we use sync() function.
-        // Step 06: If item is exist, sync that item quantity & price
-        $cart->items()->detach($itemId);
-        $res = $cart->items()->attach($itemId, [
-                'quantity'          => $itemQuantity,
-                'item_pack_size'    => $packSize,
-                'item_price'        => $price,
-                'item_offer_price'  => $offerPrice,
-                'discount'          => $discount
-            ]
-        );
-
         return $this->_makeResponse(true, $res, 'Item added successfully');
     }
 
-    public function _removeItem($request)
+    public function removeItem($request)
     {
         $request->validate([
-            'item_id'      => ['required', 'integer'],
+            'item_id' => ['required', 'integer'],
         ]);
 
-        $itemId = $request->input('item_id');
+        $itemId  = $request->input('item_id');
+        $colorId = $request->input('color_id');
+        $sizeId  = $request->input('size_id');
 
-        $product = Product::find($itemId);
+        $res = DB::table('cart_item')->where('item_id', $itemId)->where('size_id', $sizeId)
+        ->where('color_id', $colorId)->delete();
 
-        if(!$product) {
-            return $this->_makeResponse(false, null, 'Product not found');
-        }
-
-        $cart = $this->_getCurrentCustomerCart();
-        $res  = $cart->items()->detach($itemId);
+        // $cart = $this->getCurrentCustomerCart();
+        // $res  = $cart->items()->detach($itemId);
 
         return $this->_makeResponse(true, $res, 'Item removed successfuly');
     }
 
-    public function _emptyCart()
+    public function emptyCart()
     {
-        $cart = $this->_getCurrentCustomerCart();
+        $cart = $this->getCurrentCustomerCart();
         $res = $cart->items()->detach();
 
-        $cart->delivery_type_id    = 1;
-        $cart->payment_method_id   = 1;
-        $cart->note                = null;
+        $cart->dg_id = 1;
+        $cart->pg_id = 1;
+        $cart->note  = null;
         $cart->save();
 
         return $this->_makeResponse(true, $res, 'Cart empty successfuly');
     }
 
-    public function _addMetaData($request)
+    public function addMetaData($request)
     {
-        $deliveryTypeId  = $request->input('delevery_type_id', null);
-        $paymentMethodId = $request->input('payment_method_id', null);
-        $note            = $request->input('note', null);
+        $dgId = $request->input('dg_id', null);
+        $pgId = $request->input('pg_id', null);
+        $note = $request->input('note', null);
 
-        $cart = $this->_getCurrentCustomerCart();
+        $cart = $this->getCurrentCustomerCart();
 
         if ($note) {
             $cart->note = $note;
         }
-        if ($deliveryTypeId) {
-            $cart->delivery_type_id = $deliveryTypeId;
+        if ($dgId) {
+            $cart->dg_id = $dgId;
         }
-        if ($paymentMethodId) {
-            $cart->payment_method_id = $paymentMethodId;
+        if ($pgId) {
+            $cart->pg_id = $pgId;
         }
         $res = $cart->save();
 
         return $res;
     }
 
-    // Create customer and assign into cart
-    public function _createAndAssignCustomer($customerId)
+    public function getCurrentCustomerCart()
     {
-        $cart = new Self();
-        $cart->customer_id = $customerId;
+        if (Auth::check()) {
+            $authUser = Auth::user();
+            $cart     = $authUser->cart;
+            if ($cart) {
+                return $cart;
+            } else {
+                return $this->createCustomerCart($authUser->id);
+            }
+        } else {
+            return false;
+        }
+    }
+
+    // Create current customer cart
+    public function createCustomerCart($userId)
+    {
+        $cart = new Self;
+        $cart->user_id = $userId;
         $cart->save();
 
         return $cart;
     }
 
-    public function _createAnonymousCart()
-    {
-        return $this->_createAndAssignCustomer(null);
-    }
-
-    public function _getCurrentCustomerCart()
-    {
-        if (Auth::check()) {
-            $customer = Auth::user();
-            $cart     = $customer->cart;
-            if($cart) {
-                return $cart;
-            }
-        }
-
-        return false;
-    }
-
-    private function _itemExist($cart, $itemId, $packID)
-    {
-        return 'Item Exist';
-    }
-
-    public function _getSubTotalAmount()
+    public function getSubTotalAmount()
     {
         $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $price    = $item->pivot->price;
-            $quantity = $item->pivot->quantity;
+            $itemPrice = $item->pivot->item_price;
+            $quantity  = $item->pivot->quantity;
 
-            return $price * $quantity;
+            return $itemPrice * $quantity;
         });
 
         return $itemsSubtotalAmount;
     }
 
-    public function _getSubTotalAmountWithDeliveryCharge()
+    public function getSubTotalAmountWithDeliveryCharge()
     {
-        $itemsSubtotalAmount = $this->_getSubTotalAmount();
-        $deliveryCharge      = $this->deliveryGateway->price;
+        $itemsSubtotalAmount     = $this->getSubTotalAmount();
+        $deliveryCharge          = $this->deliveryGateway->price;
         $totalWithDeliveryCharge = $itemsSubtotalAmount + $deliveryCharge;
 
         return $totalWithDeliveryCharge;

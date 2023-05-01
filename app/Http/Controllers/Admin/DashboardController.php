@@ -25,20 +25,20 @@ class DashboardController extends Controller
         // Current order report
         $orderReport = Order::select(DB::raw('
             count(*) as order_count,
-            SUM(payable_order_value) as order_value,
+            SUM(payable_price) as order_value,
             SUM((CASE WHEN is_paid = 1 THEN 1 ELSE 0 END)) as paid_order,
-            SUM((CASE WHEN is_paid = 1 THEN payable_order_value ELSE 0 END)) as paid_order_value,
+            SUM((CASE WHEN is_paid = 1 THEN payable_price ELSE 0 END)) as paid_order_value,
             SUM((CASE WHEN is_paid = 0 THEN 1 ELSE 0 END)) as unpaid_order,
-            SUM((CASE WHEN is_paid = 0 THEN payable_order_value ELSE 0 END)) as unpaid_order_value,
-            SUM((CASE WHEN current_status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
-            SUM((CASE WHEN current_status_id = 1 THEN payable_order_value ELSE 0 END)) as submitted_order_value,
-            SUM((CASE WHEN current_status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
-            SUM((CASE WHEN current_status_id = 3 THEN payable_order_value ELSE 0 END)) as canceled_order_value,
-            SUM((CASE WHEN current_status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
-            SUM((CASE WHEN current_status_id = 7 THEN payable_order_value ELSE 0 END)) as delivered_order_value,
-            SUM((CASE WHEN current_status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
-            SUM((CASE WHEN current_status_id = 9 THEN payable_order_value ELSE 0 END)) as returned_order_value
-        '))->whereBetween('ordered_at', [$startDate, $endDate])->first();
+            SUM((CASE WHEN is_paid = 0 THEN payable_price ELSE 0 END)) as unpaid_order_value,
+            SUM((CASE WHEN status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
+            SUM((CASE WHEN status_id = 1 THEN payable_price ELSE 0 END)) as submitted_order_value,
+            SUM((CASE WHEN status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
+            SUM((CASE WHEN status_id = 3 THEN payable_price ELSE 0 END)) as canceled_order_value,
+            SUM((CASE WHEN status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
+            SUM((CASE WHEN status_id = 7 THEN payable_price ELSE 0 END)) as delivered_order_value,
+            SUM((CASE WHEN status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
+            SUM((CASE WHEN status_id = 9 THEN payable_price ELSE 0 END)) as returned_order_value
+        '))->whereBetween('created_at', [$startDate, $endDate])->first();
 
         // For previous report
         $difference = $startDate->copy()->diffInDays($endDate);
@@ -49,20 +49,20 @@ class DashboardController extends Controller
         // Previous order report
         $pOrderReport = Order::select(DB::raw('
             count(*) as order_count,
-            SUM(payable_order_value) as order_value,
+            SUM(payable_price) as order_value,
             SUM((CASE WHEN is_paid = 1 THEN 1 ELSE 0 END)) as paid_order,
-            SUM((CASE WHEN is_paid = 1 THEN payable_order_value ELSE 0 END)) as paid_order_value,
+            SUM((CASE WHEN is_paid = 1 THEN payable_price ELSE 0 END)) as paid_order_value,
             SUM((CASE WHEN is_paid = 0 THEN 1 ELSE 0 END)) as unpaid_order,
-            SUM((CASE WHEN is_paid = 0 THEN payable_order_value ELSE 0 END)) as unpaid_order_value,
-            SUM((CASE WHEN current_status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
-            SUM((CASE WHEN current_status_id = 1 THEN payable_order_value ELSE 0 END)) as submitted_order_value,
-            SUM((CASE WHEN current_status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
-            SUM((CASE WHEN current_status_id = 3 THEN payable_order_value ELSE 0 END)) as canceled_order_value,
-            SUM((CASE WHEN current_status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
-            SUM((CASE WHEN current_status_id = 7 THEN payable_order_value ELSE 0 END)) as delivered_order_value,
-            SUM((CASE WHEN current_status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
-            SUM((CASE WHEN current_status_id = 9 THEN payable_order_value ELSE 0 END)) as returned_order_value
-        '))->whereBetween('ordered_at', [$pStartDate, $pEndDate])->first();
+            SUM((CASE WHEN is_paid = 0 THEN payable_price ELSE 0 END)) as unpaid_order_value,
+            SUM((CASE WHEN status_id = 1 THEN 1 ELSE 0 END)) as submitted_order,
+            SUM((CASE WHEN status_id = 1 THEN payable_price ELSE 0 END)) as submitted_order_value,
+            SUM((CASE WHEN status_id = 3 THEN 1 ELSE 0 END)) as canceled_order,
+            SUM((CASE WHEN status_id = 3 THEN payable_price ELSE 0 END)) as canceled_order_value,
+            SUM((CASE WHEN status_id = 7 THEN 1 ELSE 0 END)) as delivered_order,
+            SUM((CASE WHEN status_id = 7 THEN payable_price ELSE 0 END)) as delivered_order_value,
+            SUM((CASE WHEN status_id = 9 THEN 1 ELSE 0 END)) as returned_order,
+            SUM((CASE WHEN status_id = 9 THEN payable_price ELSE 0 END)) as returned_order_value
+        '))->whereBetween('created_at', [$pStartDate, $pEndDate])->first();
 
         // Calculate order value percentage
         $positiveOrdersValuePercent = 0;
@@ -86,7 +86,7 @@ class DashboardController extends Controller
         $totalUser = User::count();
 
         // Calculate cart items value
-        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(quantity * item_offer_price) as cart_value"))->first();
+        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(sell_price) as cart_value"))->first();
 
         // Calculate number of login and current login user
         $userEvent = UserEvent::select(
@@ -98,19 +98,19 @@ class DashboardController extends Controller
         )->whereBetween('created_at', [$startDate, $endDate])->first();
 
         // Get latest five orders
-        $orders = Order::take(5)->orderBy('ordered_at', 'DESC')->get();
+        $orders = Order::take(5)->orderBy('created_at', 'DESC')->get();
 
         // Graph for order items and value
         $orderGraph = Order::leftJoin('order_item', 'orders.id', '=', 'order_item.order_id')
-            ->select([DB::raw('(orders.ordered_at) as ordered_at'), DB::raw('SUM(order_item.quantity * order_item.price) as item_subtotal'), DB::raw('COUNT(distinct orders.id) as order_count')])
-            ->groupBy(DB::raw('date(orders.ordered_at)'))->whereBetween('orders.ordered_at', [$startDate, $endDate])->orderBy('orders.ordered_at', 'ASC')->get();
+            ->select([DB::raw('(orders.created_at) as created_at'), DB::raw('SUM(order_item.quantity * order_item.sell_price) as item_subtotal'), DB::raw('COUNT(distinct orders.id) as order_count')])
+            ->groupBy(DB::raw('date(orders.created_at)'))->whereBetween('orders.created_at', [$startDate, $endDate])->orderBy('orders.created_at', 'ASC')->get();
 
-        $lables = $orderGraph->pluck('ordered_at')->map(function ($oat) {
+        $lables = $orderGraph->pluck('created_at')->map(function ($oat) {
             return $oat->format('d/m');
         });
 
         $orderItemAmount = $orderGraph->pluck('item_subtotal');
-        $dataDate = $orderGraph->pluck('ordered_at');
+        $dataDate = $orderGraph->pluck('created_at');
         $dataOrdrCount = $orderGraph->pluck('order_count');
 
         $chart = new SampleChart;

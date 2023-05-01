@@ -37,8 +37,8 @@
                         <span class="text-base lg:text-base xl:text-lg 2xl:text-lg text-primary font-semibold">{{ $title }}</span>
                     </div>
                     <div class="">
-                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-secondary "
-                            data-mc-on-previous-url="{{ route('upload.prescription') }}"
+                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-primary"
+                            data-mc-on-previous-url="#"
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             {{ $postTitle }}
                         </a>
@@ -89,7 +89,7 @@
             </div>
             <div class="footer">
                 <a href="{{ $postTitleLink }}" class="btn btn-primary btn-xs"
-                data-mc-on-previous-url="{{ route('upload.prescription') }}"
+                data-mc-on-previous-url="#"
                 @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                 {{ $postTitle }}
             </a>

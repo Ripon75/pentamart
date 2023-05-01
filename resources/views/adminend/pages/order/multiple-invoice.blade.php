@@ -17,7 +17,7 @@
                         {{-- Header section --}}
                         <div class="grid grid-cols-12 border-b pb-1 items-center gap-2">
                             <span class="col-span-8">
-                                <img class="h-12 w-auto" src="/images/logos/logo-full-color.svg" alt="Logo">
+                                <img class="h-12 w-auto" src="/images/logos/logo.png" alt="Logo">
                             </span>
                             <div class="col-span-4">
                                 <div class="text-black text-sm">

@@ -76,7 +76,7 @@ class SectionController extends Controller
     {
         $section            = Section::with(['products'])->find($id);
         $selectedProductIDs = Arr::pluck($section->products, 'id');
-        $products           = Product::where('status', 'activated')->get();
+        $products           = Product::where('status', 'active')->get();
 
         return view('adminend.pages.section.edit', [
             'section'            => $section,

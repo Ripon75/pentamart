@@ -25,7 +25,7 @@
                         <x-frontend.header-title
                             type="else"
                             title="Dashboard"
-                            bgColor="#102967"
+                            bgColor="#00798c"
                         />
                     </div>
                 </div>

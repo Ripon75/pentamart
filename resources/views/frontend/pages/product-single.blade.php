@@ -12,14 +12,8 @@
                         <div class="flex justify-between">
                             <div class="">
                                 @if ($product->offer_price > 0)
-                                    @php
-                                        $price          = $product->price;
-                                        $discountAmount = $product->price - $product->offer_price;
-
-                                        $discountPercent = ($discountAmount/$price) * 100
-                                    @endphp
                                     <span class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
-                                        {{ (number_format($discountPercent, 0)) }}
+                                        {{ (number_format($product->offer_percent, 0)) }}
                                         <span>%</span>
                                     </span>
                                 @endif
@@ -36,15 +30,9 @@
                         <div class="flex justify-between">
                             <div class="">
                                 @if ($product->offer_price > 0)
-                                    @php
-                                        $price          = $product->price;
-                                        $discountAmount = $product->price - $product->offer_price;
-
-                                        $discountPercent = ($discountAmount/$price) * 100
-                                    @endphp
                                     <span
                                         class="pt-[2px] px-2 bg-red-500 text-white text-sm text-center inline-block align-middle rounded shadow-md">-
-                                        {{ (number_format($discountPercent, 0)) }}
+                                        {{ (number_format($product->offer_percent, 0)) }}
                                         <span>%</span>
                                     </span>
                                 @endif
@@ -59,61 +47,44 @@
                 <div class="flex justify-between">
                     <div class="">
                         <h1 class="text-lg lg:text-2xl font-medium text-primary-dark mb-2 mt-2">{{ $product->name }}</h1>
-                        {{-- show dosage form --}}
-                        @if ($product->dosageForm)
-                            <a href="{{ route('dosage-forms.show', $product->dosageForm->slug) }}" class="text-base text-gray-500 block my-2">
-                                {{ $product->dosageForm->name }} (Brand name)
+                        {{-- show brand form --}}
+                        @if ($product->brand)
+                            <a href="{{ route('brand.page', $product->brand_id) }}" class="text-base text-gray-500 block my-2">
+                                {{ $product->brand->name }}
                             </a>
                         @endif
-                        {{-- show generic --}}
-                        @if ($product->generic)
+                        {{-- show category --}}
+                        @if ($product->category_id)
                             <div class="text-sm text-gray-600">
-                                <strong>Generics :&nbsp;</strong>&nbsp;
-                                <a href="{{ route('generics.show', $product->generic->slug) }}">
-                                    {{ $product->generic->name }} (Category name)
+                                <a href="{{ route('category.page', $product->category_id) }}">
+                                    {{ $product->category->name }}
                                 </a>
                             </div>
                         @endif
 
-                       <div class="mt-1">
-                           <div class="flex">
-                               <strong>Colors:&nbsp;</strong>&nbsp;
-                               <div class="flex items-center mr-4">
-                                   <input id="red-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="red-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Red</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="green-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="green-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Green</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="yellow-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="yellow-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Yellow</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="orange-radio" type="radio" value="" name="colored-radio" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="orange-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Orange</label>
-                               </div>
-                           </div>
-                           <div class="flex">
-                               <strong>Sizes:&nbsp;</strong>&nbsp;
-                               <div class="flex items-center mr-4">
-                                   <input id="m-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="m-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">M</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="l-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="l-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">L</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="xl-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="xl-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XL</label>
-                               </div>
-                               <div class="flex items-center mr-4">
-                                   <input id="xll-radio" type="radio" value="" name="size" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                   <label for="xll-radio" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">XLL</label>
-                               </div>
-                           </div>
+                       <div class="mt-1 pt-1 pb-1">
+                            @if (count($productColors))
+                                <div class="flex mb-2">
+                                    <strong>Colors:&nbsp;</strong>&nbsp;
+                                    @foreach ($productColors as $color)
+                                        <div class="flex items-center mr-4">
+                                            <input id="{{ $color->id }}" type="radio" value="{{ $color->id }}" name="color_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                            <label for="{{ $color->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $color->name }}</label>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+                            @if (count($productSizes))
+                            <div class="flex">
+                                <strong>Sizes:&nbsp;</strong>&nbsp;
+                                @foreach ($productSizes as $size)
+                                    <div class="flex items-center mr-4">
+                                        <input id="{{ $size->id }}" type="radio" value="{{ $size->id }}" name="size_id" class="w-4 h-4 bg-gray-100 border-gray-300 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="{{ $size->id }}" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">{{ $size->name }}</label>
+                                    </div>
+                                @endforeach
+                            </div>
+                            @endif
                        </div>
                     </div>
                 </div>
@@ -129,26 +100,24 @@
                         @else
                             <input type="hidden" value="{{ $product->price }}" id="input-price">
                         @endif
-                        {{-- <input type="hidden" value="{{ $product->pack_size }}" id="input-pack-size"> --}}
                         <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
-                        {{-- <input type="hidden" value="{{ $product->is_single_sell_allow }}" id="input-negative-sell-allow"> --}}
                     </div>
                     <div class="prices flex space-x-2 items-center mb-2">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-xl font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
                                     {{ $product->price }}
                                 </span>
                             @else
-                                <span id="item-price-label" class="text-secondary text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-xl font-medium">
                                     {{ number_format(($product->price), 2) }}
                                 </span>
-                                <span id="item-mrp-label" class="line-through text-secondary text-xl font-medium">
+                                <span id="item-mrp-label" class="line-through text-primary text-xl font-medium">
                                 </span>
                             @endif
                         </span>
@@ -161,7 +130,7 @@
                                 @endfor
                             </select>
                             <div class="flex space-x-4">
-                                <button class="btn-add-to-car-single h-[36px] bg-primary text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                <button class="btn-add-to-car-single h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                     data-mc-on-previous-url="{{ url()->current() }}"
                                     @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                                     <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
@@ -170,28 +139,25 @@
                                 </button>
                                 @if ($isWishListed)
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
-                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @else
                                     <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
-                                        <i class="text-4xl text-secondary fa-solid fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white"
                                         data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
                                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                                        <i class="text-4xl text-secondary fa-regular fa-heart"></i>
+                                        <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @endif
                             </div>
                         </div>
-                        <h6 class="text-sm font-semibold text-gray-500">
-                            * Delivery will be done in Dhaka city only.
-                        </h6>
                     </div>
                 </div>
             </div>
@@ -273,36 +239,30 @@
         easing: true,
     });
 
-    var cartAddItemEndPoint    = '/cart/item/add';
-    var btnAddToCartSingle     = $('.btn-add-to-car-single');
-    var productID              = $('#product-id').val();
-    var selectedPackSingle     = $('.selected-pack-single');
-    var priceLabel             = $('#item-price-label');
-    var itemMRPLabel           = $('#item-mrp-label');
-    // var inputPacksize          = $('#input-pack-size');
-    var inputPrice             = $('#input-price');
-    var inputProductMRP        = $('#input-product-mrp');
-    var inputQty               = $('#input-qty');
-    var iconLoadding           = $('.loadding-icon');
-    var iconAddToCart          = $('#add-to-cart-icon');
-    var wishButton             = $('#wish-button');
-    var undoWishButton         = $('#undo-wish-button');
-    var packQtyLavel           = $('#pack-quantity-label');
-    // var inputNegativeSellAllow = $('#input-negative-sell-allow');
-    var sUserID                = {{ Auth::id() }}
+    var aleartTime          = {{ config("crud.alear_time") }};
+    var cartAddItemEndPoint = '/cart/item/add';
+    var btnAddToCartSingle  = $('.btn-add-to-car-single');
+    var productID           = $('#product-id').val();
+    var selectedPackSingle  = $('.selected-pack-single');
+    var priceLabel          = $('#item-price-label');
+    var itemMRPLabel        = $('#item-mrp-label');
+    var inputPrice          = $('#input-price');
+    var inputProductMRP     = $('#input-product-mrp');
+    var inputQty            = $('#input-qty');
+    var iconLoadding        = $('.loadding-icon');
+    var iconAddToCart       = $('#add-to-cart-icon');
+    var wishButton          = $('#wish-button');
+    var undoWishButton      = $('#undo-wish-button');
+    var packQtyLavel        = $('#pack-quantity-label');
+    var sUserID             = {{ Auth::id() }};
+    var productColorsCount  = {{ count($productColors) }};
+    var productSizesCount   = {{ count($productSizes) }};
 
     @auth
-        var cartStorageProductID = localStorage.getItem('cart_product_id');
-        var wishStorageProductID = localStorage.getItem('wish_product_id');
-
-        // Automatically product added to cart if local storage have cart_product_id
-        if (cartStorageProductID) {
-            __addCartItem(cartStorageProductID, 1, null, true);
-            localStorage.removeItem('cart_product_id');
-        }
         // Automatically product added to wishcart if local storage have wish_product_id
+        var wishStorageProductID = localStorage.getItem('wish_product_id');
         if (wishStorageProductID) {
-            __addWishlist(wishStorageProductID);
+            addWishlist(wishStorageProductID);
             localStorage.removeItem('wish_product_id');
         }
     @endauth
@@ -316,10 +276,8 @@
     $(function() {
         selectedPackSingle.on('change', function() {
             var productQty        = inputQty.val();
-            // var packSize          = inputPacksize.val();
             var productPrice      = inputPrice.val();
             var productMRP        = inputProductMRP.val();
-            // var negativeSellAllow = inputNegativeSellAllow.val()
             var totalPrice        = 0;
             var totalMRP          = 0;
 
@@ -334,21 +292,26 @@
             if (totalMRP !== totalPrice) {
                 itemMRPLabel.text(totalMRP.toFixed(2));
             }
-
-            // __SPcheckProductOfferQty(productID, productQty, totalMRP, totalPrice);
         });
 
         // Add product to cart
         btnAddToCartSingle.click(function () {
-            // Get product id from the hidden input
             var productQty = inputQty.val();
+            var colorId    = $('input[name="color_id"]:checked').val();
+            var sizeId     = $('input[name="size_id"]:checked').val();
 
-            if (!sUserID) {
-                localStorage.setItem('cart_product_id', productID);
-            } else {
-                if (productID != 0 && productQty != 0) {
-                    __addCartItem(productID, productQty, $(this));
-                }
+            if (productColorsCount > 0 && !colorId) {
+                __showNotification('error', 'Please select color', aleartTime);
+                return false;
+            }
+
+            if (productSizesCount > 0 && !sizeId) {
+                __showNotification('error', 'Please select size', aleartTime);
+                return false;
+            }
+
+            if (productID != 0 && productQty != 0) {
+                addCartItem(productID, productQty, colorId, sizeId, $(this));
             }
         });
 
@@ -357,18 +320,18 @@
             if (!sUserID) {
                 localStorage.setItem('wish_product_id', productID);
             } else {
-                __addWishlist(productID);
+                addWishlist(productID);
             }
         });
 
         undoWishButton.click(function () {
             if (sUserID) {
-                __undoWishList(productID);
+                undoWishList(productID);
             }
         });
     });
 
-    function __addCartItem(productID, productQty, btn, isLocalStoreage = false) {
+    function addCartItem(productID, productQty, colorId = null, sizeId = null, btn = null) {
         if (btn) {
             btn.prop("disabled", true);
         }
@@ -377,15 +340,20 @@
 
         axios.post(cartAddItemEndPoint, {
             item_id: productID,
-            item_quantity: productQty,
-            is_local_storage: isLocalStoreage
+            quantity: productQty,
+            color_id: colorId,
+            size_id: sizeId,
         })
         .then((response) => {
             if (response.data.res) {
-                drawerCartItemRender();
-                __totalPriceCalculation();
+                // __totalPriceCalculation();
             } else {
                 __showNotification('error', response.data.message, 1000);
+                iconLoadding.hide();
+                iconAddToCart.show();
+                if (btn) {
+                    btn.prop("disabled", false);
+                }
                 return false;
             }
             iconLoadding.hide();
@@ -403,7 +371,7 @@
         });
     }
 
-    function __addWishlist(productID) {
+    function addWishlist(productID) {
         axios.post('/my/wishlist', {
             product_id: productID
         })
@@ -416,7 +384,7 @@
         });
     }
 
-    function __undoWishList(productId) {
+    function undoWishList(productId) {
         axios.get('/my/wishlist/undo', {
             params: {
                 product_id: productID
@@ -430,30 +398,5 @@
             console.log(error);
         });
     }
-
-    // function __SPcheckProductOfferQty(selectedProductId, selectedProductQty, productMRP = 0, productPrice = 0) {
-    //     var checkOfferQtyEndpoint = '/api/check/offer/quantity';
-    //     axios.get(checkOfferQtyEndpoint, {
-    //             params: {
-    //                 'product_id': selectedProductId,
-    //                 'quantity': selectedProductQty
-    //             }
-    //         })
-    //         .then(res => {
-    //             if (res.data.success) {
-    //                 var productOfferAmount = parseFloat(res.data.result);
-    //                 productOfferAmount = (productOfferAmount * selectedProductQty).toFixed(2);
-    //                 $(`#item-price-label`).text(productOfferAmount);
-    //                 $(`#item-mrp-label`).text('Tk '+ productMRP);
-    //             } else {
-    //                 if (productPrice === productMRP) {
-    //                     $(`#item-mrp-label`).text('');
-    //                 }
-    //             }
-    //         })
-    //         .catch(err => {
-    //             console.log(err);
-    //         });
-    // }
 </script>
 @endpush

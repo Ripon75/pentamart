@@ -144,7 +144,7 @@ class Nagad
                             'challenge'    => $randomServer
                         ];
 
-                        $logo = "{$this->appUrl}/images/logos/logo-full-color.svg";
+                        $logo = "{$this->appUrl}/images/logos/logo.png";
 
                         $merchantAdditionalInfo = '{
                             "serviceName":"Medicart",

@@ -50,11 +50,11 @@
                 </div>
                 <div class="flex flex-col">
                     <label class="text-sm" for="">Delivery Type</label>
-                    <select class="text-sm border border-gray-300 rounded w-36 h-10" name="delivery_type_id">
+                    <select class="text-sm border border-gray-300 rounded w-36 h-10" name="dg_id">
                         <option value="">Select</option>
                         @foreach ($dGateways as $dGateway)
                         <option value="{{ $dGateway->id }}"
-                            {{ $dGateway->id == request()->input('delivery_type_id') ? "selected" : '' }}>
+                            {{ $dGateway->id == request()->input('dg_id') ? "selected" : '' }}>
                             {{ $dGateway->name }}
                         </option>
                         @endforeach
@@ -62,11 +62,11 @@
                 </div>
                 <div class="flex flex-col">
                     <label class="text-sm" for="">Payment Type</label>
-                    <select class="text-sm border border-gray-300 rounded h-10 w-36" name="payment_method_id">
+                    <select class="text-sm border border-gray-300 rounded h-10 w-36" name="pg_id">
                         <option value="">Select</option>
                         @foreach ($pGateways as $pGateway)
                         <option value="{{ $pGateway->id }}"
-                            {{ $pGateway->id == request()->input('payment_method_id') ? "selected" : '' }}>
+                            {{ $pGateway->id == request()->input('pg_id') ? "selected" : '' }}>
                             {{ $pGateway->name }}
                         </option>
                         @endforeach
@@ -156,9 +156,9 @@
                         <td>{{ ($data->user->name) ?? null }}</td>
                         <td>{{ ($data->user->phone_number) ?? null }}</td>
                         <td>
-                            @if ($data->delivery_type_id)
+                            @if ($data->dg_id)
                                 {{ ($data->deliveryGateway->name) ?? null }}
-                            @elseif($data->delivery_type_id === 0)
+                            @elseif($data->dg_id === 0)
                                 Free Delivery
                             @else
                                 Custom Delivery

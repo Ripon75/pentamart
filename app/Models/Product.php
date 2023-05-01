@@ -7,7 +7,7 @@ use Carbon\Carbon;
 use App\Classes\Model;
 use App\Rules\NotNumeric;
 use Laravel\Scout\Searchable;
-use Illuminate\Support\Facades\DB;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
 {
-    use SoftDeletes, Searchable, HasFactory;
+    use SoftDeletes, Searchable, HasFactory, Userstamps;
     use \OwenIt\Auditing\Auditable;
 
     protected $table      = 'products';
@@ -88,6 +88,12 @@ class Product extends Model implements Auditable
             'cast'     => 'string',
             'fillable' => true
         ],
+        'created_by' => [
+            'fillable' => true
+        ],
+        'updated_by' => [
+            'fillable' => true
+        ],
         'created_at' => [
             'cast'     => 'datetime:Y-m-d H:i:s',
             'fillable' => true
@@ -151,6 +157,16 @@ class Product extends Model implements Auditable
         return $this->belongsToMany(Section::class, 'section_item', 'item_id', 'section_id')->withTimestamps();
     }
 
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class, 'product_sizes', 'product_id', 'size_id')->withTimestamps();
+    }
+
+    public function colors()
+    {
+        return $this->belongsToMany(Color::class, 'product_colors', 'product_id', 'color_id')->withTimestamps();
+    }
+
     // Relation end ======================================================================
 
     public function getImageSrcAttribute($value)
@@ -184,11 +200,14 @@ class Product extends Model implements Auditable
         $now = Carbon::now();
 
         return $query->select(
-            'id', 'name', 'brand_id', 'category_id', 'price', 'offer_price', 'slug','image_src'
+            'id', 'name', 'brand_id', 'category_id', 'price', 'offer_price',
+            'discount', 'offer_percent', 'slug','image_src'
         )
         ->with([
             'brand:id,name,slug',
-            'category:id,name,slug'
+            'category:id,name,slug',
+            'sizes',
+            'colors'
         ])
         ->where('status', 'active')
         ->where('price', '>', 0);

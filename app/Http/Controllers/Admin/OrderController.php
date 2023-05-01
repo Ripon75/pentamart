@@ -2,17 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
-// use Setting;
 use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\User;
 use App\Models\Order;
 use App\Classes\Bkash;
-use App\Models\Product;
 use App\Classes\Utility;
-use App\Models\OrderStatus;
-use Illuminate\Support\Str;
-use App\Models\UserAddress;
+use App\Models\Status;
+use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\Prescription;
 use App\Exports\OrdersExport;
@@ -26,7 +23,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
@@ -36,7 +32,6 @@ class OrderController extends Controller
 
     public function __construct()
     {
-        // $this->currency = Setting::getValue('app_currency_symbol', null, 'Tk');
         $this->currency = 'tk';
         $this->util     = new Utility;
     }
@@ -48,8 +43,8 @@ class OrderController extends Controller
         $endDate       = $request->input('end_date', null);
         $action        = $request->input('action', null);
         $areaId        = $request->input('area_id', null);
-        $dGateway      = $request->input('delivery_type_id', null);
-        $pGateway      = $request->input('payment_method_id', null);
+        $dGateway      = $request->input('dg_id', null);
+        $pGateway      = $request->input('pg_id', null);
         $phoneNumber   = $request->input('phone_number', null);
         $orderId       = $request->input('order_id', null);
         $statusId      = $request->input('status_id', null);
@@ -93,11 +88,11 @@ class OrderController extends Controller
         }
 
         if ($dGateway) {
-            $orderObj = $orderObj->where('delivery_type_id', $dGateway);
+            $orderObj = $orderObj->where('dg_id', $dGateway);
         }
 
         if ($pGateway) {
-            $orderObj = $orderObj->where('payment_method_id', $pGateway);
+            $orderObj = $orderObj->where('pg_id', $pGateway);
         }
 
         if ($orderId) {
@@ -132,7 +127,7 @@ class OrderController extends Controller
         $areas       = Area::orderBy('name', 'asc')->get();
         $dGateways   = DeliveryGateway::where('status', 'activated')->orderBy('name', 'asc')->get();
         $pGateways   = PaymentGateway::where('status', 'activated')->orderBy('name', 'asc')->get();
-        $orderStatus = OrderStatus::where('seller_visibility', 1)->get();
+        $orderStatus = Status::where('seller_visibility', 1)->get();
 
         return view('adminend.pages.order.index', [
             'result'      => $result,
@@ -155,8 +150,8 @@ class OrderController extends Controller
         $areas             = Area::orderBy('name', 'asc')->get();
         $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
-        $shippingAddresses = UserAddress::where('user_id', $order->user_id)->get();
-        $orderStatus       = $order->getNextStatus($order->current_status_id);
+        $shippingAddresses = Address::where('user_id', $order->user_id)->get();
+        $orderStatus       = $order->getNextStatus($order->status_id);
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,
@@ -173,19 +168,19 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'delivery_type_id'    => ['required', 'integer'],
-            'payment_method_id'   => ['required', 'integer'],
-            'shipping_address_id' => ['required', 'integer'],
+            'dg_id'    => ['required', 'integer'],
+            'pg_id'   => ['required', 'integer'],
+            'address_id' => ['required', 'integer'],
             'area_id'             => ['required', 'integer'],
             'address'             => ['required'],
         ],
         [
-            'shipping_address_id.required' => 'Please select shipping address'
+            'address_id.required' => 'Please select shipping address'
         ]);
 
-        $deliveryTypeId       = $request->input('delivery_type_id');
-        $paymentMethodId      = $request->input('payment_method_id');
-        $shippingAddressId    = $request->input('shipping_address_id');
+        $deliveryTypeId       = $request->input('dg_id');
+        $paymentMethodId      = $request->input('pg_id');
+        $addressId            = $request->input('address_id');
         $orderedAt            = $request->input('ordered_at');
         $statusId             = $request->input('status_id', null);
         $deliveryCharge       = $request->input('delivery_charge', 0);
@@ -205,8 +200,8 @@ class OrderController extends Controller
         // Set order status
         $order->setStatus($statusId);
         // Update shipping address
-        if ($shippingAddressId) {
-            $shippingAddress               = UserAddress::find($shippingAddressId);
+        if ($addressId) {
+            $shippingAddress               = Address::find($addressId);
             $shippingAddress->address      = $address;
             $shippingAddress->phone_number = $phoneNumber;
             $shippingAddress->area_id      = $areaID;
@@ -218,9 +213,9 @@ class OrderController extends Controller
         }
 
         // Update order and order details
-        $order->delivery_type_id       = $deliveryTypeId;
-        $order->payment_method_id      = $paymentMethodId;
-        $order->shipping_address_id    = $shippingAddressId;
+        $order->dg_id       = $deliveryTypeId;
+        $order->pg_id      = $paymentMethodId;
+        $order->address_id             = $addressId;
         $order->ordered_at             = $orderedAt;
         $order->created_by             = Auth::id();
         $order->delivery_charge        = $deliveryCharge;
@@ -363,7 +358,7 @@ class OrderController extends Controller
         $areas             = Area::orderBy('name', 'asc')->get();
         $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
         $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
-        $orderStatus       = OrderStatus::where('seller_visibility', 1)->get();
+        $orderStatus       = Status::where('seller_visibility', 1)->get();
 
         return view('adminend.pages.order.create', [
             'areas'             => $areas,
@@ -377,12 +372,11 @@ class OrderController extends Controller
     {
         $request->validate([
             'items'                  => ['required'],
-            'shipping_address_id'    => ['required'],
-            'delivery_type_id'       => ['required'],
-            'payment_method_id'      => ['required'],
-            'shipping_address_title' => ['required_if:shipping_address_id,0'],
-            'shipping_address_line'  => ['required_if:shipping_address_id,0'],
-            'area_id'                => ['required_if:shipping_address_id,0'],
+            'address_id'    => ['required'],
+            'pg_id'      => ['required'],
+            'shipping_address_title' => ['required_if:address_id,0'],
+            'shipping_address_line'  => ['required_if:address_id,0'],
+            'area_id'                => ['required_if:address_id,0'],
             'customer_name'          => ['required_if:user_id,0'],
             'others_title'           => ['required_if:shipping_address_title,Others'],
             'search_phone_number'    => ['required']
@@ -393,16 +387,15 @@ class OrderController extends Controller
             'area_id.required_if'                => 'The area field is required',
             'customer_name.required_if'          => 'The customer name field is required',
             'others_title.required_if'           => 'The others title field is required',
-            'delivery_type_id.required'          => 'The delivery method is required',
-            'payment_method_id.required'         => 'The payment method is required',
+            'pg_id.required'         => 'The payment method is required',
             'search_phone_number.required'       => 'The user phone is required',
         ]);
 
         $items             = $request->input('items', null);
         $userId            = $request->input('user_id', null);
-        $shippingAddressId = $request->input('shipping_address_id', null);
-        $deliveryTypeId    = $request->input('delivery_type_id', null);
-        $paymentMethodId   = $request->input('payment_method_id', null);
+        $addressId         = $request->input('address_id', null);
+        $deliveryTypeId    = $request->input('dg_id', null);
+        $paymentMethodId   = $request->input('pg_id', null);
         $searchPhoneNumber = $request->input('search_phone_number', null);
         $deliveryCharge    = $request->input('delivery_charge', null);
         $customerName      = $request->input('customer_name', null);
@@ -440,7 +433,7 @@ class OrderController extends Controller
         }
 
         // Create new address when shipping address was not selected
-        if ($shippingAddressId == 0) {
+        if ($addressId == 0) {
             $addressTitle = $request->input('shipping_address_title', null);
             $addressLine  = $request->input('shipping_address_line', null);
             $phoneNumber  = $request->input('phone_number', null);
@@ -450,14 +443,14 @@ class OrderController extends Controller
             $addressTitle = $otherTitle ? $otherTitle : $addressTitle;
 
             // Check shipping address was already exist
-            $checkShippingAddress = UserAddress::where('title', $addressTitle)->where('user_id', $userId)->first();
+            $checkShippingAddress = Address::where('title', $addressTitle)->where('user_id', $userId)->first();
             if ($checkShippingAddress) {
                 return back()->with('title_exist', 'The address title already taken');
             }
 
             $phoneNumber = $phoneNumber ? $phoneNumber : $searchPhoneNumber;
 
-            $userAddressObj = new UserAddress();
+            $userAddressObj = new Address();
 
             $userAddressObj->title        = $addressTitle;
             $userAddressObj->address      = $addressLine;
@@ -475,9 +468,9 @@ class OrderController extends Controller
         }
 
         $orderObj->user_id             = $userId;
-        $orderObj->shipping_address_id = $shippingAddressId == 0 ? $userAddressObj->id : $shippingAddressId;
-        $orderObj->delivery_type_id    = $deliveryTypeId;
-        $orderObj->payment_method_id   = $paymentMethodId;
+        $orderObj->address_id = $addressId == 0 ? $userAddressObj->id : $addressId;
+        $orderObj->dg_id    = $deliveryTypeId;
+        $orderObj->pg_id   = $paymentMethodId;
         $orderObj->delivery_charge     = $deliveryCharge;
         $orderObj->is_paid             = $paymentStatus;
         $orderObj->ordered_at          = $orderedAt;
@@ -545,52 +538,6 @@ class OrderController extends Controller
         return view('adminend.pages.prescription.show', [
             'prescriptions' => $prescriptions
         ]);
-    }
-
-    // For medipos
-    public function sendOrderMedipos(Request $request)
-    {
-        $request->validate([
-            'business_id' => ['required'],
-            'branch_id'   => ['required'],
-            'order_id'    => ['required']
-        ]);
-
-        $token      = $request->input('token');
-        $businessId = $request->input('business_id', null);
-        $branchId   = $request->input('branch_id', null);
-        $orderId    = $request->input('order_id', null);
-
-        $order = Order::with(['items' => function($query) {
-            $query->withTrashed();
-        }])->find($orderId);
-
-        if (!$order) {
-            abort(404);
-        }
-
-        $baseURL = config('pos.api.base_url');
-        $url     = "{$baseURL}/api/online/order/data/private/create";
-        // $baseURL = "http://192.168.11.7/coreapi/public/index.php";
-
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer {$token}"
-            ])->post($url, [
-            'business_id' => $businessId,
-            'branch_id'   => $branchId,
-            'order'       => $order
-        ]);
-
-        if ($response && $response['type']) {
-            $order->pos_business_id = $businessId;
-            $order->pos_branch_id   = $branchId;
-            $order->save();
-
-            return $this->util->makeResponse($response, $response['msg'], 200);
-        } else {
-            return $this->util->makeResponse($response, $response['msg'], 201);
-        }
     }
 
     public function statusUpdate(Request $request)
@@ -678,313 +625,5 @@ class OrderController extends Controller
 
         $res = $bKash->refundTransaction($paymentID, $PGTRXID, $price, $sku, $note);
         return $res;
-    }
-
-    public function bulkOrderCreate()
-    {
-        return view('adminend.pages.order.onclogy-bulk-order');
-    }
-
-    public function bulkOrderStore(Request $request)
-    {
-        $request->validate([
-            'uploaded_file' => ['required', 'file', 'mimes:csv']
-        ]);
-
-        $now = Carbon::now();
-
-        $file = $request->file('uploaded_file');
-
-        $filename  = $file->getClientOriginalName();
-        $extension = $file->getClientOriginalExtension();  //Get extension of uploaded file
-        $tempPath  = $file->getRealPath();
-        $fileSize  = $file->getSize();                     //Get size of uploaded file in bytes
-        //Check for file extension and size
-        $this->checkUploadedFileProperties($extension, $fileSize);
-        //Where uploaded file will be stored on the server
-        $location = 'uploads'; //Created an "uploads" folder for that
-        // Upload file
-        $file->move($location, $filename);
-        // In case the uploaded file path is to be stored in the database
-        $filepath = public_path($location . "/" . $filename);
-        // Reading file
-        $file = fopen($filepath, "r");
-
-        $firstline = true;
-        $refineData = [];
-
-        while (($data = fgetcsv($file, 2500, ",")) !== false) {
-            if (!$firstline) {
-                // Get All data from csv
-                $invoiceID    = trim($data['0']);
-                $invoiceDate  = trim($data['1']);
-                $productName  = trim($data['2']);
-                $productRate  = trim($data['3']);
-                $selligPrice  = trim($data['4']);
-                $invoiceQty   = trim($data['5']);
-                $customerName = trim($data['6']);
-                $phoneNumber  = trim($data['7']);
-                $address      = trim($data['8']);
-                $areaName     = trim($data['9']);
-
-                $_productSlug  = Str::slug($productName, '_');
-
-                if (str_starts_with($phoneNumber, '0')) {
-                    $phoneNumber = '88'.$phoneNumber;
-                } else {
-                    $phoneNumber = '880'.$phoneNumber;
-                }
-
-                // Generate array by unique index
-                if (array_key_exists($invoiceID, $refineData)){
-                    if (array_key_exists($_productSlug, $refineData[$invoiceID])) {
-                        $refineData[$invoiceID][$_productSlug]['qty'] = $invoiceQty ? ($refineData[$invoiceID][$_productSlug]['qty'] + $invoiceQty) : $refineData[$invoiceID][$_productSlug]['qty'];
-                    } else {
-                        $refineData[$invoiceID][$_productSlug] = [
-                            'date'          => $invoiceDate,
-                            'product_name'  => $productName,
-                            'product_mrp'   => $productRate ? $productRate : 0,
-                            'selling_price' => $selligPrice ? $selligPrice : 0,
-                            'qty'           => $invoiceQty ? $invoiceQty : 1,
-                            'customer_name' => $customerName,
-                            'phone_number'  => $phoneNumber,
-                            'address'       => $address,
-                            'area'          => $areaName
-                        ];
-                    }
-                } else {
-                    $refineData[$invoiceID][$_productSlug] = [
-                        'date'          => $invoiceDate,
-                        'product_name'  => $productName,
-                        'product_mrp'   => $productRate ? $productRate : 0,
-                        'selling_price' => $selligPrice ? $selligPrice : 0,
-                        'qty'           => $invoiceQty ? $invoiceQty : 1,
-                        'customer_name' => $customerName,
-                        'phone_number'  => $phoneNumber,
-                        'address'       => $address,
-                        'area'          => $areaName
-                    ];
-                }
-            }
-            $firstline = false;
-        }
-        fclose($file);
-
-        $mkey = null;
-        try {
-            DB::beginTransaction();
-            // Insert order
-            foreach ($refineData as $key => $items) {
-                $mkey = $key;
-                info($mkey);
-                $orderItems = [];
-                $orderObj = new Order();
-
-                foreach ($items as $item) {
-                    $customerID = null;
-                    $password   = 'tdl@123456789#';
-
-                    $invoiceDate  = $item['date'];
-                    $productName  = $item['product_name'];
-                    $mrp          = $item['product_mrp'];
-                    $selligPrice  = $item['selling_price'];
-                    $invoiceQty   = $item['qty'];
-                    $customerName = $item['customer_name'];
-                    $phoneNumber  = $item['phone_number'];
-                    $address      = $item['address'];
-                    $area         = $item['area'];
-
-                    // Find or create order
-                    $productID = null;
-                    if ($productName) {
-                        $productSlug = Str::slug($productName, '-');
-                        $product     = Product::where('slug', $productSlug)->first();
-                        if ($product) {
-                            $productID = $product->id;
-                        } else {
-                            $salePercent = 0;
-                            if ($selligPrice > 0 && $mrp) {
-                                $discount    = $mrp - $selligPrice;
-                                $salePercent = ($discount * 100) / $mrp;
-                                $salePercent = number_format($salePercent, 0);
-                            }
-
-                            $productObj                  = new Product;
-                            $productObj->slug            = $productSlug;
-                            $productObj->name            = $productName;
-                            $productObj->company_id      = 52;
-                            $productObj->brand_id        = 55;
-                            $productObj->mrp             = $mrp;
-                            $productObj->selling_price   = $selligPrice;
-                            $productObj->selling_percent = $salePercent;
-                            $productObj->status          = 'activated';
-                            $productObj->pack_name       = 'Pieces';
-                            $productObj->pack_size       = 1;
-                            $productObj->num_of_pack     = 5;
-                            $productObj->save();
-                            $productID = $productObj->id;
-                        }
-                    }
-
-                    // Discount calculation
-                    $discount = 0;
-                    if ($selligPrice > 0) {
-                        $discount = $mrp - $selligPrice;
-                    }
-
-                    // Geenerate order items
-                    $orderItems[$productID] = [
-                        'quantity'  => $invoiceQty,
-                        'pack_size' => 1,
-                        'item_mrp'  => $mrp,
-                        'price'     => $selligPrice,
-                        'discount'  => $discount,
-                    ];
-
-                    //Find or create customer
-                    if ($phoneNumber) {
-                        $customer = User::where('phone_number', $phoneNumber)->first();
-                        if ($customer) {
-                            $customerID = $customer->id;
-                        } else {
-                            $customerObj                      = new User();
-                            $customerObj->name                = $customerName;
-                            $customerObj->phone_number        = $phoneNumber;
-                            $customerObj->password            = Hash::make($password);
-                            $customerObj->terms_and_conditons = 1;
-                            $customerObj->ac_active           = 1;
-                            $customerObj->save();
-                            $customerID = $customerObj->id;
-                        }
-                    }
-
-                    // Find or create address
-                    $areaID = null;
-                    $addresssID = null;
-                    if ($address) {
-                        $userAddressObj = UserAddress::where('user_id', $customerID)->first();
-                        if ($userAddressObj) {
-                            $addresssID = $userAddressObj->id;
-                        } else {
-                            $userAddrObj               = new UserAddress();
-                            $userAddrObj->title        = 'Home';
-                            $userAddrObj->address      = $address;
-                            $userAddrObj->user_id      = $customerID;
-                            $userAddrObj->phone_number = $phoneNumber;
-
-                            // Find or create area
-                            if ($area) {
-                                $areaSlug = Str::slug($area, '-');
-                                $areaObj     = Area::where('slug', $areaSlug)->first();
-                                if ($areaObj) {
-                                    $areaID = $areaObj->id;
-                                } else {
-                                    $areaObj       = new Area();
-                                    $areaObj->slug = $areaSlug;
-                                    $areaObj->name = $area;
-                                    $areaObj->save();
-                                    $areaID = $areaObj->id;
-                                }
-                            }
-                            $userAddrObj->area_id = $areaID;
-                            $userAddrObj->save();
-                            $addresssID = $userAddrObj->id;
-                        }
-                    }
-                }
-
-                // Create order
-                $invoiceDate                   = Carbon::createFromFormat('m/d/Y', $invoiceDate)->format('Y-m-d');
-                $orderObj->user_id             = $customerID;
-                $orderObj->delivery_type_id    = 1;
-                $orderObj->payment_method_id   = 1;
-                $orderObj->shipping_address_id = $addresssID;
-                $orderObj->is_paid             = 1;
-                $orderObj->ref_code            = $key;
-                $orderObj->delivery_charge     = 0;
-                $orderObj->ordered_at          = $invoiceDate;
-                $orderObj->created_by          = Auth::id();
-                $res = $orderObj->save();
-                if ($res) {
-                    // Create order items
-                    $orderObj->items()->sync($orderItems);
-                    // Update order price
-                    $orderObj->updateOrderValue($orderObj);
-                    // Dispatch manual order create event
-                    ManualOrderCreate::dispatch($orderObj, $now);
-                    // Create payment transaction
-                    $paymentTrx    = new PaymentTransaction();
-                    $paymentTrxRes = $paymentTrx->make($orderObj->id, null, 'sale', 1, 'pending');
-                }
-            }
-            DB::commit();
-
-            return back()->with('message', 'File upload succesfully done');
-        } catch (\Exception $e) {
-            info($e);
-            DB::rollback();
-            return back()->with('error', 'Something went to wrong');
-        }
-    }
-
-    public function checkUploadedFileProperties($extension, $fileSize)
-    {
-        $valid_extension = ['csv']; //Only want csv and excel files
-        $maxFileSize = 2097152; // Uploaded file size limit is 2mb
-        if (in_array(strtolower($extension), $valid_extension)) {
-            if ($fileSize <= $maxFileSize) {
-            } else {
-                return 'No file was uploaded';
-                // throw new \Exception('No file was uploaded', Response::HTTP_REQUEST_ENTITY_TOO_LARGE); //413 error
-            }
-        } else {
-            return 'Invalid file extension';
-            // throw new \Exception('Invalid file extension', Response::HTTP_UNSUPPORTED_MEDIA_TYPE); //415 error
-        }
-    }
-
-    public function UploadPrescription($id)
-    {
-        return view('adminend.pages.order.upload-prescription', [
-            'orderId' => $id
-        ]);
-    }
-
-    public function UploadPrescriptionStore(Request $request, $id)
-    {
-        $request->validate([
-            'files' => ['required']
-        ]);
-
-        $orderObj = Order::find($id);
-        if (!$orderObj) {
-            abort(404);
-        }
-
-        try {
-            DB::beginTransaction();
-            // Upload prescription
-            if ($request->hasFile('files')) {
-                $files           = $request->file('files');
-                $prescriptionObj = new Prescription();
-                $uploadPath      = $prescriptionObj->_getImageUploadPath();
-                foreach ($files as $file) {
-                    $path = Storage::put($uploadPath, $file);
-                    Prescription::insert([
-                        'order_id' => $orderObj->id,
-                        'user_id'  => $orderObj->user_id,
-                        'status'   => 'submitted',
-                        'img_src'  => $path
-                    ]);
-                }
-            }
-            DB::commit();
-        } catch (\Exception $e) {
-            info($e);
-            DB::rollback();
-            return back()->with('error', 'Something went wrong');
-        }
-
-        return back()->with('message', 'File uploaded successfully done');
     }
 }

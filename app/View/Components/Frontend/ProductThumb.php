@@ -2,7 +2,6 @@
 
 namespace App\View\Components\Frontend;
 
-use Setting;
 use Illuminate\View\Component;
 
 class ProductThumb extends Component
@@ -30,7 +29,7 @@ class ProductThumb extends Component
     public function render()
     {
         return view('components.frontend.product-thumb', [
-            'currency' => Setting::getValue('app_currency', null, 'Tk')
+            'currency' => 'Tk'
         ]);
     }
 }

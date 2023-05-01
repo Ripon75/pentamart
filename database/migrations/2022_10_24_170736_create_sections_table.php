@@ -19,7 +19,7 @@ class CreateSectionsTable extends Migration
             $table->string('slug')->nullable();
             $table->string('title')->nullable();
             $table->string('link')->nullable();
-            $table->string('status')->default('activated')->nullable();
+            $table->string('status')->default('active')->nullable();
             $table->timestamps();
         });
     }

@@ -56,34 +56,34 @@
                         <legend class="bg-gray-50 text-gray-400">Gateways</legend>
                         <div class="form-item">
                             <label for="" class="form-label">Delivery Type <span class="text-red-500 font-medium">*</span> </label>
-                            <select id="input-delivery-gateway" class="form-select form-input w-full" name="delivery_type_id">
+                            <select id="input-delivery-gateway" class="form-select form-input w-full" name="dg_id">
                                 <option data-delivery-charge="0" value="-1">Custom Delivery</option>
                                 <option data-delivery-charge="0" value="0">Free Delivery</option>
                                 @foreach ($deliveryGateways as $deliveryGateway)
                                     <option value="{{ $deliveryGateway->id }}"
                                         data-delivery-charge="{{ $deliveryGateway->price }}"
-                                        {{ old('delivery_type_id') == $deliveryGateway->id ? 'selected' : '' }}>
+                                        {{ old('dg_id') == $deliveryGateway->id ? 'selected' : '' }}>
                                         {{ $deliveryGateway->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('delivery_type_id')
+                            @error('dg_id')
                                 <span class="form-helper error">{{ $message }}</span>
                             @enderror
                         </div>
                         {{-- Payment gateway --}}
                         <div class="form-item">
                             <label for="" class="form-label">Payment Type <span class="text-red-500 font-medium">*</span> </label>
-                            <select class="form-select form-input w-full" name="payment_method_id">
+                            <select class="form-select form-input w-full" name="pg_id">
                                 <option value="">Select payment gateway</option>
                                 @foreach ($paymentGateways as $paymentGateway)
                                     <option value="{{ $paymentGateway->id }}"
-                                        {{ old('payment_method_id') == $paymentGateway->id ? 'selected' : '' }}>
+                                        {{ old('pg_id') == $paymentGateway->id ? 'selected' : '' }}>
                                         {{ $paymentGateway->name }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('payment_method_id')
+                            @error('pg_id')
                                 <span class="form-helper error">{{ $message }}</span>
                             @enderror
                         </div>
@@ -94,10 +94,10 @@
                         <legend class="bg-gray-50 text-gray-400">Shipping Address</legend>
                         <div class="form-item">
                             <label for="" class="form-label">Shipping Address <span class="text-red-500 font-medium">*</span> </label>
-                            <select id="input-shipping-addresses" class="form-select form-input w-full" name="shipping_address_id">
+                            <select id="input-shipping-addresses" class="form-select form-input w-full" name="address_id">
                                 <option value="0">Choose Address</option>
                             </select>
-                            @error('shipping_address_id')
+                            @error('address_id')
                                 <span class="form-helper error">{{ $message }}</span>
                             @enderror
                         </div>

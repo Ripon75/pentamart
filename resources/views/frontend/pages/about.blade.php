@@ -21,13 +21,13 @@
                     </p>
                     <div class="mt-6 flex text-sm md:text-base">
                         <span><strong class="">Trade License Number :</strong></span>
-                        <span>TRAD/DSCC/040894/2021</span>
+                        <span>12121212121</span>
                     </div>
                     <p class="text-sm md:text-base">
-                        <strong>TIN :</strong> 792817971260
+                        <strong>TIN :</strong> 111111111111
                     </p>
                     <p class="text-sm md:text-base">
-                        <strong>BIN :</strong> 004938907-0208
+                        <strong>BIN :</strong> 111111111
                     </p>
                 </div>
                 <div class="grid place-items-center">

@@ -31,7 +31,6 @@ class CreateUsersTable extends Migration
             $table->string('facebook_refresh_token', 1000)->nullable();
             $table->string('code', 6)->nullable();
             $table->boolean('ac_active')->default(0);
-            $table->foreignId('sell_partner_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

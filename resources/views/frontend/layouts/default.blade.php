@@ -4,17 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="csrf-token" content="{{ csrf_token() }}" />
-        <title>@yield('title') - {{ Setting::getValue('app_name', null, Config::get('app.name')) }}</title>
+        <title>@yield('title') - Pentamart</title>
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFNPPDYKBW"></script>
+        {{-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-CFNPPDYKBW"></script>
         <script>
             window.dataLayer = window.dataLayer || [];
             function gtag() { dataLayer.push(arguments); }
             gtag('js', new Date());
 
             gtag('config', 'G-CFNPPDYKBW');
-        </script>
+        </script> --}}
 
         {{-- Facebook sdk --}}
         {{-- <script>

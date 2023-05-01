@@ -21,7 +21,7 @@ class CreateBrandsTable extends Migration
             $table->string('name', 100);
             $table->enum('status', $status)->default('active');
             $table->string('img_src', 2048)->nullable();
-            $table->string('description', 1000)->nullable();
+            $table->boolean('is_top')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

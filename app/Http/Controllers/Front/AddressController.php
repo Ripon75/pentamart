@@ -2,20 +2,20 @@
 
 namespace App\Http\Controllers\Front;
 
-use Auth;
 use App\Models\Area;
 use App\Models\Cart;
 use App\Models\User;
-use App\Models\Order;
 use App\Classes\Utility;
-use App\Models\UserAddress;
+use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
+    protected $util;
     public function __construct()
     {
         $this->util = new Utility();
@@ -23,7 +23,7 @@ class AddressController extends Controller
 
     public function index(Request $request)
     {
-        $result  = UserAddress::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $result  = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
         return view('frontend.pages.my-address', [
             'result' => $result
@@ -63,12 +63,12 @@ class AddressController extends Controller
         $title       = $otherTitle ? $otherTitle : $title;
         $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
 
-        $checkShippingAddress = UserAddress::where('title', $title)->where('user_id', $userId)->first();
+        $checkShippingAddress = Address::where('title', $title)->where('user_id', $userId)->first();
         if ($checkShippingAddress) {
             return $this->util->makeResponse(null, 'Address title already taken', 400);
         }
 
-        $obj = new UserAddress();
+        $obj = new Address();
 
         $obj->title        = $title;
         $obj->address      = $address;
@@ -79,8 +79,8 @@ class AddressController extends Controller
 
         if ($res) {
             $cartObj = new Cart();
-            $cart    = $cartObj->_getCurrentCustomerCart();
-            $cart->shipping_address_id = $obj->id;
+            $cart    = $cartObj->getCurrentCustomerCart();
+            $cart->address_id = $obj->id;
             $cart->save();
 
             return redirect()->back()->with('success', 'Address create sucessfully');
@@ -121,14 +121,14 @@ class AddressController extends Controller
 
         $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
 
-        $checkUserAddress = UserAddress::where('title', $title)
+        $checkUserAddress = Address::where('title', $title)
             ->where('user_id', $userId)->first();
 
         if ($checkUserAddress) {
             return back()->with('title_exist', 'Address title already taken');
         }
 
-        $obj = new UserAddress();
+        $obj = new Address();
 
         $obj->title        = $title;
         $obj->address      = $address;
@@ -139,8 +139,8 @@ class AddressController extends Controller
 
         if ($res) {
             $cartObj = new Cart();
-            $cart    = $cartObj->_getCurrentCustomerCart();
-            $cart->shipping_address_id = $obj->id;
+            $cart    = $cartObj->getCurrentCustomerCart();
+            $cart->address_id = $obj->id;
             $cart->save();
 
             return redirect()->back()->with('success', 'Address create successfylly');
@@ -150,7 +150,7 @@ class AddressController extends Controller
     public function shippingAddress(Request $request)
     {
         $id = $request->input('address_id', null);
-        $shippingAddress = UserAddress::find($id);
+        $shippingAddress = Address::find($id);
         if ($shippingAddress) {
             $res = [
                 'status' => 'success',
@@ -163,7 +163,7 @@ class AddressController extends Controller
 
     public function edit(Request $request, $id)
     {
-        $data  = UserAddress::find($id);
+        $data  = Address::find($id);
         if (!$data) {
             abort(404);
         }
@@ -186,7 +186,7 @@ class AddressController extends Controller
         $phoneNumber = $request->input('phone_number', null);
         $areaId      = $request->input('area_id', null);
 
-        $userAddress = UserAddress::find($id);
+        $userAddress = Address::find($id);
 
         $userAddress->address      = $address;
         $userAddress->phone_number = $phoneNumber;
@@ -199,7 +199,7 @@ class AddressController extends Controller
 
     public function destroy($id)
     {
-        $userAddress = UserAddress::find($id);
+        $userAddress = Address::find($id);
         if (!$userAddress) {
             abort(404);
         }

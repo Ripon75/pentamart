@@ -27,8 +27,7 @@ class SetOrderStatusSubmit
     public function handle(OrderCreate $event)
     {
         $order = $event->order;
-        $orderDatetime = $event->orderDatetime;
 
-        $order->setStatus('submitted', $orderDatetime);
+        $order->setStatus('submitted');
     }
 }
