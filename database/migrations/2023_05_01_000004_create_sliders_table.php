@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('slug', 100);
             $table->string('name', 100);
             $table->enum('status', $status)->default('active');
-            $table->string('img_src', 2048)->nullable();
+            $table->string('large_src', 2048)->nullable();
+            $table->string('small_src', 2048)->nullable();
             $table->boolean('is_top')->default(false);
             $table->timestamps();
             $table->softDeletes();
