@@ -73,13 +73,13 @@
         </div>
     </section>
 
-    {{-- ==============Service Section=================== --}}
-    <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
+    {{-- ==============Brand Section=================== --}}
+    <section class="brand-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
         <div class="container">
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
                 @foreach ($brands as $brand)
                     <x-frontend.banner-box
-                        type="service"
+                        type="brand"
                         :bg-color="'#fff'"
                         pre-title=""
                         :title="$brand->name"
@@ -92,13 +92,13 @@
         </div>
     </section>
 
-    {{-- ==============Service Section for mobile=================== --}}
-    <section class="service-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
+    {{-- ==============Brand Section for mobile=================== --}}
+    <section class="brand-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
         <div class="container">
             <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
                  @foreach ($brands as $brand)
                     <x-frontend.banner-box
-                        type="service-card"
+                        type="brand-card"
                         :bg-color="'#fff'"
                         pre-title=""
                         :title="$brand->name"

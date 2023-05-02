@@ -29,7 +29,7 @@
             <a herf="{{ $postTitleLink }}" class="block text-center py-4 rounded-b-md">{{ $postTitle }}
                 <span class="ml-1"><i class="fa-solid fa-arrow-right"></i></span></a>
         </div>
-    @elseif ($type === 'service')
+    @elseif ($type === 'brand')
         <div class="service-new">
             <div class="grid grid-cols-2 justify-items-center border bg-white p-2 sm:p-2 md:p-4 xl:p-6 2xl:p-6 rounded-md shadow-sm hover:shadow">
                 <div class="flex flex-col items-center justify-center space-y-4">
