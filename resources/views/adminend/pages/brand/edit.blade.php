@@ -36,8 +36,8 @@
                                 <label for="" class="form-label">Top Brand</label>
                                 <select class="form-select w-full" name="is_top">
                                     <option value="0">Select</option>
-                                    <option value="1" {{ $brand->status == '1' ? "selected" : '' }}>YES</option>
-                                    <option value="0" {{ $brand->status == '0' ? "selected" : '' }}>NO</option>
+                                    <option value="1" {{ $brand->is_top == '1' ? "selected" : '' }}>YES</option>
+                                    <option value="0" {{ $brand->is_top == '0' ? "selected" : '' }}>NO</option>
                                 </select>
                             </div>
                             <div class="form-item">

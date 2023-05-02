@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
-
 class BrandController extends Controller
 {
     public function index(Request $request)
@@ -23,7 +22,7 @@ class BrandController extends Controller
             $brands = $brands->where('name', 'like', "{$searchKeyword}%")->orWhere('status', $searchKeyword);
         }
 
-        $brands = $brands->paginate($paginate);
+        $brands = $brands->orderBy('created_at', 'desc')->paginate($paginate);
 
         return view('adminend.pages.brand.index', [
             'brands' => $brands
@@ -40,6 +39,9 @@ class BrandController extends Controller
         $request->validate([
             'name'    => ['required', 'unique:brands,name'],
             'img_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
+        ],
+        [
+            'img_src.required' => 'Image field is required'
         ]);
 
         $name   = $request->input('name');
@@ -49,9 +51,11 @@ class BrandController extends Controller
 
         try {
             DB::beginTransaction();
+
             $brand = new Brand;
-            $brand->name = $name;
-            $brand->slug = $slug;
+
+            $brand->name   = $name;
+            $brand->slug   = $slug;
             $brand->status = $status;
             $brand->is_top = $isTop;
             $res = $brand->save();
@@ -97,10 +101,9 @@ class BrandController extends Controller
 
         try {
             DB::beginTransaction();
+
             $brand = Brand::find($id);
-            if (!$brand) {
-                abort(404);
-            }
+
             $brand->name   = $name;
             $brand->slug   = $slug;
             $brand->status = $status;

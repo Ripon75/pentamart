@@ -13,7 +13,7 @@
             <div class="lg:w-[500px] xl:w-[500px] mx-auto">
                 <div class="card shadow">
                     <div class="body p-4">
-                        <form action="{{ route('admin.categories.store') }}" method="POST">
+                        <form action="{{ route('admin.categories.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
 
                             <div class="form-item ">
@@ -23,67 +23,30 @@
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Parent</label>
-                                <select class="form-select w-full" name="parent_id">
-                                    <option value="">Select parent</option>
-                                    @foreach ($parents as $parent)
-                                    <option value="{{ $parent->id }}" {{ old('parent_id') == $parent->id ? 'selected' : '' }}>
-                                        {{ $parent->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Attribute Family</label>
-                                <select class="form-select w-full" name="family_id">
-                                    <option value="">Select</option>
-                                    @foreach ($families as $family)
-                                    <option value="{{ $family->id }}" {{ old('family_id') == $family->id ? 'selected' : '' }}>
-                                        {{ $family->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Attribute</label>
-                                <select class="form-select w-full attribute select-2" name="attribute_ids[]" multiple>
-                                    <option value="">Select</option>
-                                    @foreach ($attributes as $attribute)
-                                    <option value="{{ $attribute->id }}">
-                                        {{ $attribute->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Menufacturer</label>
-                                <select class="form-select w-full company select-2" name="company_ids[]" multiple>
-                                    <option value="">Select</option>
-                                    @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}">
-                                        {{ $company->name }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div>
+
                             <div class="form-item">
                                 <label for="" class="form-label">Status</label>
                                 <select class="form-select w-full" name="status">
-                                    <option value="draft">Select Status</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="activated">Activated</option>
-                                    <option value="inactivated">Inactivated</option>
+                                    <option value="active">Select</option>
+                                    <option value="active" {{ old('status' == 'active') ? 'selected' : '' }}>Active</option>
+                                    <option value="inactive" {{ old('status' == 'inactive') ? 'selected' : '' }}>Inactive</option>
                                 </select>
                             </div>
+
                             <div class="form-item">
-                                <label for="" class="form-label">Color</label>
-                                <input type="text" name="color" class="w-full">
+                                <label for="" class="form-label">Top</label>
+                                <select class="form-select w-full" name="is_top">
+                                    <option value="1">Select</option>
+                                    <option value="1" {{ old('is_top' == '1') ? 'selected' : '' }}>YES</option>
+                                    <option value="0" {{ old('is_top' == '0') ? 'selected' : '' }}>NO</option>
+                                </select>
                             </div>
+
                             <div class="form-item">
-                                <label for="" class="form-label">Description</label>
-                                <textarea class="w-full" name="description"></textarea>
+                                <label for="" class="form-label">Image</label>
+                                <input type="file" name="img_src" class="w-full">
                             </div>
+
                             <button type="submit" class="btn btn-primary">Create</button>
                         </form>
                     </div>

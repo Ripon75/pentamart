@@ -53,7 +53,7 @@
                 @endif
 
                 @if ($product->category_id)
-                    <a href="{{ route('category.page', $product->category_id) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->category->name }}">
+                    <a href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->category->name }}">
                         {{ $product->category->name }}
                     </a>
                 @endif
@@ -107,7 +107,7 @@
 
                     {{-- Show category name --}}
                     @if ($product->category_id)
-                        <a href="{{ route('category.page', $product->category_id) }}" class="block text-gray-600 text-xs font-medium italic">
+                        <a href="{{ route('category.page', [$product->category_id, $product->category->slug]) }}" class="block text-gray-600 text-xs font-medium italic">
                             {{ $product->category->name ?? null }}
                         </a>
                     @endif

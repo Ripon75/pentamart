@@ -38,9 +38,9 @@
                 <tbody>
                     @foreach ($brands as $brand)
                     <tr class="">
-                        <td>{{ $brand->id }}</td>
-                        <td class="text-center w-20">
-                            <img class="h-16 w-16" src="{{ $brand->img_src }}" alt="{{ $brand->name }}">
+                        <td class="text-center">{{ $brand->id }}</td>
+                        <td class="text-center w-16">
+                            <img class="h-10 w-16" src="{{ $brand->img_src }}" alt="{{ $brand->name }}">
                         </td>
                         <td>{{ $brand->name }}</td>
                         <td class="text-center">

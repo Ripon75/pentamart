@@ -179,7 +179,6 @@
         <div class="grid grid-cols-6 gap-4 mt-10">
             {{-- Description --}}
             <div class="col-span-6 lg:col-span-6 xl:col-span-4">
-                <h1 class="text-lg">More Information About - <span class="font-semibold">{{ $product->name }}</span></h1>
                 @if ($product->description)
                     <div class="product-detail mt-3">
                         <div>

@@ -334,12 +334,12 @@
                     </a>
                     <a href="{{ route('products.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-capsules"></i>
-                        All Products
+                        Products
                     </a>
-                    <a href="{{ route('offers.products') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
+                    {{-- <a href="{{ route('offers.products') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                         <i class="pr-3 fa-solid fa-percent"></i>
                         Offers
-                    </a>
+                    </a> --}}
                     @auth
                         <a href="{{ route('logout') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                             <i class="pr-3 fa-solid fa-arrow-right-from-bracket"></i>

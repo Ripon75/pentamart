@@ -81,10 +81,11 @@
                     <x-frontend.banner-box
                         type="service"
                         :bg-color="'#fff'"
+                        pre-title=""
                         :title="$brand->name"
-                        link-title="Buy Now"
-                        :link="route('brand.page', [$brand->id, $brand->slug])"
                         :img-src="$brand->img_src"
+                        post-title="Buy Now"
+                        :post-title-link="route('brand.page', [$brand->id, $brand->slug])"
                     />
                 @endforeach
             </div>
@@ -95,14 +96,15 @@
     <section class="service-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
         <div class="container">
             <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
-                @foreach ($services as $service)
+                 @foreach ($brands as $brand)
                     <x-frontend.banner-box
                         type="service-card"
                         :bg-color="'#fff'"
-                        :title="$service['title']"
-                        link-title=""
-                        :link="$service['postTitleLink']"
-                        :img-src="$service['imgSRC']"
+                        pre-title=""
+                        :title="$brand->name"
+                        :img-src="$brand->img_src"
+                        post-title="Buy Now"
+                        :post-title-link="route('brand.page', [$brand->id, $brand->slug])"
                     />
                 @endforeach
             </div>
@@ -131,16 +133,37 @@
     @endif
 
     {{-- ==============Symptoms Section=================== --}}
-    <section class="symptoms-section page-section bg-gray-100">
+    {{-- <section class="symptoms-section page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
                 <h1 class="section-title"> All Category</h1>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
-                @foreach ( $feelings as $feeling)
-                {{-- <a href="{{ $feeling['link'] }}" class="img-wrapper">
-                </a> --}}
-                <img class="img" src="{{ $feeling['imgSRC'] }}">
+                @foreach ( $categories as $category)
+                    <a href="{{ route('category.page', [$category->id, $category->slug]) }}" class="img-wrapper">
+                        <img class="img" src="{{ $category->img_src }}">
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section> --}}
+
+    <section class="page-section bg-gray-100">
+        <div class="container">
+            <div class="text-center">
+                <h1 class="section-title mb-10">All Category</h1>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
+                @foreach ($categories as $category)
+                    <x-frontend.banner-box
+                        type="categories-banner"
+                        :bg-color="'#fff'"
+                        pre-title=""
+                        :title="$category->name"
+                        link-title=""
+                        :post-title-link="route('category.page', [$category->id, $category->slug])"
+                        :img-src="$category->img_src"
+                    />
                 @endforeach
             </div>
         </div>
@@ -177,6 +200,7 @@
                     <x-frontend.banner-box
                         type="default"
                         :bg-color="$hotSale->bg_color"
+                        pre-title=""
                         :title="$hotSale->title"
                         :link-title="$hotSale->post_title"
                         :link="$hotSale->box_link"
@@ -195,14 +219,15 @@
                 <h1 class="section-title mb-10">Top Categories</h1>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
-                @foreach ($topCategories as $topCategory)
+                @foreach ($topCategories as $tCategory)
                     <x-frontend.banner-box
                         type="categories-banner"
                         :bg-color="'#fff'"
-                        title=""
+                        pre-title=""
+                        :title="$tCategory->name"
                         link-title=""
-                        :link="$topCategory['postTitleLink']"
-                        :img-src="$topCategory['imgSRC']"
+                        :post-title-link="route('category.page', [$tCategory->id, $tCategory->slug])"
+                        :img-src="$tCategory->img_src"
                     />
                 @endforeach
             </div>
@@ -220,6 +245,7 @@
                     <x-frontend.banner-box
                         type="brands-banner"
                         :bg-color="'#fff'"
+                        pre-title=""
                         title=""
                         link-title=""
                         :link="$brand->box_link"

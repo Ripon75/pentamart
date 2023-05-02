@@ -2,21 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Family;
-use App\Models\Company;
 use App\Models\Category;
-use App\Models\Attribute;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Storage;
 class CategoryController extends Controller
 {
-    protected $_responseFormat = 'view';
-    function __construct()
-    {
-        $this->modelObj = new Category();
-    }
-
     public function index(Request $request)
     {
         $paginate  = config('crud.paginate.default');
@@ -28,7 +21,7 @@ class CategoryController extends Controller
             $categories = $categories->where('name', 'like', "{$searchKey}%")->orWhere('status', $searchKey);
         }
 
-        $categories = $categories->orderBy('name', 'asc')->paginate($paginate);
+        $categories = $categories->orderBy('created_at', 'desc')->paginate($paginate);
 
         return view('adminend.pages.category.index', [
             'categories' => $categories
@@ -37,35 +30,97 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
-        $view = $this->modelObj->_getView('create');
+        return view('adminend.pages.category.create');
+    }
 
-        $attributes = Attribute::get();
-        $companies  = Company::get();
-        $families   = Family::get();
-        $parents    = Category::select('id', 'name')->get();
-
-        return view($view, [
-            'parents'    => $parents,
-            'families'   => $families,
-            'attributes' => $attributes,
-            'companies'  => $companies
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'    => ['required', 'unique:categories,name'],
+            'img_src' => ['required']
         ]);
+
+        $name   = $request->input('name');
+        $status = $request->input('status', 'active');
+        $isTop  = $request->input('is_top', null);
+        $slug   = Str::slug($name, '-');
+
+        try {
+            DB::beginTransaction();
+
+           $category = new Category;
+
+            $category->name   = $name;
+            $category->slug   = $slug;
+            $category->status = $status;
+            $category->is_top = $isTop;
+            $res = $category->save();
+            if ($res) {
+                if ($request->hasFile('img_src')) {
+                    $imgSRC = $request->file('img_src');
+                    $imgPath = Storage::put('images/categories', $imgSRC);
+                    $category->img_src = $imgPath;
+                    $category->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.categories.index')->with('message', 'Category created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            return back()->with('error', 'Something went wrong');
+        }
     }
 
     public function edit(Request $request, $id)
     {
-        $result     = $this->modelObj->_show($id);
-        $parents    = Category::select('id', 'name')->get();
-        $families   = Family::get();
-        $attributes = Attribute::get();
-        $companies  = Company::get();
-        $view       = $this->modelObj->_getView('edit');
+        $category = Category::find($id);
+        if (!$category) {
+            abort(404);
+        }
 
-        return view($view, $result, [
-            'parents'    => $parents,
-            'families'   => $families,
-            'attributes' => $attributes,
-            'companies'  => $companies
+        return view('adminend.pages.category.edit', [
+            'category' => $category
         ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name' => ['required', "unique:categories,name,$id"],
+        ]);
+
+        $name   = $request->input('name');
+        $status = $request->input('status', 'active');
+        $isTop  = $request->input('is_top', null);
+        $slug   = Str::slug($name, '-');
+
+        try {
+            DB::beginTransaction();
+
+            $category = Category::find($id);
+
+            $category->name   = $name;
+            $category->slug   = $slug;
+            $category->status = $status;
+            $category->is_top = $isTop;
+            $res = $category->save();
+            if ($res) {
+                if ($request->hasFile('img_src')) {
+                    $imgSRC = $request->file('img_src');
+                    $oldPath = $category->getOldPath($category->img_src);
+                    if ($oldPath) {
+                        Storage::delete($oldPath);
+                    }
+                    $imgPath = Storage::put('images/categories', $imgSRC);
+                    $category->img_src = $imgPath;
+                    $category->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.categories.index')->with('message', 'Category updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            return back()->with('error', 'Something went wrong');
+        }
     }
 }
