@@ -116,7 +116,7 @@
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-10">{{ $topProducts->title }}</h1> 
+                    <h1 class="section-title mb-10">{{ $topProducts->title }}</h1>
                 </div>
                 <div class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
                     @foreach ($topProducts->products as $product)
@@ -151,10 +151,10 @@
     <section class="page-section bg-gray-100">
         <div class="container">
             <div class="text-center">
-                <h1 class="section-title mb-10">All Category</h1>
+                <h1 class="section-title mb-10">Top Category</h1>
             </div>
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
-                @foreach ($categories as $category)
+                @foreach ($topCategories as $category)
                     <x-frontend.banner-box
                         type="categories-banner"
                         :bg-color="'#fff'"
@@ -213,7 +213,7 @@
     </section>
 
     {{-- =======================Top Categories========================== --}}
-    <section class="page-section bg-gray-100">
+    {{-- <section class="page-section bg-gray-100">
         <div class="container">
             <div class="text-center">
                 <h1 class="section-title mb-10">Top Categories</h1>
@@ -232,7 +232,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- =======================Top Brands========================== --}}
     {{-- <section class="page-section">

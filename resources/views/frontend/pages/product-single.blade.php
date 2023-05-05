@@ -162,7 +162,7 @@
                 </div>
             </div>
             <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
-                <h1 class="text-primary-dark text-lg font-medium p-4">Alternative Product</h1>
+                <h1 class="text-primary-dark text-lg font-medium p-4">Related Product</h1>
                 <hr>
                 <div class="overflow-auto h-[384px] p-2">
                     <div class="">
@@ -180,79 +180,141 @@
             {{-- Description --}}
             <div class="col-span-6 lg:col-span-6 xl:col-span-4">
                 @if ($product->description)
-                    <div class="product-detail mt-3">
-                        <div>
-                            <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                <h1 class="text-base text-white pl-4">Description</h1>
-                            </div>
-                            <div class="bg-white mb-4 p-4 product-description">
-                                <p>
-                                    {!! html_entity_decode($product->description) !!}
-                                </p>
+                <div class="product-detail mt-3">
+                    <div>
+                        <div class="bg-primary h-10 flex items-center rounded-t-md">
+                            <h1 class="text-base text-white pl-4">Description</h1>
+                        </div>
+                        <div class="bg-white mb-4 p-4 product-description">
+                            <p>
+                                {!! html_entity_decode($product->description) !!}
+                            </p>
+                            <div class="mt-5">
+                                <div class="flex flex-col">
+                                    <div class="flex space-x-2 items-center justify-center">
+                                        <div class="rate">
+                                            <input class="ratings" type="radio" id="star5" name="rate" value="5" />
+                                            <label for="star5" title="text">5 stars</label>
+                                            <input class="ratings" type="radio" id="star4" name="rate" value="4" />
+                                            <label for="star4" title="text">4 stars</label>
+                                            <input class="ratings" type="radio" id="star3" name="rate" value="3" />
+                                            <label for="star3" title="text">3 stars</label>
+                                            <input class="ratings" type="radio" id="star2" name="rate" value="2" />
+                                            <label for="star2" title="text">2 stars</label>
+                                            <input class="ratings" type="radio" id="star1" name="rate" value="1" />
+                                            <label for="star1" title="text">1 star</label>
+                                        </div>
+                                    </div>
+                                    <label class="text-sm w-full font-medium mt-2" for="">Write your product comment</label>
+                                    <textarea name="rating_title" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                    <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
+                                    <input name="files[]" multiple type="file"
+                                        class="mt-2 block w-full text-sm text-slate-500
+                                        focus:outline-none focus:ring-0
+                                        file:mr-4 file:py-2 file:px-8
+                                        file:rounded file:border
+                                        file:border-primary
+                                        file:text-sm file:font-medium
+                                        file:bg-violet-50 file:text-primary
+                                        hover:file:bg-violet-100"
+                                        accept="image/png, image/jpg, image/jpeg"
+                                    />
+                                    <div class="mt-5 w-64">
+                                        <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+                </div>
                 @endif
             </div>
             <div class="col-span-6 lg:col-span-6 xl:col-span-2">
-                <h1 class="text-xl font-medium">Product ratings</h1>
-                {{-- <div class="mt-3 product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 gap-2">
-                    @foreach ($otherProducts as $oProduct)
-                        <div>
-                            <x-frontend.product-thumb type="default" :product="$oProduct" />
-                        </div>
-                    @endforeach
-                </div> --}}
-
-
+                <h1 class="text-xl font-medium">Ratings & Reviews</h1>
                 <div class="overflow-auto h-[384px] p-2">
-                    <div class="">
-                        @foreach ($otherProducts as $oProduct)
-                            <div>
-                                {{-- <x-frontend.product-thumb type="list" :product="$oProduct" /> --}}
-
-
-
-                                <div class="border-b last:border-b-0">
-                                    <a href="#" class="block">
-                                        <div class="flex items-center">
-                                            {{-- <div class="thumb-image-wrapper w-28 h-28 p-2">
-                                                <img class="w-full h-full object-center object-cover"
-                                                    src="{{ $product->image_src }}" />
-                                            </div> --}}
-                                            <div class="content px-3 py-2 flex-1">
-                                                <div class="flex thumb-image-wrapper w-8 h-8">
-                                                    <img class="w-full h-full object-center object-cover"
-                                                        src="/images/sample/star.png" />
-                                                    <img class="w-full h-full object-center object-cover"
-                                                        src="/images/sample/star.png" />
-                                                    <img class="w-full h-full object-center object-cover"
-                                                        src="/images/sample/star.png" />
-                                                    <img class="w-full h-full object-center object-cover"
-                                                        src="/images/sample/star.png" />
-                                                    <img class="w-full h-full object-center object-cover"
-                                                        src="/images/sample/star.png" />
-                                                </div>
-                                                <p class="block text-gray-600 text-xs font-medium italic">By Ripon Ahmed</p>
-                                                <p class="block text-primary text-base md:text-sm lg:text-sm xl:text-base font-medium">
-                                                    Nice product and nice delivery
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </a>
-                                </div>
-
-
+                    <div class="border-b last:border-b-0">
+                        <div class="flex">
+                            <div class="w-20 h-5 p-2 mt-2 items-center justify-items-center">
+                                <div> <span class="text-xl font-bold">4.9</span> <span
+                                        class="text-sm">/5</span></div>
+                                <div class="text-xs">98% Raring</div>
                             </div>
-                        @endforeach
+                            <div class="content px-3 py-2 flex-1 space-y-2">
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=" mr-5"
+                                        src="/images/sample/star.png" />
+                                    <span>5</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>3</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 </section>
-
 @endsection
 
 @push('scripts')
@@ -287,7 +349,7 @@
     var wishButton          = $('#wish-button');
     var undoWishButton      = $('#undo-wish-button');
     var packQtyLavel        = $('#pack-quantity-label');
-    var sUserID             = {{ Auth::id() }};
+    var sUserID             = "{{ Auth::id() }}";
     var productColorsCount  = {{ count($productColors) }};
     var productSizesCount   = {{ count($productSizes) }};
 
@@ -432,4 +494,20 @@
         });
     }
 </script>
+
+{{-- Order ratting script --}}
+<script>
+    var ratings = $('.ratings');
+    var ratingsCount = 0;
+
+    $(() => {
+        // Event with change starts
+        ratings.change(function(e1) {
+            var ratings =  $(e1.target).val();
+            ratingsCount = ratings;
+            console.log(ratingsCount);
+        });
+    });
+</script>
+
 @endpush

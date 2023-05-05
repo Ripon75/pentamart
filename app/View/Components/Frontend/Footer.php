@@ -25,17 +25,13 @@ class Footer extends Component
     {
         $about = [
             'logo'        => '/images/logos/logo.png',
-            'description' => 'Description',
             'loc1'        => 'Address 1',
-            'loc2'        => 'Address 2',
-            'email'       => 'contact@gmail.com',
+            'email'       => 'pentamart@gmail.com',
             'phone'       => '+8801**********',
             'phone2'      => '+8801**********',
-            'phone3'      => '+8801**********',
         ];
 
         $nav1 = [
-            'title'                 => 'Information',
             'about'                 => 'About',
             'aboutLink'             => '#',
             'termsAndConditions'    => 'Terms & Conditions',
@@ -45,7 +41,6 @@ class Footer extends Component
         ];
 
         $nav2 = [
-            'title'         => 'Service',
             'products'      => 'All Product',
             'productLink'   => '#',
             'ordertrac'     => 'Order Tracking',
@@ -61,7 +56,6 @@ class Footer extends Component
         ];
 
         $nav3 = [
-            'title'       => 'Customer Care',
             'contact'     => "Contact Us",
             'contactLink' => '#',
             'privacy'     => 'Privacy & Policy',
