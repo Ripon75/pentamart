@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-use Image;
+// use Image;
+use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
 use App\Classes\Model;
 use App\Rules\NotNumeric;
@@ -201,7 +202,7 @@ class Product extends Model implements Auditable
 
         return $query->select(
             'id', 'name', 'brand_id', 'category_id', 'price', 'offer_price',
-            'discount', 'offer_percent', 'slug','image_src'
+            'discount', 'offer_percent', 'slug','image_src', 'description'
         )
         ->with([
             'brand:id,name,slug',

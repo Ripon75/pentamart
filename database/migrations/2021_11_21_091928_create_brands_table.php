@@ -17,8 +17,8 @@ class CreateBrandsTable extends Migration
 
         Schema::create('brands', function (Blueprint $table) use ($status) {
             $table->id();
-            $table->string('slug', 100);
             $table->string('name', 100);
+            $table->string('slug', 100);
             $table->enum('status', $status)->default('active');
             $table->string('img_src', 2048)->nullable();
             $table->boolean('is_top')->default(false);

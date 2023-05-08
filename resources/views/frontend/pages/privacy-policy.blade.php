@@ -1,17 +1,7 @@
 @extends('frontend.layouts.default')
 @section('title', 'Privacy & Policy')
 @section('content')
-
-<!--========Category Banner========-->
-    <section class="page-top-gap">
-        <x-frontend.header-title
-            bgColor="linear-gradient( #112f7a, rgba(111, 111, 211, 0.52))"
-            bgImageSrc="/images/banners/home-banner.jpg"
-            title="Privacy & Policy"
-        />
-    </section>
-
-    <section class="page-section">
+    <section class="page-section page-top-gap">
         <div class="container sm:container md:container lg:px-24 xl:px-52 2xl:px-60">
             <section class="">
                 <div class="text-right">

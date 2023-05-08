@@ -5,7 +5,8 @@ namespace App\View\Components\Frontend;
 use Illuminate\View\Component;
 
 class BannerBox extends Component
-{   public $type;
+{
+    public $type;
     public $preTitle;
     public $title;
     public $bgColor;
@@ -18,7 +19,7 @@ class BannerBox extends Component
      *
      * @return void
      */
-    public function __construct ($type = 'default', $bgColor = null, $preTitle = null, $title, $imgSrc, $postTitle = null, $postTitleLink = null )
+    public function __construct($type = 'default', $bgColor = null,$preTitle = null, $title, $imgSrc, $postTitle = null, $postTitleLink = null)
     {
         $this->type          = $type;
         $this->bgColor       = $bgColor ?? '#fff';

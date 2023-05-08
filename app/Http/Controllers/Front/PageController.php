@@ -34,30 +34,12 @@ class PageController extends Controller
 
         $banners  = Banner::where('position', 'offer')->where('status', 'active')->get();
 
-        $brands   = Banner::where('position', 'top-brand-offer')->where('status', 'active')->get();
-
         $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
-        $services = [
-            [
-                'title'         => 'Brand 1',
-                'imgSRC'        => '/images/sample/brand.jpeg',
-                'postTitle'     => 'Buy Now',
-                'postTitleLink' => '#'
-            ],
-            [
-                'title'         => 'Brand 2',
-                'imgSRC'        => '/images/sample/brand.jpeg',
-                'postTitle'     => 'Buy Now',
-                'postTitleLink' => '#'
-            ],
-            [
-                'title'         => 'Brand 3',
-                'imgSRC'        => '/images/sample/brand.jpeg',
-                'postTitle'     => 'Buy Now',
-                'postTitleLink' => '#'
-            ]
-        ];
+        $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
+
+        $categories = Category::where('status', 'active')->get();
+        $topCategories = Category::where('status', 'active')->where('is_top', 1)->get();
 
         $feelings = [
             [
@@ -100,80 +82,38 @@ class PageController extends Controller
         // Medical device products
         $medicalProducts = Section::with(['products'])->where('slug', 'medical-devices')->first();
 
-        $productObj      = new Product();
-        $defaultQuantity = 12;
-
-        $categories = [
-            [
-                'link' => '#',
-                'title' => 'Men Care',
-                'slug' => 'men-care',
-                'img_SRC' => asset('images/icons/mencare.png')
-            ],
-            [
-                'link' => '#',
-                'title' => 'Women Care',
-                'slug' => 'women-care',
-                'img_SRC' => asset('images/icons/women-care.png')
-            ],
-            [
-                'link' => '#',
-                'title' => 'Sexual Wellness',
-                'slug' => 'sexual-wellness',
-                'img_SRC' => asset('images/icons/sexual.png')
-            ],
-            [
-                'link' => '#',
-                'title' => 'Herbal & Homeopathy',
-                'slug' => 'herbal-homeopathy',
-                'img_SRC' => asset('images/icons/herbal.png')
-            ],
-            [
-                'link' => '#',
-                'title' => 'Baby & Mom Care',
-                'slug' => 'baby-mom-care',
-                'img_SRC' => asset('images/icons/babymom.png')
-            ],
-            [
-                'link' => '#',
-                'title' => 'Personal Care',
-                'slug' => 'personal-care',
-                'img_SRC' => asset('images/icons/personal-care.png')
-            ]
-        ];
-
-        $topCategories = [
-            [
-                'title'         => 'Category 1',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('products.index')
-            ],
-            [
-                'title'         => 'Category 2',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('category.page', ['asthma'])
-            ],
-            [
-                'title'         => 'Category 3',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('category.page', ['baby-mom-care'])
-            ],
-            [
-                'title'         => 'Category 4',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('category.page', ['skin-care'])
-            ],
-            [
-                'title'         => 'Category 5',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('category.page', ['cosmetics'])
-            ],
-            [
-                'title'         => 'Category 6',
-                'imgSRC'        => '/images/sample/watch.jpeg',
-                'postTitleLink' => route('category.page', ['others'])
-            ]
-        ];
+        // $topCategories = [
+        //     [
+        //         'title'         => 'Category 1',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('products.index')
+        //     ],
+        //     [
+        //         'title'         => 'Category 2',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('category.page', ['asthma'])
+        //     ],
+        //     [
+        //         'title'         => 'Category 3',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('category.page', ['baby-mom-care'])
+        //     ],
+        //     [
+        //         'title'         => 'Category 4',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('category.page', ['skin-care'])
+        //     ],
+        //     [
+        //         'title'         => 'Category 5',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('category.page', ['cosmetics'])
+        //     ],
+        //     [
+        //         'title'         => 'Category 6',
+        //         'imgSRC'        => '/images/sample/watch.jpeg',
+        //         'postTitleLink' => route('category.page', ['others'])
+        //     ]
+        // ];
 
         $features = [
             [
@@ -196,7 +136,6 @@ class PageController extends Controller
         return view('frontend.pages.home', [
             'sliderBanners'   => $sliderBanners,
             'banners'         => $banners,
-            'services'        => $services,
             'feelings'        => $feelings,
             'hotSales'        => $hotSales,
             'topProducts'     => $topProducts,
@@ -406,7 +345,7 @@ class PageController extends Controller
 
         $isWishListed = $wishlistedProduct ? true : false;
 
-        $relatedProducts = Product::getDefaultMetaData()->take(5)->get();
+        $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
 
         $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
         ->where('id', '<>', $product->id)->take(4)->get();
@@ -452,7 +391,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function categoryPage(Request $request, $id, $thumbOnly = false)
+    public function categoryPage(Request $request, $id)
     {
         Utility::setUserEvent('pageview', [
             'page' => 'category'
@@ -464,7 +403,6 @@ class PageController extends Controller
             abort(404);
         }
 
-        $searchKey        = $request->input('search_key', null);
         $filterBrandIds = $request->input('filter_brand_ids', []);
 
         if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
@@ -482,10 +420,7 @@ class PageController extends Controller
             ->orderBy('brands.name', 'ASC')
             ->get();
 
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.category';
-
-        return view($viewPage, [
+        return view('frontend.pages.category', [
             'id'             => $id,
             'products'       => $products,
             'brands'         => $brands,
@@ -494,7 +429,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function brandPage(Request $request, $id, $thumbOnly = false)
+    public function brandPage(Request $request, $id)
     {
         Utility::setUserEvent('pageview', [
             'page' => 'brand'
@@ -506,8 +441,7 @@ class PageController extends Controller
             abort(404);
         }
 
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $filterCategoryIds = $request->input('filter_category_ids', []);
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -524,7 +458,7 @@ class PageController extends Controller
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.brand';
+        $viewPage = 'frontend.pages.brand';
 
         return view($viewPage, [
             'products'            => $products,

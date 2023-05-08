@@ -3,15 +3,6 @@
 @section('title', 'Password Recover')
 
 @section('content')
-    <!--========Banner start========-->
-    <section>
-        <x-frontend.header-title
-            height="250px"
-            bgColor="linear-gradient( #112f7a, rgba(111, 111, 211, 0.52))"
-            bgImageSrc="/images/banners/home-banner.jpg"
-            title="Password Recover"
-        />
-    </section>
     <!-- ========Login Form ======= -->
       <section class="">
         <div class="container page-section">

@@ -26,30 +26,46 @@
                 <thead>
                 <tr class="">
                     <th>ID</th>
+                    <th>Image</th>
                     <th>Name</th>
-                    <th>Parent</th>
-                    <th>Attribute Family</th>
                     <th>Status</th>
-                    <th>Color</th>
+                    <th>Top</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($categories as $data)
+                    @foreach ($categories as $category)
                     <tr>
-                        <td class="text-center">{{ $data->id }}</td>
-                        <td>{{ $data->name }}</td>
-                        <td>{{ ($data->parent->name) ?? null }}</td>
-                        <td>{{ ($data->family->name) ?? null }}</td>
-                        <td class="text-center">
-                            <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">
-                                {{ $data->status }}
-                            </button>
+                        <td class="text-center">{{ $category->id }}</td>
+                        <td class="text-center w-16">
+                            <img class="h-10 w-16" src="{{ $category->img_src }}" alt="{{ $category->name }}">
                         </td>
-                        <td>{{ $data->color }}</td>
+                        <td>{{ $category->name }}</td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.categories.edit', $data->id) }}">Edit</a>
-                            <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', $data->id) }}">Show</a>
+                            @if ($category->status === 'active')
+                                <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">
+                                    {{ $category->status }}
+                                </button>
+                            @else
+                                <button class="border px-2 py-1 rounded text-white bg-red-400 text-sm">
+                                    {{ $category->status }}
+                                </button>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            @if ($category->is_top == 0)
+                                <button class="border px-2 py-1 rounded text-white bg-red-400 text-sm">
+                                   NO
+                                </button>
+                            @else
+                                <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">
+                                    YES
+                                </button>
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.categories.edit', $category->id) }}">Edit</a>
+                            {{-- <a class="btn btn-primary btn-sm" href="{{ route('admin.categories.show', $category->id) }}">Show</a> --}}
                         </td>
                     </tr>
                     @endforeach

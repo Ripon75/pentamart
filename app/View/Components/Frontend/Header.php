@@ -35,9 +35,8 @@ class Header extends Component
         $userAddress = Address::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [
             [ 'label' => 'Home', 'route' => route('home') ],
-            // [ 'label' => 'Personal Care', 'route' => route('tag.page', ['personal-care'])],
             // [ 'label' => 'Medical Devices', 'route' => route('category.page', ['medical-devices'])],
-            [ 'label' => 'Offers', 'route' => route('offers.products')],
+            // [ 'label' => 'Offers', 'route' => route('offers.products')],
         ];
 
         return view('components.frontend.header', [

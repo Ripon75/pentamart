@@ -29,7 +29,7 @@
             <a herf="{{ $postTitleLink }}" class="block text-center py-4 rounded-b-md">{{ $postTitle }}
                 <span class="ml-1"><i class="fa-solid fa-arrow-right"></i></span></a>
         </div>
-    @elseif ($type === 'service')
+    @elseif ($type === 'brand')
         <div class="service-new">
             <div class="grid grid-cols-2 justify-items-center border bg-white p-2 sm:p-2 md:p-4 xl:p-6 2xl:p-6 rounded-md shadow-sm hover:shadow">
                 <div class="flex flex-col items-center justify-center space-y-4">
@@ -37,9 +37,7 @@
                         <span class="text-base lg:text-base xl:text-lg 2xl:text-lg text-primary font-semibold">{{ $title }}</span>
                     </div>
                     <div class="">
-                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-primary"
-                            data-mc-on-previous-url="#"
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        <a href="{{ $postTitleLink }}" type="button" class="btn btn-md btn-primary">
                             {{ $postTitle }}
                         </a>
                     </div>
@@ -88,11 +86,9 @@
                 </div>
             </div>
             <div class="footer">
-                <a href="{{ $postTitleLink }}" class="btn btn-primary btn-xs"
-                data-mc-on-previous-url="#"
-                @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                {{ $postTitle }}
-            </a>
+                <a href="{{ $postTitleLink }}" class="btn btn-primary btn-xs">
+                    {{ $postTitle }}
+                </a>
             </div>
         </div>
     @endif

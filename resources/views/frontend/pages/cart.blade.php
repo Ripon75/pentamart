@@ -1,7 +1,6 @@
 @extends('frontend.layouts.default')
 @section('title', 'Cart')
 @section('content')
-
     @if (count($products))
         <section class="container page-section page-top-gap">
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-8">

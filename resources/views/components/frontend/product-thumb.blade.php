@@ -37,7 +37,7 @@
 
             <div class="content px-3 py-2 bg-gray-50 rounded-b-md flex-1">
                 @if ($product->brand_id)
-                    <a href="{{ route('brand.page', $product->brand_id) }}" class="block h-6 pt-1 text-xs text-gray-400 line-clamp-1">
+                    <a href="{{ route('brand.page', [$product->brand_id, $product->brand->slug ?? '']) }}" class="block h-6 pt-1 text-xs text-gray-400 line-clamp-1">
                         {{ $product->brand->name }}
                     </a>
                 @else
@@ -53,7 +53,7 @@
                 @endif
 
                 @if ($product->category_id)
-                    <a href="{{ route('category.page', $product->category_id) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->category->name }}">
+                    <a href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}" class="block h-4 line-clamp-1 text-gray-600 text-xs font-medium italic" title="{{ $product->category->name }}">
                         {{ $product->category->name }}
                     </a>
                 @endif
@@ -66,7 +66,7 @@
                     @if ($product->offer_price > 0)
                         <span>
                             {{ $currency }}
-                            <span id="header-product-price-label-{{ $product->id }}" class="text-primaryPositive-darkest">
+                            <span id="header-product-price-label-{{ $product->id }}" class="text-primary">
                                 {{ $productOfferPrice }}
                             </span>
                         </span>
@@ -76,7 +76,7 @@
                     @else
                         <span>
                             {{ $currency }}
-                            <span id="header-product-price-label-{{ $product->id }}" class="text-primaryPositive-darkest">
+                            <span id="header-product-price-label-{{ $product->id }}" class="text-primary">
                                 {{ $productPrice }}
                             </span>
                             <span id="header-product-mrp-label-{{ $product->id }}" class="line-through text-gray-500 self-end">
@@ -98,7 +98,7 @@
                 <div class="content px-3 py-2 flex-1">
                     {{-- Show brand name --}}
                     @if ($product->brand_id)
-                        <a href="{{ route('brand.page', $product->brand_id) }}" class="block text-xs text-gray-400">{{ $product->brand->name }}</a>
+                        <a href="{{ route('brand.page', [$product->brand_id, $product->brand->slug ?? '']) }}" class="block text-xs text-gray-400">{{ $product->brand->name }}</a>
                     @endif
                     {{-- Show product name --}}
                     <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="block text-primary text-base md:text-sm lg:text-sm xl:text-base font-medium">
@@ -107,7 +107,7 @@
 
                     {{-- Show category name --}}
                     @if ($product->category_id)
-                        <a href="{{ route('category.page', $product->category_id) }}" class="block text-gray-600 text-xs font-medium italic">
+                        <a href="{{ route('category.page', [$product->category_id, $product->category->slug]) }}" class="block text-gray-600 text-xs font-medium italic">
                             {{ $product->category->name ?? null }}
                         </a>
                     @endif
@@ -115,10 +115,10 @@
                     {{-- Price show --}}
                     <div class="prices mt-2 flex space-x-4">
                         @if ($product->offer_price > 0)
-                        <span class="text-primaryPositive-darkest text-sm">{{ $currency }} {{ $product->offer_price }}</span>
+                        <span class="text-primary text-sm">{{ $currency }} {{ $product->offer_price }}</span>
                         <span class="line-through text-sm text-gray-500 self-end">{{ $currency }} {{ $product->price }}</span>
                         @else
-                        <span class="text-primaryPositive-darkest">{{ $currency }} {{ $product->price }}</span>
+                        <span class="text-primary">{{ $currency }} {{ $product->price }}</span>
                         @endif
                     </div>
                 </div>

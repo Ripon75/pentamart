@@ -22,7 +22,7 @@
                         {{-- end --}}
                     </div>
                     <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->image_src }}">
-               </div>
+                </div>
                {{-- ======================product single image for mobile============================ --}}
                 <div class="block md:hidden aspect-w-1 aspect-h-1 border rounded-md">
                     <div class="absolute top-0 right-0 p-2 z-20">
@@ -102,12 +102,12 @@
                         @endif
                         <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
                     </div>
-                    <div class="prices flex space-x-2 items-center mb-2">
+                    <div class="prices flex space-x-2 items-center mb-1">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-primary text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-md font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
@@ -122,6 +122,18 @@
                             @endif
                         </span>
                     </div>
+                    {{-- Extra information --}}
+                    <div class="flex justify-between mb-3">
+                        <div class="space-y-1">
+                            <div class="text-sm text-gray-600">
+                                <span class="font-bold">Warranty : </span>12 Months Official Warranty
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span class="font-bold">Emi Available : </span>3 Months
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col space-y-2">
                         <div class="flex space-x-4">
                             <select class="selected-pack-single w-32 rounded-md py-1.5 text-sm" id="input-qty">
@@ -162,14 +174,14 @@
                 </div>
             </div>
             <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
-                <h1 class="text-primary-dark text-lg font-medium p-4">Alternative Product</h1>
+                <h1 class="text-primary-dark text-lg font-medium p-4">Related Product</h1>
                 <hr>
                 <div class="overflow-auto h-[384px] p-2">
                     <div class="">
                         @foreach ($relatedProducts as $rProduct)
-                        <div>
-                            <x-frontend.product-thumb type="list" :product="$rProduct" />
-                        </div>
+                            <div>
+                                <x-frontend.product-thumb type="list" :product="$rProduct" />
+                            </div>
                         @endforeach
                     </div>
                 </div>
@@ -179,47 +191,173 @@
         <div class="grid grid-cols-6 gap-4 mt-10">
             {{-- Description --}}
             <div class="col-span-6 lg:col-span-6 xl:col-span-4">
-                <h1 class="text-lg">More Information About - <span class="font-semibold">{{ $product->name }}</span></h1>
                 @if ($product->description)
-                    <div class="product-detail mt-3">
-                        <div>
-                            <div class="bg-primary h-10 flex items-center rounded-t-md">
-                                <h1 class="text-base text-white pl-4">Description</h1>
-                            </div>
-                            <div class="bg-white mb-4 p-4 product-description">
-                                <p>
-                                    {!! html_entity_decode($product->description) !!}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                {{-- ===========Disclaimer============= --}}
-                {{-- <div class="col-span-3 mt-3">
+                <div class="product-detail mt-3">
                     <div>
-                        <div class="bg-gradient-to-t to-gray-200 from-gray-100 h-10 flex items-center rounded-t-md">
-                            <h1 class="text-base text-red-500 font-medium pl-4"><i class="mr-3 fa-solid fa-bookmark"></i>Disclaimer</h1>
+                        <div class="bg-primary h-10 flex items-center rounded-t-md">
+                            <h1 class="text-base text-white pl-4">Description</h1>
                         </div>
-                        <div class=" mb-4 p-4 bg-white">
-                            <p class="text-sm text-gray-600">The information provided herein are for informational purposes only and not intended to be a substitute for professional medical advice, diagnosis, or treatment. Please note that this information should not be treated as a replacement for physical medical consultation or advice. Great effort has been placed to provide accurate and comprehensive data. However, Medicart along with its authors and editors make no representations or warranties and specifically disclaim all liability for any medical information provided on the site. The absence of any information and/or warning to any drug shall not be considered and assumed as an implied assurance of the Company.</p>
+                        <div class="bg-white mb-4 p-4 product-description">
+                            <p>
+                                {!! html_entity_decode($product->description) !!}
+                            </p>
+                            {{-- Rating form --}}
+                            <div class="mt-5">
+                                <div class="flex flex-col">
+                                    <div class="flex space-x-2 items-center justify-center">
+                                        <div class="rate">
+                                            <input class="ratings" type="radio" id="star5" name="rate" value="5" />
+                                            <label for="star5" title="text">5 stars</label>
+                                            <input class="ratings" type="radio" id="star4" name="rate" value="4" />
+                                            <label for="star4" title="text">4 stars</label>
+                                            <input class="ratings" type="radio" id="star3" name="rate" value="3" />
+                                            <label for="star3" title="text">3 stars</label>
+                                            <input class="ratings" type="radio" id="star2" name="rate" value="2" />
+                                            <label for="star2" title="text">2 stars</label>
+                                            <input class="ratings" type="radio" id="star1" name="rate" value="1" />
+                                            <label for="star1" title="text">1 star</label>
+                                        </div>
+                                    </div>
+                                    <label class="text-sm font-medium mt-2" for="">Write your product comment</label>
+                                    <textarea name="rating_title" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                    <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
+                                    <input name="files[]" multiple type="file"
+                                        class="mt-2 block w-full text-sm text-slate-500
+                                        focus:outline-none focus:ring-0
+                                        file:mr-4 file:py-2 file:px-8
+                                        file:rounded file:border
+                                        file:border-primary
+                                        file:text-sm file:font-medium
+                                        file:bg-violet-50 file:text-primary
+                                        hover:file:bg-violet-100"
+                                        accept="image/png, image/jpg, image/jpeg"
+                                    />
+                                    <div class="mt-3 w-full">
+                                        <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
+                                            Submit
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            {{-- Show rating --}}
+                            @for ($i = 1; $i <= 3; $i++ )
+                                <div class="bg-gray-100 mt-5 p-2 rounded">
+                                    <div class="w-40 flex justify-between text-md text-base italic">
+                                        <span>Ripon Ahmed</span>
+                                        <span class="flex">(5)
+                                            <span class="flex w-3 h-3 space-x-.5 ml-1">
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        Ordered 6 feb 23 and got 11 feb 23 (5th day) fully intact packet.
+                                        According to the price the phone is just awesome.It is newly launched phone late January 2023.
+                                    </div>
+                                    <span class="flex w-14 h-14  ml-1">
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                    </span>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Posted on 11 February 2023
+                                    </div>
+                                </div>
+                            @endfor
                         </div>
                     </div>
-                </div> --}}
-            </div>
-            {{-- <div class="col-span-6 lg:col-span-6 xl:col-span-2">
-                <h1 class="text-xl font-medium">Others Product</h1>
-                <div class="mt-3 product-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-2 gap-2">
-                    @foreach ($otherProducts as $oProduct)
-                    <div>
-                        <x-frontend.product-thumb type="default" :product="$oProduct" />
-                    </div>
-                    @endforeach
                 </div>
-            </div> --}}
+                @endif
+            </div>
+            <div class="col-span-6 lg:col-span-6 xl:col-span-2">
+                <h1 class="text-xl font-medium">Ratings & Reviews</h1>
+                <div class="overflow-auto h-[384px] p-2">
+                    <div class="border-b last:border-b-0">
+                        <div class="flex">
+                            <div class="w-20 h-5 p-2 mt-2 items-center justify-items-center">
+                                <div> <span class="text-xl font-bold">4.9</span> <span
+                                        class="text-sm">/5</span></div>
+                                <div class="text-xs">98% Raring</div>
+                            </div>
+                            <div class="content px-3 py-2 flex-1 space-y-2">
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=" mr-5"
+                                        src="/images/sample/star.png" />
+                                    <span>5</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>3</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                                <div class="flex w-4 h-4 space-x-1">
+                                    <img class=""
+                                        src="/images/sample/star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <img class=""
+                                        src="/images/sample/whate_star.png" />
+                                    <span>0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
-
 @endsection
 
 @push('scripts')
@@ -254,7 +392,7 @@
     var wishButton          = $('#wish-button');
     var undoWishButton      = $('#undo-wish-button');
     var packQtyLavel        = $('#pack-quantity-label');
-    var sUserID             = {{ Auth::id() }};
+    var sUserID             = "{{ Auth::id() }}";
     var productColorsCount  = {{ count($productColors) }};
     var productSizesCount   = {{ count($productSizes) }};
 
@@ -399,4 +537,20 @@
         });
     }
 </script>
+
+{{-- Order ratting script --}}
+<script>
+    var ratings = $('.ratings');
+    var ratingsCount = 0;
+
+    $(() => {
+        // Event with change starts
+        ratings.change(function(e1) {
+            var ratings =  $(e1.target).val();
+            ratingsCount = ratings;
+            console.log(ratingsCount);
+        });
+    });
+</script>
+
 @endpush
