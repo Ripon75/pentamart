@@ -102,12 +102,12 @@
                         @endif
                         <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
                     </div>
-                    <div class="prices flex space-x-2 items-center mb-2">
+                    <div class="prices flex space-x-2 items-center mb-1">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-primary text-xl font-medium">
+                                <span id="item-price-label" class="text-primary text-md font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
@@ -122,6 +122,18 @@
                             @endif
                         </span>
                     </div>
+                    {{-- Extra information --}}
+                    <div class="flex justify-between mb-3">
+                        <div class="space-y-1">
+                            <div class="text-sm text-gray-600">
+                                <span class="font-bold">Warranty : </span>12 Months Official Warranty
+                            </div>
+                            <div class="text-sm text-gray-600">
+                                <span class="font-bold">Emi Available : </span>3 Months
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="flex flex-col space-y-2">
                         <div class="flex space-x-4">
                             <select class="selected-pack-single w-32 rounded-md py-1.5 text-sm" id="input-qty">
@@ -189,6 +201,7 @@
                             <p>
                                 {!! html_entity_decode($product->description) !!}
                             </p>
+                            {{-- Rating form --}}
                             <div class="mt-5">
                                 <div class="flex flex-col">
                                     <div class="flex space-x-2 items-center justify-center">
@@ -205,7 +218,7 @@
                                             <label for="star1" title="text">1 star</label>
                                         </div>
                                     </div>
-                                    <label class="text-sm w-full font-medium mt-2" for="">Write your product comment</label>
+                                    <label class="text-sm font-medium mt-2" for="">Write your product comment</label>
                                     <textarea name="rating_title" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
                                     <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
                                     <input name="files[]" multiple type="file"
@@ -219,13 +232,43 @@
                                         hover:file:bg-violet-100"
                                         accept="image/png, image/jpg, image/jpeg"
                                     />
-                                    <div class="mt-5 w-64">
+                                    <div class="mt-3 w-full">
                                         <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
                                             Submit
                                         </button>
                                     </div>
                                 </div>
                             </div>
+                            {{-- Show rating --}}
+                            @for ($i = 1; $i <= 3; $i++ )
+                                <div class="bg-gray-100 mt-5 p-2 rounded">
+                                    <div class="w-40 flex justify-between text-md text-base italic">
+                                        <span>Ripon Ahmed</span>
+                                        <span class="flex">(5)
+                                            <span class="flex w-3 h-3 space-x-.5 ml-1">
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                                <img class="" src="/images/sample/star.png" />
+                                            </span>
+                                        </span>
+                                    </div>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        Ordered 6 feb 23 and got 11 feb 23 (5th day) fully intact packet.
+                                        According to the price the phone is just awesome.It is newly launched phone late January 2023.
+                                    </div>
+                                    <span class="flex w-14 h-14  ml-1">
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                        <img class="" src="/images/sample/watch.jpeg" />
+                                    </span>
+                                    <div class="text-xs text-gray-500 mt-1">
+                                        Posted on 11 February 2023
+                                    </div>
+                                </div>
+                            @endfor
                         </div>
                     </div>
                 </div>

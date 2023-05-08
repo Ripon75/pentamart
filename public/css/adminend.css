@@ -7558,11 +7558,6 @@ textarea.form-control.is-invalid{
 .modal-body{
   flex: 1 1 auto;
 }
-.modal-fullscreen .modal-content{
-  height: 100%;
-  border: 0;
-  border-radius: 0;
-}
 .modal-fullscreen .modal-header{
   border-radius: 0;
 }
@@ -11490,13 +11485,13 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
-.text-red-700{
-  --tw-text-opacity: 1;
-  color: rgb(185 28 28 / var(--tw-text-opacity));
-}
 .text-slate-500{
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
+}
+.text-red-700{
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 .underline{
   -webkit-text-decoration-line: underline;
@@ -13073,29 +13068,23 @@ fieldset legend{
 .file\:mr-4::file-selector-button{
   margin-right: 1rem;
 }
-.file\:rounded-full::-webkit-file-upload-button{
-  border-radius: 9999px;
-}
-.file\:rounded-full::file-selector-button{
-  border-radius: 9999px;
-}
 .file\:rounded::-webkit-file-upload-button{
   border-radius: 0.25rem;
 }
 .file\:rounded::file-selector-button{
   border-radius: 0.25rem;
 }
+.file\:rounded-full::-webkit-file-upload-button{
+  border-radius: 9999px;
+}
+.file\:rounded-full::file-selector-button{
+  border-radius: 9999px;
+}
 .file\:border::-webkit-file-upload-button{
   border-width: 1px;
 }
 .file\:border::file-selector-button{
   border-width: 1px;
-}
-.file\:border-secondary\/50::-webkit-file-upload-button{
-  border-color: rgb(255 196 45 / 0.5);
-}
-.file\:border-secondary\/50::file-selector-button{
-  border-color: rgb(255 196 45 / 0.5);
 }
 .file\:border-primary::-webkit-file-upload-button{
   --tw-border-opacity: 1;
@@ -13104,6 +13093,12 @@ fieldset legend{
 .file\:border-primary::file-selector-button{
   --tw-border-opacity: 1;
   border-color: rgb(0 121 140 / var(--tw-border-opacity));
+}
+.file\:border-secondary\/50::-webkit-file-upload-button{
+  border-color: rgb(255 196 45 / 0.5);
+}
+.file\:border-secondary\/50::file-selector-button{
+  border-color: rgb(255 196 45 / 0.5);
 }
 .file\:bg-violet-50::-webkit-file-upload-button{
   --tw-bg-opacity: 1;
@@ -13121,14 +13116,6 @@ fieldset legend{
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
 }
-.file\:px-4::-webkit-file-upload-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.file\:px-4::file-selector-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
 .file\:px-8::-webkit-file-upload-button{
   padding-left: 2rem;
   padding-right: 2rem;
@@ -13136,6 +13123,14 @@ fieldset legend{
 .file\:px-8::file-selector-button{
   padding-left: 2rem;
   padding-right: 2rem;
+}
+.file\:px-4::-webkit-file-upload-button{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+.file\:px-4::file-selector-button{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 .file\:text-sm::-webkit-file-upload-button{
   font-size: 0.875rem;
@@ -13151,14 +13146,6 @@ fieldset legend{
 .file\:font-medium::file-selector-button{
   font-weight: 500;
 }
-.file\:text-secondary::-webkit-file-upload-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
-}
-.file\:text-secondary::file-selector-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
-}
 .file\:text-primary::-webkit-file-upload-button{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
@@ -13166,6 +13153,14 @@ fieldset legend{
 .file\:text-primary::file-selector-button{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
+}
+.file\:text-secondary::-webkit-file-upload-button{
+  --tw-text-opacity: 1;
+  color: rgb(255 196 45 / var(--tw-text-opacity));
+}
+.file\:text-secondary::file-selector-button{
+  --tw-text-opacity: 1;
+  color: rgb(255 196 45 / var(--tw-text-opacity));
 }
 .placeholder\:text-xs::-moz-placeholder{
   font-size: 0.75rem;

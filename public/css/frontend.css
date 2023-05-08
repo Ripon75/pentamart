@@ -9502,13 +9502,13 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
-.text-red-700{
-  --tw-text-opacity: 1;
-  color: rgb(185 28 28 / var(--tw-text-opacity));
-}
 .text-slate-500{
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
+}
+.text-red-700{
+  --tw-text-opacity: 1;
+  color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 .underline{
   -webkit-text-decoration-line: underline;
@@ -20198,20 +20198,20 @@ readers do not read off random characters that represent icons */
   margin-right: 1rem;
 }
 
-.file\:rounded-full::-webkit-file-upload-button{
-  border-radius: 9999px;
-}
-
-.file\:rounded-full::file-selector-button{
-  border-radius: 9999px;
-}
-
 .file\:rounded::-webkit-file-upload-button{
   border-radius: 0.25rem;
 }
 
 .file\:rounded::file-selector-button{
   border-radius: 0.25rem;
+}
+
+.file\:rounded-full::-webkit-file-upload-button{
+  border-radius: 9999px;
+}
+
+.file\:rounded-full::file-selector-button{
+  border-radius: 9999px;
 }
 
 .file\:border::-webkit-file-upload-button{
@@ -20222,14 +20222,6 @@ readers do not read off random characters that represent icons */
   border-width: 1px;
 }
 
-.file\:border-secondary\/50::-webkit-file-upload-button{
-  border-color: rgb(255 196 45 / 0.5);
-}
-
-.file\:border-secondary\/50::file-selector-button{
-  border-color: rgb(255 196 45 / 0.5);
-}
-
 .file\:border-primary::-webkit-file-upload-button{
   --tw-border-opacity: 1;
   border-color: rgb(0 121 140 / var(--tw-border-opacity));
@@ -20238,6 +20230,14 @@ readers do not read off random characters that represent icons */
 .file\:border-primary::file-selector-button{
   --tw-border-opacity: 1;
   border-color: rgb(0 121 140 / var(--tw-border-opacity));
+}
+
+.file\:border-secondary\/50::-webkit-file-upload-button{
+  border-color: rgb(255 196 45 / 0.5);
+}
+
+.file\:border-secondary\/50::file-selector-button{
+  border-color: rgb(255 196 45 / 0.5);
 }
 
 .file\:bg-violet-50::-webkit-file-upload-button{
@@ -20260,16 +20260,6 @@ readers do not read off random characters that represent icons */
   padding-bottom: 0.5rem;
 }
 
-.file\:px-4::-webkit-file-upload-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.file\:px-4::file-selector-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
 .file\:px-8::-webkit-file-upload-button{
   padding-left: 2rem;
   padding-right: 2rem;
@@ -20278,6 +20268,16 @@ readers do not read off random characters that represent icons */
 .file\:px-8::file-selector-button{
   padding-left: 2rem;
   padding-right: 2rem;
+}
+
+.file\:px-4::-webkit-file-upload-button{
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.file\:px-4::file-selector-button{
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .file\:text-sm::-webkit-file-upload-button{
@@ -20298,16 +20298,6 @@ readers do not read off random characters that represent icons */
   font-weight: 500;
 }
 
-.file\:text-secondary::-webkit-file-upload-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
-}
-
-.file\:text-secondary::file-selector-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
-}
-
 .file\:text-primary::-webkit-file-upload-button{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
@@ -20316,6 +20306,16 @@ readers do not read off random characters that represent icons */
 .file\:text-primary::file-selector-button{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
+}
+
+.file\:text-secondary::-webkit-file-upload-button{
+  --tw-text-opacity: 1;
+  color: rgb(255 196 45 / var(--tw-text-opacity));
+}
+
+.file\:text-secondary::file-selector-button{
+  --tw-text-opacity: 1;
+  color: rgb(255 196 45 / var(--tw-text-opacity));
 }
 
 .placeholder\:text-xs::-moz-placeholder{
