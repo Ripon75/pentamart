@@ -203,58 +203,65 @@
                             </p>
                             {{-- Rating form --}}
                             <div class="mt-5">
-                                <div class="flex flex-col">
-                                    <div class="flex space-x-2 items-center justify-center">
-                                        <div class="rate">
-                                            <input class="ratings" type="radio" id="star5" name="rate" value="5" />
-                                            <label for="star5" title="text">5 stars</label>
-                                            <input class="ratings" type="radio" id="star4" name="rate" value="4" />
-                                            <label for="star4" title="text">4 stars</label>
-                                            <input class="ratings" type="radio" id="star3" name="rate" value="3" />
-                                            <label for="star3" title="text">3 stars</label>
-                                            <input class="ratings" type="radio" id="star2" name="rate" value="2" />
-                                            <label for="star2" title="text">2 stars</label>
-                                            <input class="ratings" type="radio" id="star1" name="rate" value="1" />
-                                            <label for="star1" title="text">1 star</label>
+                                <form action="{{ route('ratings.store') }}" method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="flex flex-col">
+                                        <div class="flex space-x-2 items-center justify-center">
+                                            <div class="rate">
+                                                <input class="ratings" type="radio" id="star5" name="rate" value="5" />
+                                                <label for="star5" title="text">5 stars</label>
+                                                <input class="ratings" type="radio" id="star4" name="rate" value="4" />
+                                                <label for="star4" title="text">4 stars</label>
+                                                <input class="ratings" type="radio" id="star3" name="rate" value="3" />
+                                                <label for="star3" title="text">3 stars</label>
+                                                <input class="ratings" type="radio" id="star2" name="rate" value="2" />
+                                                <label for="star2" title="text">2 stars</label>
+                                                <input class="ratings" type="radio" id="star1" name="rate" value="1" />
+                                                <label for="star1" title="text">1 star</label>
+                                            </div>
+                                        </div>
+                                        {{-- Hidden input product id --}}
+                                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+
+                                        <label class="text-sm font-medium mt-2" for="">Write your product comment</label>
+                                        <textarea name="comment" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                        @error('comment')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
+                                        <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
+                                        <input name="files[]" multiple type="file"
+                                            class="mt-2 block w-full text-sm text-slate-500
+                                            focus:outline-none focus:ring-0
+                                            file:mr-4 file:py-2 file:px-8
+                                            file:rounded file:border
+                                            file:border-primary
+                                            file:text-sm file:font-medium
+                                            file:bg-violet-50 file:text-primary
+                                            hover:file:bg-violet-100"
+                                            accept="image/png, image/jpg, image/jpeg"
+                                        />
+                                        <div class="mt-3 w-full">
+                                            <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
+                                                Submit
+                                            </button>
                                         </div>
                                     </div>
-                                    <label class="text-sm font-medium mt-2" for="">Write your product comment</label>
-                                    <textarea name="rating_title" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
-                                    <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
-                                    <input name="files[]" multiple type="file"
-                                        class="mt-2 block w-full text-sm text-slate-500
-                                        focus:outline-none focus:ring-0
-                                        file:mr-4 file:py-2 file:px-8
-                                        file:rounded file:border
-                                        file:border-primary
-                                        file:text-sm file:font-medium
-                                        file:bg-violet-50 file:text-primary
-                                        hover:file:bg-violet-100"
-                                        accept="image/png, image/jpg, image/jpeg"
-                                    />
-                                    <div class="mt-3 w-full">
-                                        <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
-                                            Submit
-                                        </button>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
                             {{-- Show rating --}}
                             @for ($i = 1; $i <= 3; $i++ )
                                 <div class="bg-gray-100 mt-5 p-2 rounded">
                                     <div class="w-40 flex justify-between text-md text-base italic">
-                                        <span>Ripon Ahmed</span>
+                                        <span class="text-sm italic">Ripon Ahmed</span>
                                         <span class="flex">(5)
                                             <span class="flex w-3 h-3 space-x-.5 ml-1">
-                                                <img class="" src="/images/sample/star.png" />
-                                                <img class="" src="/images/sample/star.png" />
-                                                <img class="" src="/images/sample/star.png" />
-                                                <img class="" src="/images/sample/star.png" />
-                                                <img class="" src="/images/sample/star.png" />
+                                                @for ($j = 1; $j <= 5; $j++)
+                                                    <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                                @endfor
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="text-sm text-gray-600 mt-1">
+                                    <div class="text-xs text-gray-600 mt-1">
                                         Ordered 6 feb 23 and got 11 feb 23 (5th day) fully intact packet.
                                         According to the price the phone is just awesome.It is newly launched phone late January 2023.
                                     </div>
@@ -280,75 +287,48 @@
                     <div class="border-b last:border-b-0">
                         <div class="flex">
                             <div class="w-20 h-5 p-2 mt-2 items-center justify-items-center">
-                                <div> <span class="text-xl font-bold">4.9</span> <span
+                                <div> <span class="text-xl font-bold">{{ number_format($ratingValue, 1) }}</span> <span
                                         class="text-sm">/5</span></div>
-                                <div class="text-xs">98% Raring</div>
+                                <div class="text-xs">{{ number_format($ratingPercent, 0) }} % Raring</div>
                             </div>
                             <div class="content px-3 py-2 flex-1 space-y-2">
-                                <div class="flex w-4 h-4 space-x-1">
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=" mr-5"
-                                        src="/images/sample/star.png" />
-                                    <span>5</span>
+                                <div class="space-x-1">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                    @endfor
+                                    <span>{{ $ratingReport->five_star }}</span>
                                 </div>
-                                <div class="flex w-4 h-4 space-x-1">
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <span>3</span>
+                                <div class="space-x-1">
+                                    @for ($i = 1; $i <= 4; $i++)
+                                        <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                    @endfor
+                                        <i class="fa-solid fa-star text-xs"></i>
+                                    <span>{{ $ratingReport->four_star }}</span>
                                 </div>
-                                <div class="flex w-4 h-4 space-x-1">
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <span>0</span>
+                                <div class="space-x-1">
+                                    @for ($i = 1; $i <= 3; $i++)
+                                        <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                    @endfor
+                                    @for ($j = 1; $j <= 2; $j++)
+                                        <i class="fa-solid fa-star text-xs"></i>
+                                    @endfor
+                                    <span>{{ $ratingReport->three_star }}</span>
                                 </div>
-                                <div class="flex w-4 h-4 space-x-1">
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <span>0</span>
+                                <div class="space-x-1">
+                                    @for ($i = 1; $i <= 2; $i++)
+                                        <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                    @endfor
+                                    @for ($j = 1; $j <= 3; $j++)
+                                        <i class="fa-solid fa-star text-xs"></i>
+                                    @endfor
+                                    <span>{{ $ratingReport->two_star }}</span>
                                 </div>
-                                <div class="flex w-4 h-4 space-x-1">
-                                    <img class=""
-                                        src="/images/sample/star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <img class=""
-                                        src="/images/sample/whate_star.png" />
-                                    <span>0</span>
+                                <div class="space-x-1">
+                                    <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                    @for ($i = 1; $i <= 4; $i++)
+                                        <i class="fa-solid fa-star text-xs"></i>
+                                    @endfor
+                                    <span>{{ $ratingReport->one_star }}</span>
                                 </div>
                             </div>
                         </div>
@@ -548,7 +528,6 @@
         ratings.change(function(e1) {
             var ratings =  $(e1.target).val();
             ratingsCount = ratings;
-            console.log(ratingsCount);
         });
     });
 </script>
