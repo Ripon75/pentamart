@@ -7,7 +7,7 @@
                     <span class="text-xs font-normal">DELIVER TO : </span>
                     <span id="show-address-top-nav" class="text-xs font-normal"></span>
                     <span class="ml-2 sm:ml-2 lg:ml-4">
-                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal"
+                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal hover:text-white"
                             data-mc-on-previous-url="{{ url()->current() }}"
                             @auth data-bs-toggle="modal" data-bs-target="#address-modal" @endauth
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
@@ -19,9 +19,9 @@
                 <div class="top-links">
                     <div class="flex space-x-0 sm:space-x-0 lg:space-x-4">
                         <div class="social-icons flex">
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-facebook"></i></a>
-                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-instagram"></i></a>
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-youtube"></i></a>
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-white fa-brands fa-facebook"></i></a>
+                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-white fa-brands fa-instagram"></i></a>
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-white fa-brands fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
