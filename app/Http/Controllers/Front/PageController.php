@@ -341,7 +341,7 @@ class PageController extends Controller
         // Calculate ratings
         $ratingValue   = 0;
         $ratingPercent = 0;
-        $ratings       = Rating::where('product_id', $id)->get();
+        $ratings       = Rating::where('product_id', $id)->orderBy('created_at', 'desc')->get();
         $ratingCount   = $ratings->count();
         $rateSum       = $ratings->sum('rate');
         if ($ratingCount) {
@@ -378,6 +378,7 @@ class PageController extends Controller
             'relatedProducts' => $relatedProducts,
             'isWishListed'    => $isWishListed,
             'otherProducts'   => $otherProducts,
+            'ratings'         => $ratings,
             'ratingValue'     => $ratingValue,
             'ratingPercent'   => $ratingPercent,
             'ratingReport'    => $ratingReport,

@@ -49,7 +49,7 @@ class RatingController extends Controller
                         $rating->save();
                     }
                     DB::commit();
-                    return back()->with('success', 'Product rated successfully');
+                    return back()->with('message', 'Product rated successfully');
                 } else {
                     return back()->with('error', 'You can not rate this product without purchase');
                 }

@@ -4,6 +4,15 @@
 
 <section class="page-section page-top-gap">
     <div class="container mx-auto">
+        {{-- Show notification --}}
+        @if(Session::has('message'))
+        <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+        @endif
+
+        @if(Session::has('error'))
+        <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+        @endif
+
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 bg-white">
             <div class="col-span-1 p-2">
                 <div class="hidden md:block aspect-w-1 aspect-h-1 w-full border rounded-md">
@@ -142,7 +151,7 @@
                                 @endfor
                             </select>
                             <div class="flex space-x-4">
-                                <button class="btn-add-to-car-single h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                <button class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                     data-mc-on-previous-url="{{ url()->current() }}"
                                     @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                                     <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
@@ -198,7 +207,7 @@
                             <h1 class="text-base text-white pl-4">Description</h1>
                         </div>
                         <div class="bg-white mb-4 p-4 product-description">
-                            <p>
+                            <p class="text-sm">
                                 {!! html_entity_decode($product->description) !!}
                             </p>
                             {{-- Rating form --}}
@@ -224,9 +233,9 @@
                                         <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                                         <label class="text-sm font-medium mt-2" for="">Write your product comment</label>
-                                        <textarea name="comment" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                        <textarea id = "input-comment" name="comment" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
                                         @error('comment')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                            <span class="text-xs text-red-500">{{ $message }}</span>
                                         @enderror
                                         <label class="text-sm w-full font-medium mt-2" for="">Select your product images</label>
                                         <input name="files[]" multiple type="file"
@@ -241,7 +250,7 @@
                                             accept="image/png, image/jpg, image/jpeg"
                                         />
                                         <div class="mt-3 w-full">
-                                            <button id="btn-header-rating-submit" class="btn btn-block btn-primary">
+                                            <button id="btn-rating-submit" type="button" class="btn btn-block btn-primary">
                                                 Submit
                                             </button>
                                         </div>
@@ -249,21 +258,21 @@
                                 </form>
                             </div>
                             {{-- Show rating --}}
-                            @for ($i = 1; $i <= 3; $i++ )
+                            @foreach ($ratings as $rating)
                                 <div class="bg-gray-100 mt-5 p-2 rounded">
                                     <div class="w-40 flex justify-between text-md text-base italic">
-                                        <span class="text-sm italic">Ripon Ahmed</span>
-                                        <span class="flex">(5)
-                                            <span class="flex w-3 h-3 space-x-.5 ml-1">
-                                                @for ($j = 1; $j <= 5; $j++)
-                                                    <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
-                                                @endfor
-                                            </span>
+                                        <span class="text-sm italic">{{ $rating->user->name ?? 'NA' }}</span>
+                                        <span class="flex w-3 h-3 space-x-.5 ml-1">
+                                            @for ($i = 1; $i <= $rating->rate; $i++)
+                                                <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
+                                            @endfor
+                                            @for ($j = 5; $j > $rating->rate; $j--)
+                                                <i class="fa-solid fa-star text-xs"></i>
+                                            @endfor
                                         </span>
                                     </div>
                                     <div class="text-xs text-gray-600 mt-1">
-                                        Ordered 6 feb 23 and got 11 feb 23 (5th day) fully intact packet.
-                                        According to the price the phone is just awesome.It is newly launched phone late January 2023.
+                                        {{ $rating->comment }}
                                     </div>
                                     <span class="flex w-14 h-14  ml-1">
                                         <img class="" src="/images/sample/watch.jpeg" />
@@ -272,10 +281,10 @@
                                         <img class="" src="/images/sample/watch.jpeg" />
                                     </span>
                                     <div class="text-xs text-gray-500 mt-1">
-                                        Posted on 11 February 2023
+                                        {{ $rating->created_at->format('d/M/Y') }}
                                     </div>
                                 </div>
-                            @endfor
+                            @endforeach
                         </div>
                     </div>
                 </div>
@@ -359,7 +368,7 @@
 
     var aleartTime          = {{ config("crud.alear_time") }};
     var cartAddItemEndPoint = '/cart/item/add';
-    var btnAddToCartSingle  = $('.btn-add-to-car-single');
+    var btnAddToCart        = $('.btn-add-to-car');
     var productID           = $('#product-id').val();
     var selectedPackSingle  = $('.selected-pack-single');
     var priceLabel          = $('#item-price-label');
@@ -375,6 +384,13 @@
     var sUserID             = "{{ Auth::id() }}";
     var productColorsCount  = {{ count($productColors) }};
     var productSizesCount   = {{ count($productSizes) }};
+    var productStock        = "{{ $product->current_stock }}";
+
+    if (productStock == 0) {
+        btnAddToCart.prop("disabled",true);
+        btnAddToCart.addClass('disabled:opacity-50');
+        btnAddToCart.text('Out Stock');
+    }
 
     @auth
         // Automatically product added to wishcart if local storage have wish_product_id
@@ -413,7 +429,7 @@
         });
 
         // Add product to cart
-        btnAddToCartSingle.click(function () {
+        btnAddToCart.click(function () {
             var productQty = inputQty.val();
             var colorId    = $('input[name="color_id"]:checked').val();
             var sizeId     = $('input[name="size_id"]:checked').val();
@@ -520,14 +536,36 @@
 
 {{-- Order ratting script --}}
 <script>
+    var btnRatingSubmit = $('#btn-rating-submit');
     var ratings = $('.ratings');
     var ratingsCount = 0;
+
+    // Set time to flash message
+    setTimeout(function(){
+        $("div.alert").remove();
+    }, 4000 );
 
     $(() => {
         // Event with change starts
         ratings.change(function(e1) {
-            var ratings =  $(e1.target).val();
+            var ratings  =  $(e1.target).val();
             ratingsCount = ratings;
+        });
+
+        btnRatingSubmit.click(function() {
+            var comment = $("#input-comment").val();
+
+            if (ratingsCount == 0) {
+                __showNotification('error', 'please select star', 3000);
+                return false;
+            }
+
+            if (!comment) {
+                __showNotification('error', 'please write your comment', 3000);
+                return false;
+            }
+
+            $('form').submit();
         });
     });
 </script>

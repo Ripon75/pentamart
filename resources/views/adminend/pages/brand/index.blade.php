@@ -11,7 +11,7 @@
     </div>
     <div class="page-content">
         @if(Session::has('error'))
-        <div class="alert mb-8 error">{{ Session::get('message') }}</div>
+        <div class="alert mb-8 error">{{ Session::get('error') }}</div>
         @endif
 
         @if(Session::has('message'))
