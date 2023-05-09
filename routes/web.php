@@ -9,6 +9,7 @@ use App\Http\Controllers\Front\OrderController;
 use App\Http\Controllers\Front\CouponController;
 use App\Http\Controllers\Front\AddressController;
 use App\Http\Controllers\Front\CustomerController;
+use App\Http\Controllers\Front\RatingController;
 use App\Http\Controllers\Front\WishlistController;
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
@@ -72,8 +73,7 @@ Route::middleware(['auth'])->group(function(){
     Route::post('/cart/shipping/address/add', [CartController::class, 'addShippingAdress']);
     Route::post('/check/coupon',              [CouponController::class, 'checkCouponCode'])->name('coupon.check');
 
-    Route::prefix('my')->name('my.')
-    ->group(function () {
+    Route::prefix('my')->name('my.')->group(function () {
         // User profile update route
         Route::get('/dashboard', [OrderController::class, 'dashboard'])->name('dashboard');
         Route::get('/profile',   [CustomerController::class, 'profileEdit'])->name('profile');
@@ -108,6 +108,9 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/order/{id}',        [OrderController::class, 'show'])->name('order.show');
         Route::get('/reorder/{orderID}', [OrderController::class, 'reorder'])->name('order.reorder');
     });
+
+    // Rating route
+    Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });

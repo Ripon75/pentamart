@@ -6,19 +6,21 @@ use Carbon\Carbon;
 use App\Models\Area;
 use App\Models\Cart;
 use App\Models\Brand;
+use App\Models\Rating;
 use App\Models\Banner;
 use App\Models\Section;
 use App\Models\Company;
 use App\Models\Product;
+use App\Models\Address;
 use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\DosageForm;
-use App\Models\Address;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
 use App\Models\DeliveryGateway;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -336,6 +338,25 @@ class PageController extends Controller
             abort(404);
         }
 
+        // Calculate ratings
+        $ratingValue   = 0;
+        $ratingPercent = 0;
+        $ratings       = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')->get();
+        $ratingCount   = $ratings->count();
+        $rateSum       = $ratings->sum('rate');
+        if ($ratingCount) {
+            $ratingValue   = $rateSum / $ratingCount;
+            $ratingPercent = $ratingValue * 100 / 5;
+        }
+
+        $ratingReport = Rating::select(DB::raw('
+            SUM((CASE WHEN rate = 5 THEN 1 ELSE 0 END)) as five_star,
+            SUM((CASE WHEN rate = 4 THEN 1 ELSE 0 END)) as four_star,
+            SUM((CASE WHEN rate = 3 THEN 1 ELSE 0 END)) as three_star,
+            SUM((CASE WHEN rate = 2 THEN 1 ELSE 0 END)) as two_star,
+            SUM((CASE WHEN rate = 1 THEN 1 ELSE 0 END)) as one_star
+        '))->first();
+
         $userId  = Auth::id();
         $wishlistedProduct = null;
 
@@ -357,6 +378,10 @@ class PageController extends Controller
             'relatedProducts' => $relatedProducts,
             'isWishListed'    => $isWishListed,
             'otherProducts'   => $otherProducts,
+            'ratings'         => $ratings,
+            'ratingValue'     => $ratingValue,
+            'ratingPercent'   => $ratingPercent,
+            'ratingReport'    => $ratingReport,
             'currency'        => 'Tk'
         ]);
     }
