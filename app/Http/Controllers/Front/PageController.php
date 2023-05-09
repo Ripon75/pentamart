@@ -341,7 +341,7 @@ class PageController extends Controller
         // Calculate ratings
         $ratingValue   = 0;
         $ratingPercent = 0;
-        $ratings       = Rating::where('product_id', $id)->orderBy('created_at', 'desc')->get();
+        $ratings       = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')->get();
         $ratingCount   = $ratings->count();
         $rateSum       = $ratings->sum('rate');
         if ($ratingCount) {

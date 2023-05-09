@@ -32,4 +32,9 @@ class Rating extends Model
     {
         return $this->belongsTo(Product::class, 'product_id', 'id');
     }
+
+    public function ratingImages()
+    {
+        return $this->hasMany(RatingImage::class, 'rating_id', 'id');
+    }
 }

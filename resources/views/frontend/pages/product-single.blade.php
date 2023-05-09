@@ -271,15 +271,19 @@
                                             @endfor
                                         </span>
                                     </div>
-                                    <div class="text-xs text-gray-600 mt-1">
+                                    <div class="text-xs text-gray-600 mt-1 mb-1">
                                         {{ $rating->comment }}
                                     </div>
-                                    <span class="flex w-14 h-14  ml-1">
-                                        <img class="" src="/images/sample/watch.jpeg" />
-                                        <img class="" src="/images/sample/watch.jpeg" />
-                                        <img class="" src="/images/sample/watch.jpeg" />
-                                        <img class="" src="/images/sample/watch.jpeg" />
-                                    </span>
+                                    @if (count($rating->ratingImages))
+                                        <span class="flex w-14 h-14 space-x-4">
+                                            @foreach ($rating->ratingImages as $rImage)
+                                                <img src="{{ $rImage->img_src }}" />
+                                            @endforeach
+                                            {{-- <img class="" src="/images/sample/watch.jpeg" />
+                                            <img class="" src="/images/sample/watch.jpeg" />
+                                            <img class="" src="/images/sample/watch.jpeg" /> --}}
+                                        </span>
+                                    @endif
                                     <div class="text-xs text-gray-500 mt-1">
                                         {{ $rating->created_at->format('d/M/Y') }}
                                     </div>
@@ -298,7 +302,7 @@
                             <div class="w-20 h-5 p-2 mt-2 items-center justify-items-center">
                                 <div> <span class="text-xl font-bold">{{ number_format($ratingValue, 1) }}</span> <span
                                         class="text-sm">/5</span></div>
-                                <div class="text-xs">{{ number_format($ratingPercent, 0) }} % Raring</div>
+                                <div class="text-xs">{{ number_format($ratingPercent, 0) }} % Rating</div>
                             </div>
                             <div class="content px-3 py-2 flex-1 space-y-2">
                                 <div class="space-x-1">

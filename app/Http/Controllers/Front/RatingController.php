@@ -5,11 +5,12 @@ namespace App\Http\Controllers\Front;
 use App\Models\Order;
 use App\Models\Rating;
 use App\Models\Product;
+use App\Models\RatingImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-// use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage;
 
 class RatingController extends Controller
 {
@@ -38,7 +39,33 @@ class RatingController extends Controller
                     if ($rating) {
                         $rating->rate    = $rate;
                         $rating->comment = $comment;
-                        $rating->save();
+                        $res = $rating->save();
+                        // Upload rating image
+                        if ($res && $request->hasFile('files')) {
+                            $files = $request->file('files');
+
+                            // Get old image
+                            $ratingImages = RatingImage::where('rating_id', $rating->id)->get();
+
+                            // Delete old image
+                            foreach ($ratingImages as $rImage) {
+                                $oldPath = $rImage->getOldPath($rImage->img_src);
+                                if ($oldPath) {
+                                    Storage::delete($oldPath);
+                                }
+                            }
+
+                            // Update by new image
+                            $ratingImages = RatingImage::where('rating_id', $rating->id)->delete();
+                            foreach ($files as $files) {
+                                $imgPath = Storage::put('images/ratingImage', $files);
+                                $rating->save();
+                                RatingImage::insert([
+                                    'rating_id' => $rating->id,
+                                    'img_src'   => $imgPath
+                                ]);
+                            }
+                        }
                     } else {
                         $rating = new Rating;
 
@@ -46,7 +73,18 @@ class RatingController extends Controller
                         $rating->rate       = $rate;
                         $rating->product_id = $productId;
                         $rating->comment    = $comment;
-                        $rating->save();
+                        $res = $rating->save();
+                        // Upload rating image
+                        if ($res && $request->hasFile('files')) {
+                            $files     = $request->file('files');
+                            foreach ($files as $file) {
+                                $path = Storage::put('images/ratingImage', $file);
+                                RatingImage::insert([
+                                    'rating_id' => $rating->id,
+                                    'img_src'   => $path
+                                ]);
+                            }
+                        }
                     }
                     DB::commit();
                     return back()->with('message', 'Product rated successfully');
