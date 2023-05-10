@@ -203,7 +203,7 @@
                 @if ($product->description)
                 <div class="product-detail mt-3">
                     <div>
-                        <div class="bg-primary h-10 flex items-center rounded-t-md">
+                        <div class="bg-primary h-10 flex items-center rounded-md">
                             <h1 class="text-base text-white pl-4">Description</h1>
                         </div>
                         <div class="bg-white mb-4 p-4 product-description">
@@ -279,9 +279,6 @@
                                             @foreach ($rating->ratingImages as $rImage)
                                                 <img src="{{ $rImage->img_src }}" />
                                             @endforeach
-                                            {{-- <img class="" src="/images/sample/watch.jpeg" />
-                                            <img class="" src="/images/sample/watch.jpeg" />
-                                            <img class="" src="/images/sample/watch.jpeg" /> --}}
                                         </span>
                                     @endif
                                     <div class="text-xs text-gray-500 mt-1">

@@ -705,11 +705,11 @@
                 itemTotalDiscount = itemTotalDiscount + subDiscount;
             });
 
-            
+
             // Get seltected delivery charge text
             deliveryCharge = parseFloat(inputDelivaryCharge.val());
             deliveryGatewayPriceLabel.text(deliveryCharge.toFixed(2));
-            
+
             // get coupon discount
             couponDiscount = inputItemsDiscount.val();
             couponDiscount = +couponDiscount;
