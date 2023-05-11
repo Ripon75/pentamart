@@ -31,6 +31,7 @@
         "aos": "^2.3.4",
         "jquery": "^3.6.0",
         "noty": "^3.2.0-beta-deprecated",
+        "sweetalert2": "^11.7.5",
         "tw-elements": "^1.0.0-alpha12"
     }
 }

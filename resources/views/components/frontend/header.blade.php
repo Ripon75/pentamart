@@ -561,7 +561,6 @@
 
 <script>
     var debounceTime     = 750;
-    var setAlertTime     = {{ config('crud.alear_time') }};
     var cartCount        = $('.cart-count');
     var searchInput      = $('.search-box-input');
     var searchResult     = $('.search-box-result');
@@ -747,17 +746,17 @@
         var phone   = contactNumber.val();
         var area    = headerAreaId.val();
         if (!title) {
-            __showNotification('error', 'Please select address title', setAlertTime);
+            __showNotification('error', 'Please select address title');
             addressTitle.focus();
             return false;
         }
         if (!address) {
-            __showNotification('error', 'Please enter address', setAlertTime);
+            __showNotification('error', 'Please enter address');
             addressLine.focus();
             return false;
         }
         if (!area) {
-            __showNotification('error', 'Please select area', setAlertTime);
+            __showNotification('error', 'Please select area');
             headerAreaId.focus();
             return false;
         }
@@ -774,7 +773,7 @@
         })
         .then(function (response) {
             if (response.data.error) {
-                __showNotification('error', response.data.message, setAlertTime);
+                __showNotification('error', response.data.message);
                 return false;
             } else {
                 loaddingIcon.show();
