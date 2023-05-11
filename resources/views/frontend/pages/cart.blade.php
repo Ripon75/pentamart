@@ -261,9 +261,9 @@
                                                     <span class="text-red-500 ml-1">*</span>
                                                 </div>
                                                 <input type="hidden" class="shipping-address-id" name="address_id"
-                                                    value="{{ ($cart->userAddress->id) ?? null }}">
+                                                    value="{{ ($cart->address->id) ?? null }}">
                                                 <div id="" class="shipping-address-label text-sm text-gray-500">
-                                                    {{ ($cart->userAddress->title) ?? null }}
+                                                    {{ ($cart->address->title) ?? null }}
                                                 </div>
                                             </div>
                                         </div>

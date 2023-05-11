@@ -2,11 +2,11 @@
 
 namespace App\Classes;
 
-use Auth;
 use Carbon\Carbon;
 use App\Models\Offer;
 use App\Models\UserEvent;
 use Jenssegers\Agent\Agent;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Artisan;
 
 class Utility

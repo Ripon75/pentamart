@@ -417,9 +417,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        <button id="btn-header-shepping-address-update" type="button" class="btn btn-primary btn-sm md:btn-md">
-                            Update
-                        </button>
                     </div>
                     <div id="header-address-show-dev" class="mt-1 hidden items-center">
                         <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
@@ -439,11 +436,6 @@
                             <option value="Office">Office</option>
                             <option value="Others">Others</option>
                         </select>
-                    </div>
-                    <div id="others-title-div" class="form-item">
-                        <label for="">Your Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
-                        <input id="header-others-title" class="form-input" type="text"
-                            placeholder="Enter Your Address Title" />
                     </div>
                     <div class="form-item">
                         <label class="form-label">Alternative Phone Number</label>
@@ -580,7 +572,6 @@
     var btnAddressChange     = $('#btn-address-change');
     var inputShippingAddress = $('.header-shipping-address');
     var showAddress          = $('#show-address-label');
-    var btnHeaderSheppingAddressUpdate = $('#btn-header-shepping-address-update');
     //Default selected shipping address id
     var inputShippingId = inputShippingAddress.val();
     // address create
@@ -589,12 +580,11 @@
     var addressLine      = $('#address-line');
     var contactNumber    = $('#contact-person-number');
     var headerAreaId     = $('#header-area-id');
-    // hidden div for title othes
-    var othersTitleDiv = $('#others-title-div').hide();
+    var loaddingIcon     = $('.loadding-icon').hide();
 
     @auth
         __cartItemCount();
-        __getShippingAddress(inputShippingId, true);
+        __getShippingAddress(inputShippingId);
     @endauth
 
     $(function() {
@@ -638,30 +628,13 @@
 
         inputShippingAddress.on('change', function() {
             var addressId = $(this).val();
-            __getShippingAddress(addressId);
-        });
-
-        // Shepping address update
-        btnHeaderSheppingAddressUpdate.click(function() {
-            var addressId = inputShippingAddress.val();
             __addShippingAddress(addressId);
-            __getShippingAddress(addressId, true);
-            $("#address-modal").modal('hide');
+            __getShippingAddress(addressId);
         });
 
         // create user address
         addressCreateBtn.click(function() {
             __addressCreate();
-        });
-
-        // Check address title is others
-        addressTitle.change(function(){
-            var title = $(this).val();
-            if (title === 'Others') {
-                othersTitleDiv.show();
-            } else {
-                othersTitleDiv.hide();
-            }
         });
     });
 
@@ -731,16 +704,13 @@
             address_id: addressId
         })
         .then((response) => {
-            // __showNotification('success', response.data.message, setAlertTime);
         })
         .catch((error) => {
             console.log(error);
-            __showNotification('error', 'Something went to wrong', setAlertTime);
-        })
-        .then(() => {});
+        });
     }
 
-    function __getShippingAddress(addressId, isUpdate = false) {
+    function __getShippingAddress(addressId) {
         axios.get('/my/shipping/addrss', {
             params: {
                 address_id: addressId
@@ -752,14 +722,10 @@
             let address = response.data.result ? response.data.result.address : '';
             // change shipping address id
             $('.shipping-address-id').val(id);
-            // show address title
-            if (isUpdate) {
-                $('.shipping-address-label').text(title);
-            }
+            // show address title in cart page
+            $('.shipping-address-label').text(title);
             // show address in top nav
-            if (isUpdate) {
-                $('#show-address-top-nav').text(address);
-            }
+            $('#show-address-top-nav').text(address);
             // show address in address modal
             if (address) {
                 $('#header-address-show-dev').show();
@@ -782,26 +748,20 @@
         var area    = headerAreaId.val();
         if (!title) {
             __showNotification('error', 'Please select address title', setAlertTime);
+            addressTitle.focus();
             return false;
         }
         if (!address) {
             __showNotification('error', 'Please enter address', setAlertTime);
+            addressLine.focus();
             return false;
         }
         if (!area) {
             __showNotification('error', 'Please select area', setAlertTime);
+            headerAreaId.focus();
             return false;
         }
 
-        if (title && title === 'Others') {
-            var headerOthersTitle = $('#header-others-title').val();
-            if (!headerOthersTitle) {
-                __showNotification('error', 'Please enter your address title', setAlertTime);
-                return false;
-            }
-        }
-
-        title = headerOthersTitle ? headerOthersTitle : title;
 
         bodyFormData.append('title', title);
         bodyFormData.append('address', address);
@@ -817,7 +777,7 @@
                 __showNotification('error', response.data.message, setAlertTime);
                 return false;
             } else {
-                iconLoadding.show();
+                loaddingIcon.show();
                 location.reload(true);
             }
         })

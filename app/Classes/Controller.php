@@ -116,4 +116,25 @@ class Controller extends BaseController
 
         return $utility->sendResponse($data, $message, $type, $view, $code);
     }
+
+    public function appResponse($result, $message)
+    {
+        $response = [
+            'success' => true,
+            'msg'     => $message,
+            'result'  => $result
+        ];
+        return response()->json($response, 200);
+    }
+
+    public function appError($message)
+    {
+        $response = [
+            'success' => false,
+            'msg'     => $message,
+            'result'  => []
+        ];
+
+        return response()->json($response, 500);
+    }
 }
