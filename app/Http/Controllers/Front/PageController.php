@@ -34,88 +34,17 @@ class PageController extends Controller
 
         $sliderBanners = Banner::where('position', 'slider')->where('status', 'active')->get();
 
-        $banners  = Banner::where('position', 'offer')->where('status', 'active')->get();
-
         $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
         $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
 
-        $categories = Category::where('status', 'active')->get();
         $topCategories = Category::where('status', 'active')->where('is_top', 1)->get();
 
-        $feelings = [
-            [
-                // 'link' => route('symptom.page',['stomach-pain']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['fever']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['pregnant']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['joint-pain']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['headache']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['newborn-baby']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['diabetes']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['over-weight']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ]
-        ];
-
         // Top products
-        $topProducts = Section::with(['products'])->where('slug', 'top-products')->first();
+        $topProduct = Section::with(['products'])->where('slug', 'top-products')->first();
 
         // Medical device products
-        $medicalProducts = Section::with(['products'])->where('slug', 'medical-devices')->first();
-
-        // $topCategories = [
-        //     [
-        //         'title'         => 'Category 1',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('products.index')
-        //     ],
-        //     [
-        //         'title'         => 'Category 2',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['asthma'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 3',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['baby-mom-care'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 4',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['skin-care'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 5',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['cosmetics'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 6',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['others'])
-        //     ]
-        // ];
+        $watch = Section::with(['products'])->where('slug', 'watch')->first();
 
         $features = [
             [
@@ -136,16 +65,134 @@ class PageController extends Controller
         ];
 
         return view('frontend.pages.home', [
-            'sliderBanners'   => $sliderBanners,
-            'banners'         => $banners,
-            'feelings'        => $feelings,
-            'hotSales'        => $hotSales,
-            'topProducts'     => $topProducts,
-            'categories'      => $categories,
-            'topCategories'   => $topCategories,
-            'features'        => $features,
-            'brands'          => $brands,
-            'medicalProducts' => $medicalProducts,
+            'sliderBanners' => $sliderBanners,
+            'topProduct'    => $topProduct,
+            'watch'         => $watch,
+            'brands'        => $brands,
+            'topCategories' => $topCategories,
+            'hotSales'      => $hotSales,
+            'features'      => $features,
+        ]);
+    }
+
+    public function index(Request $request, $thumbOnly = false)
+    {
+        Utility::setUserEvent('pageview', [
+            'page' => 'all-products'
+        ]);
+
+        $searchKey           = $request->input('search_key', null);
+        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
+
+        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
+            $filterCategoryIds = explode(",", $filterCategoryIds);
+        } else {
+            $filterCategoryIds = [];
+        }
+
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
+        } else {
+            $filterBrandIds = [];
+        }
+
+        $products = $this->getProducts($request);
+
+        $categories = Category::distinct()
+            ->join('products', 'categories.id', '=', 'products.category_id')
+            ->select('categories.id', 'categories.name')
+            ->where('categories.status', 'active')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
+            ->orderBy('categories.name', 'ASC')
+            ->get();
+
+        $barnds = Brand::distinct()
+            ->join('products', 'brands.id', '=', 'products.brand_id')
+            ->select('brands.id', 'brands.name')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
+            ->where('brands.status', 'active')
+            ->orderBy('brands.name', 'ASC')
+            ->get();
+
+        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.product-index';
+
+        return view($viewPage, [
+            'products'          => $products,
+            'brands'            => $barnds,
+            'categories'        => $categories,
+            'filterCategoryIds' => $filterCategoryIds,
+            'filterBrandIds'    => $filterBrandIds,
+            'pageTitle'         => 'All product'
+        ]);
+    }
+
+    public function productShow(Request $request, $id, $slug = null)
+    {
+        Utility::setUserEvent('pageview', [
+            'page' => 'product-details'
+        ]);
+
+        $currentURL = url()->current();
+        Utility::saveIntendedURL($currentURL);
+        $product = Product::where('status', 'active')->getDefaultMetaData()->find($id);
+        $productSizes  = $product->sizes;
+        $productColors =  $product->colors;
+
+        if (!$product) {
+            abort(404);
+        }
+
+        // Calculate ratings
+        $ratingValue   = 0;
+        $ratingPercent = 0;
+
+        $ratings = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')
+            ->get();
+
+        $ratingCount = $ratings->count();
+        $rateSum     = $ratings->sum('rate');
+        if ($ratingCount > 0) {
+            $ratingValue   = $rateSum / $ratingCount;
+            $ratingPercent = $ratingValue * 100 / 5;
+        }
+
+        $ratingReport = Rating::select(DB::raw('
+            SUM((CASE WHEN rate = 5 THEN 1 ELSE 0 END)) as five_star,
+            SUM((CASE WHEN rate = 4 THEN 1 ELSE 0 END)) as four_star,
+            SUM((CASE WHEN rate = 3 THEN 1 ELSE 0 END)) as three_star,
+            SUM((CASE WHEN rate = 2 THEN 1 ELSE 0 END)) as two_star,
+            SUM((CASE WHEN rate = 1 THEN 1 ELSE 0 END)) as one_star
+        '))->first();
+
+        $userId  = Auth::id();
+        $wishlistedProduct = null;
+
+        if ($userId) {
+            $wishlistedProduct = Wishlist::where('product_id', $id)->where('user_id', $userId)->first();
+        }
+
+        $isWishListed = $wishlistedProduct ? true : false;
+
+        $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
+
+        $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
+            ->where('id', '<>', $product->id)->take(4)->get();
+
+        return view('frontend.pages.product-single', [
+            'product'         => $product,
+            'productSizes'    => $productSizes,
+            'productColors'   => $productColors,
+            'relatedProducts' => $relatedProducts,
+            'isWishListed'    => $isWishListed,
+            'otherProducts'   => $otherProducts,
+            'ratings'         => $ratings,
+            'ratingValue'     => $ratingValue,
+            'ratingPercent'   => $ratingPercent,
+            'ratingReport'    => $ratingReport,
+            'currency'        => 'Tk'
         ]);
     }
 
@@ -266,124 +313,6 @@ class PageController extends Controller
         ]);
 
         return view('frontend.pages.contact');
-    }
-
-    public function index(Request $request, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'all-products'
-        ]);
-
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterBrandIds    = $request->input('filter_brand_ids', []);
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
-            $filterBrandIds = explode(",", $filterBrandIds);
-        } else {
-            $filterBrandIds = [];
-        }
-
-        $products = $this->getProducts($request);
-
-        $categories = Category::distinct()
-            ->join('products', 'categories.id', '=', 'products.category_id')
-            ->select('categories.id', 'categories.name')
-            ->where('categories.status', 'active')
-            ->whereNull('products.deleted_at')
-            ->where('products.status', 'active')
-            ->orderBy('categories.name', 'ASC')
-            ->get();
-
-        $barnds = Brand::distinct()
-            ->join('products', 'brands.id', '=', 'products.brand_id')
-            ->select('brands.id', 'brands.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.status', 'active')
-            ->where('brands.status', 'active')
-            ->orderBy('brands.name', 'ASC')
-            ->get();
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.product-index';
-
-        return view($viewPage, [
-            'products'          => $products,
-            'brands'            => $barnds,
-            'categories'        => $categories,
-            'filterCategoryIds' => $filterCategoryIds,
-            'filterBrandIds'    => $filterBrandIds,
-            'pageTitle'         => 'All product'
-        ]);
-    }
-
-    public function productShow(Request $request, $id, $slug = null)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'product-details'
-        ]);
-
-        $currentURL = url()->current();
-        Utility::saveIntendedURL($currentURL);
-        $product = Product::where('status', 'active')->getDefaultMetaData()->find($id);
-        $productSizes  = $product->sizes;
-        $productColors =  $product->colors;
-
-        if(!$product) {
-            abort(404);
-        }
-
-        // Calculate ratings
-        $ratingValue   = 0;
-        $ratingPercent = 0;
-        $ratings       = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')->get();
-        $ratingCount   = $ratings->count();
-        $rateSum       = $ratings->sum('rate');
-        if ($ratingCount) {
-            $ratingValue   = $rateSum / $ratingCount;
-            $ratingPercent = $ratingValue * 100 / 5;
-        }
-
-        $ratingReport = Rating::select(DB::raw('
-            SUM((CASE WHEN rate = 5 THEN 1 ELSE 0 END)) as five_star,
-            SUM((CASE WHEN rate = 4 THEN 1 ELSE 0 END)) as four_star,
-            SUM((CASE WHEN rate = 3 THEN 1 ELSE 0 END)) as three_star,
-            SUM((CASE WHEN rate = 2 THEN 1 ELSE 0 END)) as two_star,
-            SUM((CASE WHEN rate = 1 THEN 1 ELSE 0 END)) as one_star
-        '))->first();
-
-        $userId  = Auth::id();
-        $wishlistedProduct = null;
-
-        if ($userId) {
-            $wishlistedProduct = Wishlist::where('product_id', $id)->where('user_id', $userId)->first();
-        }
-
-        $isWishListed = $wishlistedProduct ? true : false;
-
-        $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
-
-        $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
-        ->where('id', '<>', $product->id)->take(4)->get();
-
-        return view('frontend.pages.product-single', [
-            'product'         => $product,
-            'productSizes'    => $productSizes,
-            'productColors'   => $productColors,
-            'relatedProducts' => $relatedProducts,
-            'isWishListed'    => $isWishListed,
-            'otherProducts'   => $otherProducts,
-            'ratings'         => $ratings,
-            'ratingValue'     => $ratingValue,
-            'ratingPercent'   => $ratingPercent,
-            'ratingReport'    => $ratingReport,
-            'currency'        => 'Tk'
-        ]);
     }
 
     public function checkout(Request $request)
@@ -564,96 +493,11 @@ class PageController extends Controller
         ]);
     }
 
-    public function offerCategoryProduct(Request $request, $slug, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'offer-category-product'
-        ]);
-
-        $category = Category::where('slug', $slug)->first();
-
-        if(!$category) {
-            abort(404);
-        }
-
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-        $companyList         = [];
-        $dosageFormList      = [];
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-        } else {
-            $filterCompanyIds = [];
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-        $products = $this->getOfferProducts($request, 'categories', $category->slug);
-
-        $subCategorySlug = $request->input('sub_category', null);
-        $categorySlug    = $category->slug;
-        $categorySlug    = $subCategorySlug ? $subCategorySlug : $categorySlug;
-
-        $allProduct = Product::whereHas('categories', function($query) use ($categorySlug) {
-            $query->where('slug', $categorySlug);
-        })->where('status', 'activated')->get();
-
-         // Create company and dosageFrom list from produt list
-         $companyList    = [];
-         $dosageFormList = [];
-         foreach ($allProduct as $key => $product) {
-            $com = $product->company ?? null ;
-            if ($com) {
-                $companyList[$com->id] = $com;
-            }
-
-            $dForm = $product->dosageForm;
-            if($dForm) {
-                if ($dForm->status == 'activated') {
-                    $dosageFormList[$dForm->id] = $dForm;
-                }
-            }
-        }
-
-        // Company sort
-        $companies = $this->getSortData($companyList);
-        // Dosage form sort
-        $dosageForms = $this->getSortData($dosageFormList);
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.offer-category-products';
-
-        return view($viewPage, [
-            'slug'                => $slug,
-            'products'            => $products,
-            'companies'           => $companies,
-            'dosageForms'         => $dosageForms,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds,
-            'pageTitle'           => $category->name
-        ]);
-    }
-
     private function getProducts($request, $relation = null, $id = null)
     {
-        // $percent             = $request->input('percent', null);
-        $searchKey           = $request->input('search_key', null);
-        // $order               = $request->input('order', null);
-        $filterBrandIds      = $request->input('filter_brand_ids', []);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $searchKey         = $request->input('search_key', null);
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
+        $filterCategoryIds = $request->input('filter_category_ids', []);
 
         $products = Product::getDefaultMetaData();
 
@@ -758,12 +602,5 @@ class PageController extends Controller
         }
 
         return $products;
-    }
-
-    public function getSortData($data, $sortBy = 'name')
-    {
-        return array_values(Arr::sort($data, function ($d) use ($sortBy) {
-            return $d[$sortBy];
-        }));
     }
 }
