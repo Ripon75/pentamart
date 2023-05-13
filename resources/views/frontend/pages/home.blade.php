@@ -168,7 +168,7 @@
                     @endforeach
                 </div>
                 <div class="text-center mt-8">
-                    <a href="{{ route('category.page', ['medical-devices']) }}" class="btn btn-md btn-primary">Browse All Products</a>
+                    <a href="{{ route('products.index') }}" class="btn btn-md btn-primary">Browse All Products</a>
                 </div>
             </div>
         </section>

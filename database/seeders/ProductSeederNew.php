@@ -2,12 +2,9 @@
 
 namespace Database\Seeders;
 
-use Carbon\Carbon;
-use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
 
 class ProductSeederNew extends Seeder
 {
@@ -20,43 +17,43 @@ class ProductSeederNew extends Seeder
     {
         // Artisan::call('scout:flush "App\\Models\\Product"');
 
-        $csvFile   = fopen(base_path("database/data/NonmediciProduct.csv"), "r");
+        $csvFile   = fopen(base_path("database/data/products.csv"), "r");
         $firstline = true;
-
 
         while (($data = fgetcsv($csvFile, 2500, ",")) !== false) {
             if (!$firstline) {
-                $name = $data['1'];
+                $name = $data['0'];
                 $slug = Str::slug($name, '-');
 
-                $price = $data['3'];
+                $price = $data['1'];
                 $price = (float)$price;
 
-                $offerPrice = $data['7'];
+                $offerPrice = $data['2'];
                 $offerPrice = (float)$offerPrice;
 
-                if ($price > $offerPrice) {
-                    $offerPrice = $offerPrice;
-                } else {
-                    $offerPrice = 0;
-                }
+                $offerPercent = $data['3'];
+                $offerPercent = (float)$offerPercent;
+
+                $currentStock = $data['4'];
+                $currentStock = (float)$currentStock;
 
                 if ($name && $price) {
-                    $productObj                 = new Product();
-                    $productObj->name           = $name;
-                    $productObj->slug           = $slug;
-                    $productObj->brand_id       = rand(1, 3);
-                    $productObj->category_id    = rand(1, 4);
-                    $productObj->price          = $price;
-                    $productObj->offer_price    = $offerPrice;
-                    $productObj->status         = 'active';
-                    $productObj->image_src      = null;
+                    $productObj                = new Product();
+                    $productObj->name          = $name;
+                    $productObj->slug          = $slug;
+                    $productObj->brand_id      = rand(1, 3);
+                    $productObj->category_id   = rand(1, 4);
+                    $productObj->price         = $price;
+                    $productObj->offer_price   = $offerPrice;
+                    $productObj->offer_percent = $offerPercent;
+                    $productObj->current_stock = $currentStock;
+                    $productObj->status        = 'active';
+                    $productObj->image_src     = null;
                     $productObj->save();
                 }
             }
             $firstline = false;
         }
-
         fclose($csvFile);
     }
 }

@@ -1,6 +1,6 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
-    <div class="top-header-bar">
+    {{-- <div class="top-header-bar">
         <div class="bg-[#ffc42d] h-8 sm:h-8 md:h-10">
             <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-black h-full">
                 <div class="address flex-1 hidden sm:hidden md:block">
@@ -15,7 +15,6 @@
                        </button>
                     </span>
                 </div>
-                {{-- ======top links====== --}}
                 <div class="top-links">
                     <div class="flex space-x-0 sm:space-x-0 lg:space-x-4">
                         <div class="social-icons flex">
@@ -27,7 +26,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="border-b bg-[#00798c]">
         <header class="page-header container hidden sm:hidden md:hidden lg:block xl:block">
             <div class="grid grid-cols-8 h-full gap-2">
@@ -145,7 +144,7 @@
                                 </div>
                                 <div class="px-4">
                                     <span class="line-clamp-2 text-xs font-medium">
-                                        Login or<br>Register
+                                        Login
                                     </span>
                                 </div>
                             </a>
@@ -351,7 +350,7 @@
                         data-mc-on-previous-url="{{ url()->current() }}"
                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <i class="pr-3 fa-solid fa-right-to-bracket"></i>
-                            Login/Register
+                            Login
                         </a>
                     @endguest
                 </div>
@@ -560,7 +559,6 @@
 </script>
 
 <script>
-    var debounceTime     = 750;
     var cartCount        = $('.cart-count');
     var searchInput      = $('.search-box-input');
     var searchResult     = $('.search-box-result');
@@ -611,7 +609,7 @@
             {
                 window.location.href = `/products?search_key=${searchKeywords}`;
             }
-        }, debounceTime));
+        }, 750));
 
         // Header modal opration
         $('.modal .close-btn').click(function (e) {

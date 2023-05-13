@@ -4,12 +4,12 @@
     <section class="page-section page-top-gap">
         <section class="container sm:container md:container lg:px-24 xl:px-52 2xl:px-60 text-gray-800">
             {{-- ======English translate============ --}}
-            <div id="show" class="mt-4">
+            <div class="mt-4">
                 <div class="">
                     <h1 class="text-lg">Welcome to <span class="font-medium">Pentamart</span></h1>
                 </div>
                 <div class="mt-2 flex flex-col space-y-2 text-justify">
-                    <p class="">Lorem</p>
+                    <p class="">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi incidunt dolore voluptatem aspernatur soluta laboriosam magni vel voluptas facilis commodi earum quis exercitationem id, pariatur debitis. Consequuntur iusto ex beatae.</p>
                 </div>
                 <div class="mt-4">
                     <p class="font-medium mb-2 mt-3">List title</p>
@@ -32,5 +32,4 @@
             {{-- ======./English translate============ --}}
         </section>
     </section>
-
 @endsection
