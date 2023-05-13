@@ -16,10 +16,10 @@
                 </span>
                 <div class="col-span-4">
                     <div class="text-black text-sm">
-                        <span class="font-semibold">Helpline No:&nbsp;</span><span>09609080706</span>
+                        <span class="font-semibold">Helpline No:&nbsp;</span><span>+8801*********</span>
                     </div>
                     <div class="text-sm">
-                        <span class="font-semibold">Email:&nbsp;</span><span>contact@medicart.health</span>
+                        <span class="font-semibold">Email:&nbsp;</span><span>pentamart@gmail.com</span>
                     </div>
                 </div>
             </div>

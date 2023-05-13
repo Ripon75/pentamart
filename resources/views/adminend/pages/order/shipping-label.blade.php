@@ -62,13 +62,13 @@
                             </tr>
                         @endif
                         <tr class="border-2 border-black text-sm">
-                            <td class="w-80 text-center border border-black" colspan="2">Thank you for trusting Medicart</td>
+                            <td class="w-80 text-center border border-black" colspan="2">Thank you for trusting Pentamart</td>
                         </tr>
                         <tr class="border-2 border-black text-sm">
                             <td class="w-32 border border-black font-semibold">Contact us</td>
                             <td class="w-48 border border-black text-xs">
-                                Helpline No: 09609080706 <br>
-                                Email: contact@medicart.health
+                                Helpline No: +8801********* <br>
+                                Email: pentamart@gmail.com
                             </td>
                         </tr>
                     </tbody>

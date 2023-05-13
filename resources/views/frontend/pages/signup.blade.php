@@ -1,13 +1,13 @@
 @extends('frontend.layouts.default')
-@section('title', 'Signup')
+@section('title', 'registration')
 @section('content')
-    {{-- ==========Signup Form============== --}}
+    {{-- ==========registration Form============== --}}
     <section class="">
         <div class="container page-section page-top-gap">
             <div class="sm:[w-500px] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] mx-auto">
                 <div class="card shadow">
                     <div class="body p-4">
-                        <form action="{{ route('signup.store') }}" method="POST">
+                        <form action="{{ route('registration.store') }}" method="POST">
                             @csrf
 
                             @if(Session::has('error'))
@@ -22,7 +22,7 @@
 
                             <div class="form-item ">
                                 <label class="form-label">Name <span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('name') }}" name="name" placeholder="Jhon Doe" class="form-input" />
+                                <input type="text" value="{{ old('name') }}" name="name" placeholder="Your name" class="form-input" />
                                 @error('name')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
@@ -30,14 +30,14 @@
                             <div class="form-item">
                                 <label class="form-label">Phone Number <span class="text-red-500 font-medium">*</span></label>
                                 <input type="text" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                    name="phone_number" class="form-input rounded" placeholder="1XXXXXXXXX" />
+                                    name="phone_number" class="form-input rounded" placeholder="1*********" />
                                 @error('phone_number')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-item">
                                 <label class="form-label">Email</label>
-                                <input type="email" value="{{ old('email') }}" name="email" placeholder="jhon@example.com" class="form-input" />
+                                <input type="email" value="{{ old('email') }}" name="email" placeholder="example@gmail.com" class="form-input" />
                                 @error('email')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror

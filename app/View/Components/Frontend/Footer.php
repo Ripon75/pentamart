@@ -25,10 +25,8 @@ class Footer extends Component
     {
         $about = [
             'logo'        => '/images/logos/logo.png',
-            'loc1'        => 'Address 1',
             'email'       => 'pentamart@gmail.com',
             'phone'       => '+8801**********',
-            'phone2'      => '+8801**********',
         ];
 
         $nav1 = [
@@ -74,7 +72,6 @@ class Footer extends Component
             '/images/logos/cash-on-delivery.jpg',
             '/images/logos/bkash.png',
             '/images/logos/nagad.png',
-            '/images/logos/master-card.png'
         ];
 
         return view('components.frontend.footer', [

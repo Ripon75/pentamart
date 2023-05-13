@@ -28,12 +28,12 @@
                     <img
                         src="{{ $sliderBanners[0]->img_src }}"
                         class="hidden sm:hidden md:block w-full"
-                        alt="Medicart Banner"
+                        alt=""
                     />
                     <img
                         src="{{ $sliderBanners[0]->mobile_img_src }}"
                         class="w-full block sm:block md:hidden"
-                        alt="Medicart Banner"
+                        alt=""
                     />
                 </div>
                 @for ($i=1; $i<count($sliderBanners); $i++)
@@ -41,12 +41,12 @@
                             <img
                                 src="{{ $sliderBanners[$i]->img_src }}"
                                 class="hidden sm:hidden md:block w-full"
-                                alt="Medicart Banner"
+                                alt=""
                             />
                             <img
                                 src="{{ $sliderBanners[$i]->mobile_img_src }}"
                                 class="block sm:block md:hidden w-full"
-                                alt="Medicart Banner"
+                                alt=""
                             />
                     </div>
                 @endfor

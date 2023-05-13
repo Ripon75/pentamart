@@ -295,7 +295,7 @@
                         <span class="text-sm sm:text-sm lg:text-base text-primary">Download App</span>
                         <div class="download-app flex items-center space-x-3 text-primary">
                             <a href="https://apps.apple.com/us/app/apple-store/id6443554194/" target="_blank" class="icon-wrapper text-2xl xl:text-3xl"><i class="icon fa-brands fa-apple"></i></a>
-                            <a href="https://play.google.com/store/apps/details?id=com.pulsetechltd.medicart" target="_blank" class="icon-wrapper text-xl xl:text-2xl"><i class="icon fa-brands fa-google-play"></i></a>
+                            <a href="" target="_blank" class="icon-wrapper text-xl xl:text-2xl"><i class="icon fa-brands fa-google-play"></i></a>
                         </div>
                     </div>
                 </div> --}}
@@ -373,7 +373,7 @@
                 pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                 <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                     <h5 class="text-lg font-medium leading-normal text-gray-800" id="loginModalScrollableLabel">
-                        Login/Signup
+                        Login
                     </h5>
                     <button type="button"
                         class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"

@@ -30,8 +30,8 @@ Route:: get('/offers/categories/{slug}',   [PageController::class, 'offerCategor
 Route:: get('/offers',                     [PageController::class, 'offerProduct'])->name('offers.products');
 
 // Registration route
-Route::get('/signup',  [AuthController::class, 'registrationCreate'])->name('signup');
-Route::post('/signup', [AuthController::class, 'registrationStore'])->name('signup.store');
+Route::get('/registration',  [AuthController::class, 'registrationCreate'])->name('registration');
+Route::post('/registration', [AuthController::class, 'registrationStore'])->name('registration.store');
 
 // Login route
 Route::get('/login',     [AuthController::class, 'loginCreate'])->name('login');

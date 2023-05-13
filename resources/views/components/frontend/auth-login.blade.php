@@ -4,7 +4,7 @@
         <div class="">
             <div class="body rounded pb-2 md:pb-2 lg:pb-4 px-4 lg:px-0">
                 <div class="form-item">
-                    <label class="form-label">Phone Number<span class="ml-1 text-red-500 font-medium">*</span></label>
+                    <label class="form-label">Your Phone Number<span class="ml-1 text-red-500 font-medium">*</span></label>
                     <div class="flex">
                         <div class="left-0 flex items-center">
                             <select class="text-xs md:text-base rounded rounded-r-none focus:ring-0 focus:outline-none">
@@ -14,12 +14,16 @@
                         <input id="input-phone-number"
                             class="w-full text-xs md:text-base border-l-0 rounded rounded-l-none focus:ring-0 focus:outline-none placeholder:text-xs md:placeholder:text-sm"
                             type="text" placeholder="1XXXXXXXXX"/>
-                    </div>
+                        </div>
+                        <div class="flex justify-between text-gray-500 mt-1">
+                            <span class="text-sm">Don`t have a account</span>
+                            <a class="text-sm hover:text-[#00798c]" href="{{ route('registration') }}">Register now</a>
+                        </div>
                 </div>
                 <div class="mt-4">
                     <button id="login-step1-button-confirm" type="button" class="btn btn-md btn-primary btn-block">
                         <i class="login-page-loading-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                        Confirm
+                        Submit
                     </button>
                 </div>
             </div>
@@ -268,7 +272,7 @@
                     }
                     loginPageLoadingIcon.hide();
                 } else {
-                    location.href = '{{ route('signup') }}?phone_number='+phoneNumber;
+                    location.href = '{{ route('registration') }}?phone_number='+phoneNumber;
                 }
             })
             .catch((error) => {

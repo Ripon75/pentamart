@@ -220,60 +220,8 @@ class PageController extends Controller
             'page' => 'frequently-asked-questions'
         ]);
 
-        $questions = [
-            [
-                'q' => 'When will I receive my order?',
-                'a' => 'Your order will be delivered within <strong>24-48</strong> hours inside dhaka city',
-            ],
-            [
-                'q' => 'I have received damaged items.',
-                'a' => 'We are sorry you had to experience this. Please do not accept the delivery of that order and let us know what happened.',
-            ],
-            [
-                'q' => 'Items are different from what I ordered.',
-                'a' => 'We are sorry you have had to experience this. Please do not accept it from delivery man. Reject the order straightaway and call to medicart customer care.',
-            ],
-            [
-                'q' => 'Items are different from what I ordered.',
-                'a' => 'We are sorry you have had to experience this. Please do not accept it from delivery man. Reject the order straightaway and call to medicart customer care.',
-            ],
-            [
-                'q' => 'What if Items are missing from my order?',
-                'a' => 'In no circumstances, you should receive an order that is incomplete. Once delivery man reaches your destination, be sure to check expiry date of medicines and your all ordered items was delivered.',
-            ],
-            [
-                'q' => 'How do I cancel my order?',
-                'a' => 'Please call us with your order ID and we will cancel it for you.',
-            ],
-            [
-                'q' => 'I want to modify my order.',
-                'a' => 'Sorry, once your order is confirmed, it cannot be modified. Please place a fresh order with any modifications.',
-            ],
-            [
-                'q' => 'What is the shelf life of medicines being provided?',
-                'a' => 'We ensure that the shelf life of the medicines being supplied by our partner retailers is, at least, a minimum of 3 months from the date of delivery.',
-            ],
-            [
-                'q' => 'Order status showing delivered but I have not received my order.',
-                'a' => 'Sorry that you are experiencing this. Please call to connect with us immediately.',
-            ],
-            [
-                'q' => 'Which cities do you operate in?',
-                'a' => 'Currently, we deliver only in Dhaka City',
-            ],
-            [
-                'q' => 'How can I get my order delivered faster?',
-                'a' => 'Sorry, we currently do not have a feature available to expedite the order delivery. We surely have a plan to introduce 2 hour expedite delivery soon.',
-            ],
-            [
-                'q' => 'Can I modify my address after Order placement?',
-                'a' => 'Sorry, once the order is placed, we are unable to modify the address.',
-            ],
-            [
-                'q' => 'What is the meaning of Delivered status?',
-                'a' => 'When delivery man reaches your destination and hand over the products to you the delivery status changes to <strong>Delivered</strong>. Status <strong>Delivered</strong> also means Medicart has already collected the payment from you via cash or online payment.',
-            ]
-        ];
+        $questions = [];
+
         return view('frontend.pages.frequently-asked-questions', [
             'questions' => $questions
         ]);
