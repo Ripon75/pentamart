@@ -143,7 +143,7 @@
                                     <i class="icon fa-regular fa-user"></i>
                                 </div>
                                 <div class="px-4">
-                                    <span class="line-clamp-2 text-xs font-medium">
+                                    <span class="line-clamp-2 text-md font-medium">
                                         Login
                                     </span>
                                 </div>

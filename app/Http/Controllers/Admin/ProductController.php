@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use DB;
 use Auth;
 use Carbon\Carbon;
-use App\Models\Tag;
 use App\Models\Brand;
 use App\Models\Company;
 use App\Models\Generic;

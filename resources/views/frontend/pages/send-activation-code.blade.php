@@ -42,7 +42,7 @@
 
 @push('scripts')
     <script>
-        var resendCodeEndPoint         = '/phone/activation/resend-code';
+        var resendCodeEndPoint         = '/activation-resend-code';
         var phoneActivationResendCode  = $('#phone-activation-resend-code');
         var btnUserActivationSubmit    = $('#btn-user-activation-submit');
         var userActivationLoaddingIcon = $('.user-activation-loadding-icon').hide();
@@ -50,7 +50,7 @@
         $(function() {
             phoneActivationResendCode.click(function() {
                 var phoneNumber = $('#phone-number').val();
-                __resendCode(phoneNumber);
+                resendActivationCode(phoneNumber);
             });
 
             btnUserActivationSubmit.click(function() {
@@ -58,21 +58,21 @@
             });
         });
 
-        // Resend code
-        function __resendCode(phoneNumber) {
+        // Resend activation code
+        function resendActivationCode(phoneNumber) {
             axios.get(resendCodeEndPoint, {
-                    params: {
-                    phone_number: phoneNumber
-                    }
-                })
-                .then(function (response) {
-                    if (response.data.code === 200) {
-                    __showNotification('success', response.data.message, 1000);
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                params: {
+                phone_number: phoneNumber
+                }
+            })
+            .then(function (response) {
+                if (response.data.code === 200) {
+                __showNotification('success', response.data.message, 1000);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         }
     </script>
 @endpush

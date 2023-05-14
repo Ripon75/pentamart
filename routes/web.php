@@ -35,21 +35,20 @@ Route::post('/registration', [AuthController::class, 'registrationStore'])->name
 
 // Login route
 Route::get('/login',     [AuthController::class, 'loginCreate'])->name('login');
-Route::post('/login',    [AuthController::class, 'newLoginStore'])->name('new-login.store');
-Route::post('/send/otp', [AuthController::class, 'sendotp'])->name('send.otp');
+Route::post('/login',    [AuthController::class, 'loginStore'])->name('login.store');
+Route::post('/send/otp', [AuthController::class, 'sendOTP'])->name('send.otp');
 
 // Password recovery route
-Route::get('/password/recover',                  [AuthController::class, 'recover'])->name('password.recover');
-Route::post('/password/recover/email-or-phone',  [AuthController::class, 'emailOrPhoneStore']);
+Route::get('/password/recover',  [AuthController::class, 'passwordRecover'])->name('password.recover');
+Route::post('/password/recover', [AuthController::class, 'storePhoneNumber']);
 Route::post('/password/recover/send-code',       [AuthController::class, 'codeCheck']);
 Route::get('/password/recover/resend-code',      [AuthController::class, 'resendCode']);
 Route::post('/password/recover/update-password', [AuthController::class, 'passwordUpdate']);
 
 // Phone activation route
-Route::get('/phone/activation/send-code',                [AuthController::class, 'sendActivatonCode']);
-Route::get('/phone/activation/code-check/{phoneNumber}', [AuthController::class, 'phoneActivationcodeView'])->name('phone.active.code.check.view');
-Route::post('/phone/activation/code-check',              [AuthController::class, 'phoneActivationcodeCheck'])->name('phone.active.code.check');
-Route::get('/phone/activation/resend-code',              [AuthController::class, 'phoneActivationResendCode']);
+Route::get('/send-activation-code/{phoneNumber?}', [AuthController::class, 'sendActivationCode'])->name('send.code.view');
+Route::post('/activation-code-check', [AuthController::class, 'activationCodeCheck'])->name('phone.active.code.check');
+Route::get('/activation-resend-code', [AuthController::class, 'activationResendCode']);
 
 // Socialite
 Route::get('/auth/social/redirect/{service}', [AuthController::class, 'socialRedirect'])->name('social.login');

@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Front;
 
 use Carbon\Carbon;
 use App\Models\User;
-use App\Models\Cart;
 use App\Classes\Utility;
 use App\Classes\SMSGateway;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Routing\Controller;
+// use Illuminate\Routing\Controller;
+use App\Http\Controllers\Controller;
 use App\Events\CustomerRegistration;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -20,16 +20,15 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    protected $registrationView          = 'frontend.pages.signup';
-    protected $loginView                 = 'frontend.pages.login';
-    protected $successLoginRedirectRoute = '/';
-    protected $faildLoginRedirectRoute   = '/login';
+    protected $registrationView  = 'frontend.pages.signup';
+    protected $loginView         = 'frontend.pages.login';
+    protected $successLoginRoute = '/';
+    protected $faildLoginRoute   = '/login';
 
-    // return registration view
     public function registrationCreate()
     {
         if (Auth::check()) {
-            return redirect()->intended($this->successLoginRedirectRoute);
+            return redirect()->intended($this->successLoginRoute);
         }
 
         return view($this->registrationView);
@@ -61,57 +60,47 @@ class AuthController extends Controller
 
         try {
             DB::beginTransaction();
-            // check first digit 0 or not
+
+            // Format phone number
             $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
-            $user = User::where('email', $email)->whereNotNull('email')->orWhere('phone_number', $phoneNumber)->first();
+            $user = User::where('phone_number', $phoneNumber)->first();
+
             if ($user) {
-                if ($user->ac_active) {
-                    return back()->with('success', 'User already active');
-                } else {
-                    if ($code && $phoneNumber) {
-                        $user->code = $code;
-                        $res = $user->save();
-                        $SMSGateway = new SMSGateway();
-                        $SMSGateway->sendActivationCode($phoneNumber, $code);
-                    }
-                    return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
+                return redirect()->route('login');
+            } else {
+                $user = new User();
+
+                $user->name  = $name;
+                $user->email = $email;
+                $user->phone_number        = $phoneNumber;
+                $user->password            = Hash::make($password);
+                $user->terms_and_conditons = $termsAndConditions;
+                $user->code = $code;
+                $res = $user->save();
+
+                if ($res) {
+                    Utility::setUserEvent('customer-registration', [
+                        'user' => $user
+                    ]);
+
+                    CustomerRegistration::dispatch($user, $phoneNumber, $code);
+
+                    DB::commit();
+                    return redirect()->route('send.code.view', [$phoneNumber]);
                 }
             }
-
-            $userObj = new User();
-
-            $userObj->name  = $name;
-            $userObj->email = $email;
-            $userObj->phone_number        = $phoneNumber;
-            $userObj->password            = Hash::make($password);
-            $userObj->terms_and_conditons = $termsAndConditions;
-            $userObj->code = $code;
-            $res = $userObj->save();
-
-            if ($res) {
-                Utility::setUserEvent('customer-registration', [
-                    'user' => $userObj
-                ]);
-                CustomerRegistration::dispatch($userObj, $phoneNumber, $code);
-                return redirect()->route('phone.active.code.check.view', [$phoneNumber]);
-            } else {
-                return back()->with($res);
-            }
-            DB::commit();
         } catch (\Exception $e) {
-            //throw $th;
             info($e);
             DB::rollback();
-            return false;
+            return back()->with('error', 'User registration failed');
         }
     }
 
-    // return login view
     public function loginCreate()
     {
         if (Auth::check()) {
-            return redirect()->intended($this->successLoginRedirectRoute);
+            return redirect()->intended($this->successLoginRoute);
         }
 
         Utility::saveIntendedURL();
@@ -119,50 +108,36 @@ class AuthController extends Controller
         return view($this->loginView);
     }
 
-    public function newLoginStore(Request $request)
+    public function loginStore(Request $request)
     {
+        // $request->validate([
+        //     'phone_number' => ['required']
+        // ]);
+
         $phoneNumber = $request->input('phone_number', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
-        if ($phoneNumber) {
-            // check first digit 0 or not
-            $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $user = User::where('phone_number', $phoneNumber)->first();
 
-            $user = User::where('phone_number', $phoneNumber)->first();
+        if ($user) {
+            if (!$user->ac_active) {
+                $activationCode = $this->getRandomCode();
+                $user->code = $activationCode;
+                $user->save();
+                // $SMSGateway = new SMSGateway();
+                // $SMSGateway->sendActivationCode($phoneNumber, $activationCode);
 
-            if ($user) {
-                if (!$user->ac_active) {
-                    $code = $this->getRandomCode();
-                    if ($code && $phoneNumber) {
-                        $user->code = $code;
-                        $res = $user->save();
-                        $SMSGateway = new SMSGateway();
-                        $SMSGateway->sendActivationCode($phoneNumber, $code);
-                    }
-                    return $res = [
-                        'success'      => true,
-                        'data'         => $user,
-                        'ac_status'    => false,
-                        'message'      => 'User is not active',
-                        'phone_number' => $phoneNumber
-                    ];
-                }
+                // return $res = [
+                //     'success'      => true,
+                //     'data'         => $user,
+                //     'ac_status'    => false,
+                //     'message'      => 'Inactive user',
+                //     'phone_number' => $phoneNumber
+                // ];
+                return $this->sendResponse($user, 'Inactive user');
             }
-
-            if ($user) {
-                return $res = [
-                    'success'   => true,
-                    'data'      => $user,
-                    'ac_status' => true,
-                    'message'   => 'User found'
-                ];
-            } else {
-                return $res = [
-                    'success'   => false,
-                    'data'      => '',
-                    'ac_status' => true,
-                    'message'   => 'User not found'
-                ];
-            }
+        } else {
+            return $this->sendError('User not found');
         }
 
         $phone      = $request->input('phone', null);
@@ -177,17 +152,7 @@ class AuthController extends Controller
 
             if(Auth::attempt(['phone_number' => $phone, 'password' => $password, 'ac_active' => true], $isRemember)) {
                 $user  = Auth::user();
-                // $cart  = $user->cart;
-                // if (!$cart) {
-                //     $cartObj = new Cart();
-                //     $cartObj->_createAndAssignCustomer($user->id);
-                // }
                 $request->session()->regenerate();
-
-                Utility::setUserEvent('customer-login', [
-                    'user' => $user,
-                    'login-by' => 'password'
-                ]);
 
                 return $res = [
                     'success' => true,
@@ -207,15 +172,6 @@ class AuthController extends Controller
             if ($user) {
                 $code = $user->code;
                 Auth::login($user);
-                // if (!$user->cart) {
-                //     $cartObj = new Cart();
-                //     $cartObj->_createAndAssignCustomer($user->id);
-                // }
-
-                Utility::setUserEvent('customer-login', [
-                    'user' => $user,
-                    'login-by' => 'otp'
-                ]);
 
                 return $res = [
                     'success' => true,
@@ -253,7 +209,7 @@ class AuthController extends Controller
     // logout function
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        $user = User::where('id', Auth::id())->first();
         if ($user->remember_token) {
             $user->remember_token = null;
             $user->save();
@@ -268,36 +224,29 @@ class AuthController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-
-        return redirect($this->successLoginRedirectRoute);
+        return redirect($this->successLoginRoute);
     }
 
     private function socialGoogleAuth($socialUser)
     {
         $user = User::where('google_id', $socialUser->id)->first();
-
         if ($user) {
             $user->name                 = $socialUser->name;
             $user->google_token         = $socialUser->token;
             $user->google_refresh_token = $socialUser->refreshToken;
             $user->avatar               = $socialUser->avatar;
-
             $user->save();
         } else {
-
             $user = User::where('email', $socialUser->email)->first();
-
             if ($user) {
                 $user->google_id            = $socialUser->id;
                 $user->name                 = $socialUser->name;
                 $user->google_token         = $socialUser->token;
                 $user->google_refresh_token = $socialUser->refreshToken;
                 $user->avatar               = $socialUser->avatar;
-
                 $user->save();
             } else {
-
-                $user                       = new User();
+                $user = new User();
 
                 $user->name                 = $socialUser->name;
                 $user->email                = $socialUser->email;
@@ -305,39 +254,31 @@ class AuthController extends Controller
                 $user->google_token         = $socialUser->token;
                 $user->google_refresh_token = $socialUser->refreshToken;
                 $user->avatar               = $socialUser->avatar;
-
                 $user->save();
             }
         }
-
         return $user;
     }
 
     private function socialFacebookAuth($socialUser)
     {
         $user = User::where('facebook_id', $socialUser->id)->first();
-
         if ($user) {
             $user->name                   = $socialUser->name;
             $user->facebook_token         = $socialUser->token;
             $user->facebook_refresh_token = $socialUser->refreshToken;
             $user->avatar                 = $socialUser->avatar;
-
             $user->save();
         } else {
-
             $user = User::where('email', $socialUser->email)->first();
-
             if ($user) {
                 $user->facebook_id            = $socialUser->id;
                 $user->name                   = $socialUser->name;
                 $user->facebook_token         = $socialUser->token;
                 $user->facebook_refresh_token = $socialUser->refreshToken;
                 $user->avatar                 = $socialUser->avatar;
-
                 $user->save();
             } else {
-
                 $user = new User();
 
                 $user->name                   = $socialUser->name;
@@ -346,72 +287,47 @@ class AuthController extends Controller
                 $user->facebook_token         = $socialUser->token;
                 $user->facebook_refresh_token = $socialUser->refreshToken;
                 $user->avatar                 = $socialUser->avatar;
-
                 $user->save();
             }
         }
         return $user;
     }
 
-    public function recover()
+    public function passwordRecover()
     {
         return view('frontend.pages.my-password-recover');
     }
 
-    public function emailOrPhoneStore(Request $request)
+    public function storePhoneNumber(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone_or_email' => 'required'
+            'phone_number' => 'required'
         ]);
 
         if ($validator->fails()) {
-            $res = [
-                'code'    => 201,
-                'message' => 'The phone or email is required'
-            ];
-
-            return $res;
+            return $this->sendError('error', 'The phone number is required');
         }
 
-        $emailOrPhone = $request->input('phone_or_email', null);
+        $phoneNumber = $request->input('phone_number', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
-        $obj = new PasswordRecoveryCode();
+        $passwordRecover = new PasswordRecoveryCode();
 
-        // check if e-mail address is well-formed
-        if (filter_var($emailOrPhone, FILTER_VALIDATE_EMAIL)) {
-            $obj->email = $emailOrPhone;
-        }else {
-            // Check first digit zero or not
-            if (str_starts_with($emailOrPhone, '0')) {
-                $emailOrPhone = '88'.$emailOrPhone;
-            } else {
-                $emailOrPhone = $emailOrPhone;
-            }
-            $obj->phone_number = $emailOrPhone;
-        }
 
-        $checkEmailOrPhone = User::where('email', $emailOrPhone)->orWhere('phone_number', $emailOrPhone)->first();
-        if (!$checkEmailOrPhone) {
-            $res = [
-                'code'    => 201,
-                'message' => 'The phone or email is not valid'
-            ];
-
-            return $res;
+        $checkUser = User::where('phone_number', $phoneNumber)->first();
+        if (!$checkUser) {
+            return $this->sendError('error', 'The phone number is not valid');
         }
 
         $code = $this->getRandomCode();
-        $obj->code = $code;
-        $res = $obj->save();
-        // Call event
-        PasswordRecoveryAttempted::dispatch($emailOrPhone, $code);
+        $passwordRecover->phone_number = $phoneNumber;
+        $passwordRecover->code = $code;
+        $passwordRecover->save();
 
-        $res = [
-            'code'    => 200,
-            'message' => 'OTP code send your phone'
-        ];
+        // Dispatch event
+        PasswordRecoveryAttempted::dispatch($phoneNumber, $code);
 
-        return $res;
+        return $this->sendResponse($checkUser, 'OTP code send your phone');
     }
 
     public function codeCheck(Request $request)
@@ -479,7 +395,7 @@ class AuthController extends Controller
         }
     }
 
-    public function phoneActivationResendCode(Request $request)
+    public function activationResendCode(Request $request)
     {
         $request->validate([
             'phone_number' => ['required']
@@ -579,19 +495,14 @@ class AuthController extends Controller
         }
     }
 
-    public function sendActivatonCode()
-    {
-        return view('frontend.pages.send-activation-code');
-    }
-
-    public function phoneActivationcodeView(Request $request, $phoneNumber)
+    public function sendActivationCode($phoneNumber = null)
     {
         return view('frontend.pages.send-activation-code', [
             'phoneNumber' => $phoneNumber
         ]);
     }
 
-    public function phoneActivationcodeCheck(Request $request)
+    public function activationCodeCheck(Request $request)
     {
         $request->validate([
             'phone_number' => ['required'],
@@ -600,6 +511,7 @@ class AuthController extends Controller
 
         $phoneNumber = $request->input('phone_number', null);
         $code        = $request->input('pin_code', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
         $user = User::where('phone_number', $phoneNumber)->first();
         if($user) {
@@ -607,7 +519,7 @@ class AuthController extends Controller
                 $user->ac_active = 1;
                 $user->save();
 
-                $intendedURL = session('url.intended') ? session('url.intended') : $this->successLoginRedirectRoute;
+                $intendedURL = session('url.intended') ? session('url.intended') : $this->successLoginRoute;
                 session()->forget('url.intended');
                 Auth::login($user);
                 $request->session()->regenerate();
@@ -625,7 +537,7 @@ class AuthController extends Controller
         }
     }
 
-    public function sendotp(Request $request)
+    public function sendOTP(Request $request)
     {
         $phoneNumber = $request->input('phone_number', null);
 

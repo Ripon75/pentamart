@@ -390,7 +390,7 @@
     if (productStock == 0) {
         btnAddToCart.prop("disabled",true);
         btnAddToCart.addClass('disabled:opacity-50');
-        btnAddToCart.text('Out Stock');
+        btnAddToCart.text('Out of Stock');
     }
 
     @auth

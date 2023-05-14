@@ -12,13 +12,13 @@
                         <div id="step-1" class="step">
                             <div class="form-item">
                                 <label class="form-label">Enter your phone number<span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" id="phone-or-email" name="email" placeholder="Please enter your phone number" class="form-input" autocomplete="off"/>
+                                <input type="text" id="phone-number" name="email" placeholder="Please enter your phone number" class="form-input" autocomplete="off"/>
                                 @error('email')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="mt-4">
-                                <button type="button" id="btn-submit-phone-email" class="btn btn-primary btn-block">Submit</button>
+                                <button type="button" id="btn-submit-phone-number" class="btn btn-primary btn-block">Submit</button>
                             </div>
                         </div>
                         <div id="step-2" class="step">
@@ -69,18 +69,18 @@
 
 @push('scripts')
     <script>
-        var storePhoneOrEmailEndPoint = '/password/recover/email-or-phone';
+        var storePhoneNumberEndPoint  = '/password/recover';
         var checkCodeEndPoint         = '/password/recover/send-code';
         var storePasswordEndPoint     = '/password/recover/update-password';
-        var otpResendCodeEndPoint        = '/password/recover/resend-code';
-        var btnSubmitPE               = $('#btn-submit-phone-email');
+        var otpResendCodeEndPoint     = '/password/recover/resend-code';
+        var btnSubmitPhoneNumber      = $('#btn-submit-phone-number');
         var btnSubmitCode             = $('#btn-submit-code');
         var btnUpdatePassword         = $('#btn-update-password');
-        var inputPhoneOrEmail         = $('#phone-or-email');
+        var inputPhoneNumber          = $('#phone-number');
         var inputOtpCode              = $('#input-otp-code');
         var inputNewPassword          = $('#input-new-password');
         var inputPasswordConfirmation = $('#password-confirmation');
-        var resendOtpCode                = $('#resend-otp-code');
+        var resendOtpCode             = $('#resend-otp-code');
 
         var   openIconOne     = $('#eye-open-one').hide();
         var   closeIconOne    = $('#eye-close-one');
@@ -120,12 +120,12 @@
                 passwordTwo.setAttribute('type', 'password');
             });
 
-            btnSubmitPE.click(function() {
-                var phoneOrEmail = inputPhoneOrEmail.val();
-                if (phoneOrEmail) {
-                    __addPhoneOrEmail(phoneOrEmail)
+            btnSubmitPhoneNumber.click(function() {
+                var phoneNumber = inputPhoneNumber.val();
+                if (phoneNumber) {
+                    addPhoneNumber(phoneNumber)
                 } else {
-                    __showNotification('error', 'Please enter phone number', 2000);
+                    __showNotification('error', 'Please enter your phone number');
                 return false;
                 }
             });
@@ -136,12 +136,12 @@
             });
 
             resendOtpCode.click(function() {
-                var phoneOrEmail = inputPhoneOrEmail.val();
+                var phoneOrEmail = inputPhoneNumber.val();
                 __resendOtpCode(phoneOrEmail);
             });
 
             btnUpdatePassword.click(function() {
-                var phoneOrEmail         = inputPhoneOrEmail.val();
+                var phoneOrEmail         = inputPhoneNumber.val();
                 var password             = inputNewPassword.val();
                 var passwordConfirmation = inputPasswordConfirmation.val();
                 __updatePassword(phoneOrEmail, password, passwordConfirmation);
@@ -158,26 +158,23 @@
         }
 
         // Add phone or email
-        function __addPhoneOrEmail(phoneOrEmail) {
-            axios.post(storePhoneOrEmailEndPoint, {
-                phone_or_email: phoneOrEmail
+        function addPhoneNumber(phoneNumber) {
+            axios.post(storePhoneNumberEndPoint, {
+                phone_number: phoneNumber
             })
             .then((response) => {
-                if (response.data.code === 201) {
-                __showNotification('error', response.data.message, 1000);
+                if (!response.data.success) {
+                    __showNotification('error', response.data.message);
                 return false;
                 }else {
-                    if (response.data.code === 200) {
-                __showNotification('success', response.data.message, 1000);
+                    if (response.data.success) {
+                        __showNotification('success', response.data.message);
                     }
                     changeStep(2);
                 }
             })
             .catch((error) => {
-                __showNotification('error', response.data.message, 1000);
-            })
-            .then(() => {
-
+                __showNotification('error', response.data.message);
             });
         }
 
