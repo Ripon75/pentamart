@@ -21,17 +21,6 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        @if(Session::has('error'))
-                            <div class="alert mb-8 error">{{ Session::get('error') }}</div>
-                        @endif
-                        <x-frontend.header-title
-                            type="else"
-                            title="Order"
-                            bgImageSrc=""
-                            bgColor="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-0 sm:p-0 md:p-2 lg:p-4 xl:p-4 2xl:p-4">
                     <div class="w-full overflow-x-scroll">

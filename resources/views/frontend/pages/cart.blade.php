@@ -177,7 +177,7 @@
                     <section class="card border-2">
                         <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
                             <div class="flex justify-between">
-                                <span>Total Cost</span>
+                                <span>Total Price</span>
                                 <span>{{ $currency }}
                                     <span id="sub-total-price-label" class="ml-1"></span>
                                 </span>
@@ -199,7 +199,7 @@
                                 </div>
                             </div>
                             <div class="flex justify-between">
-                                <span>Total Cost(-Discount)</span>
+                                <span>Total Price(-Discount)</span>
                                 <span>{{ $currency }}
                                     <span id="sub-total-sell-price-label" class="ml-1"></span>
                                 </span>
@@ -261,9 +261,9 @@
                                                     <span class="text-red-500 ml-1">*</span>
                                                 </div>
                                                 <input type="hidden" class="shipping-address-id" name="address_id"
-                                                    value="{{ ($cart->userAddress->id) ?? null }}">
+                                                    value="{{ ($cart->address->id) ?? null }}">
                                                 <div id="" class="shipping-address-label text-sm text-gray-500">
-                                                    {{ ($cart->userAddress->title) ?? null }}
+                                                    {{ ($cart->address->title) ?? null }}
                                                 </div>
                                             </div>
                                         </div>
@@ -344,8 +344,7 @@
                                         <input id="terms-and-conditons" class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
                                         <span class="text-gray-500 text-xs">
                                             I agree with
-                                            <a href="/terms-and-conditions" class="text-primary">Terms and Conditions</a>,
-                                            {{-- <a href="/privacy-policy" class="text-primary">Privacy Policy</a>, --}}
+                                            <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and Conditions</a>,
                                         </span>
                                     </div>
                                     <div class="mt-4">
@@ -387,7 +386,7 @@
 @push('scripts')
     <script>
         var aleartTime                = '{{ config('crud.alear_time') }}';
-        var cartAddItemEndPoint       = '/cart/item/add';
+        var cartAddItemEndPoint       = '/cart/items/add';
         var cartAddMetaDataEndPoint   = '/cart/meta/add';
         var deleteCartItemBtn         = $('.delete-cart-item-btn');
         var iconLoadding              = $('.loadding-icon');
@@ -616,34 +615,34 @@
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
 
-            axios.post('/cart/item/remove', {
-                    item_id: itemId,
-                    color_id: colorId,
-                    size_id: sizeId,
-                })
-                .then(function (response) {
-                    btn.parent().parent().remove();
-                    removedCouponCode();
-                    cartTotalPriceCalculation();
-                    __cartItemCount();
-                })
-                .catch(function (error) {
-                    btn.find(iconLoadding).hide();
-                    btn.find(iconTrash).show();
-                });
+            axios.post('/cart/items/remove', {
+                item_id: itemId,
+                color_id: colorId,
+                size_id: sizeId,
+            })
+            .then(function (response) {
+                btn.parent().parent().remove();
+                removedCouponCode();
+                cartTotalPriceCalculation();
+                __cartItemCount();
+            })
+            .catch(function (error) {
+                btn.find(iconLoadding).hide();
+                btn.find(iconTrash).show();
+            });
         }
 
          // Empty cart
         function emptyCart(){
-            axios.get('/cart/empty')
-                .then(function (response) {
-                    // handle success
-                    location.reload();
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
-                });
+            axios.get('/cart/items/empty')
+            .then(function (response) {
+                // handle success
+                location.reload();
+            })
+            .catch(function (error) {
+                // handle error
+                console.log(error);
+            });
         }
 
         // Add cart item
@@ -705,11 +704,11 @@
                 itemTotalDiscount = itemTotalDiscount + subDiscount;
             });
 
-            
+
             // Get seltected delivery charge text
             deliveryCharge = parseFloat(inputDelivaryCharge.val());
             deliveryGatewayPriceLabel.text(deliveryCharge.toFixed(2));
-            
+
             // get coupon discount
             couponDiscount = inputItemsDiscount.val();
             couponDiscount = +couponDiscount;

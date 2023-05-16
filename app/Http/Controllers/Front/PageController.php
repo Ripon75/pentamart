@@ -3,23 +3,17 @@
 namespace App\Http\Controllers\Front;
 
 use Carbon\Carbon;
-use App\Models\Area;
-use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Rating;
 use App\Models\Banner;
 use App\Models\Section;
 use App\Models\Company;
 use App\Models\Product;
-use App\Models\Address;
 use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\DosageForm;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -34,88 +28,17 @@ class PageController extends Controller
 
         $sliderBanners = Banner::where('position', 'slider')->where('status', 'active')->get();
 
-        $banners  = Banner::where('position', 'offer')->where('status', 'active')->get();
-
         $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
         $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
 
-        $categories = Category::where('status', 'active')->get();
         $topCategories = Category::where('status', 'active')->where('is_top', 1)->get();
 
-        $feelings = [
-            [
-                // 'link' => route('symptom.page',['stomach-pain']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['fever']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['pregnant']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['joint-pain']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['headache']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['newborn-baby']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['diabetes']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ],
-            [
-                // 'link' => route('symptom.page', ['over-weight']),
-                'imgSRC' => '/images/sample/category.jpeg'
-            ]
-        ];
-
         // Top products
-        $topProducts = Section::with(['products'])->where('slug', 'top-products')->first();
+        $topProduct = Section::with(['products'])->where('slug', 'top-products')->first();
 
         // Medical device products
-        $medicalProducts = Section::with(['products'])->where('slug', 'medical-devices')->first();
-
-        // $topCategories = [
-        //     [
-        //         'title'         => 'Category 1',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('products.index')
-        //     ],
-        //     [
-        //         'title'         => 'Category 2',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['asthma'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 3',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['baby-mom-care'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 4',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['skin-care'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 5',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['cosmetics'])
-        //     ],
-        //     [
-        //         'title'         => 'Category 6',
-        //         'imgSRC'        => '/images/sample/watch.jpeg',
-        //         'postTitleLink' => route('category.page', ['others'])
-        //     ]
-        // ];
+        $watch = Section::with(['products'])->where('slug', 'watch')->first();
 
         $features = [
             [
@@ -136,136 +59,14 @@ class PageController extends Controller
         ];
 
         return view('frontend.pages.home', [
-            'sliderBanners'   => $sliderBanners,
-            'banners'         => $banners,
-            'feelings'        => $feelings,
-            'hotSales'        => $hotSales,
-            'topProducts'     => $topProducts,
-            'categories'      => $categories,
-            'topCategories'   => $topCategories,
-            'features'        => $features,
-            'brands'          => $brands,
-            'medicalProducts' => $medicalProducts,
+            'sliderBanners' => $sliderBanners,
+            'topProduct'    => $topProduct,
+            'watch'         => $watch,
+            'brands'        => $brands,
+            'topCategories' => $topCategories,
+            'hotSales'      => $hotSales,
+            'features'      => $features,
         ]);
-    }
-
-    public function about()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'about'
-        ]);
-
-        return view('frontend.pages.about');
-    }
-
-    public function termsAndConditions()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'terms-and-conditions'
-        ]);
-
-        return view('frontend.pages.terms-and-conditions');
-    }
-
-    public function frequentlyAskedQuestions()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'frequently-asked-questions'
-        ]);
-
-        $questions = [
-            [
-                'q' => 'When will I receive my order?',
-                'a' => 'Your order will be delivered within <strong>24-48</strong> hours inside dhaka city',
-            ],
-            [
-                'q' => 'I have received damaged items.',
-                'a' => 'We are sorry you had to experience this. Please do not accept the delivery of that order and let us know what happened.',
-            ],
-            [
-                'q' => 'Items are different from what I ordered.',
-                'a' => 'We are sorry you have had to experience this. Please do not accept it from delivery man. Reject the order straightaway and call to medicart customer care.',
-            ],
-            [
-                'q' => 'Items are different from what I ordered.',
-                'a' => 'We are sorry you have had to experience this. Please do not accept it from delivery man. Reject the order straightaway and call to medicart customer care.',
-            ],
-            [
-                'q' => 'What if Items are missing from my order?',
-                'a' => 'In no circumstances, you should receive an order that is incomplete. Once delivery man reaches your destination, be sure to check expiry date of medicines and your all ordered items was delivered.',
-            ],
-            [
-                'q' => 'How do I cancel my order?',
-                'a' => 'Please call us with your order ID and we will cancel it for you.',
-            ],
-            [
-                'q' => 'I want to modify my order.',
-                'a' => 'Sorry, once your order is confirmed, it cannot be modified. Please place a fresh order with any modifications.',
-            ],
-            [
-                'q' => 'What is the shelf life of medicines being provided?',
-                'a' => 'We ensure that the shelf life of the medicines being supplied by our partner retailers is, at least, a minimum of 3 months from the date of delivery.',
-            ],
-            [
-                'q' => 'Order status showing delivered but I have not received my order.',
-                'a' => 'Sorry that you are experiencing this. Please call to connect with us immediately.',
-            ],
-            [
-                'q' => 'Which cities do you operate in?',
-                'a' => 'Currently, we deliver only in Dhaka City',
-            ],
-            [
-                'q' => 'How can I get my order delivered faster?',
-                'a' => 'Sorry, we currently do not have a feature available to expedite the order delivery. We surely have a plan to introduce 2 hour expedite delivery soon.',
-            ],
-            [
-                'q' => 'Can I modify my address after Order placement?',
-                'a' => 'Sorry, once the order is placed, we are unable to modify the address.',
-            ],
-            [
-                'q' => 'What is the meaning of Delivered status?',
-                'a' => 'When delivery man reaches your destination and hand over the products to you the delivery status changes to <strong>Delivered</strong>. Status <strong>Delivered</strong> also means Medicart has already collected the payment from you via cash or online payment.',
-            ]
-        ];
-        return view('frontend.pages.frequently-asked-questions', [
-            'questions' => $questions
-        ]);
-    }
-
-    public function promotionOffers()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'promotion'
-        ]);
-
-        return view('frontend.pages.promotion');
-    }
-
-    public function privacyPolicy()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'privacy-policy'
-        ]);
-
-        return view('frontend.pages.privacy-policy');
-    }
-
-    public function returnPolicy()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'return-policy'
-        ]);
-
-        return view('frontend.pages.return-policy');
-    }
-
-    public function contact()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'contact'
-        ]);
-
-        return view('frontend.pages.contact');
     }
 
     public function index(Request $request, $thumbOnly = false)
@@ -334,17 +135,20 @@ class PageController extends Controller
         $productSizes  = $product->sizes;
         $productColors =  $product->colors;
 
-        if(!$product) {
+        if (!$product) {
             abort(404);
         }
 
         // Calculate ratings
         $ratingValue   = 0;
         $ratingPercent = 0;
-        $ratings       = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')->get();
-        $ratingCount   = $ratings->count();
-        $rateSum       = $ratings->sum('rate');
-        if ($ratingCount) {
+
+        $ratings = Rating::with(['ratingImages'])->where('product_id', $id)->orderBy('created_at', 'desc')
+            ->get();
+
+        $ratingCount = $ratings->count();
+        $rateSum     = $ratings->sum('rate');
+        if ($ratingCount > 0) {
             $ratingValue   = $rateSum / $ratingCount;
             $ratingPercent = $ratingValue * 100 / 5;
         }
@@ -369,7 +173,7 @@ class PageController extends Controller
         $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
 
         $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
-        ->where('id', '<>', $product->id)->take(4)->get();
+            ->where('id', '<>', $product->id)->take(4)->get();
 
         return view('frontend.pages.product-single', [
             'product'         => $product,
@@ -386,34 +190,37 @@ class PageController extends Controller
         ]);
     }
 
-    public function checkout(Request $request)
+    public function about()
     {
         Utility::setUserEvent('pageview', [
-            'page' => 'checkout'
+            'page' => 'about'
         ]);
 
-        $products = [];
-        $carObj   = new Cart();
-        $cart     = $carObj->getCurrentCustomerCart();
-        if ($cart) {
-            $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
-        }
+        return view('frontend.pages.about');
+    }
 
-        $areas            = Area::orderBy('name', 'asc')->get();
-        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
-        $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
-        $paymentGateways  = PaymentGateway::where('status', 'active')->get();
-        $currency         = 'Tk';
+    public function termsAndConditions()
+    {
+        return view('frontend.pages.terms-and-conditions');
+    }
 
-        return view('frontend.pages.cart', [
-            'cart'             => $cart,
-            'areas'            => $areas,
-            'products'         => $products,
-            'userAddress'      => $userAddress,
-            'deliveryGateways' => $deliveryGateways,
-            'paymentGateways'  => $paymentGateways,
-            'currency'         => $currency
+    public function privacyPolicy()
+    {
+        return view('frontend.pages.privacy-policy');
+    }
+
+    public function returnPolicy()
+    {
+        return view('frontend.pages.return-policy');
+    }
+
+    public function contact()
+    {
+        Utility::setUserEvent('pageview', [
+            'page' => 'contact'
         ]);
+
+        return view('frontend.pages.contact');
     }
 
     public function categoryPage(Request $request, $id)
@@ -564,96 +371,11 @@ class PageController extends Controller
         ]);
     }
 
-    public function offerCategoryProduct(Request $request, $slug, $thumbOnly = false)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'offer-category-product'
-        ]);
-
-        $category = Category::where('slug', $slug)->first();
-
-        if(!$category) {
-            abort(404);
-        }
-
-        $searchKey           = $request->input('search_key', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
-        $companyList         = [];
-        $dosageFormList      = [];
-
-        if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
-            $filterCategoryIds = explode(",", $filterCategoryIds);
-        } else {
-            $filterCategoryIds = [];
-        }
-
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
-        } else {
-            $filterCompanyIds = [];
-        }
-
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-        $products = $this->getOfferProducts($request, 'categories', $category->slug);
-
-        $subCategorySlug = $request->input('sub_category', null);
-        $categorySlug    = $category->slug;
-        $categorySlug    = $subCategorySlug ? $subCategorySlug : $categorySlug;
-
-        $allProduct = Product::whereHas('categories', function($query) use ($categorySlug) {
-            $query->where('slug', $categorySlug);
-        })->where('status', 'activated')->get();
-
-         // Create company and dosageFrom list from produt list
-         $companyList    = [];
-         $dosageFormList = [];
-         foreach ($allProduct as $key => $product) {
-            $com = $product->company ?? null ;
-            if ($com) {
-                $companyList[$com->id] = $com;
-            }
-
-            $dForm = $product->dosageForm;
-            if($dForm) {
-                if ($dForm->status == 'activated') {
-                    $dosageFormList[$dForm->id] = $dForm;
-                }
-            }
-        }
-
-        // Company sort
-        $companies = $this->getSortData($companyList);
-        // Dosage form sort
-        $dosageForms = $this->getSortData($dosageFormList);
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.offer-category-products';
-
-        return view($viewPage, [
-            'slug'                => $slug,
-            'products'            => $products,
-            'companies'           => $companies,
-            'dosageForms'         => $dosageForms,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds,
-            'pageTitle'           => $category->name
-        ]);
-    }
-
     private function getProducts($request, $relation = null, $id = null)
     {
-        // $percent             = $request->input('percent', null);
-        $searchKey           = $request->input('search_key', null);
-        // $order               = $request->input('order', null);
-        $filterBrandIds      = $request->input('filter_brand_ids', []);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $searchKey         = $request->input('search_key', null);
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
+        $filterCategoryIds = $request->input('filter_category_ids', []);
 
         $products = Product::getDefaultMetaData();
 
@@ -758,12 +480,5 @@ class PageController extends Controller
         }
 
         return $products;
-    }
-
-    public function getSortData($data, $sortBy = 'name')
-    {
-        return array_values(Arr::sort($data, function ($d) use ($sortBy) {
-            return $d[$sortBy];
-        }));
     }
 }

@@ -2,17 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-// Model
 use App\Models\User;
 use App\Models\Product;
-use App\Classes\Utility;
-use App\Models\SearchLog;
 use App\Models\Address;
-// Event
+use App\Classes\Utility;
 use Illuminate\Http\Request;
 use App\Events\ProductSearch;
 use App\Http\Controllers\Controller;
-
 class SearchController extends Controller
 {
     protected $_responseFormat = 'json';
@@ -75,19 +71,5 @@ class SearchController extends Controller
 
             return $this->_response($addresses, 'Search result');
         }
-    }
-
-    public function checkOfferQty(Request $request)
-    {
-        $productId = $request->input('product_id', null);
-        $quantity  = $request->input('quantity', null);
-
-        if (!$productId && $quantity) {
-            return false;
-        }
-
-        $utility = new Utility ();
-
-        return $utility->checkOffer($productId, $quantity);
     }
 }

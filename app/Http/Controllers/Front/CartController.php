@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Front;
 
 use App\Models\Cart;
+use App\Models\Area;
+use App\Models\Address;
 use App\Classes\Utility;
+use App\Models\DeliveryGateway;
+use App\Models\PaymentGateway;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 
@@ -19,7 +22,28 @@ class CartController extends Controller
 
     public function cartItem()
     {
-        return view('frontend.pages.cart');
+        $products = [];
+        $carObj   = new Cart();
+        $cart     = $carObj->getCurrentCustomerCart();
+        if ($cart) {
+            $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
+        }
+
+        $areas            = Area::orderBy('name', 'asc')->get();
+        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
+        $paymentGateways  = PaymentGateway::where('status', 'active')->get();
+        $currency         = 'Tk';
+
+        return view('frontend.pages.cart', [
+            'cart'             => $cart,
+            'areas'            => $areas,
+            'products'         => $products,
+            'userAddress'      => $userAddress,
+            'deliveryGateways' => $deliveryGateways,
+            'paymentGateways'  => $paymentGateways,
+            'currency'         => $currency
+        ]);
     }
 
     public function addItem(Request $request)

@@ -14,14 +14,17 @@
                 <div class="absolute bottom-0 pl-2 z-20">
                     <div class="flex space-x-2">
                         <div class="">
-                            <span
-                                class="bg-green-100 text-green-500 text-xs sm:text-xs md:text-xs text-center inline-block align-middle rounded px-2 py-0.5">
-                                In Stock
-                            </span>
-                            {{-- <span
-                                class="bg-red-50 text-red-500 text-xs sm:text-xs md:text-xs text-center inline-block align-middle rounded px-2 py-0.5">
-                                Out of Stock
-                            </span> --}}
+                            @if ($product->current_stock)
+                                <span
+                                    class="bg-green-100 text-green-500 text-xs sm:text-xs md:text-xs text-center inline-block align-middle rounded px-2 py-0.5">
+                                    In Stock
+                                </span>
+                            @else
+                                <span
+                                    class = "bg-red-50 text-red-500 text-xs sm:text-xs md:text-xs text-center inline-block align-middle rounded px-2 py-0.5">
+                                    Out of Stock
+                                </span>
+                            @endif
                         </div>
                     </div>
                 </div>

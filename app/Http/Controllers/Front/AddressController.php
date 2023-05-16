@@ -9,6 +9,7 @@ use App\Classes\Utility;
 use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -30,15 +31,6 @@ class AddressController extends Controller
         ]);
     }
 
-    public function create(Request $request)
-    {
-        $areas = Area::orderBy('name', 'asc')->get();
-
-        return view('frontend.pages.my-address-create', [
-            'areas' => $areas
-        ]);
-    }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -48,11 +40,9 @@ class AddressController extends Controller
         ]);
 
         if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->util->makeResponse(null, $validator->errors(), 400);
+            return $this->appError($validator->errors());
         }
 
-        // Get input value from request
-        $otherTitle      = $request->input('others_title', null);
         $title           = $request->input('title', null);
         $address         = $request->input('address', null);
         $phoneNumber     = $request->input('phone_number', null);
@@ -60,30 +50,35 @@ class AddressController extends Controller
         $userId          = Auth::id();
         $userPhoneNumber = Auth::user()->phone_number;
 
-        $title       = $otherTitle ? $otherTitle : $title;
         $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
 
-        $checkShippingAddress = Address::where('title', $title)->where('user_id', $userId)->first();
-        if ($checkShippingAddress) {
-            return $this->util->makeResponse(null, 'Address title already taken', 400);
-        }
+        try {
+            DB::beginTransaction();
+            $addressObj = Address::where('title', $title)->where('user_id', $userId)->first();
+            if (!$addressObj) {
+                $addressObj = new Address();
+            }
 
-        $obj = new Address();
+            $addressObj->title        = $title;
+            $addressObj->address      = $address;
+            $addressObj->user_id      = $userId;
+            $addressObj->phone_number = $phoneNumber;
+            $addressObj->area_id      = $areaId;
+            $res = $addressObj->save();
 
-        $obj->title        = $title;
-        $obj->address      = $address;
-        $obj->user_id      = $userId;
-        $obj->phone_number = $phoneNumber;
-        $obj->area_id      = $areaId;
-        $res = $obj->save();
+            if ($res) {
+                $cartObj = new Cart();
+                $cart    = $cartObj->getCurrentCustomerCart();
+                $cart->address_id = $addressObj->id;
+                $cart->save();
 
-        if ($res) {
-            $cartObj = new Cart();
-            $cart    = $cartObj->getCurrentCustomerCart();
-            $cart->address_id = $obj->id;
-            $cart->save();
-
-            return redirect()->back()->with('success', 'Address create sucessfully');
+                DB::commit();
+                return $this->appResponse($addressObj, 'Address create sucessfully');
+            }
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return $this->appError('Something went wrong');
         }
     }
 

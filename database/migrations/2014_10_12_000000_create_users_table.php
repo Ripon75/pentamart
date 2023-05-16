@@ -21,16 +21,13 @@ class CreateUsersTable extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
             $table->boolean('terms_and_conditons')->default(false);
-            $table->string('gender')->nullable();
+            $table->string('otp_code', 20)->nullable();
             $table->string('google_id', 1000)->nullable();
             $table->string('google_token', 1000)->nullable();
             $table->string('google_refresh_token', 1000)->nullable();
-            $table->string('avatar', 1000)->nullable();
             $table->string('facebook_id', 1000)->nullable();
             $table->string('facebook_token', 1000)->nullable();
             $table->string('facebook_refresh_token', 1000)->nullable();
-            $table->string('code', 6)->nullable();
-            $table->boolean('ac_active')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });

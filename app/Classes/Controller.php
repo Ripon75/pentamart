@@ -111,9 +111,30 @@ class Controller extends BaseController
     // response function
     public function _response($data = null, $message = null, $view = '', $code = 200)
     {
-        $type = $this->_responseFormat;
-        $utility = new Utility();
+        // $type = $this->_responseFormat;
+        // $utility = new Utility();
 
-        return $utility->sendResponse($data, $message, $type, $view, $code);
+        return $this->sendResponse($data, $message);
+    }
+
+    public function sendResponse($result, $message)
+    {
+        $res = [
+            'success' => true,
+            'msg'     => $message,
+            'result'  => $result
+        ];
+        return response()->json($res, 200);
+    }
+
+    public function sendError($message)
+    {
+        $res = [
+            'success' => false,
+            'msg'     => $message,
+            'result'  => []
+        ];
+
+        return response()->json($res, 201);
     }
 }

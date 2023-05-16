@@ -1,7 +1,6 @@
 @extends('frontend.layouts.default')
 
-@section('title', 'Phone confirmation code')
-
+@section('title', 'Account activation code')
 @section('content')
     <!-- ========Login Form ======= -->
       <section class="">
@@ -13,10 +12,10 @@
                         <div class="alert mb-8 error">{{ Session::get('message') }}</div>
                         @endif
 
-                        <form action="{{ route('phone.active.code.check') }}" method="POST">
+                        <form action="{{ route('check.otp.code') }}" method="POST">
                             @csrf
                             <div class="form-item">
-                                <input type="hidden" id="phone-number" value="{{ $phoneNumber }}" name="phone_number">
+                                <input type="hidden" id="input-phone-number" value="{{ $phoneNumber }}" name="phone_number">
                                 <label class="form-label">Enter your OTP code<span class="text-red-500 font-medium">*</span>
                                 </label>
                                 <input type="text" value="{{ old('pin_code') }}" name="pin_code" class="form-input" placeholder="Enter your otp code" autocomplete="off"/>
@@ -42,15 +41,15 @@
 
 @push('scripts')
     <script>
-        var resendCodeEndPoint         = '/phone/activation/resend-code';
+        var resendCodeEndPoint         = '/activation-resend-code';
         var phoneActivationResendCode  = $('#phone-activation-resend-code');
         var btnUserActivationSubmit    = $('#btn-user-activation-submit');
         var userActivationLoaddingIcon = $('.user-activation-loadding-icon').hide();
 
         $(function() {
             phoneActivationResendCode.click(function() {
-                var phoneNumber = $('#phone-number').val();
-                __resendCode(phoneNumber);
+                var phoneNumber = $('#input-phone-number').val();
+                resendActivationCode(phoneNumber);
             });
 
             btnUserActivationSubmit.click(function() {
@@ -58,21 +57,21 @@
             });
         });
 
-        // Resend code
-        function __resendCode(phoneNumber) {
+        // Resend activation code
+        function resendActivationCode(phoneNumber) {
             axios.get(resendCodeEndPoint, {
-                    params: {
-                    phone_number: phoneNumber
-                    }
-                })
-                .then(function (response) {
-                    if (response.data.code === 200) {
-                    __showNotification('success', response.data.message, 1000);
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                params: {
+                phone_number: phoneNumber
+                }
+            })
+            .then(function (response) {
+                if (response.data.code === 200) {
+                __showNotification('success', response.data.message, 1000);
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         }
     </script>
 @endpush

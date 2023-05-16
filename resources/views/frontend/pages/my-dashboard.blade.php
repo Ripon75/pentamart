@@ -21,13 +21,6 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="Dashboard"
-                            bgColor="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-1 sm:p-1 md:p-2 lg:p-4 xl:p-4 2xl:p-4">
                     <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">

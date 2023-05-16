@@ -147,7 +147,7 @@ class Nagad
                         $logo = "{$this->appUrl}/images/logos/logo.png";
 
                         $merchantAdditionalInfo = '{
-                            "serviceName":"Medicart",
+                            "serviceName":"Pentamart",
                             "serviceLogoURL": "'.$logo.'",
                             "additionalFieldNameEN": "E-commerce",
                             "additionalFieldNameBN": "ই-কমার্স",

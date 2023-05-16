@@ -1,13 +1,13 @@
 <div class="header-wrapper">
     {{-- ============Top header==================== --}}
-    <div class="top-header-bar">
+    {{-- <div class="top-header-bar">
         <div class="bg-[#ffc42d] h-8 sm:h-8 md:h-10">
             <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-black h-full">
                 <div class="address flex-1 hidden sm:hidden md:block">
                     <span class="text-xs font-normal">DELIVER TO : </span>
                     <span id="show-address-top-nav" class="text-xs font-normal"></span>
                     <span class="ml-2 sm:ml-2 lg:ml-4">
-                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal"
+                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal hover:text-[#00798c] hover:border-[#00798c]"
                             data-mc-on-previous-url="{{ url()->current() }}"
                             @auth data-bs-toggle="modal" data-bs-target="#address-modal" @endauth
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
@@ -15,19 +15,18 @@
                        </button>
                     </span>
                 </div>
-                {{-- ======top links====== --}}
                 <div class="top-links">
                     <div class="flex space-x-0 sm:space-x-0 lg:space-x-4">
                         <div class="social-icons flex">
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-facebook"></i></a>
-                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-instagram"></i></a>
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base fa-brands fa-youtube"></i></a>
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-facebook"></i></a>
+                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-instagram"></i></a>
+                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-youtube"></i></a>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
     <div class="border-b bg-[#00798c]">
         <header class="page-header container hidden sm:hidden md:hidden lg:block xl:block">
             <div class="grid grid-cols-8 h-full gap-2">
@@ -84,8 +83,8 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('checkout') }}" class="flex items-center space-x-2" title="Cart"
-                            data-mc-on-previous-url="{{ route('checkout') }}"
+                        <a href="{{ route('cart.items') }}" class="flex items-center space-x-2" title="Cart"
+                            data-mc-on-previous-url="{{ route('cart.items') }}"
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative">
                                 <button class="block" type="button">
@@ -144,8 +143,8 @@
                                     <i class="icon fa-regular fa-user"></i>
                                 </div>
                                 <div class="px-4">
-                                    <span class="line-clamp-2 text-xs font-medium">
-                                        Login or<br>Register
+                                    <span class="line-clamp-2 text-md font-medium">
+                                        Login
                                     </span>
                                 </div>
                             </a>
@@ -212,8 +211,8 @@
                     </a>
                 @endguest
                 <div class="pr-2">
-                    <a href="{{ route('checkout') }}" class="flex items-center space-x-2"
-                        data-mc-on-previous-url="{{ route('checkout') }}"
+                    <a href="{{ route('cart.items') }}" class="flex items-center space-x-2"
+                        data-mc-on-previous-url="{{ route('cart.items') }}"
                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                         <div class="item relative">
                             <button class="block">
@@ -295,7 +294,7 @@
                         <span class="text-sm sm:text-sm lg:text-base text-primary">Download App</span>
                         <div class="download-app flex items-center space-x-3 text-primary">
                             <a href="https://apps.apple.com/us/app/apple-store/id6443554194/" target="_blank" class="icon-wrapper text-2xl xl:text-3xl"><i class="icon fa-brands fa-apple"></i></a>
-                            <a href="https://play.google.com/store/apps/details?id=com.pulsetechltd.medicart" target="_blank" class="icon-wrapper text-xl xl:text-2xl"><i class="icon fa-brands fa-google-play"></i></a>
+                            <a href="" target="_blank" class="icon-wrapper text-xl xl:text-2xl"><i class="icon fa-brands fa-google-play"></i></a>
                         </div>
                     </div>
                 </div> --}}
@@ -351,7 +350,7 @@
                         data-mc-on-previous-url="{{ url()->current() }}"
                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <i class="pr-3 fa-solid fa-right-to-bracket"></i>
-                            Login/Register
+                            Login
                         </a>
                     @endguest
                 </div>
@@ -373,7 +372,7 @@
                 pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
                 <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
                     <h5 class="text-lg font-medium leading-normal text-gray-800" id="loginModalScrollableLabel">
-                        Login/Signup
+                        Login
                     </h5>
                     <button type="button"
                         class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
@@ -417,9 +416,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        <button id="btn-header-shepping-address-update" type="button" class="btn btn-primary btn-sm md:btn-md">
-                            Update
-                        </button>
                     </div>
                     <div id="header-address-show-dev" class="mt-1 hidden items-center">
                         <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
@@ -439,11 +435,6 @@
                             <option value="Office">Office</option>
                             <option value="Others">Others</option>
                         </select>
-                    </div>
-                    <div id="others-title-div" class="form-item">
-                        <label for="">Your Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
-                        <input id="header-others-title" class="form-input" type="text"
-                            placeholder="Enter Your Address Title" />
                     </div>
                     <div class="form-item">
                         <label class="form-label">Alternative Phone Number</label>
@@ -568,8 +559,6 @@
 </script>
 
 <script>
-    var debounceTime     = 750;
-    var setAlertTime     = {{ config('crud.alear_time') }};
     var cartCount        = $('.cart-count');
     var searchInput      = $('.search-box-input');
     var searchResult     = $('.search-box-result');
@@ -580,7 +569,6 @@
     var btnAddressChange     = $('#btn-address-change');
     var inputShippingAddress = $('.header-shipping-address');
     var showAddress          = $('#show-address-label');
-    var btnHeaderSheppingAddressUpdate = $('#btn-header-shepping-address-update');
     //Default selected shipping address id
     var inputShippingId = inputShippingAddress.val();
     // address create
@@ -589,12 +577,11 @@
     var addressLine      = $('#address-line');
     var contactNumber    = $('#contact-person-number');
     var headerAreaId     = $('#header-area-id');
-    // hidden div for title othes
-    var othersTitleDiv = $('#others-title-div').hide();
+    var loaddingIcon     = $('.loadding-icon').hide();
 
     @auth
         __cartItemCount();
-        __getShippingAddress(inputShippingId, true);
+        __getShippingAddress(inputShippingId);
     @endauth
 
     $(function() {
@@ -622,7 +609,7 @@
             {
                 window.location.href = `/products?search_key=${searchKeywords}`;
             }
-        }, debounceTime));
+        }, 750));
 
         // Header modal opration
         $('.modal .close-btn').click(function (e) {
@@ -638,30 +625,13 @@
 
         inputShippingAddress.on('change', function() {
             var addressId = $(this).val();
-            __getShippingAddress(addressId);
-        });
-
-        // Shepping address update
-        btnHeaderSheppingAddressUpdate.click(function() {
-            var addressId = inputShippingAddress.val();
             __addShippingAddress(addressId);
-            __getShippingAddress(addressId, true);
-            $("#address-modal").modal('hide');
+            __getShippingAddress(addressId);
         });
 
         // create user address
         addressCreateBtn.click(function() {
             __addressCreate();
-        });
-
-        // Check address title is others
-        addressTitle.change(function(){
-            var title = $(this).val();
-            if (title === 'Others') {
-                othersTitleDiv.show();
-            } else {
-                othersTitleDiv.hide();
-            }
         });
     });
 
@@ -731,16 +701,13 @@
             address_id: addressId
         })
         .then((response) => {
-            // __showNotification('success', response.data.message, setAlertTime);
         })
         .catch((error) => {
             console.log(error);
-            __showNotification('error', 'Something went to wrong', setAlertTime);
-        })
-        .then(() => {});
+        });
     }
 
-    function __getShippingAddress(addressId, isUpdate = false) {
+    function __getShippingAddress(addressId) {
         axios.get('/my/shipping/addrss', {
             params: {
                 address_id: addressId
@@ -752,14 +719,10 @@
             let address = response.data.result ? response.data.result.address : '';
             // change shipping address id
             $('.shipping-address-id').val(id);
-            // show address title
-            if (isUpdate) {
-                $('.shipping-address-label').text(title);
-            }
+            // show address title in cart page
+            $('.shipping-address-label').text(title);
             // show address in top nav
-            if (isUpdate) {
-                $('#show-address-top-nav').text(address);
-            }
+            $('#show-address-top-nav').text(address);
             // show address in address modal
             if (address) {
                 $('#header-address-show-dev').show();
@@ -781,27 +744,21 @@
         var phone   = contactNumber.val();
         var area    = headerAreaId.val();
         if (!title) {
-            __showNotification('error', 'Please select address title', setAlertTime);
+            __showNotification('error', 'Please select address title');
+            addressTitle.focus();
             return false;
         }
         if (!address) {
-            __showNotification('error', 'Please enter address', setAlertTime);
+            __showNotification('error', 'Please enter address');
+            addressLine.focus();
             return false;
         }
         if (!area) {
-            __showNotification('error', 'Please select area', setAlertTime);
+            __showNotification('error', 'Please select area');
+            headerAreaId.focus();
             return false;
         }
 
-        if (title && title === 'Others') {
-            var headerOthersTitle = $('#header-others-title').val();
-            if (!headerOthersTitle) {
-                __showNotification('error', 'Please enter your address title', setAlertTime);
-                return false;
-            }
-        }
-
-        title = headerOthersTitle ? headerOthersTitle : title;
 
         bodyFormData.append('title', title);
         bodyFormData.append('address', address);
@@ -814,10 +771,10 @@
         })
         .then(function (response) {
             if (response.data.error) {
-                __showNotification('error', response.data.message, setAlertTime);
+                __showNotification('error', response.data.message);
                 return false;
             } else {
-                iconLoadding.show();
+                loaddingIcon.show();
                 location.reload(true);
             }
         })

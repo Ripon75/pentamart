@@ -59,7 +59,7 @@ class RoleController extends Controller
     {
         $role = Role::with('permissions')->find($id);
         if (!$role) {
-            return view('frontend.pages.not-found');
+            abort(404);
         }
 
         $permissions   = Permission::orderBy('name', 'asc')->get();

@@ -21,13 +21,6 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="Edit Address"
-                            bg-Color="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-4">
                     <form class="w-full sm:w-full md:w-full lg:w-1/2 xl:w-1/2 2xl:w-1/2"

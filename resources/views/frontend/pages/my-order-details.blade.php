@@ -21,13 +21,6 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="Order #{{ $order->id }}"
-                            bg-Color="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="bg-white">
                     <div class="p-2 md:p-6">

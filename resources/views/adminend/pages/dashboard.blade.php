@@ -27,7 +27,7 @@
                 <div class="grid grid-cols-3 h-full w-full">
                     <div class="col-span-2 h-full p-4">
                         <h1 class="text-3xl text-blue-500">Hi {{ Auth::user()->name }}</h1>
-                        <p class="text-gray-400">Here's what happening your Medicart.health</p>
+                        <p class="text-gray-400">Here's what happening your Pentamart</p>
                         <div class="flex space-x-10 mt-10">
                             <div class="space-y-2">
                                 <h2 class="text-gray-400">Total Visit</h2>
@@ -71,7 +71,7 @@
                                 {{ number_format($orderReport->submitted_order, 0) ?? 0 }}
                             </h2>
                             <div class="statics-percent-wrapper">
-                                <h2 class="statics-percent-content">Tk 
+                                <h2 class="statics-percent-content">Tk
                                     <span>{{ number_format($orderReport->submitted_order_value, 2) ?? 0 }}</span>
                                 </h2>
                             </div>
@@ -115,7 +115,7 @@
                                 {{ number_format($orderReport->returned_order, 0) ?? 0 }}
                             </h2>
                             <div class="statics-percent-wrapper">
-                                <h2 class="statics-percent-content">Tk 
+                                <h2 class="statics-percent-content">Tk
                                     <span>{{ number_format($orderReport->returned_order_value, 2) ?? 0 }}</span>
                                 </h2>
                             </div>
@@ -203,15 +203,15 @@
                                 </div> -->
                                 <div class="list-wrapper">
                                     <div class="list-content">
-                                        <div class="list-bullet bg-blue-500"></div> 
+                                        <div class="list-bullet bg-blue-500"></div>
                                         <h6 class="list-title">Falcon</h6>
                                     </div>
                                     <div class="list-content">
-                                        <div class="list-bullet bg-cyan-500"></div> 
+                                        <div class="list-bullet bg-cyan-500"></div>
                                         <h6 class="list-title">Sparrow</h6>
                                     </div>
                                     <div class="list-content">
-                                        <div class="list-bullet bg-yellow-500"></div> 
+                                        <div class="list-bullet bg-yellow-500"></div>
                                         <h6 class="list-title">Phoenix</h6>
                                     </div>
                                 </div>
