@@ -31,55 +31,21 @@
         </div>
     </div>
     {{-- Step 2 --}}
-    <div id="login-step-div-2" class="common-steps md:w-[500px] lg:w-[500px] xl:w-[500px] mx-auto hidden">
-        <div class="">
-            <div class="body px-4">
-                <div class="form-item flex justify-between">
-                    <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
-                    <div class="flex items-center justify-end relative">
-                        <input id="password-format" class="input-password form-input flex-1" type="password" name="password"
-                            placeholder="Please enter your password"
-                            autocomplete="off"
-                        />
-                        <div class="absolute mr-4">
-                            <i class="eye-open fa-regular fa-eye"></i>
-                            <i class="eye-close fa-regular fa-eye-slash"></i>
-                        </div>
-                    </div>
-                    <div class="flex justify-between mt-2">
-                        <div class="flex items-center">
-                            <label class="text-gray-500 text-xs md:text-sm">
-                                <input id="is-remember" type="checkbox" class="focus:ring-0 text-xs md:text-sm"> Remember me
-                            </label>
-                        </div>
-                        <a href="{{ route('password.recover') }}" class="text-primary text-xs md:text-sm">Forget Password?</a>
-                    </div>
-                </div>
-                <div class="mt-4">
-                    <button id="btn-login-step-2" type="butoon" class="btn btn-primary btn-block">
-                        <i class="login-page-loading-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                        Submit
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-    {{-- Step 3 --}}
-    <div id="login-step-div-3" class="steps md:w-[500px] lg:w-[500px] xl:w-[500px] mx-auto hidden">
+    <div id="login-step-div-2" class="steps md:w-[500px] lg:w-[500px] xl:w-[500px] mx-auto hidden">
         <div class="">
             <div class="body px-4">
                 <div class="form-item flex justify-between">
                     <label class="form-label">Enter your OTP <span class="text-red-500 font-medium">*</span></label>
                     <div class="flex items-center justify-end relative">
-                        <input id="input-code" class="form-input flex-1" type="text" placeholder="Please enter your OTP"
+                        <input id="input-otp-code" class="form-input flex-1" type="text" placeholder="Please enter your OTP"
                         autocomplete="off"/>
                     </div>
                     <div class="flex justify-between">
-                        <a id="input-resend-code" class="mt-2 text-primary text-sm">Resend</a>
+                        <a id="input-resend-otp-code" class="mt-2 text-primary text-sm">Resend</a>
                     </div>
                 </div>
                 <div class="mt-4">
-                    <button id="btn-login-step-3" type="button" class="btn btn-primary btn-block">
+                    <button id="btn-login-step-2" type="button" class="btn btn-primary btn-block">
                         <i class="login-page-loading-icon fa-solid fa-spinner fa-spin mr-2"></i>
                         Submit
                     </button>
@@ -92,36 +58,19 @@
 @push('scripts')
     <script>
         var   currentStep      = 1;
-        var   eyeOpen          = $('.eye-open').hide();
-        var   eyeClose         = $('.eye-close');
-        const passwordFormat   = document.querySelector("#password-format");
         var   commonSteps      = $('.common-steps');
         var   loginStepDiv1    = $('#login-step-div-1');
         var   loginStepDiv2    = $('#login-step-div-2');
-        var   loginStepDiv3    = $('#login-step-div-3');
         var   btnLoginStep1    = $('#btn-login-step-1');
         var   btnLoginStep2    = $('#btn-login-step-2');
-        var   btnLoginStep3    = $('#btn-login-step-3');
         var   inputPhoneNumber = $('#input-phone-number');
-        var   inputPassword    = $('.input-password');
+        var   inputOtpCode     = $('#input-otp-code');
         // resend code
-        var resendCodeEndPoint = '/activation-resend-code';
-        var inputResendCode    = $('#input-resend-code');
+        var resendCodeEndPoint   = '/resend-otp-code';
+        var inputResendOtpCode   = $('#input-resend-otp-code');
         var loginPageLoadingIcon = $('.login-page-loading-icon').hide();
 
         $(function() {
-            eyeOpen.click(function() {
-                eyeOpen.hide();
-                eyeClose.show();
-                passwordFormat.setAttribute('type', 'password');
-            });
-
-            eyeClose.click(function() {
-                eyeClose.hide();
-                eyeOpen.show();
-                passwordFormat.setAttribute('type', 'text');
-            });
-
             $('#login-section').keypress(function (e) {
                 var key = e.which;
                 if(key == 13)  // the enter key code
@@ -140,19 +89,14 @@
 
                     if (currentStep == 2) {
                         loginPageLoadingIcon.show();
-                        var password = inputPassword.val();
-                        var phone    = inputPhoneNumber.val();
-                        var isRemember = false;
-                        $('input:checkbox[id=is-remember]:checked').each(function()
-                        {
-                            isRemember = $(this).val();
-                        });
+                        var phoneNumber = inputPhoneNumber.val();
+                        var otpCode     = inputOtpCode.val();
 
-                        if (phone, password) {
-                            loginStep2(phone, password, isRemember);
+                        if (phoneNumber, otpCode) {
+                            loginStep2(phoneNumber, otpCode);
                         } else {
                             loginPageLoadingIcon.hide();
-                            __showNotification('error', 'Please enter password');
+                            __showNotification('error', 'Please enter OTP');
                             return false;
                         }
                     }
@@ -172,50 +116,35 @@
             });
 
             btnLoginStep2.click(function() {
-                var password = inputPassword.val();
-                var phone    = inputPhoneNumber.val();
-                var isRemember = false;
                 loginPageLoadingIcon.show();
+                var otpCode     = inputOtpCode.val();
+                var phoneNumber = inputPhoneNumber.val();
 
-                $('input:checkbox[id=is-remember]:checked').each(function()
-                {
-                    isRemember = $(this).val();
-                });
-
-                if (phone, password) {
-                    loginStep2(phone, password, isRemember);
+                if (phoneNumber, otpCode) {
+                    loginStep2(phoneNumber, otpCode);
                 } else {
                     loginPageLoadingIcon.hide();
-                    __showNotification('error', 'Please enter password');
+                    __showNotification('error', 'Please enter OTP');
                     return false;
                 }
             });
 
-            inputResendCode.click(function() {
+            inputResendOtpCode.click(function() {
                 var phoneNumber = inputPhoneNumber.val();
-                resendActivationCode(phoneNumber);
+                resendOtpCode(phoneNumber);
             });
         });
 
         function loginStep1(phoneNumber) {
-            axios.post('/login', {
+            axios.post('/check-user', {
                 phone_number: phoneNumber,
                 '_token': '{{ csrf_token() }}'
             })
             .then((res) => {
-                console.log(res);
                 if (res.data.success) {
-                    if (!res.data.result.ac_status) {
-                        // var pNumber = res.data.result.phone_number;
-                        // location.href = '/send-activation-code/' + pNumber;
-                        commonSteps.hide();
-                        loginStepDiv3.show();
-                        currentStep = 3;
-                    } else {
-                        commonSteps.hide();
-                        loginStepDiv2.show();
-                        currentStep = 2;
-                    }
+                    commonSteps.hide();
+                    loginStepDiv2.show();
+                    currentStep = 2;
                     loginPageLoadingIcon.hide();
                 } else {
                     loginPageLoadingIcon.hide();
@@ -229,71 +158,37 @@
             });
         }
 
-        function loginStep2(phone, password, isRemember=false) {
+        function loginStep2(phoneNumber, otpCode) {
             axios.post('/login', {
-                phone: phone,
-                password: password,
-                is_remember: isRemember
+                phone_number: phoneNumber,
+                otp_code: otpCode
             })
-            .then((response) => {
-                if (response.data.success) {
+            .then((res) => {
+                if (res.data.success) {
                     onSuccessLogin();
                     loginPageLoadingIcon.hide();
                 } else {
                     loginPageLoadingIcon.hide();
-                    __showNotification('error', "User credential doesn't match.")
+                    __showNotification('error', res.data.msg);
                     return false;
                 }
             })
             .catch((error) => {
                 console.log(error);
                 loginPageLoadingIcon.hide();
-            });
-        }
-
-        function loginStep3(phoneNumber, code) {
-            axios.post('/login', {
-                p_number: phoneNumber,
-                code: code
-            })
-            .then((response) => {
-                if (response.data.success) {
-                    onSuccessLogin();
-                    loginPageLoadingIcon.hide();
-                } else {
-                    loginPageLoadingIcon.hide();
-                    __showNotification('error', 'Please provided valid OTP');
-                    return false;
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-                loginPageLoadingIcon.hide();
-            })
-        }
-
-        function sendActivationOTP(phoneNumber) {
-            axios.post('/send/otp', {
-                phone_number: phoneNumber
-            })
-            .then((response) => {
-                // console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
             });
         }
 
         // Resend activation code
-        function resendActivationCode(phoneNumber) {
+        function resendOtpCode(phoneNumber) {
             axios.get(resendCodeEndPoint, {
                 params: {
                     phone_number: phoneNumber
                 }
             })
-            .then(function (response) {
-                if (response.data.code === 200) {
-                __showNotification('success', response.data.message);
+            .then(function (res) {
+                if (res.data.success) {
+                    __showNotification('success', res.data.msg);
                 }
             })
             .catch(function (error) {

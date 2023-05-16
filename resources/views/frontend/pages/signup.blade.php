@@ -72,8 +72,8 @@
                                 <input class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
-                                    <a href="/terms-and-conditions" class="text-primary">"Terms and Conditions"</a> &
-                                    <a href="/privacy-policy" class="text-primary">"Privacy Policy"</a>
+                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">"Terms and Conditions"</a> &
+                                    {{-- <a href="/privacy-policy" class="text-primary">"Privacy Policy"</a> --}}
                                 </span>
                             </div>
                             @error('terms_and_conditons')

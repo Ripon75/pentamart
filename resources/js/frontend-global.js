@@ -33,18 +33,18 @@ window.__debounce = function (func, wait, immediate) {
 // }
 
 window.__cartItemCount = function() {
-    axios.get('/cart/count')
-        .then(function (response) {
-            cartCount.text(response.data);
-            if (cartCount.text() > 0) {
-                $('.cart-dev').show();
-            } else {
-                $('.cart-dev').hide();
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
+    axios.get('/cart/items/count')
+    .then(function (response) {
+        cartCount.text(response.data);
+        if (cartCount.text() > 0) {
+            $('.cart-dev').show();
+        } else {
+            $('.cart-dev').hide();
+        }
+    })
+    .catch(function (error) {
+        console.log(error);
+    });
 }
 
 window.__savePreviousURL = function(url) {

@@ -1,7 +1,6 @@
 @extends('frontend.layouts.default')
 
-@section('title', 'Phone confirmation code')
-
+@section('title', 'Account activation code')
 @section('content')
     <!-- ========Login Form ======= -->
       <section class="">
@@ -13,10 +12,10 @@
                         <div class="alert mb-8 error">{{ Session::get('message') }}</div>
                         @endif
 
-                        <form action="{{ route('phone.active.code.check') }}" method="POST">
+                        <form action="{{ route('check.otp.code') }}" method="POST">
                             @csrf
                             <div class="form-item">
-                                <input type="hidden" id="phone-number" value="{{ $phoneNumber }}" name="phone_number">
+                                <input type="hidden" id="input-phone-number" value="{{ $phoneNumber }}" name="phone_number">
                                 <label class="form-label">Enter your OTP code<span class="text-red-500 font-medium">*</span>
                                 </label>
                                 <input type="text" value="{{ old('pin_code') }}" name="pin_code" class="form-input" placeholder="Enter your otp code" autocomplete="off"/>
@@ -49,7 +48,7 @@
 
         $(function() {
             phoneActivationResendCode.click(function() {
-                var phoneNumber = $('#phone-number').val();
+                var phoneNumber = $('#input-phone-number').val();
                 resendActivationCode(phoneNumber);
             });
 

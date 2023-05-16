@@ -119,22 +119,22 @@ class Controller extends BaseController
 
     public function sendResponse($result, $message)
     {
-        $response = [
+        $res = [
             'success' => true,
             'msg'     => $message,
             'result'  => $result
         ];
-        return response()->json($response, 200);
+        return response()->json($res, 200);
     }
 
     public function sendError($message)
     {
-        $response = [
+        $res = [
             'success' => false,
             'msg'     => $message,
             'result'  => []
         ];
 
-        return response()->json($response, 500);
+        return response()->json($res, 201);
     }
 }

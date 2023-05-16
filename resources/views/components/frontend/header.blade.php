@@ -83,8 +83,8 @@
                             </div>
                         </a>
 
-                        <a href="{{ route('checkout') }}" class="flex items-center space-x-2" title="Cart"
-                            data-mc-on-previous-url="{{ route('checkout') }}"
+                        <a href="{{ route('cart.items') }}" class="flex items-center space-x-2" title="Cart"
+                            data-mc-on-previous-url="{{ route('cart.items') }}"
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative">
                                 <button class="block" type="button">
@@ -211,8 +211,8 @@
                     </a>
                 @endguest
                 <div class="pr-2">
-                    <a href="{{ route('checkout') }}" class="flex items-center space-x-2"
-                        data-mc-on-previous-url="{{ route('checkout') }}"
+                    <a href="{{ route('cart.items') }}" class="flex items-center space-x-2"
+                        data-mc-on-previous-url="{{ route('cart.items') }}"
                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                         <div class="item relative">
                             <button class="block">

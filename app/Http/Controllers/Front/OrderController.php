@@ -59,7 +59,7 @@ class OrderController extends Controller
         ]);
 
         $paginate = config('crud.paginate.default');
-        
+
         $orders = Order::withSum('items as total_amount', DB::raw('(order_item.sell_price * order_item.quantity)'))
         ->where('user_id', Auth::id())
         ->latest()
@@ -140,7 +140,7 @@ class OrderController extends Controller
                 }
 
                 $res = $orderObj->items()->sync($itemIds);
-                
+
                 // Update order total_items_discount, order_net_value and coupon_value
                 $orderObj->updateOrderValue($orderObj);
 
@@ -179,8 +179,8 @@ class OrderController extends Controller
             $query->withTrashed();
         }])->where('user_id', Auth::id())->find($id);
         $paymentGateways = PaymentGateway::whereNotIn('id', [1])->orderBy('name', 'asc')->get();
-        
-        
+
+
         if (!$order) {
             abort(404);
         }
@@ -259,7 +259,7 @@ class OrderController extends Controller
             }
             $res = $cart->items()->sync($itemIds);
             if ($res) {
-                return redirect()->route('checkout');
+                return redirect()->route('cart.items');
             }
         } else {
             abort(404);

@@ -31,15 +31,6 @@ class AddressController extends Controller
         ]);
     }
 
-    public function create(Request $request)
-    {
-        $areas = Area::orderBy('name', 'asc')->get();
-
-        return view('frontend.pages.my-address-create', [
-            'areas' => $areas
-        ]);
-    }
-
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

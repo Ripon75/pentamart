@@ -47,7 +47,7 @@
                                     @if ($data->product)
                                         <tr id="row-{{ $data->id }}">
                                             <td class="border p-1">
-                                                <img class="w-16 h-16" src="{{ $data->product->image_src }}" alt="Product Image">
+                                                <img class="w-10 h-10" src="{{ $data->product->image_src }}" alt="Product Image">
                                             </td>
                                             <td class="border p-1">{{ $data->product->name }}</td>
                                             <td class="border p-1">{{ ($data->product->category->name) ?? null }}</td>

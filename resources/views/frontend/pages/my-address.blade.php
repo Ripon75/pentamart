@@ -21,19 +21,11 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="Address"
-                            bgImageSrc=""
-                            bgColor="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-0 sm:p-0 md:p-2 lg:p-4 xl:p-4 2xl:p-4">
                     <div class="mb-4 text-right">
+                        <button id="btn-add-new-address" class="btn btn-md btn-primary">Add Address</button>
                         <a href="{{ route('my.address.create') }}">
-                            <button title="Add Address" class="btn btn-md btn-secondary">Add Address</button>
                         </a>
                     </div>
                     <div class="w-full overflow-x-scroll">
@@ -56,9 +48,6 @@
                                     <td class="border p-2">{{ ($data->area->name) ?? null }}</td>
                                     <td class="text-center border p-2">
                                         <a href="{{ route('my.address.edit', $data->id) }}" class="text-center btn px-2 py-1">Edit</a>
-                                        {{-- <a href="{{ route('my.address.destroy', $data->id) }}" class="text-center btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 hover:text-white text-white">
-                                            <i class="fa-regular fa-trash-can"></i>
-                                        </a> --}}
                                     </td>
                                 </tr>
                                 @endforeach
@@ -85,5 +74,11 @@
                 categoryList.style.display = "none";
             }
         }
+
+        $(function() {
+            $('#btn-add-new-address').click(() => {
+                $("#address-modal").modal('show')
+            });
+        });
     </script>
 @endpush

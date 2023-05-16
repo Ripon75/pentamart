@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\PasswordRecoveryCode;
 use Laravel\Socialite\Facades\Socialite;
 use App\Events\PasswordRecoveryAttempted;
+use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -108,11 +109,78 @@ class AuthController extends Controller
         return view($this->loginView);
     }
 
-    public function loginStore(Request $request)
+    public function checkUser(Request $request)
     {
-        // $request->validate([
-        //     'phone_number' => ['required']
-        // ]);
+        $phoneNumber = $request->input('phone_number', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+
+        $user = User::where('phone_number', $phoneNumber)->first();
+
+        if ($user) {
+            $otpCode = $this->getRandomCode();
+            $user->otp_code = $otpCode;
+            $user->save();
+            // $this->forwardOtpCode($phoneNumber, $otpCode);
+
+            return $this->sendResponse($user, 'User exists');
+        } else {
+            return $this->sendError('User not found');
+        }
+    }
+
+    public function loginByPassword(Request $request)
+    {
+        $phoneNumber = $request->input('phone_number', null);
+        $password    = $request->input('password', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+
+        if (Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password, 'ac_active' => true], true)) {
+            $user  = Auth::user();
+            $request->session()->regenerate();
+
+            return $this->sendResponse($user, 'Successfully login');
+        } else {
+            return $this->sendError("User credential doesn't match");
+        }
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone_number' => 'required',
+            'otp_code'     => 'required'
+        ]);
+
+        if ($validator->stopOnFirstFailure()->fails()) {
+            return $this->sendError($validator->errors());
+        }
+
+        $phoneNumber = $request->input('phone_number', null);
+        $otpCode     = $request->input('otp_code', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+
+        $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
+
+        if ($user) {
+            Auth::login($user, true);
+            $request->session()->regenerate();
+
+            return $this->sendResponse($user, 'Successfully login');
+        } else {
+            return $this->sendError("Invalid your OTP");
+        }
+    }
+
+    // Resend otp code
+    public function resendOtpCode(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'phone_number' => 'required'
+        ]);
+
+        if ($validator->stopOnFirstFailure()->fails()) {
+            return $this->sendError($validator->errors());
+        }
 
         $phoneNumber = $request->input('phone_number', null);
         $phoneNumber = $this->formatPhoneNumber($phoneNumber);
@@ -120,64 +188,58 @@ class AuthController extends Controller
         $user = User::where('phone_number', $phoneNumber)->first();
 
         if ($user) {
-            if (!$user->ac_active) {
-                $activationCode = $this->getRandomCode();
-                $user->code = $activationCode;
-                $user->save();
-                // $SMSGateway = new SMSGateway();
-                // $SMSGateway->sendActivationCode($phoneNumber, $activationCode);
+            $otpCode = $this->getRandomCode();
+            $user->otp_code = $otpCode;
+            $res = $user->save();
+            if ($res) {
+                // $this->forwardOtpCode($phoneNumber, $otpCode);
 
-                // return $res = [
-                //     'success'      => true,
-                //     'data'         => $user,
-                //     'ac_status'    => false,
-                //     'message'      => 'Inactive user',
-                //     'phone_number' => $phoneNumber
-                // ];
-                return $this->sendResponse($user, 'Inactive user');
+                return $this->sendResponse($user, 'OTP send successfully');
             }
         } else {
-            return $this->sendError('User not found');
+            return $this->sendError("User doesn't exist");
         }
+    }
 
-        $phone      = $request->input('phone', null);
-        $password   = $request->input('password', null);
-        $isRemember = $request->input('is_remember', false);
+    public function sendOtpCode($phoneNumber = null)
+    {
+        return view('frontend.pages.send-otp-code', [
+            'phoneNumber' => $phoneNumber
+        ]);
+    }
 
-        $isRemember = $isRemember ? true : false;
+    public function checkOtpCode(Request $request)
+    {
+        $request->validate([
+            'phone_number' => ['required'],
+            'pin_code'     => ['required']
+        ]);
 
-        if ($phone && $password) {
-            // check first digit 0 or not
-            $phone = $this->formatPhoneNumber($phone);
+        $phoneNumber = $request->input('phone_number', null);
+        $code        = $request->input('pin_code', null);
+        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
 
-            if(Auth::attempt(['phone_number' => $phone, 'password' => $password, 'ac_active' => true], $isRemember)) {
-                $user  = Auth::user();
+        $user = User::where('phone_number', $phoneNumber)->first();
+        if ($user) {
+            if ($user->code == $code) {
+                $user->ac_active = 1;
+                $user->save();
+
+                $intendedURL = session('url.intended') ? session('url.intended') : $this->successLoginRoute;
+                session()->forget('url.intended');
+                Auth::login($user);
                 $request->session()->regenerate();
 
-                return $res = [
-                    'success' => true,
-                    'data'    => '',
-                    'message' => 'Successfully login'
-                ];
+                Utility::setUserEvent('customer-phone-validation', [
+                    'user' => $user,
+                ]);
+
+                return redirect()->intended($intendedURL);
+            } else {
+                return back()->with('message', 'Code does not match');
             }
-        }
-
-        $code    = $request->input('code', null);
-        $pNumber = $request->input('p_number', null);
-
-        if ($code) {
-            // check first digit 0 or not
-            $pNumber = $this->formatPhoneNumber($pNumber);
-            $user = User::where('code', $code)->where('phone_number', $pNumber)->first();
-            if ($user) {
-                $code = $user->code;
-                Auth::login($user);
-
-                return $res = [
-                    'success' => true,
-                    'message' => 'Successfully login'
-                ];
-            }
+        } else {
+            return back()->with('message', 'User not found');
         }
     }
 
@@ -305,7 +367,7 @@ class AuthController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->sendError('error', 'The phone number is required');
+            return $this->sendError('The phone number is required');
         }
 
         $phoneNumber = $request->input('phone_number', null);
@@ -316,7 +378,7 @@ class AuthController extends Controller
 
         $checkUser = User::where('phone_number', $phoneNumber)->first();
         if (!$checkUser) {
-            return $this->sendError('error', 'The phone number is not valid');
+            return $this->sendError('The phone number is not valid');
         }
 
         $code = $this->getRandomCode();
@@ -329,6 +391,7 @@ class AuthController extends Controller
 
         return $this->sendResponse($checkUser, 'OTP code send your phone');
     }
+
 
     public function codeCheck(Request $request)
     {
@@ -354,78 +417,8 @@ class AuthController extends Controller
             ];
 
             return $res;
-        }else {
-            return $recoverCode;
-        }
-    }
-
-    public function resendCode(Request $request)
-    {
-        $emailOrPhone = $request->input('phone_or_email', null);
-
-        // check if e-mail address is well-formed
-        if (filter_var($emailOrPhone, FILTER_VALIDATE_EMAIL)) {
-            $emailOrPhone = $emailOrPhone;
-        }else {
-            // Check first digit zero or not
-            if (str_starts_with($emailOrPhone, '0')) {
-                $emailOrPhone = '88'.$emailOrPhone;
-            } else {
-                $emailOrPhone = $emailOrPhone;
-            }
-        }
-
-        $resendCode = PasswordRecoveryCode::where(function ($q) use ($emailOrPhone) {
-            $q->where('email', $emailOrPhone)->orWhere('phone_number', $emailOrPhone);
-        })->whereNull('used_at')->first();
-
-        $code = $this->getRandomCode();
-        $resendCode->code = $code;
-        $res = $resendCode->save();
-
-        if ($res) {
-            $SMSGateway = new SMSGateway();
-            $SMSGateway->sendPasswordRecoveryCode($emailOrPhone, $code);
-            $res = [
-                'code'    => 200,
-                'message' => 'Code resend successfully'
-            ];
-
-            return $res;
-        }
-    }
-
-    public function activationResendCode(Request $request)
-    {
-        $request->validate([
-            'phone_number' => ['required']
-        ]);
-
-        $phoneNumber = $request->input('phone_number', null);
-        // Check first digit zero or not
-        if (str_starts_with($phoneNumber, '0')) {
-            $phoneNumber = '88'.$phoneNumber;
         } else {
-            $phoneNumber = $phoneNumber;
-        }
-
-        $code = $this->getRandomCode();
-        $user = User::where('phone_number', $phoneNumber)->first();
-
-        if ($user) {
-            $user->code = $code;
-            $res = $user->save();
-            if ($res) {
-                $SMSGateway = new SMSGateway();
-                $SMSGateway->sendActivationCode($phoneNumber, $code);
-
-                $res = [
-                    'code'    => 200,
-                    'message' => 'Code resend successfully'
-                ];
-
-                return $res;
-            }
+            return $recoverCode;
         }
     }
 
@@ -495,75 +488,10 @@ class AuthController extends Controller
         }
     }
 
-    public function sendActivationCode($phoneNumber = null)
+    public function forwardOtpCode($phoneNumber, $otpCode)
     {
-        return view('frontend.pages.send-activation-code', [
-            'phoneNumber' => $phoneNumber
-        ]);
-    }
-
-    public function activationCodeCheck(Request $request)
-    {
-        $request->validate([
-            'phone_number' => ['required'],
-            'pin_code'     => ['required']
-        ]);
-
-        $phoneNumber = $request->input('phone_number', null);
-        $code        = $request->input('pin_code', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
-
-        $user = User::where('phone_number', $phoneNumber)->first();
-        if($user) {
-            if ($user->code == $code) {
-                $user->ac_active = 1;
-                $user->save();
-
-                $intendedURL = session('url.intended') ? session('url.intended') : $this->successLoginRoute;
-                session()->forget('url.intended');
-                Auth::login($user);
-                $request->session()->regenerate();
-
-                Utility::setUserEvent('customer-phone-validation', [
-                    'user' => $user,
-                ]);
-
-                return redirect()->intended($intendedURL);
-            } else {
-                return back()->with('message', 'Code does not match');
-            }
-        } else {
-            return back()->with('message', 'User not found');
-        }
-    }
-
-    public function sendOTP(Request $request)
-    {
-        $phoneNumber = $request->input('phone_number', null);
-
-        if ($phoneNumber) {
-            // Check first digit zero or not
-            if (str_starts_with($phoneNumber, '0')) {
-                $phoneNumber = '88'.$phoneNumber;
-            } else {
-                $phoneNumber = $phoneNumber;
-            }
-            $code = $this->getRandomCode();
-            $user = User::where('phone_number', $phoneNumber)->first();
-            $user->code = $code;
-            $res = $user->save();
-            if ($res) {
-                $SMSGateway = new SMSGateway();
-                $SMSGateway->sendActivationCode($phoneNumber, $code);
-                $res = [
-                    'success' => true,
-                    'code'    => 200,
-                    'message' => 'OTP send successfully'
-                ];
-
-                return $res;
-            }
-        }
+        $SMSGateway = new SMSGateway();
+        $SMSGateway->sendActivationCode($phoneNumber, $otpCode);
     }
 
     // Generate random code

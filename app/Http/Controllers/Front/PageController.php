@@ -3,23 +3,17 @@
 namespace App\Http\Controllers\Front;
 
 use Carbon\Carbon;
-use App\Models\Area;
-use App\Models\Cart;
 use App\Models\Brand;
 use App\Models\Rating;
 use App\Models\Banner;
 use App\Models\Section;
 use App\Models\Company;
 use App\Models\Product;
-use App\Models\Address;
 use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
 use App\Models\DosageForm;
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
-use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -207,50 +201,16 @@ class PageController extends Controller
 
     public function termsAndConditions()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'terms-and-conditions'
-        ]);
-
         return view('frontend.pages.terms-and-conditions');
-    }
-
-    public function frequentlyAskedQuestions()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'frequently-asked-questions'
-        ]);
-
-        $questions = [];
-
-        return view('frontend.pages.frequently-asked-questions', [
-            'questions' => $questions
-        ]);
-    }
-
-    public function promotionOffers()
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'promotion'
-        ]);
-
-        return view('frontend.pages.promotion');
     }
 
     public function privacyPolicy()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'privacy-policy'
-        ]);
-
         return view('frontend.pages.privacy-policy');
     }
 
     public function returnPolicy()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'return-policy'
-        ]);
-
         return view('frontend.pages.return-policy');
     }
 
@@ -261,36 +221,6 @@ class PageController extends Controller
         ]);
 
         return view('frontend.pages.contact');
-    }
-
-    public function checkout(Request $request)
-    {
-        Utility::setUserEvent('pageview', [
-            'page' => 'checkout'
-        ]);
-
-        $products = [];
-        $carObj   = new Cart();
-        $cart     = $carObj->getCurrentCustomerCart();
-        if ($cart) {
-            $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
-        }
-
-        $areas            = Area::orderBy('name', 'asc')->get();
-        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
-        $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
-        $paymentGateways  = PaymentGateway::where('status', 'active')->get();
-        $currency         = 'Tk';
-
-        return view('frontend.pages.cart', [
-            'cart'             => $cart,
-            'areas'            => $areas,
-            'products'         => $products,
-            'userAddress'      => $userAddress,
-            'deliveryGateways' => $deliveryGateways,
-            'paymentGateways'  => $paymentGateways,
-            'currency'         => $currency
-        ]);
     }
 
     public function categoryPage(Request $request, $id)

@@ -18,7 +18,7 @@
                     </div>
                     <div class="">
                         <div class="nav mt-6 text-center md:text-center lg:text-left">
-                            <a href="/terms-and-conditions" class="item">{{ $nav1['termsAndConditions'] }}</a>
+                            <a href="{{ route('terms.and.condition') }}" class="item">{{ $nav1['termsAndConditions'] }}</a>
                         </div>
                     </div>
                     <div class="">

@@ -21,14 +21,6 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="My Profile"
-                            bgImageSrc=""
-                            bgColor="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-4">
                     <div class="">

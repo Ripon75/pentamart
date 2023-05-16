@@ -368,7 +368,7 @@
     });
 
     var aleartTime          = {{ config("crud.alear_time") }};
-    var cartAddItemEndPoint = '/cart/item/add';
+    var cartAddItemEndPoint = '/cart/items/add';
     var btnAddToCart        = $('.btn-add-to-car');
     var productID           = $('#product-id').val();
     var selectedPackSingle  = $('.selected-pack-single');

@@ -16,27 +16,26 @@ Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'i
 
 Route:: get('/',               [PageController::class, 'home'])->name('home');
 Route:: get('/about',          [PageController::class, 'about'])->name('about');
-Route:: get('/not-found',      [PageController::class, 'notFound'])->name('notFound');
-Route:: get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
-Route:: get('/return-policy',  [PageController::class, 'returnPolicy'])->name('return-policy');
+Route:: get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy.policy');
+Route:: get('/return-policy',  [PageController::class, 'returnPolicy'])->name('return.policy');
 Route:: get('/contact',        [PageController::class, 'contact'])->name('contact');
 Route:: get('/products',       [PageController::class, 'index'])->name('products.index');
-
-Route:: get('/promotion-offers',           [PageController::class, 'promotionOffers'])->name('promotion-offers');
-Route:: get('/terms-and-conditions',       [PageController::class, 'termsAndConditions'])->name('terms-and-conditions');
-Route:: get('/frequently-asked-questions', [PageController::class, 'frequentlyAskedQuestions'])->name('frequently-asked-questions');
-Route:: get('/products/{id}/{slug?}',      [PageController::class, 'productShow'])->name('products.show');
-Route:: get('/offers/categories/{slug}',   [PageController::class, 'offerCategoryProduct'])->name('offers.categories.products');
-Route:: get('/offers',                     [PageController::class, 'offerProduct'])->name('offers.products');
+Route:: get('/offers',         [PageController::class, 'offerProduct'])->name('offers.products');
+Route:: get('/terms-and-conditions',     [PageController::class, 'termsAndConditions'])->name('terms.and.condition');
+Route:: get('/products/{id}/{slug?}',    [PageController::class, 'productShow'])->name('products.show');
+Route:: get('/offers/categories/{slug}', [PageController::class, 'offerCategoryProduct'])->name('offers.categories.products');
 
 // Registration route
 Route::get('/registration',  [AuthController::class, 'registrationCreate'])->name('registration');
 Route::post('/registration', [AuthController::class, 'registrationStore'])->name('registration.store');
 
 // Login route
-Route::get('/login',     [AuthController::class, 'loginCreate'])->name('login');
-Route::post('/login',    [AuthController::class, 'loginStore'])->name('login.store');
-Route::post('/send/otp', [AuthController::class, 'sendOTP'])->name('send.otp');
+Route::get('/login',       [AuthController::class, 'loginCreate'])->name('login.create');
+Route::post('/check-user', [AuthController::class, 'checkUser'])->name('check.user');
+Route::post('/login',      [AuthController::class, 'login'])->name('login');
+Route::get('/send-otp-code',   [AuthController::class, 'sendOtpCode'])->name('send.otp.create');
+Route::post('/check-otp-code', [AuthController::class, 'checkOtpCode'])->name('check.otp.code');
+Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
 // Password recovery route
 Route::get('/password/recover',  [AuthController::class, 'passwordRecover'])->name('password.recover');
@@ -45,16 +44,11 @@ Route::post('/password/recover/send-code',       [AuthController::class, 'codeCh
 Route::get('/password/recover/resend-code',      [AuthController::class, 'resendCode']);
 Route::post('/password/recover/update-password', [AuthController::class, 'passwordUpdate']);
 
-// Phone activation route
-Route::get('/send-activation-code/{phoneNumber?}', [AuthController::class, 'sendActivationCode'])->name('send.code.view');
-Route::post('/activation-code-check', [AuthController::class, 'activationCodeCheck'])->name('phone.active.code.check');
-Route::get('/activation-resend-code', [AuthController::class, 'activationResendCode']);
 
 // Socialite
 Route::get('/auth/social/redirect/{service}', [AuthController::class, 'socialRedirect'])->name('social.login');
 Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCallback'])->name('social.callback');
 // Cart items and wishlist count route
-Route::get('/cart/count', [CartController::class, 'cartItemCount']);
 // Personal care route
 Route::get('categories/{id}/{slug?}', [PageController::class, 'categoryPage'])->name('category.page');
 Route::get('brands/{id}/{slug?}',     [PageController::class, 'brandPage'])->name('brand.page');
@@ -64,13 +58,14 @@ Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.sin
 // Check auth
 Route::middleware(['auth'])->group(function(){
     // All Cart route
-    Route::get('/cart',                       [PageController::class, 'checkout'])->name('checkout');
-    Route::post('/cart/item/add',             [CartController::class, 'addItem'])->name('cart.item.add');
-    Route::post('/cart/item/remove',          [CartController::class, 'removeItem'])->name('cart.item.remove');
-    Route::get('/cart/empty',                 [CartController::class, 'emptyCart']);
-    Route::post('/cart/meta/add',             [CartController::class, 'addMetaData']);
+    Route::get('/cart/items',         [CartController::class, 'cartItem'])->name('cart.items');
+    Route::post('/cart/items/add',    [CartController::class, 'addItem'])->name('cart.item.add');
+    Route::post('/cart/items/remove', [CartController::class, 'removeItem'])->name('cart.item.remove');
+    Route::get('/cart/items/count',   [CartController::class, 'cartItemCount']);
+    Route::get('/cart/items/empty',   [CartController::class, 'emptyCart']);
+    Route::post('/cart/meta/add',     [CartController::class, 'addMetaData']);
+    Route::post('/check/coupon',      [CouponController::class, 'checkCouponCode'])->name('coupon.check');
     Route::post('/cart/shipping/address/add', [CartController::class, 'addShippingAdress']);
-    Route::post('/check/coupon',              [CouponController::class, 'checkCouponCode'])->name('coupon.check');
 
     Route::prefix('my')->name('my.')->group(function () {
         // User profile update route
@@ -84,7 +79,6 @@ Route::middleware(['auth'])->group(function(){
 
         // User address route
         Route::get('/address',           [AddressController::class, 'index'])->name('address.index');
-        Route::get('/address/create',    [AddressController::class, 'create'])->name('address.create');
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
         Route::post('/address/others',   [AddressController::class, 'otherStore'])->name('address.other.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
