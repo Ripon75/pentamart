@@ -124,9 +124,6 @@
                                         <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
                                         </a>
-                                        <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-lock"></i>Change Password
-                                        </a>
                                         <a href="{{ route('logout') }}" class="text-xs px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                             <i class="mr-3 text-xs fa-solid fa-arrow-right-from-bracket"></i>Logout
                                         </a>
@@ -613,7 +610,7 @@
 
         // Header modal opration
         $('.modal .close-btn').click(function (e) {
-            $("#address-modal").modal('hide')
+            addressModal.modal('hide')
         });
 
         // event with address change

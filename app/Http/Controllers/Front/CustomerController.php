@@ -54,36 +54,4 @@ class CustomerController extends Controller
 
         }
     }
-
-    public function passwordEdit()
-    {
-        return view('frontend.pages.my-password');
-    }
-
-    public function passwordUpdate(Request $request)
-    {
-        $request->validate([
-            'current_password'          => ['required'],
-            'new_password'              => ['required', 'confirmed'],
-            'new_password_confirmation' => ['required']
-        ]);
-
-        $currentUser     = Auth::user();
-        $currentPassword = $request->input('current_password');
-        $newPassword     = $request->input('new_password');
-
-        // Check curent password valid or not
-        if (Hash::check($currentPassword, $currentUser->password)) {
-            $currentUser->password = Hash::make($newPassword);
-            $res = $currentUser->save();
-            if($res) {
-                return back()->with('message', 'Password update successfully');
-            } else {
-                return back()->with('failed', 'Password update failed');
-
-            }
-        } else {
-            return back()->with('failed', 'Invalid current password');
-        }
-    }
 }

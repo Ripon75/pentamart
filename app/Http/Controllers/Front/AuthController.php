@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Front;
 
-use Carbon\Carbon;
 use App\Models\User;
 use App\Classes\Utility;
 use App\Classes\SMSGateway;
@@ -11,17 +10,13 @@ use Illuminate\Support\Facades\DB;
 // use Illuminate\Routing\Controller;
 use App\Http\Controllers\Controller;
 use App\Events\CustomerRegistration;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use App\Models\PasswordRecoveryCode;
 use Laravel\Socialite\Facades\Socialite;
-use App\Events\PasswordRecoveryAttempted;
-use Illuminate\Http\Middleware\TrustProxies;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    protected $registrationView  = 'frontend.pages.signup';
+    protected $registrationView  = 'frontend.pages.registration';
     protected $loginView         = 'frontend.pages.login';
     protected $successLoginRoute = '/';
     protected $faildLoginRoute   = '/login';
@@ -41,8 +36,6 @@ class AuthController extends Controller
             'name'                  => ['required'],
             'email'                 => ['nullable', 'email', 'unique:users'],
             'phone_number'          => ['required', 'unique:users'],
-            'password'              => ['required', 'min:5', 'confirmed'],
-            'password_confirmation' => ['required'],
             'terms_and_conditons'   => ['required']
         ],
         [
@@ -55,9 +48,8 @@ class AuthController extends Controller
         $name               = $request->input('name');
         $email              = $request->input('email', null);
         $phoneNumber        = $request->input('phone_number', null);
-        $password           = $request->input('password');
         $termsAndConditions = $request->input('terms_and_conditons', null);
-        $code               = $this->getRandomCode();
+        $otpCode            = $this->getRandomCode();
 
         try {
             DB::beginTransaction();
@@ -75,20 +67,15 @@ class AuthController extends Controller
                 $user->name  = $name;
                 $user->email = $email;
                 $user->phone_number        = $phoneNumber;
-                $user->password            = Hash::make($password);
                 $user->terms_and_conditons = $termsAndConditions;
-                $user->code = $code;
+                $user->otp_code = $otpCode;
                 $res = $user->save();
 
                 if ($res) {
-                    Utility::setUserEvent('customer-registration', [
-                        'user' => $user
-                    ]);
-
-                    CustomerRegistration::dispatch($user, $phoneNumber, $code);
+                    CustomerRegistration::dispatch($user, $phoneNumber, $otpCode);
 
                     DB::commit();
-                    return redirect()->route('send.code.view', [$phoneNumber]);
+                    return redirect()->route('login.create');
                 }
             }
         } catch (\Exception $e) {
@@ -353,139 +340,6 @@ class AuthController extends Controller
             }
         }
         return $user;
-    }
-
-    public function passwordRecover()
-    {
-        return view('frontend.pages.my-password-recover');
-    }
-
-    public function storePhoneNumber(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'phone_number' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return $this->sendError('The phone number is required');
-        }
-
-        $phoneNumber = $request->input('phone_number', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
-
-        $passwordRecover = new PasswordRecoveryCode();
-
-
-        $checkUser = User::where('phone_number', $phoneNumber)->first();
-        if (!$checkUser) {
-            return $this->sendError('The phone number is not valid');
-        }
-
-        $code = $this->getRandomCode();
-        $passwordRecover->phone_number = $phoneNumber;
-        $passwordRecover->code = $code;
-        $passwordRecover->save();
-
-        // Dispatch event
-        PasswordRecoveryAttempted::dispatch($phoneNumber, $code);
-
-        return $this->sendResponse($checkUser, 'OTP code send your phone');
-    }
-
-
-    public function codeCheck(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'code' => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            $res = [
-                'code'    => 201,
-                'message' => 'The code is required'
-            ];
-
-            return $res;
-        }
-
-        $code = $request->input('code', null);
-        $recoverCode = PasswordRecoveryCode::where('code', $code)->whereNull('used_at')->first();
-        if (!$recoverCode) {
-            $res = [
-                'code'    => 201,
-                'message' => 'This code does not match'
-            ];
-
-            return $res;
-        } else {
-            return $recoverCode;
-        }
-    }
-
-    public function passwordUpdate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'password'              => ['required', 'confirmed'],
-            'password_confirmation' => ['required']
-        ]);
-
-        if ($validator->fails()) {
-            $res = [
-                'code'    => 201,
-                'message' => $validator->errors()
-            ];
-
-            return $res;
-        }
-
-        $emailOrPhone         = $request->input('phone_or_email', null);
-        $password             = $request->input('password', null);
-        $passwordConfirmation = $request->input('password_confirmation', null);
-
-        if (str_starts_with($emailOrPhone, '0')) {
-            $emailOrPhone = '88'.$emailOrPhone;
-        } else {
-            $emailOrPhone = $emailOrPhone;
-        }
-
-        $user = User::where('email', $emailOrPhone)->orWhere('phone_number', $emailOrPhone)->first();
-
-        if ($user) {
-            $user->password = Hash::make($password);
-            $user->save();
-            $res = [
-                'code' => 200,
-                'message' => 'Password update successfully'
-            ];
-
-            $recoverCode = PasswordRecoveryCode::where(function($query) use ($emailOrPhone) {
-                $query->where('email', $emailOrPhone)->orWhere('phone_number', $emailOrPhone);
-            })->whereNull('used_at')->first();
-
-            $now = Carbon::now();
-            $recoverCode->used_at = $now;
-            $recoverCode->save();
-
-            Utility::setUserEvent('customer-password-update', [
-                'user' => $user,
-            ]);
-
-            return $res;
-        } else {
-            Utility::setUserEvent('customer-password-update-faild', [
-                'user' => [
-                    'email_phone' => $emailOrPhone,
-                    'password' => $password
-                ],
-            ]);
-
-            $res = [
-                'code'    => 201,
-                'message' => 'The email or phone number not valid'
-            ];
-
-            return $res;
-        }
     }
 
     public function forwardOtpCode($phoneNumber, $otpCode)

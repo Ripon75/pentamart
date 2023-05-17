@@ -1,6 +1,5 @@
 <?php
 
-use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\PageController;
@@ -37,21 +36,14 @@ Route::get('/send-otp-code',   [AuthController::class, 'sendOtpCode'])->name('se
 Route::post('/check-otp-code', [AuthController::class, 'checkOtpCode'])->name('check.otp.code');
 Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
-// Password recovery route
-Route::get('/password/recover',  [AuthController::class, 'passwordRecover'])->name('password.recover');
-Route::post('/password/recover', [AuthController::class, 'storePhoneNumber']);
-Route::post('/password/recover/send-code',       [AuthController::class, 'codeCheck']);
-Route::get('/password/recover/resend-code',      [AuthController::class, 'resendCode']);
-Route::post('/password/recover/update-password', [AuthController::class, 'passwordUpdate']);
-
-
 // Socialite
 Route::get('/auth/social/redirect/{service}', [AuthController::class, 'socialRedirect'])->name('social.login');
 Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCallback'])->name('social.callback');
-// Cart items and wishlist count route
+
 // Personal care route
 Route::get('categories/{id}/{slug?}', [PageController::class, 'categoryPage'])->name('category.page');
 Route::get('brands/{id}/{slug?}',     [PageController::class, 'brandPage'])->name('brand.page');
+
 // Get area
 Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');
 
@@ -73,17 +65,12 @@ Route::middleware(['auth'])->group(function(){
         Route::get('/profile',   [CustomerController::class, 'profileEdit'])->name('profile');
         Route::put('/profile',   [CustomerController::class, 'profileUpdate'])->name('profile.update');
 
-        // User password update route
-        Route::get('/password', [CustomerController::class, 'passwordEdit'])->name('password');
-        Route::put('/password', [CustomerController::class, 'passwordUpdate'])->name('password.update');
-
         // User address route
         Route::get('/address',           [AddressController::class, 'index'])->name('address.index');
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
         Route::post('/address/others',   [AddressController::class, 'otherStore'])->name('address.other.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
         Route::put('/address/{id}',      [AddressController::class, 'update'])->name('address.update');
-        Route::get('/address/{id}',      [AddressController::class, 'destroy'])->name('address.destroy');
         Route::get('/shipping/addrss',   [AddressController::class, 'shippingAddress'])->name('single.address');
 
         // Wishlist route
@@ -93,22 +80,16 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/wishlist/remove', [WishlistController::class, 'destroy'])->name('wishlist.destroy');
 
         // Order route
-        Route::post('/order',            [OrderController::class, 'store'])->name('order.store');
-        Route::get('/order',             [OrderController::class, 'index'])->name('order');
-        Route::post('/order/remove',     [OrderController::class, 'removeItem'])->name('order.remove');
-        Route::get('/order/suceess',     [OrderController::class, 'orderSuccess'])->name('order.success');
-        Route::get('/order/failed',      [OrderController::class, 'orderFailed'])->name('order.failed');
-        Route::get('/order/{id}',        [OrderController::class, 'show'])->name('order.show');
-        Route::get('/reorder/{orderID}', [OrderController::class, 'reorder'])->name('order.reorder');
+        Route::post('/order',        [OrderController::class, 'store'])->name('order.store');
+        Route::get('/order',         [OrderController::class, 'index'])->name('order');
+        Route::post('/order/remove', [OrderController::class, 'removeItem'])->name('order.remove');
+        Route::get('/order/suceess', [OrderController::class, 'orderSuccess'])->name('order.success');
+        Route::get('/order/failed',  [OrderController::class, 'orderFailed'])->name('order.failed');
+        Route::get('/order/{id}',    [OrderController::class, 'show'])->name('order.show');
     });
 
     // Rating route
     Route::post('/ratings', [RatingController::class, 'store'])->name('ratings.store');
 
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
-});
-
-
-Route::get('/meilisearch/make/unsearchable', function() {
-    Product::where('status', 'inactivated')->unsearchable();
 });
