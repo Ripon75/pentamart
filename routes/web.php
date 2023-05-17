@@ -29,22 +29,20 @@ Route::get('/registration',  [AuthController::class, 'registrationCreate'])->nam
 Route::post('/registration', [AuthController::class, 'registrationStore'])->name('registration.store');
 
 // Login route
-Route::get('/login',       [AuthController::class, 'loginCreate'])->name('login.create');
-Route::post('/check-user', [AuthController::class, 'checkUser'])->name('check.user');
-Route::post('/login',      [AuthController::class, 'login'])->name('login');
-Route::get('/send-otp-code',   [AuthController::class, 'sendOtpCode'])->name('send.otp.create');
-Route::post('/check-otp-code', [AuthController::class, 'checkOtpCode'])->name('check.otp.code');
+Route::get('/login',           [AuthController::class, 'loginCreate'])->name('login.create');
+Route::post('/login',          [AuthController::class, 'login'])->name('login');
+Route::post('/check-user',     [AuthController::class, 'checkUser'])->name('check.user');
 Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
 // Socialite
 Route::get('/auth/social/redirect/{service}', [AuthController::class, 'socialRedirect'])->name('social.login');
 Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCallback'])->name('social.callback');
 
-// Personal care route
+// Brand and category page
 Route::get('categories/{id}/{slug?}', [PageController::class, 'categoryPage'])->name('category.page');
 Route::get('brands/{id}/{slug?}',     [PageController::class, 'brandPage'])->name('brand.page');
 
-// Get area
+// Get single area
 Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');
 
 // Check auth
@@ -57,7 +55,7 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/cart/items/empty',   [CartController::class, 'emptyCart']);
     Route::post('/cart/meta/add',     [CartController::class, 'addMetaData']);
     Route::post('/check/coupon',      [CouponController::class, 'checkCouponCode'])->name('coupon.check');
-    Route::post('/cart/shipping/address/add', [CartController::class, 'addShippingAdress']);
+    Route::post('/cart/shipping/add', [CartController::class, 'addShippingAdress']);
 
     Route::prefix('my')->name('my.')->group(function () {
         // User profile update route

@@ -73,11 +73,11 @@
                                 @endphp
                                 @if ($wishlists > 0)
                                     <button class="block" type="button">
-                                        <i class="icon text-primary fa-solid fa-heart"></i>
+                                        <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
                                     </button>
                                 @else
                                     <button class="block" type="button">
-                                        <i class="icon text-primary fa-regular fa-heart"></i>
+                                        <i class="icon text-primary fa-regular fa-heart hover:text-secondary"></i>
                                     </button>
                                 @endif
                             </div>
@@ -88,7 +88,7 @@
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative">
                                 <button class="block" type="button">
-                                    <i class="icon fa-solid fa-cart-shopping text-primary"></i>
+                                    <i class="icon fa-solid fa-cart-shopping text-primary hover:text-secondary"></i>
                                 </button>
                                 <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#ffc42d] rounded-full w-6 h-6 text-center">
                                     <span class="cart-count flex items-center justify-center h-full text-black text-xs font-medium">0</span>
@@ -117,12 +117,6 @@
                                         @endrole
                                         <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-gauge"></i>My Dashboard
-                                        </a>
-                                        <a href="{{ route('my.profile') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-user"></i>My Profile
-                                        </a>
-                                        <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
                                         </a>
                                         <a href="{{ route('logout') }}" class="text-xs px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                             <i class="mr-3 text-xs fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -180,18 +174,6 @@
                             <div class="flex flex-col bg-gray-50 rounded-lg rounded-t-none w-40 shadow-xl">
                                 <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                     <i class="mr-2 fa-solid fa-chart-line"></i>My Dashboard
-                                </a>
-                                <a href="{{ route('my.profile') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-user"></i>My Profile
-                                </a>
-                                <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-cart-shopping"></i>My Orders
-                                </a>
-                                <a href="{{ route('my.address.index') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-location-dot"></i>My Address
-                                </a>
-                                <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-lock"></i>Change Password
                                 </a>
                                 <a href="{{ route('logout') }}" class="text-sm px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                     <i class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -561,7 +543,7 @@
     var searchResult     = $('.search-box-result');
     var searchResultList = $('.search-box-result-list');
     // Header address change
-    var shippingAddressEndPoint = '/cart/shipping/address/add';
+    var addShippingEndPoint  = '/cart/shipping/add';
     var addressModal         = $('#address-modal');
     var btnAddressChange     = $('#btn-address-change');
     var inputShippingAddress = $('.header-shipping-address');
@@ -694,7 +676,7 @@
     }
 
     function __addShippingAddress(addressId) {
-        axios.post(shippingAddressEndPoint, {
+        axios.post(addShippingEndPoint, {
             address_id: addressId
         })
         .then((response) => {

@@ -16,18 +16,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-    protected $registrationView  = 'frontend.pages.registration';
-    protected $loginView         = 'frontend.pages.login';
-    protected $successLoginRoute = '/';
-    protected $faildLoginRoute   = '/login';
-
     public function registrationCreate()
     {
         if (Auth::check()) {
-            return redirect()->intended($this->successLoginRoute);
+            return redirect()->route('home');
         }
 
-        return view($this->registrationView);
+        return view('frontend.pages.registration');
     }
 
     public function registrationStore(Request $request)
@@ -49,7 +44,6 @@ class AuthController extends Controller
         $email              = $request->input('email', null);
         $phoneNumber        = $request->input('phone_number', null);
         $termsAndConditions = $request->input('terms_and_conditons', null);
-        $otpCode            = $this->getRandomCode();
 
         try {
             DB::beginTransaction();
@@ -68,11 +62,10 @@ class AuthController extends Controller
                 $user->email = $email;
                 $user->phone_number        = $phoneNumber;
                 $user->terms_and_conditons = $termsAndConditions;
-                $user->otp_code = $otpCode;
                 $res = $user->save();
 
                 if ($res) {
-                    CustomerRegistration::dispatch($user, $phoneNumber, $otpCode);
+                    CustomerRegistration::dispatch($user);
 
                     DB::commit();
                     return redirect()->route('login.create');
@@ -88,12 +81,12 @@ class AuthController extends Controller
     public function loginCreate()
     {
         if (Auth::check()) {
-            return redirect()->intended($this->successLoginRoute);
+            return redirect()->route('home');
         }
 
         Utility::saveIntendedURL();
 
-        return view($this->loginView);
+        return redirect()->route('home');
     }
 
     public function checkUser(Request $request)
@@ -112,22 +105,6 @@ class AuthController extends Controller
             return $this->sendResponse($user, 'User exists');
         } else {
             return $this->sendError('User not found');
-        }
-    }
-
-    public function loginByPassword(Request $request)
-    {
-        $phoneNumber = $request->input('phone_number', null);
-        $password    = $request->input('password', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
-
-        if (Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password, 'ac_active' => true], true)) {
-            $user  = Auth::user();
-            $request->session()->regenerate();
-
-            return $this->sendResponse($user, 'Successfully login');
-        } else {
-            return $this->sendError("User credential doesn't match");
         }
     }
 
@@ -188,92 +165,40 @@ class AuthController extends Controller
         }
     }
 
-    public function sendOtpCode($phoneNumber = null)
-    {
-        return view('frontend.pages.send-otp-code', [
-            'phoneNumber' => $phoneNumber
-        ]);
-    }
-
-    public function checkOtpCode(Request $request)
-    {
-        $request->validate([
-            'phone_number' => ['required'],
-            'pin_code'     => ['required']
-        ]);
-
-        $phoneNumber = $request->input('phone_number', null);
-        $code        = $request->input('pin_code', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
-
-        $user = User::where('phone_number', $phoneNumber)->first();
-        if ($user) {
-            if ($user->code == $code) {
-                $user->ac_active = 1;
-                $user->save();
-
-                $intendedURL = session('url.intended') ? session('url.intended') : $this->successLoginRoute;
-                session()->forget('url.intended');
-                Auth::login($user);
-                $request->session()->regenerate();
-
-                Utility::setUserEvent('customer-phone-validation', [
-                    'user' => $user,
-                ]);
-
-                return redirect()->intended($intendedURL);
-            } else {
-                return back()->with('message', 'Code does not match');
-            }
-        } else {
-            return back()->with('message', 'User not found');
-        }
-    }
-
     // Socialite login
     public function socialRedirect(Request $request, $service)
     {
         return Socialite::driver($service)->redirect();
     }
 
-    public function socialCallback(Request $request, $service)
-    {
-        $user = null;
-        $socialUser = Socialite::driver($service)->stateless()->user();
+    // public function socialCallback(Request $request, $service)
+    // {
+    //     $user = null;
+    //     $socialUser = Socialite::driver($service)->stateless()->user();
 
-        if ($service === 'google') {
-            $user = $this->socialGoogleAuth($socialUser);
-        }
-        else if ($service === 'facebook') {
-            $user = $this->socialFacebookAuth($socialUser);
-        } else {
-            $user = $this->socialGoogleAuth($socialUser);
-        }
+    //     if ($service === 'google') {
+    //         $user = $this->socialGoogleAuth($socialUser);
+    //     }
+    //     else if ($service === 'facebook') {
+    //         $user = $this->socialFacebookAuth($socialUser);
+    //     } else {
+    //         $user = $this->socialGoogleAuth($socialUser);
+    //     }
 
-        Auth::login($user);
+    //     Auth::login($user);
 
-        return redirect('/');
-    }
+    //     return redirect('/');
+    // }
 
     // logout function
     public function logout(Request $request)
     {
-        $user = User::where('id', Auth::id())->first();
-        if ($user->remember_token) {
-            $user->remember_token = null;
-            $user->save();
-        }
-
-        Utility::setUserEvent('customer-logout', [
-            'user' => $user,
-        ]);
-
         Auth::logout();
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect($this->successLoginRoute);
+        return redirect()->route('home');
     }
 
     private function socialGoogleAuth($socialUser)

@@ -10,19 +10,13 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 use App\Events\OrderCreate;
 use App\Events\ProductSearch;
 use App\Events\OrderStatusChange;
-use App\Events\ManualOrderCreate;
 use App\Events\CustomerRegistration;
-use App\Events\PasswordRecoveryAttempted;
 // Listeners
 use App\Listeners\NotifyUser;
 use App\Listeners\StoreSearchLog;
-use App\Listeners\AttachCustomerRole;
 use App\Listeners\CreateCustomerCart;
-use App\Listeners\SendActivationCode;
 use App\Listeners\SendOrderSubmitSMS;
 use App\Listeners\SetOrderStatusSubmit;
-use App\Listeners\SendPasswordRecoveryCode;
-use App\Listeners\SetManualOrderStatusSubmit;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -36,12 +30,7 @@ class EventServiceProvider extends ServiceProvider
             SendEmailVerificationNotification::class,
         ],
         CustomerRegistration::class => [
-            // SendActivationCode::class,
-            AttachCustomerRole::class,
-            CreateCustomerCart::class,
-        ],
-        PasswordRecoveryAttempted::class => [
-            SendPasswordRecoveryCode::class
+            CreateCustomerCart::class
         ],
         ProductSearch::class => [
             StoreSearchLog::class
@@ -49,9 +38,6 @@ class EventServiceProvider extends ServiceProvider
         OrderCreate::class => [
             SetOrderStatusSubmit::class,
             // SendOrderSubmitSMS::class
-        ],
-        ManualOrderCreate::class => [
-            SetManualOrderStatusSubmit::class
         ],
         OrderStatusChange::class => [
             NotifyUser::class
