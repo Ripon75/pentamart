@@ -15,9 +15,9 @@
                         @if ($message)
                             <h3 class="md:text-2xl text-base text-gray-900 font-semibold text-center">{{ $message }}</h3>
                         @endif
-                        <p class="text-gray-600 my-2">oops! your payment is failed.</p>
+                        <p class="text-gray-600 my-2">Your payment is failed.</p>
                         <div class="mt-4">
-                            <a href="{{ route('home') }}" type="button" class="btn btn-md btn-primary hover:text-white">Go Back</a>
+                            <a href="{{ route('home') }}" type="button" class="btn btn-md btn-primary hover:text-white">Home</a>
                         </div>
                     </div>
                 </div>

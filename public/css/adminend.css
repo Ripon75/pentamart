@@ -7430,9 +7430,6 @@ textarea.form-control.is-invalid{
 .navbar-dark .navbar-nav .nav-link.active{
   color: #fff;
 }
-.accordion-button{
-  overflow-anchor: none;
-}
 .accordion-button:not(.collapsed){
   color: #2563eb;
   background-color: #fff;
@@ -7441,39 +7438,6 @@ textarea.form-control.is-invalid{
 .accordion-button:not(.collapsed)::after{
   background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%232563eb'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
   transform: rotate(-180deg);
-}
-.accordion-button::after{
-  -ms-flex-shrink: 0;
-  flex-shrink: 0;
-  width: 1.25rem;
-  height: 1.25rem;
-  margin-left: auto;
-  content: "";
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23212529'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-size: 1.25rem;
-  transition: transform 0.2s ease-in-out;
-}
-.accordion-button:hover{
-  z-index: 2;
-}
-.accordion-button:focus{
-  z-index: 3;
-}
-.accordion-item:first-of-type{
-  border-top-left-radius: 0.5rem;
-  border-top-right-radius: 0.5rem;
-}
-.accordion-item:first-of-type .accordion-button{
-  border-top-left-radius: calc(0.5rem - 1px);
-  border-top-right-radius: calc(0.5rem - 1px);
-}
-.accordion-item:not(:first-of-type){
-  border-top: 0;
-}
-.accordion-item:last-of-type{
-  border-bottom-right-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
 }
 .accordion-item:last-of-type .accordion-button.collapsed{
   border-bottom-right-radius: calc(0.5rem - 1px);
@@ -10477,9 +10441,6 @@ textarea.form-control.is-invalid{
 .h-\[46px\]{
   height: 46px;
 }
-.h-48{
-  height: 12rem;
-}
 .h-\[36px\]{
   height: 36px;
 }
@@ -10582,11 +10543,11 @@ textarea.form-control.is-invalid{
 .w-16{
   width: 4rem;
 }
-.w-48{
-  width: 12rem;
-}
 .w-72{
   width: 18rem;
+}
+.w-48{
+  width: 12rem;
 }
 .w-1\/3{
   width: 33.333333%;
@@ -10844,6 +10805,9 @@ textarea.form-control.is-invalid{
 .rounded-none{
   border-radius: 0px;
 }
+.rounded-sm{
+  border-radius: 0.125rem;
+}
 .rounded-b{
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
@@ -10954,6 +10918,13 @@ textarea.form-control.is-invalid{
 .border-green-600{
   --tw-border-opacity: 1;
   border-color: rgb(22 163 74 / var(--tw-border-opacity));
+}
+.border-black\/50{
+  border-color: rgb(0 0 0 / 0.5);
+}
+.border-white{
+  --tw-border-opacity: 1;
+  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 .bg-white{
   --tw-bg-opacity: 1;
@@ -11182,10 +11153,6 @@ textarea.form-control.is-invalid{
 .py-0{
   padding-top: 0px;
   padding-bottom: 0px;
-}
-.px-5{
-  padding-left: 1.25rem;
-  padding-right: 1.25rem;
 }
 .py-8{
   padding-top: 2rem;
@@ -11424,17 +11391,9 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
 }
-.text-red-400{
-  --tw-text-opacity: 1;
-  color: rgb(248 113 113 / var(--tw-text-opacity));
-}
 .text-red-300{
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity));
-}
-.text-primaryError-darkest{
-  --tw-text-opacity: 1;
-  color: rgb(185 28 28 / var(--tw-text-opacity));
 }
 .text-slate-500{
   --tw-text-opacity: 1;
@@ -11447,6 +11406,10 @@ textarea.form-control.is-invalid{
 .text-red-700{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
+}
+.text-red-400{
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 .underline{
   -webkit-text-decoration-line: underline;
@@ -13185,13 +13148,13 @@ fieldset legend{
   --tw-bg-opacity: 1;
   background-color: rgb(0 121 140 / var(--tw-bg-opacity));
 }
-.hover\:bg-gray-300:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
-}
 .hover\:bg-red-700:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+.hover\:bg-gray-300:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 .hover\:bg-gray-50:hover{
   --tw-bg-opacity: 1;
@@ -13204,6 +13167,10 @@ fieldset legend{
 .hover\:text-\[\#00798c\]:hover{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
+}
+.hover\:text-secondary:hover{
+  --tw-text-opacity: 1;
+  color: rgb(255 196 45 / var(--tw-text-opacity));
 }
 .hover\:text-white:hover{
   --tw-text-opacity: 1;
@@ -13220,10 +13187,6 @@ fieldset legend{
 .hover\:text-gray-500:hover{
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-.hover\:text-secondary:hover{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
 }
 .hover\:text-gray-400:hover{
   --tw-text-opacity: 1;
@@ -13929,11 +13892,11 @@ fieldset legend{
   .lg\:-right-2{
     right: -0.5rem;
   }
-  .lg\:col-span-3{
-    grid-column: span 3 / span 3;
-  }
   .lg\:col-span-1{
     grid-column: span 1 / span 1;
+  }
+  .lg\:col-span-3{
+    grid-column: span 3 / span 3;
   }
   .lg\:col-span-2{
     grid-column: span 2 / span 2;

@@ -15,7 +15,6 @@ use App\Models\Prescription;
 use App\Exports\OrdersExport;
 use App\Models\PaymentGateway;
 use App\Models\DeliveryGateway;
-use App\Events\ManualOrderCreate;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
@@ -497,7 +496,6 @@ class OrderController extends Controller
             $orderObj->updateOrderValue($orderObj);
 
             // Dispatch manual order create event
-            ManualOrderCreate::dispatch($orderObj, $now);
 
             $request->session()->forget('items');
 
@@ -559,7 +557,7 @@ class OrderController extends Controller
         $businessId = null;
         $branchId   = null;
         $areaName   = null;
-        
+
         $order = Order::find($orderId);
         if ($order) {
             $businessId = $order->pos_business_id;

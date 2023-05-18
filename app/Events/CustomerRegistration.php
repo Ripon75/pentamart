@@ -15,21 +15,16 @@ class CustomerRegistration
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $code;
-    public $customer;
-    public $phoneNumber;
+    public $user;
 
     /**
      * Create a new event instance.
      *
      * @return void
      */
-    public function __construct(User $customer, $phoneNumber, $code)
+    public function __construct(User $user)
     {
-        $this->customer    = $customer;
-        $this->phoneNumber = $phoneNumber;
-        $this->code        = $code;
-
+        $this->user = $user;
     }
 
     /**

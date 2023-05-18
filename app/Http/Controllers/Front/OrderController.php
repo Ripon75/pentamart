@@ -223,46 +223,4 @@ class OrderController extends Controller
             return back();
         }
     }
-
-    // Selected order add to cart
-    public function reorder(Request $request, $orderID)
-    {
-        Utility::setUserEvent('re-order', [
-            'order_id' => $orderID
-        ]);
-
-        $userId = Auth::id();
-        $order  = Order::with(['items' => function($query) {
-            $query->withTrashed();
-        }])->find($orderID);
-
-        if ($order && ($order->user_id === $userId)) {
-            $cart = new Cart();
-            $cart = $cart->getCurrentCustomerCart();
-            $cart->items()->detach();
-
-            $itemIds = [];
-            foreach ($order->items as $item) {
-                $itemQuantity = $item->pivot->quantity;
-                $packSize     = $item->pivot->pack_size;
-                $itemMRP      = $item->pivot->item_mrp;
-                $price        = $item->pivot->price;
-                $discount     = $item->pivot->discount;
-
-                $itemIds[$item->id] = [
-                    'quantity'       => $itemQuantity,
-                    'item_pack_size' => $packSize,
-                    'item_mrp'       => $itemMRP,
-                    'price'          => $price,
-                    'discount'       => $discount
-                ];
-            }
-            $res = $cart->items()->sync($itemIds);
-            if ($res) {
-                return redirect()->route('cart.items');
-            }
-        } else {
-            abort(404);
-        }
-    }
 }

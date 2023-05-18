@@ -27,8 +27,8 @@ class CreateCustomerCart
      */
     public function handle(CustomerRegistration $event)
     {
-        $customerId = $event->customer->id;
+        $userId = $event->user->id;
         $cartObj = new Cart();
-        $cartObj->createCustomerCart($customerId);
+        $cartObj->createCustomerCart($userId);
     }
 }

@@ -73,11 +73,11 @@
                                 @endphp
                                 @if ($wishlists > 0)
                                     <button class="block" type="button">
-                                        <i class="icon text-primary fa-solid fa-heart"></i>
+                                        <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
                                     </button>
                                 @else
                                     <button class="block" type="button">
-                                        <i class="icon text-primary fa-regular fa-heart"></i>
+                                        <i class="icon text-primary fa-regular fa-heart hover:text-secondary"></i>
                                     </button>
                                 @endif
                             </div>
@@ -88,7 +88,7 @@
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative">
                                 <button class="block" type="button">
-                                    <i class="icon fa-solid fa-cart-shopping text-primary"></i>
+                                    <i class="icon fa-solid fa-cart-shopping text-primary hover:text-secondary"></i>
                                 </button>
                                 <div class="cart-dev hidden absolute top-0 lg:-top-2 xl:top-0 lg:-right-2 xl:right-0 -mt-1 bg-[#ffc42d] rounded-full w-6 h-6 text-center">
                                     <span class="cart-count flex items-center justify-center h-full text-black text-xs font-medium">0</span>
@@ -117,15 +117,6 @@
                                         @endrole
                                         <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-xs fa-solid fa-gauge"></i>My Dashboard
-                                        </a>
-                                        <a href="{{ route('my.profile') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-user"></i>My Profile
-                                        </a>
-                                        <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-cart-shopping"></i>My Orders
-                                        </a>
-                                        <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-lock"></i>Change Password
                                         </a>
                                         <a href="{{ route('logout') }}" class="text-xs px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                             <i class="mr-3 text-xs fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -159,7 +150,7 @@
             <div class="relative header-bar flex space-x-4 items-center py-2">
                 <div id="menu" onclick="toggleMenu()">
                     <button class="w-10 h-10 text-gray-500">
-                        <i class="text-base fa-solid fa-bars"></i>
+                        <i class="text-base fa-solid fa-bars text-white"></i>
                     </button>
                 </div>
 
@@ -183,18 +174,6 @@
                             <div class="flex flex-col bg-gray-50 rounded-lg rounded-t-none w-40 shadow-xl">
                                 <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                     <i class="mr-2 fa-solid fa-chart-line"></i>My Dashboard
-                                </a>
-                                <a href="{{ route('my.profile') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-user"></i>My Profile
-                                </a>
-                                <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-cart-shopping"></i>My Orders
-                                </a>
-                                <a href="{{ route('my.address.index') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-location-dot"></i>My Address
-                                </a>
-                                <a href="{{ route('my.password') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-lock"></i>Change Password
                                 </a>
                                 <a href="{{ route('logout') }}" class="text-sm px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                     <i class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -228,9 +207,9 @@
             {{-- ====search field & categories for mobile menu=====--}}
             <div class="flex space-x-2">
                 <div class="relative">
-                    <div class="">
-                        <button type="button" id="category-menu" onclick="toogleOptionCategory()" class="category-btn px-3 h-8 text-sm border border-primary/50 rounded text-gray-500">
-                            Select categories<i class="ml-1 text-xs fa-solid fa-angle-down"></i>
+                    <div class="bg-white rounded-sm">
+                        <button type="button" id="category-menu" onclick="toogleOptionCategory()" class="category-btn px-3 h-8 text-sm text-gray-500">
+                            Select Menu<i class="ml-1 text-xs fa-solid fa-angle-down"></i>
                         </button>
                     </div>
                     <div class="absolute">
@@ -245,11 +224,11 @@
                 </div>
                 {{-- Search bar for mobile --}}
                 <div id="search-bar" class="search-box flex-1">
-                    <div class="flex rounded rounded-t-none top-0 mb-2 h-8">
-                        <button class="px-2.5 flex items-center rounded-l border border-primary/50 border-r-0">
-                            <i class="text-xs text-gray-500 fa-solid fa-magnifying-glass"></i>
+                    <div class="flex rounded-sm top-0 mb-2 h-8 border bg-white">
+                        <button class="px-2.5 flex items-center">
+                            <i class="text-xs fa-solid fa-magnifying-glass"></i>
                         </button>
-                        <input class="search-box-input text-xs placeholder:text-sm border-primary/50 border border-l-0 py-1 w-full rounded rounded-l-none focus:outline-none"
+                        <input class="search-box-input text-xs placeholder:text-sm  py-1 w-full rounded focus:outline-none"
                         placeholder="Search here.">
                     </div>
 
@@ -269,7 +248,7 @@
                     <button class="category-btn group-hover:rounded-b-none lg:w-[160px] xl:w-[240px] flex items-center text-primary justify-between sm:text-sm text-sm lg:text-base border rounded-md px-4 py-2">
                         <div class="flex space-x-2">
                             <span><i class="fa-solid fa-bars"></i></span>
-                            <span>Category</span>
+                            <span>Menu</span>
                         </div>
                         <span class=""><i class="fa-solid fa-caret-down"></i></span>
                     </button>
@@ -307,8 +286,8 @@
 <section class="">
     <div id="menu-box" class="sidebar-menu fixed top-0 left-0 bottom-0 right-0 z-50 bg-black/30"
         style="display: none">
-        <div class="w-60 h-full bg-white">
-            <div class="header h-14 flex space-x-4 items-center bg-gray-300 shadow">
+        <div class="w-36 h-full bg-white">
+            <div class="header h-14 flex space-x-4 items-center bg-primary shadow">
                 <a href="{{ route('home') }}" class="flex-1">
                     <img class="w-[8.375rem] pl-4" src="/images/logos/logo.png">
                 </a>
@@ -318,6 +297,10 @@
             </div>
             <div class="menu">
                 <div class="flex flex-col">
+                    <a href="{{ route('products.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
+                        <i class="pr-3 fa-solid fa-list"></i>
+                        Products
+                    </a>
                     <a href="{{ route('my.wishlist') }}"
                         class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
                         data-mc-on-previous-url="{{ route('my.wishlist') }}"
@@ -329,16 +312,8 @@
                         data-mc-on-previous-url="{{ route('my.address.index') }}"
                         @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                         <i class="pr-3 fa-solid fa-location-dot"></i>
-                        Add New Address
+                        Address
                     </a>
-                    <a href="{{ route('products.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
-                        <i class="pr-3 fa-solid fa-capsules"></i>
-                        Products
-                    </a>
-                    {{-- <a href="{{ route('offers.products') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
-                        <i class="pr-3 fa-solid fa-percent"></i>
-                        Offers
-                    </a> --}}
                     @auth
                         <a href="{{ route('logout') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
                             <i class="pr-3 fa-solid fa-arrow-right-from-bracket"></i>
@@ -424,7 +399,7 @@
                 </div>
             </form>
             {{-- For create shipping address --}}
-            <h3 class="mt-2 md:mt-2 mb-2 text-base font-medium">Add new shipping address</h3>
+            <h3 class="mt-2 md:mt-2 mb-2 text-base font-medium">Add new address</h3>
             <form class="mb-0">
                 <div class="grid grid-cols-1">
                     <div class="form-item">
@@ -564,7 +539,7 @@
     var searchResult     = $('.search-box-result');
     var searchResultList = $('.search-box-result-list');
     // Header address change
-    var shippingAddressEndPoint = '/cart/shipping/address/add';
+    var addShippingEndPoint  = '/cart/shipping/add';
     var addressModal         = $('#address-modal');
     var btnAddressChange     = $('#btn-address-change');
     var inputShippingAddress = $('.header-shipping-address');
@@ -613,7 +588,7 @@
 
         // Header modal opration
         $('.modal .close-btn').click(function (e) {
-            $("#address-modal").modal('hide')
+            addressModal.modal('hide')
         });
 
         // event with address change
@@ -660,14 +635,13 @@
         if (data.length > 0) {
             for (let index = 0; index < data.length; index++) {
                 const product = data[index];
-                var packSize     = product.pack_size;
-                var sellingPrice = (product.selling_price * packSize).toFixed(2);
-                var productMRP   = (product.mrp * packSize).toFixed(2);
-                var isMRPHidden = '';
-                var isSellingPriceHidden = 'hidden';
-                if (sellingPrice > 0) {
-                    isMRPHidden = 'line-through';
-                    isSellingPriceHidden = '';
+                var offerPrice = product.offer_price;
+                var productPrice   = product.price;
+                var isPriceHidden = '';
+                var isofferPriceHidden = 'hidden';
+                if (offerPrice > 0) {
+                    isPriceHidden = 'line-through';
+                    isofferPriceHidden = '';
                 }
                 var itemHTML = `
                     <a href="/products/${product.id}/${product.slug}" class="hover:bg-gray-200 transition duration-150 ease-in-out border-b border-dashed flex space-x-2 py-2 pr-3 items-center" data-product-id="${product.id}">
@@ -675,15 +649,15 @@
                             <img class="w-full h-full" src="${product.image_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
-                            <h4 class="text-xs text-gray-500">${product.dosage_form?.name}</h4>
+                            <h4 class="text-xs text-gray-500">${product.brand?.name}</h4>
                             <h2 class="text-base text-primary">${product.name}</h2>
-                            <span class="text-xxs text-gray-500">${product.generic?.name}</span>
+                            <span class="text-xxs text-gray-500">${product.category?.name}</span>
                         </div>
-                        <div class="flex justify-center items-center text-sm ${isMRPHidden}">
-                            <span class="text-gray-500">${productMRP} tk</span>
+                        <div class="flex justify-center items-center text-sm ${isPriceHidden}">
+                            <span class="text-gray-500">${productPrice} tk</span>
                         </div>
-                        <div class="flex justify-center items-center text-sm ${isSellingPriceHidden}">
-                            <span class="text-gray-500">${sellingPrice} tk</span>
+                        <div class="flex justify-center items-center text-sm ${isofferPriceHidden}">
+                            <span class="text-gray-500">${offerPrice} tk</span>
                         </div>
                     </a>`;
 
@@ -692,12 +666,11 @@
         } else {
             searchResultList.html(`<strong>No product found by "${keywords}"</strong>`);
         }
-
         searchResult.show();
     }
 
     function __addShippingAddress(addressId) {
-        axios.post(shippingAddressEndPoint, {
+        axios.post(addShippingEndPoint, {
             address_id: addressId
         })
         .then((response) => {

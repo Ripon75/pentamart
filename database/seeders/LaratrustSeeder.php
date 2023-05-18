@@ -77,7 +77,7 @@ class LaratrustSeeder extends Seeder
         }
 
         foreach ($users as $user) {
-            CustomerRegistration::dispatch($user, null, null);
+            CustomerRegistration::dispatch($user);
         }
     }
 

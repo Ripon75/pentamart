@@ -57,7 +57,7 @@ class Banner extends Model
     public function _getImageUploadPath()
     {
         $now = Carbon::now();
-        return "images/{$this->table}/{$now->year}/{$now->month}/{$now->day}";
+        return "images/{$this->table}/{$now->year}/{$now->month}";
     }
 
     // get image source

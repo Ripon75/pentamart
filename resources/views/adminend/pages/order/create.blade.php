@@ -433,7 +433,7 @@
 
         // Get shipping address for selectee user
         function getShippingAddress(userId) {
-            axios.get('/api/user/address', {
+            axios.get('/api/address/search', {
                 params: {
                     user_id: userId
                 }

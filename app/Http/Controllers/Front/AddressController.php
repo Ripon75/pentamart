@@ -192,18 +192,6 @@ class AddressController extends Controller
         }
     }
 
-    public function destroy($id)
-    {
-        $userAddress = Address::find($id);
-        if (!$userAddress) {
-            abort(404);
-        }
-
-        $userAddress->delete();
-
-        return back()->with('message', 'Address delete successfully');
-    }
-
     public function getArea($name)
     {
         if (!$name) {

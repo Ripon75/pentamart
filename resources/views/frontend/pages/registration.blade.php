@@ -42,38 +42,11 @@
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-item">
-                                <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
-                                <div class="relative flex items-center justify-end">
-                                    <input id="password-one" class="form-input flex-1" type="password" placeholder="Please enter your password" name="password"/>
-                                    <div class="absolute mr-4">
-                                        <i id="eye-open-one" class="fa-regular fa-eye"></i>
-                                        <i id="eye-close-one" class="fa-regular fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                                @error('password')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label">Confirm Password <span class="text-red-500 font-medium">*</span></label>
-                                <div class="relative flex items-center justify-end">
-                                    <input id="password-two" class="form-input flex-1" placeholder="Please confirm your password" type="password" name="password_confirmation"/>
-                                    <div class="absolute mr-4">
-                                        <i id="eye-open-two" class="fa-regular fa-eye"></i>
-                                        <i id="eye-close-two" class="fa-regular fa-eye-slash"></i>
-                                    </div>
-                                </div>
-                                @error('password_confirmation')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
                             <div class="flex space-x-2 items-center mt-2">
                                 <input class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
                                     <a href="{{ route('terms.and.condition') }}" class="text-primary">"Terms and Conditions"</a> &
-                                    {{-- <a href="/privacy-policy" class="text-primary">"Privacy Policy"</a> --}}
                                 </span>
                             </div>
                             @error('terms_and_conditons')
@@ -84,7 +57,10 @@
                             </div>
                             <div class="">
                                 <div class="text-center mt-4 text-gray-500 text-sm">Already have an account?</div>
-                                <a href="{{ route('login') }}" class="btn btn-block mt-2">Login</a>
+                                <a href="{{ route('login') }}" class="btn btn-block mt-2"
+                                    @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                    Login
+                                </a>
                             </div>
                             {{-- <div class="text-center mt-4 text-gray-500 text-sm">Or, signup with</div>
                             <div class="flex space-x-6 justify-center mt-4">
@@ -98,40 +74,3 @@
         </div>
     </section>
 @endsection
-
-@push('scripts')
-    <script>
-        var   openIconOne     = $('#eye-open-one').hide();
-        var   closeIconOne    = $('#eye-close-one');
-        var   openIconTwo     = $('#eye-open-two').hide();
-        var   closeIconTwo    = $('#eye-close-two');
-        const passwordOne     = document.querySelector("#password-one");
-        const passwordTwo     = document.querySelector("#password-two");
-        $(function() {
-            // For password
-            closeIconOne.click(function() {
-                openIconOne.show();
-                closeIconOne.hide();
-                passwordOne.setAttribute('type', 'text');
-            });
-
-            openIconOne.click(function() {
-                openIconOne.hide();
-                closeIconOne.show();
-                passwordOne.setAttribute('type', 'password');
-            });
-            // for confirm password
-            closeIconTwo.click(function() {
-                closeIconTwo.hide();
-                openIconTwo.show();
-                passwordTwo.setAttribute('type', 'text');
-            });
-
-            openIconTwo.click(function() {
-                openIconTwo.hide();
-                closeIconTwo.show();
-                passwordTwo.setAttribute('type', 'password');
-            });
-        });
-    </script>
-@endpush

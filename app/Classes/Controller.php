@@ -2,7 +2,6 @@
 
 namespace App\Classes;
 
-use Session;
 use App\Classes\Utility;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -53,7 +52,7 @@ class Controller extends BaseController
         $routeName = $this->modelObj->_getRouteName('index');
 
         if ($this->_responseFormat === 'view') {
-            Session::flash('message', $result['message']);
+            // Session::flash('message', $result['message']);
             return redirect()->route($routeName)->with('success', $result);
         } else {
             return $this->_response($result['data'], $result['message']);
@@ -101,7 +100,7 @@ class Controller extends BaseController
         $routeName = $this->modelObj->_getRouteName('index');
 
         if ($this->_responseFormat === 'view') {
-            Session::flash('message', $result['message']);
+            // Session::flash('message', $result['message']);
             return back()->with('success', $result);
         } else {
             return $this->_response($result['data'], $result['message']);
@@ -111,30 +110,16 @@ class Controller extends BaseController
     // response function
     public function _response($data = null, $message = null, $view = '', $code = 200)
     {
-        // $type = $this->_responseFormat;
-        // $utility = new Utility();
-
         return $this->sendResponse($data, $message);
     }
 
     public function sendResponse($result, $message)
     {
-        $res = [
-            'success' => true,
-            'msg'     => $message,
-            'result'  => $result
-        ];
-        return response()->json($res, 200);
+        return Utility::response($result, $message);
     }
 
     public function sendError($message)
     {
-        $res = [
-            'success' => false,
-            'msg'     => $message,
-            'result'  => []
-        ];
-
-        return response()->json($res, 201);
+        Utility::error($message);
     }
 }
