@@ -5,14 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Address;
-use App\Classes\Utility;
 use Illuminate\Http\Request;
 use App\Events\ProductSearch;
 use App\Http\Controllers\Controller;
 class SearchController extends Controller
 {
-    protected $_responseFormat = 'json';
-
     public function productSearch(Request $request)
     {
         $products = [];
@@ -39,17 +36,7 @@ class SearchController extends Controller
 
         ProductSearch::dispatch($seachQuery, $resultCount);
 
-        return $this->_response($products, 'Search result');
-    }
-
-    public function testResult(Request $request)
-    {
-        $searchKey = $request->input('search_key', null);
-        $limit     = $request->input('limit', 10);
-        $limit     = $limit ? $limit : 10;
-        $products  = Product::select('name as label', 'id as value')->where('name', 'like', "{$searchKey}%")->take($limit)->get();
-
-        return response()->json($products);
+        return $this->sendResponse($products, 'Search result');
     }
 
     public function userSearch(Request $request)
@@ -58,18 +45,18 @@ class SearchController extends Controller
 
         if ($phoneNumber) {
             $user = User::where('phone_number', 'like', "%{$phoneNumber}%")->get();
-            return $this->_response($user, 'Search result');
+            return $this->sendResponse($user, 'Search result');
         }
     }
 
-    public function userAddress(Request $request)
+    public function addressSearch(Request $request)
     {
         $userId = $request->input('user_id', null);
 
         if ($userId) {
             $addresses = Address::where('user_id', $userId)->get();
 
-            return $this->_response($addresses, 'Search result');
+            return $this->sendResponse($addresses, 'Search result');
         }
     }
 }

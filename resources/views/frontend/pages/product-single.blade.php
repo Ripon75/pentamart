@@ -200,12 +200,13 @@
         <div class="grid grid-cols-6 gap-4 mt-10">
             {{-- Description --}}
             <div class="col-span-6 lg:col-span-6 xl:col-span-4">
-                @if ($product->description)
                 <div class="product-detail mt-3">
                     <div>
-                        <div class="bg-primary h-10 flex items-center rounded-md">
-                            <h1 class="text-base text-white pl-4">Description</h1>
-                        </div>
+                        @if ($product->description)
+                            <div class="bg-primary h-10 flex items-center rounded-md">
+                                <h1 class="text-base text-white pl-4">Description</h1>
+                            </div>
+                        @endif
                         <div class="bg-white mb-4 p-4 product-description">
                             <p class="text-sm">
                                 {!! html_entity_decode($product->description) !!}
@@ -289,7 +290,6 @@
                         </div>
                     </div>
                 </div>
-                @endif
             </div>
             <div class="col-span-6 lg:col-span-6 xl:col-span-2">
                 <h1 class="text-xl font-medium">Ratings & Reviews</h1>

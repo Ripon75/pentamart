@@ -200,23 +200,6 @@ class Model extends BaseModel
         return $this->_makeResponse(true, $data, $msg);
     }
 
-    /**
-     * Method _makeResourceCollection
-     *
-     * @param $data $data [explicite description]
-     *
-     * @return model object collection
-     */
-    protected function _makeResourceCollection($data) { }
-
-    /**
-     * Method _makeResource make api resource
-     *
-     * @param $data $data [explicite description]
-     *
-     * @return model object
-     */
-    protected function _makeResource($data) { }
 
     // response
     public function _makeResponse($res, $data, $msg)
@@ -246,7 +229,7 @@ class Model extends BaseModel
     public function _getImageUploadPath()
     {
         $now = Carbon::now();
-        return "images/{$this->table}/{$now->year}/{$now->month}/{$now->day}";
+        return "images/{$this->table}/{$now->year}/{$now->month}";
     }
 
     public function _checkPaginate($paginate)

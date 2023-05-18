@@ -25,8 +25,8 @@
                 <div class="card p-0 sm:p-0 md:p-2 lg:p-4 xl:p-4 2xl:p-4">
                     <div class="mb-4 text-right">
                         <button id="btn-add-new-address" class="btn btn-md btn-primary">Add Address</button>
-                        <a href="{{ route('my.address.create') }}">
-                        </a>
+                        {{-- <a href="{{ route('my.address.create') }}">
+                        </a> --}}
                     </div>
                     <div class="w-full overflow-x-scroll">
                         <table class="table-auto w-full text-xs sm:text-xs md:text-sm">

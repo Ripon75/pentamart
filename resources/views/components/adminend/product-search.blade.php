@@ -5,10 +5,8 @@
     <input id="input-product-image-src" type="hidden" name="product_image_src" value="">
     <input id="input-product-mrp" type="hidden" name="product_mrp" value="">
     <input id="input-product-selling-price" type="hidden" name="product_selling_price" value="">
-    <input id="input-product-pack-size" type="hidden" name="product_pack_size" value="">
-    <input id="input-product-pack-name" type="hidden" name="product_pack_name" value="">
-    <input id="input-product-uom" type="hidden" name="uom" value="">
-    <input id="input-product-num-of-pack" type="hidden" name="num_of_pack" value="">
+    <input id="input-brand-name" type="hidden" name="brand_name" value="">
+    <input id="input-category-name" type="hidden" name="category_name" value="">
     {{-- End hidden field --}}
     <input id="input-product-search" type="text" placeholder="Product search and select"
         class="rounded border w-full" autocomplete="off">
@@ -29,8 +27,6 @@
         var inputProductSallPrice = $('#input-product-selling-price');
         var inputProductPackSize  = $('#input-product-pack-size');
         var inputProductPackName  = $('#input-product-pack-name');
-        var inputProductUOM       = $('#input-product-uom');
-        var inputProductNumOfPack = $('#input-product-num-of-pack');
         var searchResult          = $('.search-result');
         var searchResultList      = $('.search-list');
         var searchItem            = $('.search-item');
@@ -70,8 +66,6 @@
                 var productSalePrice = $(this).data('product-selling-price');
                 var productPackSize  = $(this).data('product-pack-size');
                 var productPackName  = $(this).data('product-pack-name');
-                var productUOM       = $(this).data('product-uom');
-                var productNumOfPack = $(this).data('product-num-of-pack');
 
                 inputProductId.val(productId);
                 inputProductName.val(productName);
@@ -80,13 +74,11 @@
                 inputProductSallPrice.val(productSalePrice);
                 inputProductPackSize.val(productPackSize);
                 inputProductPackName.val(productPackName);
-                inputProductUOM.val(productUOM);
-                inputProductNumOfPack.val(productNumOfPack);
                 searchInput.val(productName);
 
                 searchResult.hide();
 
-                onSearchProductSelect(productPackSize, productNumOfPack, productUOM);
+                onSearchProductSelect(productPackSize, null, null);
 
             });
         })
@@ -114,8 +106,6 @@
             searchResultList.html('');
             for (let index = 0; index < data.length; index++) {
                 const product        = data[index];
-                const dosageFormName = product.dosage_form ? product.dosage_form.name : '';
-                const genericName    = product.generic ? product.generic.name : '';
 
                 var itemHTML = `
                     <div
@@ -123,23 +113,19 @@
                         data-product-id="${product.id}"
                         data-product-name="${product.name}"
                         data-product-image-src="${product.image_src}"
-                        data-product-mrp="${product.mrp}"
-                        data-product-selling-price="${product.selling_price}"
-                        data-product-pack-size="${product.pack_size}"
-                        data-product-pack-name="${product.pack_name}"
-                        data-product-uom="${product.uom}"
-                        data-product-num-of-pack="${product.num_of_pack}"
-                        >
+                        data-product-mrp="${product.price}"
+                        data-product-selling-price="${product.offer_price}">
+
                         <div class="w-14 h-14">
                             <img class="w-full h-full" src="${product.image_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
-                            <h4 class="text-xs text-gray-500">${dosageFormName}</h4>
+                            <h4 class="text-xs text-gray-500">Brand name</h4>
                             <h2 class="text-base text-primary">${product.name}</h2>
-                            <span class="text-xxs text-gray-500">${genericName}</span>
+                            <span class="text-xxs text-gray-500">Category Name</span>
                         </div>
                         <div class="flex justify-center items-center text-sm">
-                            <span class="text-gray-500">${product.mrp} tk</span>
+                            <span class="text-gray-500">${product.price} tk</span>
                         </div>
                     </div>`;
 
