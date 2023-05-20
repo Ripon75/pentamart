@@ -120,6 +120,6 @@ class Controller extends BaseController
 
     public function sendError($message)
     {
-        Utility::error($message);
+        return Utility::error($message);
     }
 }

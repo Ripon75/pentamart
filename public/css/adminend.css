@@ -10802,11 +10802,11 @@ textarea.form-control.is-invalid{
 .rounded-2xl{
   border-radius: 1rem;
 }
-.rounded-none{
-  border-radius: 0px;
-}
 .rounded-sm{
   border-radius: 0.125rem;
+}
+.rounded-none{
+  border-radius: 0px;
 }
 .rounded-b{
   border-bottom-right-radius: 0.25rem;
@@ -10839,10 +10839,6 @@ textarea.form-control.is-invalid{
 .rounded-b-lg{
   border-bottom-right-radius: 0.5rem;
   border-bottom-left-radius: 0.5rem;
-}
-.rounded-l{
-  border-top-left-radius: 0.25rem;
-  border-bottom-left-radius: 0.25rem;
 }
 .rounded-t{
   border-top-left-radius: 0.25rem;
@@ -10877,9 +10873,6 @@ textarea.form-control.is-invalid{
 .border-r{
   border-right-width: 1px;
 }
-.border-r-0{
-  border-right-width: 0px;
-}
 .border-l{
   border-left-width: 1px;
 }
@@ -10908,9 +10901,6 @@ textarea.form-control.is-invalid{
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
-.border-primary\/50{
-  border-color: rgb(0 121 140 / 0.5);
-}
 .border-gray-500{
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -10918,13 +10908,6 @@ textarea.form-control.is-invalid{
 .border-green-600{
   --tw-border-opacity: 1;
   border-color: rgb(22 163 74 / var(--tw-border-opacity));
-}
-.border-black\/50{
-  border-color: rgb(0 0 0 / 0.5);
-}
-.border-white{
-  --tw-border-opacity: 1;
-  border-color: rgb(255 255 255 / var(--tw-border-opacity));
 }
 .bg-white{
   --tw-bg-opacity: 1;
@@ -11004,6 +10987,10 @@ textarea.form-control.is-invalid{
 .bg-black\/30{
   background-color: rgb(0 0 0 / 0.3);
 }
+.bg-primary{
+  --tw-bg-opacity: 1;
+  background-color: rgb(0 121 140 / var(--tw-bg-opacity));
+}
 .bg-green-100{
   --tw-bg-opacity: 1;
   background-color: rgb(220 252 231 / var(--tw-bg-opacity));
@@ -11019,10 +11006,6 @@ textarea.form-control.is-invalid{
 .bg-sky-400{
   --tw-bg-opacity: 1;
   background-color: rgb(56 189 248 / var(--tw-bg-opacity));
-}
-.bg-primary{
-  --tw-bg-opacity: 1;
-  background-color: rgb(0 121 140 / var(--tw-bg-opacity));
 }
 .bg-socials-facebook{
   --tw-bg-opacity: 1;
@@ -13151,10 +13134,6 @@ fieldset legend{
 .hover\:bg-red-700:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
-}
-.hover\:bg-gray-300:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(209 213 219 / var(--tw-bg-opacity));
 }
 .hover\:bg-gray-50:hover{
   --tw-bg-opacity: 1;
