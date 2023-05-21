@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\Rating;
 use App\Models\Banner;
+use App\Models\Slider;
 use App\Models\Section;
 use App\Models\Company;
 use App\Models\Product;
@@ -26,9 +27,9 @@ class PageController extends Controller
             'page' => 'home'
         ]);
 
-        $sliderBanners = Banner::where('position', 'slider')->where('status', 'active')->get();
+        $sliders = Slider::where('status', 'active')->get();
 
-        $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
+        // $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
 
         $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
 
@@ -59,12 +60,12 @@ class PageController extends Controller
         ];
 
         return view('frontend.pages.home', [
-            'sliderBanners' => $sliderBanners,
+            'sliders'       => $sliders,
             'topProduct'    => $topProduct,
             'watch'         => $watch,
             'brands'        => $brands,
             'topCategories' => $topCategories,
-            'hotSales'      => $hotSales,
+            // 'hotSales'      => $hotSales,
             'features'      => $features,
         ]);
     }

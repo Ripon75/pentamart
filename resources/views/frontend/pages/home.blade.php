@@ -13,7 +13,7 @@
                     class="active"
                     aria-current="true">
                 </button>
-                @for ($i=1; $i<count($sliderBanners); $i++)
+                @for ($i=1; $i<count($sliders); $i++)
                     <button
                         type="button"
                         data-bs-target="#carouselExampleIndicators"
@@ -22,29 +22,29 @@
                     </button>
                 @endfor
             </div>
-            @if(count($sliderBanners) > 0)
+            @if(count($sliders) > 0)
             <div class="carousel-inner relative w-full overflow-hidden">
                 <div class="carousel-item active float-left w-full">
                     <img
-                        src="{{ $sliderBanners[0]->img_src }}"
+                        src="{{ $sliders[0]->large_src }}"
                         class="hidden sm:hidden md:block w-full"
                         alt=""
                     />
                     <img
-                        src="{{ $sliderBanners[0]->mobile_img_src }}"
+                        src="{{ $sliders[0]->small_src }}"
                         class="w-full block sm:block md:hidden"
                         alt=""
                     />
                 </div>
-                @for ($i=1; $i<count($sliderBanners); $i++)
+                @for ($i=1; $i<count($sliders); $i++)
                     <div class="carousel-item float-left w-full">
                             <img
-                                src="{{ $sliderBanners[$i]->img_src }}"
+                                src="{{ $sliders[$i]->large_src }}"
                                 class="hidden sm:hidden md:block w-full"
                                 alt=""
                             />
                             <img
-                                src="{{ $sliderBanners[$i]->mobile_img_src }}"
+                                src="{{ $sliders[$i]->small_src }}"
                                 class="block sm:block md:hidden w-full"
                                 alt=""
                             />
