@@ -32,9 +32,9 @@ class RatingController extends Controller
             $product = Product::where('id', $productId)->where('status', 'active')->first();
             if ($product) {
                 $order = Order::where('orders.user_id', $userId)
-                ->join('order_item', 'orders.id', 'order_item.order_id')
-                ->where('order_item.item_id', $productId)->get();
-                if ($order) {
+                    ->join('order_item', 'orders.id', 'order_item.order_id')
+                    ->where('order_item.item_id', $productId)->get();
+                if (count($order)) {
                     $rating = Rating::where('user_id', $userId)->where('product_id', $productId)->first();
                     if ($rating) {
                         $rating->rate    = $rate;

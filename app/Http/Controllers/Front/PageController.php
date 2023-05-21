@@ -131,9 +131,10 @@ class PageController extends Controller
 
         $currentURL = url()->current();
         Utility::saveIntendedURL($currentURL);
-        $product = Product::where('status', 'active')->getDefaultMetaData()->find($id);
+
+        $product       = Product::where('status', 'active')->getDefaultMetaData()->find($id);
         $productSizes  = $product->sizes;
-        $productColors =  $product->colors;
+        $productColors = $product->colors;
 
         if (!$product) {
             abort(404);
@@ -159,7 +160,7 @@ class PageController extends Controller
             SUM((CASE WHEN rate = 3 THEN 1 ELSE 0 END)) as three_star,
             SUM((CASE WHEN rate = 2 THEN 1 ELSE 0 END)) as two_star,
             SUM((CASE WHEN rate = 1 THEN 1 ELSE 0 END)) as one_star
-        '))->first();
+        '))->where('product_id', $id)->first();
 
         $userId  = Auth::id();
         $wishlistedProduct = null;

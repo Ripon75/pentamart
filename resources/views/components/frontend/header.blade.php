@@ -65,21 +65,9 @@
                             data-mc-on-previous-url="{{ route('my.wishlist') }}"
                             @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
                             <div class="item relative" title="Wishlist">
-                                @php
-                                    $wishlists = 0;
-                                    if (Auth::user()) {
-                                        $wishlists = count(Auth::user()->wishlist) ?? null;
-                                    }
-                                @endphp
-                                @if ($wishlists > 0)
-                                    <button class="block" type="button">
-                                        <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
-                                    </button>
-                                @else
-                                    <button class="block" type="button">
-                                        <i class="icon text-primary fa-regular fa-heart hover:text-secondary"></i>
-                                    </button>
-                                @endif
+                                <button class="block" type="button">
+                                    <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
+                                </button>
                             </div>
                         </a>
 

@@ -24,17 +24,17 @@
     <div class="flex-auto px-4 xl:px-10 py-4 ">
         <div class="grid grid-cols-1 xl:grid-cols-2 w-full space-x-0 xl:space-x-4 space-y-4 xl:space-y-0">
             <div class="h-full w-full bg-white rounded-lg shadow-md">
-                <div class="grid grid-cols-3 h-full w-full">
+                <div class="grid grid-cols-2 h-full w-full">
                     <div class="col-span-2 h-full p-4">
                         <h1 class="text-3xl text-blue-500">Hi {{ Auth::user()->name }}</h1>
                         <p class="text-gray-400">Here's what happening your Pentamart</p>
                         <div class="flex space-x-10 mt-10">
-                            <div class="space-y-2">
+                            {{-- <div class="space-y-2">
                                 <h2 class="text-gray-400">Total Visit</h2>
                                 <h1 class="text-gray-600 text-2xl font-medium">
                                     {{ number_format($userEvent->number_of_browse, 0) ?? 0 }}
                                 </h1>
-                            </div>
+                            </div> --}}
                             <div class="flex">
                                 <div class="space-y-2">
                                     <h2 class="text-gray-400">Total Sales</h2>
@@ -42,7 +42,7 @@
                                         {{ number_format($orderReport->order_value, 2) ?? 0 }}
                                     </h1>
                                 </div>
-                                <div class="flex items-center text-green-500 mt-11 ml-2">
+                                {{-- <div class="flex items-center text-green-500 mt-11 ml-2">
                                     @if ($positiveOrdersValuePercent)
                                         <i class="fa-solid fa-arrow-up statictics-icon"></i>
                                         <h6>{{ number_format($positiveOrdersValuePercent, 2) }}</h6>
@@ -53,13 +53,13 @@
                                         <h6>{{ number_format($neutralOrdersValuePercent, 2) }}</h6>
                                     @endif
                                     <p>%</p>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
-                    <div class="col-span-1 h-full ">
+                    {{-- <div class="col-span-1 h-full ">
                         <img class="flex items-center h-full" src="{{ asset('images/adminend/people.svg') }}">
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="h-full w-full border bg-white rounded-lg shadow-md">
@@ -87,11 +87,6 @@
                                 <h2 class="statics-percent-content">Tk
                                     <span>{{ number_format($orderReport->canceled_order_value, 2) ?? 0 }}</span>
                                 </h2>
-                                {{-- <span class="statics-percent">
-                                    <i class="fa-solid fa-arrow-down statictics-icon"></i>
-                                    <h6>21.8</h6>
-                                    <p>%</p>
-                                </span> --}}
                             </div>
                         </div>
                     </div>
@@ -150,137 +145,7 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-1 xl:grid-cols-2 w-full space-x-0 xl:space-x-4 space-y-4 xl:space-y-0 mt-6">
-            <div class="col-span-1">
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="report-card">
-                        <div class="report-card-layout">
-                            <div class="report-card-wrapper">
-                                <div class="report-card-header">
-                                    <h1 class="report-card-title ">Weekly Sales</h1>
-                                    <a href="">
-                                        <i class="fa-regular fa-circle-question text-gray-400 text-sm"></i>
-                                    </a>
-                                </div>
-                                <h1 class="report-card-content">$47K</h1>
-                                <div class="report-ratio">
-                                    <span>+</span>
-                                    <span>3.5%</span>
-                                </div>
-                            </div>
-                            <div class="report-img-wrapper">
-                                <img class="report-img" src="{{ asset('images/adminend/Chart.svg') }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="report-card">
-                        <div class="report-card-layout">
-                            <div class="report-card-wrapper">
-                                <div class="report-card-header">
-                                    <h1 class="report-card-title ">Product Share</h1>
-                                </div>
-                                <h1 class="report-card-content">34.6%</h1>
-                                <div class="report-ratio">
-                                    <span>+</span>
-                                    <span>3.5%</span>
-                                </div>
-                            </div>
-                            <div class="report-img-wrapper">
-                                <img class="report-img flex items-center h-full" src="{{ asset('images/adminend/Chart.svg') }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="report-card">
-                        <div class="report-card-layout">
-                            <div class="report-card-wrapper">
-                                <div class="report-card-header">
-                                    <h1 class="report-card-title ">Market Share</h1>
-                                </div>
-                                <!-- <h1 class="report-card-content">$47K</h1>
-                                <div class="report-ratio">
-                                    <span>+</span>
-                                    <span>3.5%</span>
-                                </div> -->
-                                <div class="list-wrapper">
-                                    <div class="list-content">
-                                        <div class="list-bullet bg-blue-500"></div>
-                                        <h6 class="list-title">Falcon</h6>
-                                    </div>
-                                    <div class="list-content">
-                                        <div class="list-bullet bg-cyan-500"></div>
-                                        <h6 class="list-title">Sparrow</h6>
-                                    </div>
-                                    <div class="list-content">
-                                        <div class="list-bullet bg-yellow-500"></div>
-                                        <h6 class="list-title">Phoenix</h6>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="report-img-wrapper">
-                                <img class="report-img flex items-center h-full" src="{{ asset('images/adminend/Chart.svg') }}">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="report-card">
-                        <div class="report-card-layout">
-                            <div class="report-card-wrapper">
-                                <div class="report-card-header">
-                                    <h1 class="report-card-title ">Total Order</h1>
-                                </div>
-                                <h1 class="report-card-content">58.4K</h1>
-                                <div class="report-ratio">
-                                    <span>+</span>
-                                    <span>3.5%</span>
-                                </div>
-                            </div>
-                            <div class="report-img-wrapper">
-                                <img class="report-img flex items-center h-full" src="{{ asset('images/adminend/Chart.svg') }}">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-span-1 w-full bg-white shadow-md rounded-lg">
-                <div class="p-4">
-                    <div class="flex items-center justify-between">
-                        <h1 class="text-gray-500 font-medium">Total Sales</h1>
-                    </div>
-                    <div>
-                        {!! $chart->container() !!}
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="grid grid-cols-1 xl:grid-cols-4 w-full space-x-0 xl:space-x-4 space-y-4 xl:space-y-0 mt-6">
-            <div class="col-span-1 w-full bg-white rounded-lg shadow-lg">
-                <div class="p-4">
-                    <div class="flex items-center justify-between">
-                        <h1 class="text-gray-500 font-medium">User Info</h1>
-                    </div>
-                    <div class="h-80 overflow-auto">
-                    <div class="flex flex-col mt-4 divide-y">
-                        <div class="user-info-card">
-                            <div class="info-card-wrapper">
-                                <h1 class="user-info-title">Current User</h1>
-                                <h2 class="user-count">{{ number_format($totalUser, 0) }}</h2>
-                            </div>
-                        </div>
-                        <div class="user-info-card">
-                            <div class="info-card-wrapper">
-                                <h1 class="user-info-title">Number of Login</h1>
-                                <h2 class="user-count">{{ number_format($userEvent->number_of_login, 0) ?? 0 }}</h2>
-                            </div>
-                        </div>
-                        <div class="user-info-card">
-                            <div class="info-card-wrapper">
-                                <h1 class="user-info-title">Unique Login User</h1>
-                                <h2 class="user-count">{{ number_format($userEvent->unique_user, 0) ?? 0 }}</h2>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-            </div>
+        <div class="grid grid-cols-1 xl:grid-cols-3 w-full space-x-0 xl:space-x-4 space-y-4 xl:space-y-0 mt-6">
             <div class="col-span-1 xl:col-span-3 h-full w-full bg-white rounded-lg shadow-lg">
                 <div class="">
                     <div class="flex items-center justify-between p-4">
@@ -297,7 +162,6 @@
                                     <th class="text-left w-20">Area</th>
                                     <th class="w-32 text-center">Status</th>
                                     <th class="w-8 text-center">Paid</th>
-                                    <th class="w-8 text-center">Rx</th>
                                     <th class="w-32 text-center">Action</th>
                                 </tr>
                             </thead>
@@ -333,13 +197,6 @@
                                         </td>
                                         <td class="text-center ">
                                             @if ($order->is_paid)
-                                                <span class="block w-14 rounded border px-2 py-1 text-sm text-white bg-green-500 mx-auto">Yes</span>
-                                            @else
-                                                <span class="block w-14 rounded border px-2 py-1 text-sm text-white bg-red-500 mx-auto">No</span>
-                                            @endif
-                                        </td>
-                                        <td class="text-center">
-                                            @if (count($order->prescriptions))
                                                 <span class="block w-14 rounded border px-2 py-1 text-sm text-white bg-green-500 mx-auto">Yes</span>
                                             @else
                                                 <span class="block w-14 rounded border px-2 py-1 text-sm text-white bg-red-500 mx-auto">No</span>

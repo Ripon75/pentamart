@@ -306,14 +306,14 @@
                                     @for ($i = 1; $i <= 5; $i++)
                                         <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @endfor
-                                    <span>{{ $ratingReport->five_star }}</span>
+                                    <span>({{ $ratingReport->five_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
                                     @for ($i = 1; $i <= 4; $i++)
                                         <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @endfor
                                         <i class="fa-solid fa-star text-xs"></i>
-                                    <span>{{ $ratingReport->four_star }}</span>
+                                    <span>({{ $ratingReport->four_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
                                     @for ($i = 1; $i <= 3; $i++)
@@ -322,7 +322,7 @@
                                     @for ($j = 1; $j <= 2; $j++)
                                         <i class="fa-solid fa-star text-xs"></i>
                                     @endfor
-                                    <span>{{ $ratingReport->three_star }}</span>
+                                    <span>({{ $ratingReport->three_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
                                     @for ($i = 1; $i <= 2; $i++)
@@ -331,14 +331,14 @@
                                     @for ($j = 1; $j <= 3; $j++)
                                         <i class="fa-solid fa-star text-xs"></i>
                                     @endfor
-                                    <span>{{ $ratingReport->two_star }}</span>
+                                    <span>({{ $ratingReport->two_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
                                     <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @for ($i = 1; $i <= 4; $i++)
                                         <i class="fa-solid fa-star text-xs"></i>
                                     @endfor
-                                    <span>{{ $ratingReport->one_star }}</span>
+                                    <span>({{ $ratingReport->one_star ?? 0 }})</span>
                                 </div>
                             </div>
                         </div>
@@ -554,7 +554,9 @@
         });
 
         btnRatingSubmit.click(function() {
-            var comment = $("#input-comment").val();
+            var productId = $("input[name=product_id]").val();
+            var comment   = $("#input-comment").val();
+            var imagefile = document.querySelector('#files');
 
             if (ratingsCount == 0) {
                 __showNotification('error', 'please select star', 3000);
