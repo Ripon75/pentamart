@@ -19,8 +19,8 @@ return [
         [
             'label'       => 'Sliders',
             'icon'        => 'fa-solid fa-panorama',
-            'route'       => 'admin.banners',
-            'permission'  => 'banners-read',
+            'route'       => 'admin.sliders.index',
+            'permission'  => 'sliders-read',
             'sub'         => []
         ],
         [

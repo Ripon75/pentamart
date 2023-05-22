@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\StatusController;
+use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -30,6 +31,13 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/areas/{id}',      [AreaController::class, 'show'])->name('areas.show')->middleware(['permission:areas-read']);
     Route::get('/areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit')->middleware(['permission:areas-update']);
     Route::put('/areas/{id}',      [AreaController::class, 'update'])->name('areas.update')->middleware(['permission:areas-update']);
+
+    // All brand route
+    Route::get('/sliders',           [SliderController::class, 'index'])->name('sliders.index')->middleware(['permission:sliders-read']);
+    Route::get('/sliders/create',    [SliderController::class, 'create'])->name('sliders.create')->middleware(['permission:sliders-create']);
+    Route::post('/sliders',          [SliderController::class, 'store'])->name('sliders.store')->middleware(['permission:sliders-create']);
+    Route::get('/sliders/{id}/edit', [SliderController::class, 'edit'])->name('sliders.edit')->middleware(['permission:sliders-update']);
+    Route::put('/sliders/{id}',      [SliderController::class, 'update'])->name('sliders.update')->middleware(['permission:sliders-update']);
 
     // All brand route
     Route::get('/brands',           [BrandController::class, 'index'])->name('brands.index')->middleware(['permission:brands-read']);
@@ -57,7 +65,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit')->middleware(['permission:products-update']);
     Route::put('/products/{id}',      [ProductController::class, 'update'])->name('products.update')->middleware(['permission:products-update']);
     Route::delete('/products/{id}',   [ProductController::class, 'delete'])->name('products.delete')->middleware(['permission:products-delete']);
-    
+
     // Order route
     Route::get('/orders',               [OrderController::class, 'index'])->name('orders.index')->middleware(['permission:orders-read']);
     Route::get('/orders/manual/create', [OrderController::class, 'manualCreate'])->name('orders.manual.create')->middleware(['permission:orders-create']);
@@ -80,7 +88,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/gateways/payment/{id}',      [PaymentGatewayController::class, 'show'])->name('payments.show')->middleware(['permission:payment-types-read']);
     Route::get('/gateways/payment/{id}/edit', [PaymentGatewayController::class, 'edit'])->name('payments.edit')->middleware(['permission:payment-types-update']);
     Route::put('/gateways/payment/{id}',      [PaymentGatewayController::class, 'update'])->name('payments.update')->middleware(['permission:payment-types-update']);
-    
+
     // All delivery gateway route
     Route::get('/gateways/delivery',           [DeliveryGatewayController::class, 'index'])->name('deliveries.index')->middleware(['permission:delivery-types-read']);
     Route::get('/gateways/delivery/create',    [DeliveryGatewayController::class, 'create'])->name('deliveries.create')->middleware(['permission:delivery-types-create']);
@@ -88,7 +96,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/gateways/delivery/{id}',      [DeliveryGatewayController::class, 'show'])->name('deliveries.show')->middleware(['permission:delivery-types-read']);
     Route::get('/gateways/delivery/{id}/edit', [DeliveryGatewayController::class, 'edit'])->name('deliveries.edit')->middleware(['permission:delivery-types-update']);
     Route::put('/gateways/delivery/{id}',      [DeliveryGatewayController::class, 'update'])->name('deliveries.update')->middleware(['permission:delivery-types-update']);
-    
+
     // All coupon code route
     Route::get('/coupon-codes',           [CouponCodeController::class, 'index'])->name('coupon-codes.index')->middleware(['permission:coupon-codes-read']);
     Route::get('/coupon-codes/create',    [CouponCodeController::class, 'create'])->name('coupon-codes.create')->middleware(['permission:coupon-codes-create']);
@@ -96,7 +104,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/coupon-codes/{id}',      [CouponCodeController::class, 'show'])->name('coupon-codes.show')->middleware(['permission:coupon-codes-read']);
     Route::get('/coupon-codes/{id}/edit', [CouponCodeController::class, 'edit'])->name('coupon-codes.edit')->middleware(['permission:coupon-codes-update']);
     Route::put('/coupon-codes/{id}',      [CouponCodeController::class, 'update'])->name('coupon-codes.update')->middleware(['permission:coupon-codes-update']);
-    
+
     // All order status route
     Route::get('/order-statuses',           [StatusController::class, 'index'])->name('order-statuses.index')->middleware(['permission:order-status-read']);
     Route::get('/order-statuses/create',    [StatusController::class, 'create'])->name('order-statuses.create')->middleware(['permission:order-status-create']);
@@ -104,7 +112,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/order-statuses/{id}',      [StatusController::class, 'show'])->name('order-statuses.show')->middleware(['permission:order-status-read']);
     Route::get('/order-statuses/{id}/edit', [StatusController::class, 'edit'])->name('order-statuses.edit')->middleware(['permission:order-status-update']);
     Route::put('/order-statuses/{id}',      [StatusController::class, 'update'])->name('order-statuses.update')->middleware(['permission:order-status-update']);
-    
+
     // All role route
     Route::get('roles',           [RoleController::class, 'index'])->name('roles')->middleware(['permission:roles-read']);
     Route::get('roles/create',    [RoleController::class, 'create'])->name('roles.create')->middleware(['permission:roles-create']);
@@ -112,7 +120,7 @@ Route::middleware(['auth'])->group(function() {
     Route::get('roles/{id}',      [RoleController::class, 'show'])->name('roles.show')->middleware(['permission:roles-read']);
     Route::get('roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit')->middleware(['permission:roles-update']);
     Route::put('roles/{id}',      [RoleController::class, 'update'])->name('roles.update')->middleware(['permission:roles-update']);
-    
+
     // All permission route
     Route::get('permissions',           [PermissionController::class, 'index'])->name('permissions')->middleware(['permission:permissions-read']);
     Route::get('permissions/create',    [PermissionController::class, 'create'])->name('permissions.create')->middleware(['permission:permissions-create']);
