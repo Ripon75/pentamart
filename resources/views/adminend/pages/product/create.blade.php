@@ -11,34 +11,33 @@
     </div>
     <div class="page-content">
         <div class="w-[800px] lg:w-[800px] xl:w-[800px] mx-auto">
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
+
+            {{-- Show flash message --}}
+            @if(Session::has('error'))
+                <div class="alert mb-8 error">{{ Session::get('error') }}</div>
             @endif
+
             <div class="card shadow">
                 <div class="body p-4">
                     <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
 
-                        <div class="form-item ">
-                            <label class="form-label">Name <span class="text-red-500 font-medium">*</span> </label>
-                            <input type="text" value="{{ old('name') }}" name="name" class="form-input" />
-                            @error('name')
-                                <span class="form-helper error">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="form-item ">
-                            <label class="form-label">Upload Image</label>
-                            <input type="file" class="form-input" name="image">
+                        <div class="flex space-x-2">
+                            <div class="form-item w-full">
+                                <label class="form-label">Name <span class="text-red-500 font-medium">*</span> </label>
+                                <input type="text" value="{{ old('name') }}" name="name" class="form-input" />
+                                @error('name')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="form-item w-full">
+                                <label class="form-label">Upload Image</label>
+                                <input type="file" class="form-input" name="image_src">
+                            </div>
                         </div>
                         <div class="flex space-x-2">
                             <div class="form-item w-full">
-                                <label for="" class="form-label">Brand</label>
+                                <label for="" class="form-label">Brand <span class="text-red-500 font-medium">*</span> </label>
                                 <select class="form-select w-full form-input select-2" name="brand_id">
                                     <option value="">Select Brand</option>
                                     @foreach ($brands as $brand)
@@ -63,32 +62,6 @@
                             </div>
                         </div>
                         <div class="flex space-x-2">
-                            <div class="form-item w-full">
-                                <label for="" class="form-label">Company <span class="text-red-500 font-medium">*</span> </label>
-                                <select class="form-select w-full form-input select-2" name="company_id">
-                                    <option value="">Select brand</option>
-                                    @foreach ($companies as $company)
-                                    <option value="{{ $company->id }}">{{ $company->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('company_id')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item w-full">
-                                <label for="" class="form-label">Dosage Form <span class="text-red-500 font-medium">*</span> </label>
-                                <select class="form-select w-full form-input select-2" name="dosage_form_id">
-                                    <option value="">Select dosage form</option>
-                                    @foreach ($dosageForms as $dosageForm)
-                                    <option value="{{ $dosageForm->id }}">{{ $dosageForm->name }}</option>
-                                    @endforeach
-                                </select>
-                                @error('dosage_form_id')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                        </div>
-                        <div class="flex space-x-2">
                              <div class="form-item w-full">
                                 <label for="" class="form-label">Status</label>
                                 <select class="form-select w-full form-input" name="status">
@@ -97,33 +70,36 @@
                                     <option value="inactive">Inactive</option>
                                 </select>
                             </div>
+                            <div class="form-item w-full">
+                                <label for="" class="form-label">Current Stock</label>
+                                <input type="number" name="currnet_stock" value="{{ old('currnet_stock') }}" class="w-full form-input">
+                            </div>
                         </div>
                         <div class="flex space-x-2">
                             <div class="form-item w-full">
                                <label for="" class="form-label">Price <span class="text-red-500 font-medium">*</span> </label>
-                               <input type="number" step="any" name="price" value="{{ old('price') }}" id="price" class="w-full form-input">
+                               <input id="input-price" type="number" step="any" name="price" value="{{ old('price') }}" class="w-full form-input">
                                @error('price')
                                    <span class="form-helper error">{{ $message }}</span>
                                @enderror
                            </div>
                            <div class="form-item w-full">
                                <label for="" class="form-label">Offer Price</label>
-                               <input type="number" step="any" name="offer_price" value="{{ old('offer_price') }}" id="offer-price" class="w-full form-input">
+                               <input id="input-offer-price" type="number" step="any" name="offer_price" value="{{ old('offer_price') }}" class="w-full form-input">
                            </div>
                            <div class="form-item w-full">
                                <label for="" class="form-label">Offer Percent</label>
-                               <input type="number" step="any" name="offer_percent" value="{{ old('offer_percent') }}" id="offer-percent" class="w-full form-input">
+                               <input id="input-offer-percent" type="number" step="any" name="offer_percent" value="{{ old('offer_percent') }}" class="w-full form-input">
                            </div>
                         </div>
-                        <div class="form-item w-full">
-                            <label for="" class="form-label">Current Stock</label>
-                            <input type="number" step="any" name="currnet_stock" value="{{ old('currnet_stock') }}" id="offer-percent" class="w-full form-input">
-                        </div>
+
                         <div class="form-item">
                             <label for="" class="form-label">Description</label>
                             <textarea class="w-full tinymce" name="description">{{ old('description') }}</textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Create</button>
+                        <div class="flex justify-end">
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -146,36 +122,40 @@
         });
     </script>
     <script>
+        var inputPrice        = $('#input-price');
+        var inputOfferPrice   = $('#input-offer-price');
+        var inputOfferPercent = $('#input-offer-percent');
+
         $(function() {
             $('.select-2').select2({
                 placeholder: "Select",
             });
 
-            $('#offer-price').keyup(function (e) {
-                var price = $('#price').val();
+            inputOfferPrice.keyup(function (e) {
+                var price = inputPrice.val();
                 var offerPrice = $(this).val();
                 if (offerPrice > 0 && price > 0) {
                     var discount = price - offerPrice;
 
                     // cal. percent
-                    var offerPercent = (discount * 100) / price;
-                    $('#offer-percent').val(offerPercent);
+                    var offerPercent = ((discount * 100) / price).toFixed(2);
+                    inputOfferPercent.val(offerPercent);
                 } else {
-                    $('#offer-percent').val(0);
+                    inputOfferPercent.val(0);
                 }
             });
 
-            $('#offer-percent').keyup(function (e) {
-                var price = $('#price').val();
-                var percent = $('#offer-percent').val();
+            inputOfferPercent.keyup(function (e) {
+                var price = inputPrice.val();
+                var percent = inputOfferPercent.val();
                 if (percent > 0 && price > 0) {
                     var discount = (percent * price) / 100;
                     var offerPrice = price - discount;
 
                     // cal. percent
-                    $('#offer-price').val(offerPrice);
+                    inputOfferPrice.val(offerPrice);
                 } else {
-                    $('#offer-price').val(0);
+                    inputOfferPrice.val(0);
                 }
             });
         });

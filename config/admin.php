@@ -10,13 +10,6 @@ return [
             'sub'         => []
         ],
         [
-            'label'       => 'Banners',
-            'icon'        => 'fa-solid fa-panorama',
-            'route'       => 'admin.banners',
-            'permission'  => 'banners-read',
-            'sub'         => []
-        ],
-        [
             'label'       => 'Sliders',
             'icon'        => 'fa-solid fa-panorama',
             'route'       => 'admin.sliders.index',

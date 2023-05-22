@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DB;
-use Auth;
+
 use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\Company;
@@ -14,66 +13,228 @@ use App\Models\Category;
 use App\Models\DosageForm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
-    protected $_responseFormat = 'view';
-
-    function __construct() {
-        $this->modelObj = new Product();
-    }
-
-    public function create(Request $request)
+    public function index(Request $request)
     {
-        $view = $this->modelObj->_getView('create');
+        $id              = $request->input('id', null);
+        $name            = $request->input('name', null);
+        $status          = $request->input('status', null);
+        $startDate       = $request->input('start_date', null);
+        $endDate         = $request->input('end_date', null);
+        $defaultPaginate = config('crud.paginate.default');
 
-        $brands      = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
-        $categories  = Category::select('id', 'name')->orderBy('name', 'asc')->get();
-        $generics    = Generic::select('id', 'name')->orderBy('name', 'asc')->get();
-        $dosageForms = DosageForm::select('id', 'name')->orderBy('name', 'asc')->get();
-        $symptoms    = Symptom::select('id', 'name')->orderBy('name', 'asc')->get();
-        $companies   = Company::select('id', 'name')->orderBy('name', 'asc')->get();
+        $products = new Product();
+        $products = $products->with($products->_defaultWith);
 
-        return view($view, [
-            'brands'      => $brands,
-            'categories'  => $categories,
-            'generics'    => $generics,
-            'dosageForms' => $dosageForms,
-            'symptoms'    => $symptoms,
-            'companies'   => $companies
-        ]);
-    }
-
-    public function edit(Request $request, $id)
-    {
-        $result      = $this->modelObj->_show($id);
-
-        if ($result['data']['tags']) {
-            $tagNames = [];
-            foreach ($result['data']['tags'] as $tag) {
-                $tagNames [] = $tag->name;
-            }
-            $tagNames = implode("," ,$tagNames);
+        // Filter product name
+        if ($id) {
+            $products = $products->where('id', $id);
         }
 
-        $brands      = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
-        $categories  = Category::select('id', 'name')->orderBy('name', 'asc')->get();
-        $generics    = Generic::select('id', 'name')->orderBy('name', 'asc')->get();
-        $dosageForms = DosageForm::select('id', 'name')->orderBy('name', 'asc')->get();
-        $symptoms    = Symptom::select('id', 'name')->orderBy('name', 'asc')->get();
-        $companies   = Company::select('id', 'name')->orderBy('name', 'asc')->get();
-        $view        = $this->modelObj->_getView('edit');
+        // Filter product name
+        if ($name) {
+            $products = $products->where('name', 'like', "%{$name}%");
+        }
 
-        return view($view, $result, [
-            'brands'      => $brands,
-            'categories'  => $categories,
-            'generics'    => $generics,
-            'dosageForms' => $dosageForms,
-            'symptoms'    => $symptoms,
-            'tagNames'    => $tagNames,
-            'companies'   => $companies
+        // Filter status
+        if ($status) {
+            $products = $products->where('status', $status);
+        }
+
+        // Date range wise filter
+        if ($startDate && $endDate) {
+            $startDate = $startDate . ' 00:00:00';
+            $endDate   = $endDate . ' 23:59:59';
+            $products       = $products->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        $products = $products->orderBy('created_at', 'desc')->paginate($defaultPaginate);
+
+        return view('adminend.pages.product.index', [
+            'products' => $products
         ]);
+    }
+
+    public function create()
+    {
+        $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('adminend.pages.product.create', [
+            'brands'      => $brands,
+            'categories'  => $categories
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'        => ['required', "unique:products,name"],
+            'brand_id'    => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'price'       => ['required']
+        ]);
+
+        $name         = $request->input('name', null);
+        $brandId      = $request->input('brand_id', null);
+        $categoryId   = $request->input('category_id', null);
+        $price        = $request->input('price', 0);
+        $offerPrice   = $request->input('offer_price', 0);
+        $offerPercent = $request->input('offer_percent', 0);
+        $currentStock = $request->input('current_stock', 0);
+        $status       = $request->input('status', 'active');
+        $description  = $request->input('description', null);
+
+        try {
+            DB::beginTransaction();
+
+            $product = new Product();
+
+            $product->name          = $name;
+            $product->slug          = $name;
+            $product->brand_id      = $brandId;
+            $product->category_id   = $categoryId;
+            $product->price         = $price;
+            $product->offer_price   = $offerPrice ?? 0;
+            $product->offer_percent = $offerPercent ?? 0;
+            $product->status        = $status;
+            $product->current_stock = $currentStock ?? 0;
+            $product->description   = $description;
+            $product->created_by    = Auth::id();
+            $res = $product->save();
+            if ($res) {
+                if ($request->hasFile('image_src')) {
+                    $imageSRC   = $request->file('image_src');
+                    $uploadPath = $product->getImageUploadPath();
+                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    // $storePath  = Storage::path($imagePath);
+                    // $watermarkImgPath = public_path('images/logos/watermark.png');
+
+                    // open an image file
+                    // $img = Image::make($storePath);
+
+                    // now you are able to resize the instance
+                    // $img->resize(1024, 1024);
+
+                    // and insert a watermark for example
+                    // $img->insert($watermarkImgPath, 'center');
+                    // Storage::disk('public')->delete($storePath);
+
+                    // finally we save the image as a new file
+                    // $img->save($storePath);
+
+                    $product->image_src = $imagePath;
+                    $product->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something is wrong');
+        }
+    }
+
+    public function edit($id)
+    {
+       $product = Product::find($id);
+
+       if (!$product) {
+            abort(404);
+       }
+
+        $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('adminend.pages.product.edit',[
+            'product'    => $product,
+            'brands'     => $brands,
+            'categories' => $categories
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name'        => ['required', "unique:products,name,$id"],
+            'brand_id'    => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'price'       => ['required']
+        ]);
+
+        $name         = $request->input('name', null);
+        $brandId      = $request->input('brand_id', null);
+        $categoryId   = $request->input('category_id', null);
+        $price        = $request->input('price', 0);
+        $offerPrice   = $request->input('offer_price', 0);
+        $offerPercent = $request->input('offer_percent', 0);
+        $currentStock = $request->input('current_stock', 0);
+        $status       = $request->input('status', 'active');
+        $description  = $request->input('description', null);
+
+        try {
+            DB::beginTransaction();
+            $product = Product::find($id);
+            if (!$product) {
+                abort(404);
+            }
+
+            $product->name          = $name;
+            $product->slug          = $name;
+            $product->brand_id      = $brandId;
+            $product->category_id   = $categoryId;
+            $product->price         = $price;
+            $product->offer_price   = $offerPrice ?? 0;
+            $product->offer_percent = $offerPercent ?? 0;
+            $product->status        = $status;
+            $product->current_stock = $currentStock ?? 0;
+            $product->description   = $description;
+            $product->created_by    = Auth::id();
+            $res = $product->save();
+
+            if ($res) {
+                if ($request->hasFile('image_src')) {
+                    $oldImagePath = $product->getOldPath($product->image_src);
+                    if ($oldImagePath) {
+                        Storage::disk('public')->delete($oldImagePath);
+                    }
+
+                    $imageSRC   = $request->file('image_src');
+                    $uploadPath = $product->getImageUploadPath();
+                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    // $storePath  = Storage::path($imagePath);
+                    // $watermarkImgPath = public_path('images/logos/watermark.png');
+
+                    // open an image file
+                    // $img = Image::make($storePath);
+
+                    // now you are able to resize the instance
+                    // $img->resize(1024, 1024);
+
+                    // and insert a watermark for example
+                    // $img->insert($watermarkImgPath, 'center');
+                    // Storage::disk('public')->delete($storePath);
+
+                    // finally we save the image as a new file
+                    // $img->save($storePath);
+
+                    $product->image_src = $imagePath;
+                    $product->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went to wrong');
+        }
     }
 
     public function bulk(Request $request)

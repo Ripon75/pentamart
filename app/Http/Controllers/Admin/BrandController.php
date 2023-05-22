@@ -76,7 +76,7 @@ class BrandController extends Controller
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $brand = Brand::find($id);
         if (!$brand) {

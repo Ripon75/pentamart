@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Models\User;
 use App\Classes\Model;
 use App\Models\Product;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
@@ -115,7 +115,7 @@ class Cart extends Model
                     }
                 }
             }
-    
+
             $res = $cart->items()->attach($itemId, [
                 'size_id'       => $sizeId,
                 'color_id'      => $colorId,

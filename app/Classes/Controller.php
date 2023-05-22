@@ -20,25 +20,25 @@ class Controller extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
-        $res  = $this->modelObj->_index($request);
-        $view = $this->modelObj->_getView('index');
+    // public function index(Request $request)
+    // {
+    //     $res  = $this->modelObj->_index($request);
+    //     $view = $this->modelObj->_getView('index');
 
-        return $this->_response($res['data'], $res['message'], $view);
-    }
+    //     return $this->sendResponse($res['data'], $res['message']);
+    // }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
-    {
-        $view = $this->modelObj->_getView('create');
+    // public function create(Request $request)
+    // {
+    //     $view = $this->modelObj->_getView('create');
 
-        return view($view);
-    }
+    //     return view($view);
+    // }
 
     /**
      * Store a newly created resource in storage.
@@ -46,18 +46,18 @@ class Controller extends BaseController
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
-        $result    = $this->modelObj->_storeOrUpdate($request);
-        $routeName = $this->modelObj->_getRouteName('index');
+    // public function store(Request $request)
+    // {
+    //     $result    = $this->modelObj->_storeOrUpdate($request);
+    //     $routeName = $this->modelObj->_getRouteName('index');
 
-        if ($this->_responseFormat === 'view') {
-            // Session::flash('message', $result['message']);
-            return redirect()->route($routeName)->with('success', $result);
-        } else {
-            return $this->_response($result['data'], $result['message']);
-        }
-    }
+    //     if ($this->_responseFormat === 'view') {
+    //         // Session::flash('message', $result['message']);
+    //         return redirect()->route($routeName)->with('success', $result);
+    //     } else {
+    //         return $this->sendResponse($result['data'], $result['message']);
+    //     }
+    // }
 
     /**
      * Display the specified resource.
@@ -65,13 +65,13 @@ class Controller extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        $result = $this->modelObj->_show($id);
-        $view   = $this->modelObj->_getView('show');
+    // public function show($id)
+    // {
+    //     $result = $this->modelObj->_show($id);
+    //     $view   = $this->modelObj->_getView('show');
 
-        return $this->_response($result['data'], $result['message'], $view);
-    }
+    //     return $this->sendResponse($result['data'], $result['message']);
+    // }
 
     /**
      * Show the form for editing the specified resource.
@@ -79,13 +79,13 @@ class Controller extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, $id)
-    {
-        $result = $this->modelObj->_show($id);
-        $view   = $this->modelObj->_getView('edit');
+    // public function edit(Request $request, $id)
+    // {
+    //     $result = $this->modelObj->_show($id);
+    //     $view   = $this->modelObj->_getView('edit');
 
-        return view($view, $result);
-    }
+    //     return view($view, $result);
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -94,24 +94,18 @@ class Controller extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
-        $result    = $this->modelObj->_storeOrUpdate($request, $id, 'update');
-        $routeName = $this->modelObj->_getRouteName('index');
+    // public function update(Request $request, $id)
+    // {
+    //     $result    = $this->modelObj->_storeOrUpdate($request, $id, 'update');
+    //     $routeName = $this->modelObj->_getRouteName('index');
 
-        if ($this->_responseFormat === 'view') {
-            // Session::flash('message', $result['message']);
-            return back()->with('success', $result);
-        } else {
-            return $this->_response($result['data'], $result['message']);
-        }
-    }
-
-    // response function
-    public function _response($data = null, $message = null, $view = '', $code = 200)
-    {
-        return $this->sendResponse($data, $message);
-    }
+    //     if ($this->_responseFormat === 'view') {
+    //         // Session::flash('message', $result['message']);
+    //         return back()->with('success', $result);
+    //     } else {
+    //         return $this->sendResponse($result['data'], $result['message']);
+    //     }
+    // }
 
     public function sendResponse($result, $message)
     {

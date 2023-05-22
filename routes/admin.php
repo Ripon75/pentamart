@@ -7,7 +7,6 @@ use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ReportController;
-use App\Http\Controllers\Admin\BannerController;
 use App\Http\Controllers\Admin\StatusController;
 use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\ProductController;
@@ -128,14 +127,6 @@ Route::middleware(['auth'])->group(function() {
     Route::get('permissions/{id}',      [PermissionController::class, 'show'])->name('permissions.show')->middleware(['permission:permissions-read']);
     Route::get('permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit')->middleware(['permission:permissions-update']);
     Route::put('permissions/{id}',      [PermissionController::class, 'update'])->name('permissions.update')->middleware(['permission:permissions-update']);
-
-    // Banner route
-    Route::get('banners',           [BannerController::class, 'index'])->name('banners')->middleware(['permission:banners-read']);
-    Route::get('banners/create',    [BannerController::class, 'create'])->name('banners.create')->middleware(['permission:banners-create']);
-    Route::post('banners',          [BannerController::class, 'store'])->name('banners.store')->middleware(['permission:banners-create']);
-    Route::get('banners/{id}',      [BannerController::class, 'show'])->name('banners.show')->middleware(['permission:banners-read']);
-    Route::get('banners/{id}/edit', [BannerController::class, 'edit'])->name('banners.edit')->middleware(['permission:banners-update']);
-    Route::put('banners/{id}',      [BannerController::class, 'update'])->name('banners.update')->middleware(['permission:banners-update']);
 
     // Section route
     Route::get('sections',           [SectionController::class, 'index'])->name('sections.index')->middleware(['permission:sections-read']);
