@@ -62,7 +62,7 @@ class Utility
         }
     }
 
-    static public function response($result, $message)
+    static public function sendResponse($result, $message)
     {
     	$response = [
             'success' => true,
@@ -72,7 +72,7 @@ class Utility
         return response()->json($response, 200);
     }
 
-    static public function error($message)
+    static public function sendError($message)
     {
     	$response = [
             'success' => false,

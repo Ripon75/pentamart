@@ -434,7 +434,6 @@
         var posToken                          = localStorage.getItem('pos_token');
         var deliveryChargeLabel               = $('#delivery-charge-label');
         var inputDeliveryGateway              = $('#input-delivery-gateway');
-        var deliveryGatewayId                 = "{{ $order->dg_id }}";
         var inputProductQuantity              = $('#product-quantity');
         var couponForProduct                  = false;
 
@@ -453,11 +452,6 @@
             },
             @endforeach
         ];
-
-        // Check custom delivery type id
-        if (!deliveryGatewayId) {
-            deliveryChargeLabel.removeAttr('readonly');
-        }
 
         // Create customer address
         var editPageAddressTitle  = $('#edit-page-address-title');

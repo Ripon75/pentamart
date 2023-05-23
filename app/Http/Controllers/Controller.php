@@ -2,13 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Classes\Utility;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
-use App\Classes\Controller as BaseController;
-// use Illuminate\Routing\Controller as BaseController;
-
+use Illuminate\Routing\Controller as BaseController;
 class Controller extends BaseController
 {
+    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public function sendResponse($result, $message)
+    {
+        return Utility::sendResponse($result, $message);
+    }
+
+    public function sendError($message)
+    {
+        return Utility::sendError($message);
+    }
 }

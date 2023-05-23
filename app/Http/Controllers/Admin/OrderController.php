@@ -42,7 +42,6 @@ class OrderController extends Controller
         $endDate       = $request->input('end_date', null);
         $action        = $request->input('action', null);
         $areaId        = $request->input('area_id', null);
-        $dGateway      = $request->input('dg_id', null);
         $pGateway      = $request->input('pg_id', null);
         $phoneNumber   = $request->input('phone_number', null);
         $orderId       = $request->input('order_id', null);
@@ -84,10 +83,6 @@ class OrderController extends Controller
 
         if ($sellPartnerId) {
             $orderObj = $orderObj->where('sell_partner_id', $sellPartnerId);
-        }
-
-        if ($dGateway) {
-            $orderObj = $orderObj->where('dg_id', $dGateway);
         }
 
         if ($pGateway) {
@@ -167,17 +162,15 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dg_id'    => ['required', 'integer'],
-            'pg_id'   => ['required', 'integer'],
+            'pg_id'      => ['required', 'integer'],
             'address_id' => ['required', 'integer'],
-            'area_id'             => ['required', 'integer'],
-            'address'             => ['required'],
+            'area_id'    => ['required', 'integer'],
+            'address'    => ['required'],
         ],
         [
             'address_id.required' => 'Please select shipping address'
         ]);
 
-        $deliveryTypeId       = $request->input('dg_id');
         $paymentMethodId      = $request->input('pg_id');
         $addressId            = $request->input('address_id');
         $orderedAt            = $request->input('ordered_at');
@@ -207,13 +200,7 @@ class OrderController extends Controller
             $shippingAddress->save();
         }
 
-        if ($deliveryTypeId === '-1') {
-            $deliveryTypeId = null;
-        }
-
-        // Update order and order details
-        $order->dg_id       = $deliveryTypeId;
-        $order->pg_id      = $paymentMethodId;
+        $order->pg_id                  = $paymentMethodId;
         $order->address_id             = $addressId;
         $order->ordered_at             = $orderedAt;
         $order->created_by             = Auth::id();
@@ -393,7 +380,6 @@ class OrderController extends Controller
         $items             = $request->input('items', null);
         $userId            = $request->input('user_id', null);
         $addressId         = $request->input('address_id', null);
-        $deliveryTypeId    = $request->input('dg_id', null);
         $paymentMethodId   = $request->input('pg_id', null);
         $searchPhoneNumber = $request->input('search_phone_number', null);
         $deliveryCharge    = $request->input('delivery_charge', null);
@@ -462,19 +448,13 @@ class OrderController extends Controller
         // Create new order
         $orderObj = new Order();
 
-        if ($deliveryTypeId === '-1') {
-            $deliveryTypeId = null;
-        }
-
-        $orderObj->user_id             = $userId;
-        $orderObj->address_id = $addressId == 0 ? $userAddressObj->id : $addressId;
-        $orderObj->dg_id    = $deliveryTypeId;
-        $orderObj->pg_id   = $paymentMethodId;
-        $orderObj->delivery_charge     = $deliveryCharge;
-        $orderObj->is_paid             = $paymentStatus;
-        $orderObj->ordered_at          = $orderedAt;
-        $orderObj->created_by          = Auth::id();
-        $orderObj->sell_partner_id     = Auth::user()->sell_partner_id;
+        $orderObj->user_id         = $userId;
+        $orderObj->address_id      = $addressId == 0 ? $userAddressObj->id : $addressId;
+        $orderObj->pg_id           = $paymentMethodId;
+        $orderObj->delivery_charge = $deliveryCharge;
+        $orderObj->is_paid         = $paymentStatus;
+        $orderObj->ordered_at      = $orderedAt;
+        $orderObj->created_by      = Auth::id();
         $res = $orderObj->save();
 
         if ($res) {
@@ -522,72 +502,7 @@ class OrderController extends Controller
 
         PaymentTransaction::whereIn('order_id', $orderID)->update(['status' => 'completed']);
         Order::whereIn('id', $orderID)->update(['is_paid' => 1]);
-        return $this->util->makeResponse(null, 'Order paid successfully', 200);
-    }
-
-    public function prescriptionShow($id)
-    {
-        $prescriptions = Prescription::where('order_id', $id)->get();
-
-        if (!$prescriptions) {
-            abort(404);
-        }
-
-        return view('adminend.pages.prescription.show', [
-            'prescriptions' => $prescriptions
-        ]);
-    }
-
-    public function statusUpdate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'order_id' => ['required'],
-            'status'   => ['required'],
-            'area_id'  => ['required']
-        ]);
-
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->util->makeResponse(null, $validator->errors(), 403);
-        }
-
-        $token   = $request->input('token');
-        $status  = $request->input('status');
-        $orderId = $request->input('order_id', null);
-        $areaId  = $request->input('area_id', null);
-        $businessId = null;
-        $branchId   = null;
-        $areaName   = null;
-
-        $order = Order::find($orderId);
-        if ($order) {
-            $businessId = $order->pos_business_id;
-            $branchId = $order->pos_branch_id;
-        }
-
-        if (!$businessId || !$branchId) {
-            return $this->util->makeResponse(null, 'Business or branch not found', 404);
-        }
-
-        $areaObj = Area::find($areaId);
-        if ($areaObj) {
-            $areaName = $areaObj->name;
-        }
-
-        $baseURL = config('pos.api.base_url');
-        $url     = "{$baseURL}/api/online/order/data/private/status/change";
-
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer {$token}"
-            ])->post($url, [
-            'business_id'     => $businessId,
-            'branch_id'       => $branchId,
-            'online_order_id' => $orderId,
-            'status'          => $status,
-            'area_name'       => $areaName,
-        ]);
-
-        return $response;
+        return $this->sendResponse(null, 'Order paid successfully');
     }
 
     public function refund(Request $request, $orderId, $paymentGateway)

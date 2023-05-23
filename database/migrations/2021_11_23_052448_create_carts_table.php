@@ -17,8 +17,6 @@ class CreateCartsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained('users')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('dg_id')->nullable()->onUpdate('cascade')
-                  ->onDelete('cascade')->comment('Delivery gateway id');
             $table->foreignId('pg_id')->nullable()->onUpdate('cascade')
                   ->onDelete('cascade')->comment('Payment gateway id');
             $table->foreignId('address_id')->nullable()->onUpdate('cascade')

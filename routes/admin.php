@@ -9,15 +9,13 @@ use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StatusController;
 use App\Http\Controllers\Admin\SliderController;
+use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\CouponCodeController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
-use App\Http\Controllers\Admin\DeliveryGatewayController;
-use App\Http\Controllers\Admin\ProductPriceLogController;
 
 Route::middleware(['auth'])->group(function() {
     // Dashboard route
@@ -88,21 +86,13 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/gateways/payment/{id}/edit', [PaymentGatewayController::class, 'edit'])->name('payments.edit')->middleware(['permission:payment-types-update']);
     Route::put('/gateways/payment/{id}',      [PaymentGatewayController::class, 'update'])->name('payments.update')->middleware(['permission:payment-types-update']);
 
-    // All delivery gateway route
-    Route::get('/gateways/delivery',           [DeliveryGatewayController::class, 'index'])->name('deliveries.index')->middleware(['permission:delivery-types-read']);
-    Route::get('/gateways/delivery/create',    [DeliveryGatewayController::class, 'create'])->name('deliveries.create')->middleware(['permission:delivery-types-create']);
-    Route::post('/gateways/delivery',          [DeliveryGatewayController::class, 'store'])->name('deliveries.store')->middleware(['permission:delivery-types-create']);
-    Route::get('/gateways/delivery/{id}',      [DeliveryGatewayController::class, 'show'])->name('deliveries.show')->middleware(['permission:delivery-types-read']);
-    Route::get('/gateways/delivery/{id}/edit', [DeliveryGatewayController::class, 'edit'])->name('deliveries.edit')->middleware(['permission:delivery-types-update']);
-    Route::put('/gateways/delivery/{id}',      [DeliveryGatewayController::class, 'update'])->name('deliveries.update')->middleware(['permission:delivery-types-update']);
-
     // All coupon code route
-    Route::get('/coupon-codes',           [CouponCodeController::class, 'index'])->name('coupon-codes.index')->middleware(['permission:coupon-codes-read']);
-    Route::get('/coupon-codes/create',    [CouponCodeController::class, 'create'])->name('coupon-codes.create')->middleware(['permission:coupon-codes-create']);
-    Route::post('/coupon-codes',          [CouponCodeController::class, 'store'])->name('coupon-codes.store')->middleware(['permission:coupon-codes-create']);
-    Route::get('/coupon-codes/{id}',      [CouponCodeController::class, 'show'])->name('coupon-codes.show')->middleware(['permission:coupon-codes-read']);
-    Route::get('/coupon-codes/{id}/edit', [CouponCodeController::class, 'edit'])->name('coupon-codes.edit')->middleware(['permission:coupon-codes-update']);
-    Route::put('/coupon-codes/{id}',      [CouponCodeController::class, 'update'])->name('coupon-codes.update')->middleware(['permission:coupon-codes-update']);
+    Route::get('/coupons',           [CouponController::class, 'index'])->name('coupons.index')->middleware(['permission:coupons-read']);
+    Route::get('/coupons/create',    [CouponController::class, 'create'])->name('coupons.create')->middleware(['permission:coupons-create']);
+    Route::post('/coupons',          [CouponController::class, 'store'])->name('coupons.store')->middleware(['permission:coupons-create']);
+    Route::get('/coupons/{id}',      [CouponController::class, 'show'])->name('coupons.show')->middleware(['permission:coupons-read']);
+    Route::get('/coupons/{id}/edit', [CouponController::class, 'edit'])->name('coupons.edit')->middleware(['permission:coupons-update']);
+    Route::put('/coupons/{id}',      [CouponController::class, 'update'])->name('coupons.update')->middleware(['permission:coupons-update']);
 
     // All order status route
     Route::get('/order-statuses',           [StatusController::class, 'index'])->name('order-statuses.index')->middleware(['permission:order-status-read']);
@@ -140,7 +130,4 @@ Route::middleware(['auth'])->group(function() {
     Route::get('users',           [UserController::class, 'index'])->name('users.index')->middleware(['permission:users-read']);
     Route::get('users/{id}/edit', [UserController::class, 'edit'])->name('users.edit')->middleware(['permission:users-update']);
     Route::put('users/{id}',      [UserController::class, 'update'])->name('users.update')->middleware(['permission:users-update']);
-
-    // Price logs route
-    Route::get('products/price/logs', [ProductPriceLogController::class, 'index'])->name('logs.index')->middleware(['permission:price-log-read']);
 });

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Front;
 use App\Models\Area;
 use App\Models\Cart;
 use App\Models\User;
-use App\Classes\Utility;
 use App\Models\Address;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -16,13 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
-    protected $util;
-    public function __construct()
-    {
-        $this->util = new Utility();
-    }
-
-    public function index(Request $request)
+    public function index()
     {
         $result  = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
 
@@ -156,7 +149,7 @@ class AddressController extends Controller
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $data  = Address::find($id);
         if (!$data) {
@@ -195,21 +188,21 @@ class AddressController extends Controller
     public function getArea($name)
     {
         if (!$name) {
-            return $this->util->makeResponse(null, 'Area name not found', 400);
+            return $this->sendError('Area name not found');
         }
 
         if ($name) {
             $area = Area::where('name', $name)->first();
             if ($area) {
-                return $this->util->makeResponse($area, 'Area single view', 200);
+                return $this->sendResponse($area, 'Area single view');
             } else {
-                $slug          = Str::slug($name, '-');
-                $areaObj       = new Area();
-                $areaObj->slug = $slug;
-                $areaObj->name = $name;
-                $res = $areaObj->save();
+                $slug       = Str::slug($name, '-');
+                $area       = new Area();
+                $area->slug = $slug;
+                $area->name = $name;
+                $res = $area->save();
                 if ($res) {
-                return $this->util->makeResponse($areaObj, 'Area single view', 200);
+                return $this->sendResponse($area, 'Area single view');
                 }
             }
         }

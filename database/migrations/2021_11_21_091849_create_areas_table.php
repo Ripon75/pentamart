@@ -13,16 +13,11 @@ class CreateAreasTable extends Migration
      */
     public function up()
     {
-        $areaType = config('enum.areaType');
 
-        Schema::create('areas', function (Blueprint $table) use ($areaType) {
+        Schema::create('areas', function (Blueprint $table) {
             $table->id();
             $table->string('slug', 100)->unique();
             $table->string('name', 100)->unique();
-            $table->foreignId('type_id')->nullable()->constrained('area_types')
-                  ->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('parent_id')->nullable()->constrained('areas')
-                  ->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
             $table->softDeletes();
         });

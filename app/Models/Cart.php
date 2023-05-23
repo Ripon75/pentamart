@@ -3,53 +3,28 @@
 namespace App\Models;
 
 use App\Models\User;
-use App\Classes\Model;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
     use HasFactory;
 
-    protected $className = 'Cart';
+    protected $fillable = [
+        'user_id',
+        'pg_id',
+        'address_id',
+        'note'
+    ];
 
-    protected $_columns = [
-        'id' => [
-            'cast'     => 'integer'
-        ],
-        'user_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'dg_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'pg_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'address_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'note' => [
-            'cast'     => 'string',
-            'fillable' => true
-        ],
-        'created_at'   => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'updated_at'   => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'deleted_at'   => [
-            'cast'     => 'datetime:Y-m-d H:i:s'
-        ]
+    protected $casts = [
+        'user_id'    => 'integer',
+        'pg_id'      => 'integer',
+        'address_id' => 'integer',
+        'note'       => 'string',
     ];
 
     // Relation start
@@ -68,11 +43,6 @@ class Cart extends Model
     public function address()
     {
         return $this->belongsTo(Address::class, 'address_id', 'id');
-    }
-
-    public function deliveryGateway()
-    {
-        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
     }
     // Relation end
 
@@ -154,7 +124,6 @@ class Cart extends Model
         $cart = $this->getCurrentCustomerCart();
         $res = $cart->items()->detach();
 
-        $cart->dg_id = 1;
         $cart->pg_id = 1;
         $cart->note  = null;
         $cart->save();
@@ -164,7 +133,6 @@ class Cart extends Model
 
     public function addMetaData($request)
     {
-        $dgId = $request->input('dg_id', null);
         $pgId = $request->input('pg_id', null);
         $note = $request->input('note', null);
 
@@ -172,9 +140,6 @@ class Cart extends Model
 
         if ($note) {
             $cart->note = $note;
-        }
-        if ($dgId) {
-            $cart->dg_id = $dgId;
         }
         if ($pgId) {
             $cart->pg_id = $pgId;

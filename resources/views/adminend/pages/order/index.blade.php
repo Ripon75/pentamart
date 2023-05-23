@@ -49,18 +49,6 @@
                     </select>
                 </div>
                 <div class="flex flex-col">
-                    <label class="text-sm" for="">Delivery Type</label>
-                    <select class="text-sm border border-gray-300 rounded w-36 h-10" name="dg_id">
-                        <option value="">Select</option>
-                        @foreach ($dGateways as $dGateway)
-                        <option value="{{ $dGateway->id }}"
-                            {{ $dGateway->id == request()->input('dg_id') ? "selected" : '' }}>
-                            {{ $dGateway->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex flex-col">
                     <label class="text-sm" for="">Payment Type</label>
                     <select class="text-sm border border-gray-300 rounded h-10 w-36" name="pg_id">
                         <option value="">Select</option>
@@ -128,7 +116,6 @@
                     <th class="text-left">Order Date</th>
                     <th class="text-left" >Customer</th>
                     <th class="text-left">Phone Number</th>
-                    <th class="text-left">Delivery Type</th>
                     <th class="text-left">Payment Type</th>
                     <th class="text-left">Delivery Area</th>
                     <th class="text-left">Reference ID</th>
@@ -155,15 +142,6 @@
 
                         <td>{{ ($data->user->name) ?? null }}</td>
                         <td>{{ ($data->user->phone_number) ?? null }}</td>
-                        <td>
-                            @if ($data->dg_id)
-                                {{ ($data->deliveryGateway->name) ?? null }}
-                            @elseif($data->dg_id === 0)
-                                Free Delivery
-                            @else
-                                Custom Delivery
-                            @endif
-                        </td>
                         <td>{{ ($data->paymentGateway->name) ?? null }}</td>
                         <td>{{ ($data->shippingAddress->area->name) ?? null }}</td>
                         <td>

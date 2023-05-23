@@ -2,18 +2,13 @@
 
 namespace App\Models;
 
-// use Image;
-use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
-use App\Classes\Model;
-use App\Rules\NotNumeric;
 use Laravel\Scout\Searchable;
 use Wildside\Userstamps\Userstamps;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Resources\ProductThumbCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
@@ -21,71 +16,28 @@ class Product extends Model implements Auditable
     use SoftDeletes, Searchable, HasFactory, Userstamps;
     use \OwenIt\Auditing\Auditable;
 
-    protected $_columns = [
-        'id' => [
-            'cast'   => 'integer',
-            'filter' => [
-                'type'     => 'default',
-                'opration' => '='
-            ]
-        ],
-        'slug' => [
-            'cast'     => 'string',
-            'fillable' => true,
-            'filter'   => [
-                'type'     => 'default',
-                'opration' => 'like_left'
-            ]
-        ],
-        'name' => [
-            'cast'       => 'string',
-            'fillable'   => true
-        ],
-        'brand_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'category_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'price' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'offer_price' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'offer_percent' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'status' => [
-            'cast'     => 'string',
-            'fillable' => true
-        ],
-        'description' => [
-            'cast'     => 'string',
-            'fillable' => true
-        ],
-        'created_by' => [
-            'fillable' => true
-        ],
-        'updated_by' => [
-            'fillable' => true
-        ],
-        'created_at' => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'updated_at' => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'deleted_at' => [
-            'cast' => 'datetime:Y-m-d H:i:s'
-        ]
+    protected $fillable = [
+        'name',
+        'slug',
+        'brand_id',
+        'category_id',
+        'price',
+        'offer_price',
+        'offer_percent',
+        'status',
+        'description'
+    ];
+
+    protected $casts = [
+        'name'          => 'string',
+        'slug'          => 'string',
+        'brand_id'      => 'integer',
+        'category_id'   => 'integer',
+        'price'         => 'decimal:2',
+        'offer_price'   => 'decimal:2',
+        'offer_percent' => 'decimal:2',
+        'status'        => 'string',
+        'description'   => 'string'
     ];
 
     public $_defaultWith = [
@@ -196,29 +148,5 @@ class Product extends Model implements Auditable
         ])
         ->where('status', 'active')
         ->where('price', '>', 0);
-    }
-
-
-    public function scopeThumbs($query)
-    {
-        return $query->with($this->_defaultWith)
-            ->where('status', 'active');
-    }
-
-    // Scope end ======================================================================
-
-    public function _storeOrUpdate($request, $id = 0, $action = 'store')
-    {
-
-    }
-
-    public function _getThumbs($take = 24)
-    {
-        $take = $take > 100 ? 100 : $take;
-        $products = Self::thumbs()->take($take)->get();
-
-        $res = new ProductThumbCollection($products);
-
-        return $res;
     }
 }

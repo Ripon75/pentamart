@@ -54,23 +54,6 @@
                     {{--Delivery gateway --}}
                     <fieldset class="bg-white shadow-sm border rounded p-4 mt-8">
                         <legend class="bg-gray-50 text-gray-400">Gateways</legend>
-                        <div class="form-item">
-                            <label for="" class="form-label">Delivery Type <span class="text-red-500 font-medium">*</span> </label>
-                            <select id="input-delivery-gateway" class="form-select form-input w-full" name="dg_id">
-                                <option data-delivery-charge="0" value="-1">Custom Delivery</option>
-                                <option data-delivery-charge="0" value="0">Free Delivery</option>
-                                @foreach ($deliveryGateways as $deliveryGateway)
-                                    <option value="{{ $deliveryGateway->id }}"
-                                        data-delivery-charge="{{ $deliveryGateway->price }}"
-                                        {{ old('dg_id') == $deliveryGateway->id ? 'selected' : '' }}>
-                                        {{ $deliveryGateway->name }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @error('dg_id')
-                                <span class="form-helper error">{{ $message }}</span>
-                            @enderror
-                        </div>
                         {{-- Payment gateway --}}
                         <div class="form-item">
                             <label for="" class="form-label">Payment Type <span class="text-red-500 font-medium">*</span> </label>

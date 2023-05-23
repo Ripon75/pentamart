@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Traits\BaseStatusMap;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -10,38 +9,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model implements Auditable
 {
-    use HasFactory, BaseStatusMap;
+    use HasFactory;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'user_id',
-        'dg_id',
         'pg_id',
         'address_id',
         'terms_and_condition',
-        'note'
+        'status_id',
+        'current_status_at',
+        'note',
+        'ordered_at',
     ];
 
     protected $casts = [
-        'id'                  => 'integer',
         'user_id'             => 'integer',
-        'dg_id'               => 'integer',
         'pg_id'               => 'integer',
         'address_id'          => 'integer',
-        'terms_and_condition' => 'string',
-        'current_status_id'   => 'integer',
+        'terms_and_condition' => 'boolean',
+        'status_id'           => 'integer',
         'note'                => 'string',
-        'current_status_at'   => 'datetime:Y-m-d H:i:s',
         'ordered_at'          => 'date:Y-m-d',
         'created_at'          => 'datetime:Y-m-d H:i:s',
         'updated_at'          => 'datetime:Y-m-d H:i:s',
         'deleted_at'          => 'datetime:Y-m-d H:i:s'
     ];
-
-    function __construct()
-    {
-        $this->initStatusMap('order');
-    }
 
     // Start relation
     public function items()
@@ -63,11 +56,6 @@ class Order extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
-    public function deliveryGateway()
-    {
-        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
-    }
-
     public function paymentGateway()
     {
         return $this->belongsTo(PaymentGateway::class, 'pg_id', 'id');
@@ -86,11 +74,6 @@ class Order extends Model implements Auditable
     public function coupon()
     {
         return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
-    }
-
-    public function prescriptions()
-    {
-        return $this->hasMany(Prescription::class, 'order_id', 'id');
     }
 
     public function transaction()

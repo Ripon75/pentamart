@@ -2,11 +2,8 @@
 
 namespace App\Models;
 
-use Auth;
 use Carbon\Carbon;
-use App\Classes\Model;
-use App\Classes\Utility;
-use App\Rules\NotNumeric;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -15,28 +12,7 @@ class Coupon extends Model
     use SoftDeletes;
     use HasFactory;
 
-    protected $table      = 'coupons';
-    protected $_className = 'Coupon';
-
-
-     // All view templates
-     protected $_views = [
-        'index'  => 'adminend.pages.couponCode.index',
-        'create' => 'adminend.pages.couponCode.create',
-        'edit'   => 'adminend.pages.couponCode.edit',
-        'show'   => 'adminend.pages.couponCode.show'
-    ];
-
-    // All routes
-    protected $_routeNames = [
-        'index'  => 'admin.coupon-codes.index',
-        'create' => 'admin.coupon-codes.create',
-        'edit'   => 'admin.coupon-codes.edit',
-        'show'   => 'admin.coupon-codes.show'
-    ];
-
     protected $fillable = [
-        'name',
         'name',
         'code',
         'status',
@@ -49,7 +25,6 @@ class Coupon extends Model
     ];
 
     protected $casts = [
-        'id'              => 'integer',
         'name'            => 'string',
         'code'            => 'string',
         'status'          => 'string',
@@ -64,17 +39,10 @@ class Coupon extends Model
         'deleted_at'      => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function _isActive($code)
+    public function isActive($code)
     {
         if (!$code) {
             return false;
-        }
-
-        if (strtoupper($code) == 'MDFREE') {
-            $order = Order::where('user_id', Auth::id())->first();
-            if ($order) {
-                return false;
-            }
         }
 
         $now    = Carbon::now();
@@ -90,9 +58,9 @@ class Coupon extends Model
         return $coupon;
     }
 
-    public function _isValidForCart($cart, $code)
+    public function isValidForCart($cart, $code)
     {
-        $coupon = $this->_isActive($code);
+        $coupon = $this->isActive($code);
 
         if (!$coupon) {
             return [
@@ -126,7 +94,7 @@ class Coupon extends Model
 
         if ($action === 'store') {
             $rules = [
-                'name'            => ['required', "unique:{$this->table}", new NotNumeric],
+                'name'            => ['required', "unique:{$this->table}"],
                 'code'            => ['required'],
                 'min_cart_amount' => ['required'],
                 'discount_amount' => ['required'],
@@ -140,7 +108,7 @@ class Coupon extends Model
 
         } else {
             $rules = [
-                'name'            => ['required', "unique:{$this->table},name,$id", new NotNumeric],
+                'name'            => ['required', "unique:{$this->table},name,$id"],
                 'code'            => ['required'],
                 'min_cart_amount' => ['required'],
                 'discount_amount' => ['required'],
