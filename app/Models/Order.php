@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -9,31 +10,50 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model implements Auditable
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'user_id',
         'pg_id',
-        'address_id',
-        'terms_and_condition',
         'status_id',
-        'current_status_at',
+        'address_id',
+        'address',
+        'coupon_id',
+        'coupon_value',
+        'delivery_charge',
+        'price',
+        'sell_price',
+        'discount',
+        'net_price',
+        'payable_price',
+        'is_paid',
         'note',
-        'ordered_at',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
-        'user_id'             => 'integer',
-        'pg_id'               => 'integer',
-        'address_id'          => 'integer',
-        'terms_and_condition' => 'boolean',
-        'status_id'           => 'integer',
-        'note'                => 'string',
-        'ordered_at'          => 'date:Y-m-d',
-        'created_at'          => 'datetime:Y-m-d H:i:s',
-        'updated_at'          => 'datetime:Y-m-d H:i:s',
-        'deleted_at'          => 'datetime:Y-m-d H:i:s'
+        'user_id'         => 'integer',
+        'pg_id'           => 'integer',
+        'status_id'       => 'integer',
+        'address_id'      => 'integer',
+        'address'         => 'string',
+        'coupon_id'       => 'integer',
+        'coupon_value'    => 'decimal:2',
+        'delivery_charge' => 'decimal:2',
+        'price'           => 'decimal:2',
+        'sell_price'      => 'decimal:2',
+        'discount'        => 'decimal:2',
+        'net_price'       => 'decimal:2',
+        'payable_price'   => 'decimal:2',
+        'is_paid'         => 'boolean',
+        'note'            => 'string',
+        'created_by'      => 'integer',
+        'updated_by'      => 'integer',
+        'created_at'      => 'datetime:Y-m-d H:i:s',
+        'updated_at'      => 'datetime:Y-m-d H:i:s',
+        'deleted_at'      => 'datetime:Y-m-d H:i:s'
     ];
 
     // Start relation
@@ -181,7 +201,7 @@ class Order extends Model implements Auditable
         return $totalWithDeliveryCharge;
     }
 
-    public function getGrandTotal()
+    public function getNetPrice()
     {
         $totalWithDeliveryCharge = $this->getTotalWithDeliveryCharge();
         $couponValue = $this->getCouponValue();
@@ -192,15 +212,16 @@ class Order extends Model implements Auditable
 
     public function getPayablePrice($roundType = null)
     {
-        $grandTotal = $this->getGrandTotal();
+        $netPrice = $this->getNetPrice();
+
         if ($roundType === 'ceil') {
-            return ceil($grandTotal);
+            return ceil($netPrice);
         } else if ($roundType === 'floor') {
-            return floor($grandTotal);
+            return floor($netPrice);
         } else if ($roundType === 'round') {
-            return round($grandTotal);
+            return round($netPrice);
         } else {
-            return $grandTotal;
+            return $netPrice;
         }
     }
 
@@ -210,12 +231,14 @@ class Order extends Model implements Auditable
         $totalSellPrice = $orderObj->getTotalSellPrice() ?? 0;
         $couponValue    = $orderObj->getCouponValue() ?? 0;
         $totalDiscount  = $orderObj->getTotalDiscount() ?? 0;
-        $payablePrice   = $orderObj->getPayablePrice() ?? 0;
+        $netPrice       = $orderObj->getNetPrice() ?? 0;
+        $payablePrice   = $orderObj->getPayablePrice('round') ?? 0;
 
         $orderObj->coupon_value  = $couponValue;
         $orderObj->price         = $totalPrice;
         $orderObj->sell_price    = $totalSellPrice;
         $orderObj->discount      = $totalDiscount;
+        $orderObj->net_price     = $netPrice;
         $orderObj->payable_price = $payablePrice;
         $orderObj->save();
     }

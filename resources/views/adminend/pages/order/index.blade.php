@@ -163,14 +163,6 @@
                             $label      = 'N/A';
                             $bgColor    = '#f94449';
                             $fontColor  = '#ffff';
-                            if ($statusSlug) {
-                                $status = $data->getStatus($statusSlug);
-                                if ($status) {
-                                    $label     = $status['label'];
-                                    $bgColor   = $status['color']['background'];
-                                    $fontColor = $status['color']['font'];
-                                }
-                            }
                         @endphp
                         <td class="text-center">
                             <span class="block rounded border px-2 py-1 text-sm w-full"

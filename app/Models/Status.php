@@ -2,28 +2,34 @@
 
 namespace App\Models;
 
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Status extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
-        'slug',
         'name',
+        'slug',
         'seller_visibility',
         'customer_visibility',
-        'description'
+        'description',
+        'bg_color',
+        'text_color',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
-        'id'                  => 'integer',
-        'slug'                => 'string',
         'name'                => 'string',
+        'slug'                => 'string',
         'seller_visibility'   => 'boolean',
         'customer_visibility' => 'boolean',
         'description'         => 'string',
+        'created_by'          => 'integer',
+        'updated_by'          => 'integer',
         'created_at'          => 'datetime:Y-m-d H:i:s',
         'updated_at'          => 'datetime:Y-m-d H:i:s',
         'deleted_at'          => 'datetime:Y-m-d H:i:s',

@@ -5,12 +5,8 @@ namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
 use App\Models\Brand;
-use App\Models\Company;
-use App\Models\Generic;
 use App\Models\Product;
-use App\Models\Symptom;
 use App\Models\Category;
-use App\Models\DosageForm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -89,6 +85,7 @@ class ProductController extends Controller
         $currentStock = $request->input('current_stock', 0);
         $status       = $request->input('status', 'active');
         $description  = $request->input('description', null);
+        $slug         = Str::slug($name, '-');
 
         try {
             DB::beginTransaction();
@@ -96,7 +93,7 @@ class ProductController extends Controller
             $product = new Product();
 
             $product->name          = $name;
-            $product->slug          = $name;
+            $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
             $product->price         = $price;
@@ -177,6 +174,7 @@ class ProductController extends Controller
         $currentStock = $request->input('current_stock', 0);
         $status       = $request->input('status', 'active');
         $description  = $request->input('description', null);
+        $slug         = Str::slug($name, '-');
 
         try {
             DB::beginTransaction();
@@ -186,7 +184,7 @@ class ProductController extends Controller
             }
 
             $product->name          = $name;
-            $product->slug          = $name;
+            $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
             $product->price         = $price;

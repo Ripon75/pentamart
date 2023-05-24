@@ -23,12 +23,6 @@ return [
             'permission' => 'payment-types-read',
             'sub' => [
                 [
-                    'label'      => 'Delivery Type',
-                    'icon'       => 'fa-solid fa-truck',
-                    'route'      => 'admin.deliveries.index',
-                    'permission' => 'delivery-types-read'
-                ],
-                [
                     'label'      => 'Payment Type',
                     'icon'       => 'fa-solid fa-credit-card',
                     'route'      => 'admin.payments.index',
@@ -79,7 +73,7 @@ return [
                 [
                     'label'      => 'Coupons',
                     'icon'       => 'fa-solid fa-tag',
-                    'route'      => 'admin.coupon-codes.index',
+                    'route'      => 'admin.coupons.index',
                     'permission' => 'coupon-codes-read'
                 ],
                 [

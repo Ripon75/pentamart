@@ -22,7 +22,10 @@ return new class extends Migration
             $table->integer('rate')->default(1);
             $table->string('status')->default('inactive');
             $table->text('comment')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

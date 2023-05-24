@@ -29,7 +29,7 @@ class BrandController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('adminend.pages.brand.create');
     }
@@ -52,7 +52,7 @@ class BrandController extends Controller
         try {
             DB::beginTransaction();
 
-            $brand = new Brand;
+            $brand = new Brand();
 
             $brand->name   = $name;
             $brand->slug   = $slug;

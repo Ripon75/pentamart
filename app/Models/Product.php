@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
 {
-    use SoftDeletes, Searchable, HasFactory, Userstamps;
+    use HasFactory, Searchable, Userstamps, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -23,9 +23,14 @@ class Product extends Model implements Auditable
         'category_id',
         'price',
         'offer_price',
+        'discount',
         'offer_percent',
+        'current_stock',
         'status',
-        'description'
+        'image_src',
+        'description',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
@@ -35,9 +40,17 @@ class Product extends Model implements Auditable
         'category_id'   => 'integer',
         'price'         => 'decimal:2',
         'offer_price'   => 'decimal:2',
+        'discount'      => 'decimal:2',
         'offer_percent' => 'decimal:2',
+        'current_stock' => 'integer',
         'status'        => 'string',
-        'description'   => 'string'
+        'image_src'     => 'string',
+        'description'   => 'string',
+        'created_by'    => 'integer',
+        'updated_by'    => 'integer',
+        'created_at'    => 'datetime:Y-m-d H:i:s',
+        'updated_at'    => 'datetime:Y-m-d H:i:s',
+        'deleted_at'    => 'datetime:Y-m-d H:i:s'
     ];
 
     public $_defaultWith = [

@@ -180,14 +180,6 @@
                                             $label      = 'N/A';
                                             $bgColor    = '#f94449';
                                             $fontColor  = '#ffff';
-                                            if ($statusSlug) {
-                                                $status = $order->getStatus($statusSlug);
-                                                if ($status) {
-                                                    $label     = $status['label'];
-                                                    $bgColor   = $status['color']['background'];
-                                                    $fontColor = $status['color']['font'];
-                                                }
-                                            }
                                         @endphp
                                         <td class="text-center">
                                             <span class="text-xs font-medium text-center w-20 rounded p-2"

@@ -52,14 +52,6 @@
                                             $label      = 'N/A';
                                             $bgColor    = '#f94449';
                                             $fontColor  = '#ffff';
-                                            if ($statusSlug) {
-                                                $status = $order->getStatus($statusSlug);
-                                                if ($status) {
-                                                    $label     = $status['label'];
-                                                    $bgColor   = $status['color']['background'];
-                                                    $fontColor = $status['color']['font'];
-                                                }
-                                            }
                                         @endphp
                                         <td class="border border-l-0 p-2 text-center">
                                             @if ($order->currentStatus)

@@ -13,15 +13,15 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        $status = config('enum.status');
-
-        Schema::create('categories', function (Blueprint $table) use ($status) {
+        Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->string('slug', 100);
-            $table->enum('status', $status)->default('active');
+            $table->string('status')->default('active');
             $table->string('img_src')->nullable();
             $table->boolean('is_top')->default(false);
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

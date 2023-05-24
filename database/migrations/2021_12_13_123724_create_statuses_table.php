@@ -15,13 +15,15 @@ class CreateStatusesTable extends Migration
     {
         Schema::create('statuses', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 100)->nullable();
             $table->string('name', 100)->nullable();
+            $table->string('slug', 100)->nullable();
             $table->boolean('seller_visibility')->default(false);
             $table->boolean('customer_visibility')->default(false);
             $table->string('description', 1000)->nullable();
             $table->string('bg_color', 50)->default('#fff');
             $table->string('text_color', 50)->default('#000');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

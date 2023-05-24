@@ -5,19 +5,22 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Product;
 use Illuminate\Support\Facades\DB;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Cart extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
         'user_id',
         'pg_id',
         'address_id',
-        'note'
+        'note',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
@@ -25,6 +28,10 @@ class Cart extends Model
         'pg_id'      => 'integer',
         'address_id' => 'integer',
         'note'       => 'string',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     // Relation start

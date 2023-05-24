@@ -18,6 +18,8 @@ class CreateAreasTable extends Migration
             $table->id();
             $table->string('slug', 100)->unique();
             $table->string('name', 100)->unique();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -13,9 +13,7 @@ class CreateProductsTable extends Migration
      */
     public function up()
     {
-        $status = config('enum.status');
-
-        Schema::create('products', function (Blueprint $table) use ($status) {
+        Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name', 200);
             $table->string('slug', 190);
@@ -28,7 +26,7 @@ class CreateProductsTable extends Migration
             $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('offer_percent', 20, 2)->default(0);
             $table->bigInteger('current_stock')->default(0);
-            $table->enum('status', $status)->default('active');
+            $table->string('status')->default('active');
             $table->string('image_src', 1000)->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();

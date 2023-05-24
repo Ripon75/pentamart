@@ -22,6 +22,8 @@ class CreateCartsTable extends Migration
             $table->foreignId('address_id')->nullable()->onUpdate('cascade')
                   ->onDelete('cascade')->comment('Shipping address id');
             $table->text('note')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }
