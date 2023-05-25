@@ -16,20 +16,20 @@ return [
             'permission'  => 'sliders-read',
             'sub'         => []
         ],
-        [
-            'label'      => 'Gateways',
-            'icon'       => 'fa-solid fa-truck',
-            'route'      => '#',
-            'permission' => 'payment-types-read',
-            'sub' => [
-                [
-                    'label'      => 'Payment Type',
-                    'icon'       => 'fa-solid fa-credit-card',
-                    'route'      => 'admin.payments.index',
-                    'permission' => 'payment-types-read'
-                ],
-            ]
-        ],
+        // [
+        //     'label'      => 'Gateways',
+        //     'icon'       => 'fa-solid fa-truck',
+        //     'route'      => '#',
+        //     'permission' => 'payment-types-read',
+        //     'sub' => [
+        //         [
+        //             'label'      => 'Payment Type',
+        //             'icon'       => 'fa-solid fa-credit-card',
+        //             'route'      => 'admin.payments.index',
+        //             'permission' => 'payment-types-read'
+        //         ],
+        //     ]
+        // ],
         [
             'label'      => 'Sections',
             'icon'       => 'fa-solid fa-people-roof',

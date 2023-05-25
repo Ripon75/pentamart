@@ -11,17 +11,16 @@ class Section extends Model
     use HasFactory, Userstamps;
 
     protected $fillable = [
-        'title',
-        'link',
+        'name',
+        'slug',
         'status',
         'created_by',
         'updated_by'
     ];
 
     protected $casts = [
-        'id'         => 'integer',
-        'title'      => 'string',
-        'link'       => 'string',
+        'name'       => 'string',
+        'slug'       => 'string',
         'status'     => 'string',
         'created_by' => 'integer',
         'updated_by' => 'integer',

@@ -7,6 +7,7 @@ use App\Models\Section;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class SectionController extends Controller
@@ -30,9 +31,9 @@ class SectionController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
-        $products = Product::where('status', 'activated')->get();
+        $products = Product::where('status', 'active')->get();
 
         return view('adminend.pages.section.create', [
             'products' => $products
@@ -43,45 +44,52 @@ class SectionController extends Controller
     {
         $request->validate([
             'name'       => ['required'],
-            'title'      => ['required'],
-            'productIDs' => ['required']
+            'productIds' => ['required']
         ],
         [
-            'productIDs.required' => 'The Products field is required'
+            'productIds.required' => 'The Products field is required'
         ]);
 
         $name       = $request->input('name', null);
         $slug       = Str::slug($name, '-');
-        $title      = $request->input('title', null);
-        $link       = $request->input('link', null);
         $status     = $request->input('status', null);
-        $productIDs = $request->input('productIDs', []);
+        $productIds = $request->input('productIds', []);
 
-        $sectionObj = new Section();
+        try {
+            DB::beginTransaction();
 
-        $sectionObj->name  = $name;
-        $sectionObj->slug  = $slug;
-        $sectionObj->title = $title;
-        $sectionObj->link  = $link;
-        $sectionObj->status = $status;
-        $res = $sectionObj->save();
-        if ($res) {
-            $sectionObj->products()->sync($productIDs);
+            $section = new Section();
+
+            $section->name   = $name;
+            $section->slug   = $slug;
+            $section->status = $status;
+            $res = $section->save();
+            if ($res) {
+                $section->products()->sync($productIds);
+                DB::commit();
+            }
+            return redirect()->route('admin.sections.index')->with('success', 'Section created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went wrong');
         }
-
-        return redirect()->route('admin.sections.index')->with('message', 'Section created successfully');
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
-        $section            = Section::with(['products'])->find($id);
-        $selectedProductIDs = Arr::pluck($section->products, 'id');
+        $section = Section::with(['products'])->find($id);
+        if (!$section) {
+            abort(404);
+        }
+
+        $selectedProductIds = Arr::pluck($section->products, 'id');
         $products           = Product::where('status', 'active')->get();
 
         return view('adminend.pages.section.edit', [
             'section'            => $section,
             'products'           => $products,
-            'selectedProductIDs' => $selectedProductIDs
+            'selectedProductIds' => $selectedProductIds
         ]);
     }
 
@@ -89,32 +97,36 @@ class SectionController extends Controller
     {
         $request->validate([
             'name'       => ['required'],
-            'title'      => ['required'],
-            'productIDs' => ['required']
+            'productIds' => ['required']
         ],
         [
-            'productIDs.required' => 'The Products field is required'
+            'productIds.required' => 'The Products field is required'
         ]);
 
         $name       = $request->input('name', null);
         $slug       = Str::slug($name, '-');
-        $title      = $request->input('title', null);
-        $link       = $request->input('link', null);
         $status     = $request->input('status', null);
-        $productIDs = $request->input('productIDs', []);
+        $productIds = $request->input('productIds', []);
 
-        $sectionObj = Section::find($id);
+        try {
+            DB::beginTransaction();
 
-        $sectionObj->name  = $name;
-        $sectionObj->slug  = $slug;
-        $sectionObj->title = $title;
-        $sectionObj->link  = $link;
-        $sectionObj->status = $status;
-        $res = $sectionObj->save();
-        if ($res) {
-            $sectionObj->products()->sync($productIDs);
+            $section = Section::find($id);
+
+            $section->name   = $name;
+            $section->slug   = $slug;
+            $section->status = $status;
+            $res = $section->save();
+            if ($res) {
+                $section->products()->sync($productIds);
+                DB::commit();
+            }
+
+            return redirect()->route('admin.sections.index')->with('success', 'Section updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong');
         }
-
-        return redirect()->route('admin.sections.index')->with('message', 'Section updated successfully');
     }
 }

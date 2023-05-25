@@ -2,7 +2,6 @@
 @section('title', 'Sections')
 @section('content')
 <div class="page">
-    {{-- Page header --}}
     <div class="page-toolbar">
         <h6 class="title">Edit Section</h6>
         <div class="actions">
@@ -12,6 +11,11 @@
     <div class="page-content">
         <div class="container">
             <div class="lg:w-[500px] xl:w-[500px] mx-auto">
+
+                @if(Session::has('error'))
+                    <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+                @endif
+
                 <div class="card shadow">
                     <div class="body p-4">
                         <form action="{{ route('admin.sections.update', $section->id) }}" method="POST">
@@ -19,46 +23,36 @@
                             @method('PUT')
                             <div class="form-item">
                                 <label for="" class="form-label">Name</label>
-                                <input type="text" value="{{ $section->name }}" name="name" class="w-full">
+                                <input type="text" value="{{ $section->name }}" name="name" class="w-full rounded-md">
                                 @error('name')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-item">
-                                <label for="" class="form-label">Title</label>
-                                <input type="text" value="{{ $section->title }}" name="title" class="w-full">
-                                @error('title')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Link</label>
-                                <textarea name="link">{{ $section->link }}</textarea>
-                            </div>
-                            <div class="form-item">
                                 <label for="" class="form-label">Status</label>
-                                <select class="form-select w-full" name="status">
-                                    <option value="activated">Select Status</option>
-                                    <option value="draft" {{ $section->status === 'draft' ? "selected" : '' }}>Draft</option>
-                                    <option value="activated" {{ $section->status === 'activated' ? "selected" : '' }}>Activated</option>
-                                    <option value="inactivated" {{ $section->status === 'inactivated' ? "selected" : '' }}>Inactivated</option>
+                                <select class="form-select w-full rounded-md" name="status">
+                                    <option value="active">Select Status</option>
+                                    <option value="active" {{ $section->status === 'active' ? "selected" : '' }}>Active</option>
+                                    <option value="inactive" {{ $section->status === 'inactive' ? "selected" : '' }}>Inactive</option>
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label for="" class="form-label">Products</label>
-                                <select class="form-select w-full select-2" name="productIDs[]" multiple>
+                                <select class="form-select w-full select-2" name="productIds[]" multiple>
                                     <option value="">Select Products</option>
                                     @foreach ($products as $product)
-                                    <option value="{{ $product->id }}" {{ in_array($product->id, $selectedProductIDs) ? "selected" : '' }}>
+                                    <option value="{{ $product->id }}" {{ in_array($product->id, $selectedProductIds) ? "selected" : '' }}>
                                         {{ $product->name }}
                                     </option>
                                     @endforeach
                                 </select>
-                                @error('productIDs')
+                                @error('productIds')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <button type="submit" class="btn btn-primary">Update</button>
+                            <div class="flex justify-end">
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
                         </form>
                     </div>
                 </div>

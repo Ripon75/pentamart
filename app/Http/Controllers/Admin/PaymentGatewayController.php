@@ -14,10 +14,10 @@ class PaymentGatewayController extends Controller
    {
         $defaultPaginate = config('crud.paginate.default');
 
-        $paymentGateways = PaymentGateway::orderBy('name', 'asc')->paginate($defaultPaginate);
+        $pgs = PaymentGateway::orderBy('name', 'asc')->paginate($defaultPaginate);
 
         return view('adminend.pages.paymentGateway.index', [
-            'paymentGateways' => $paymentGateways
+            'pgs' => $pgs
         ]);
    }
 
@@ -55,7 +55,7 @@ class PaymentGatewayController extends Controller
                 }
             }
             DB::commit();
-            return redirect()->route('admin.payments.index.index')->with('message', 'Payment gateway created successfully');
+            return redirect()->route('admin.payments.index')->with('message', 'Payment gateway created successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
@@ -109,7 +109,7 @@ class PaymentGatewayController extends Controller
                 }
             }
             DB::commit();
-            return redirect()->route('admin.payments.index.index')->with('message', 'Payment gateway updated successfully');
+            return redirect()->route('admin.payments.index')->with('message', 'Payment gateway updated successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
