@@ -67,7 +67,7 @@ class Order extends Model implements Auditable
     public function status()
     {
         return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')
-            ->withPivot('created_by', 'created_at')->orderBy('order_status.created_at', 'asc')
+            ->orderBy('order_status.created_at', 'asc')
             ->withTimestamps();
     }
 

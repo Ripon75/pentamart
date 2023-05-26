@@ -6,24 +6,27 @@
     <div class="page-toolbar">
         <h6 class="title">All Users</h6>
         <div class="actions">
-            <a href="{{ route('admin.users.registration.create') }}" class="action btn btn-primary">Create</a>
+            <a href="{{ route('admin.users.create') }}" class="action btn btn-primary">Create</a>
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+
+        {{-- Show success messagge --}}
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
+
         <form action="{{ route('admin.users.index') }}" method="GET">
             @csrf
             <div class="action-bar mb-4 flex items-end space-x-2">
                 <div class="flex flex-col">
                     <label for="">Name</label>
-                    <input type="text" class="border border-gray-300 rounded w-48 h-10" name="name"
+                    <input type="text" class="border border-gray-300 rounded w-40 h-10" name="name"
                         value="{{ request()->input('name') }}">
                 </div>
                 <div class="flex flex-col">
                     <label for="">Email</label>
-                    <input type="text" class="border border-gray-300 rounded w-36 h-10" name="email"
+                    <input type="text" class="border border-gray-300 rounded w-64 h-10" name="email"
                         value="{{ request()->input('email') }}">
                 </div>
                 <div class="flex flex-col">

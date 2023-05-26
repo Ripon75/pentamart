@@ -11,6 +11,12 @@
     </div>
     <div class="page-content">
         <div class="lg:w-[500px] xl:w-[800px] mx-auto">
+
+            {{-- Show error message --}}
+            @if(Session::has('error'))
+                <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+            @endif
+
             <div class="card shadow">
                 <div class="body p-4">
                     <form action="{{ route('admin.roles.update', $role->id) }}" method="POST">
@@ -18,7 +24,6 @@
                         @csrf
 
                         <div class="">
-                            {{-- role --}}
                             <div class="flex space-x-2">
                                 <div class="form-item w-full">
                                     <label class="form-label">Name</label>
@@ -32,7 +37,6 @@
                                     <input type="text" name="description" value="{{ $role->description }}" class="w-full form-input">
                                 </div>
                             </div>
-                            {{-- permissions  --}}
                             <div class="grid grid-cols-3 gap-1">
                                 @foreach ($permissions as $permission)
                                     <span class="flex space-x-2">

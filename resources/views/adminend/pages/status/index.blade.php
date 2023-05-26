@@ -4,19 +4,15 @@
 
 <div class="page">
     <div class="page-toolbar">
-        <h6 class="title">All Order Status</h6>
+        <h6 class="title">All Status</h6>
         <div class="actions">
-            <a href="{{ route('admin.order-statuses.create') }}" class="action btn btn-primary">Create</a>
+            <a href="{{ route('admin.order.statuses.create') }}" class="action btn btn-primary">Create</a>
         </div>
     </div>
     <div class="page-content">
-        {{-- Show flash success or error message --}}
-        @if(Session::has('error'))
-            <div class="alert mb-8 error">{{ Session::get('message') }}</div>
-        @endif
 
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
         <div>
@@ -25,32 +21,40 @@
                 <tr class="">
                     <th class="w-20">ID</th>
                     <th>Name</th>
-                    <th class="w-40">Customer Visibility</th>
-                    <th class="w-40">Seller Visibility</th>
+                    <th class="w-40">Status</th>
+                    <th class="w-40">BG Color</th>
+                    <th class="w-40">Text Color</th>
                     <th class="w-40">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($orderStatuses as $orderStatus)
+                    @foreach ($statuses as $status)
                     <tr>
-                        <td class="text-center">{{ $orderStatus->id }}</td>
-                        <td>{{ $orderStatus->name }}</td>
-                        <td class="text-center">{{ $orderStatus->customer_visibility == 1 ? 'True' : 'False' }}</td>
-                        <td class="text-center">{{ $orderStatus->seller_visibility == 1 ? 'True' : 'False' }}</td>
+                        <td class="text-center">{{ $status->id }}</td>
+                        <td>{{ $status->name }}</td>
+                        @if ($status->status === 'active')
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm">{{ $status->status }}</button>
+                            </td>
+                        @else
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-sm">{{ $status->status }}</button>                            </td>
+                        @endif
+                        <td class="text-center">{{ $status->bg_color }}</td>
+                        <td class="text-center">{{ $status->text_color }}</td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.order-statuses.edit', $orderStatus->id) }}">Edit</a>
-                            {{-- <a class="btn btn-primary btn-sm" href="{{ route('admin.order-statuses.show', $orderStatus->id) }}">Show</a> --}}
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.order.statuses.edit', $status->id) }}">Edit</a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
             {{-- ========Pagination============ --}}
-            {{-- @if ($orderStatuses->hasPages())
+            @if ($statuses->hasPages())
                 <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
-                    {{ $orderStatuses->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
+                    {{ $statuses->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
                 </div>
-            @endif --}}
+            @endif
         </div>
     </div>
 </div>

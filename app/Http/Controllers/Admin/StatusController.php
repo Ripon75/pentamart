@@ -3,23 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Models\Status;
-use App\Rules\NotNumeric;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class StatusController extends Controller
 {
     public function index(Request $request)
     {
-        $statuses = Status::orderBy('id', 'desc')->get();
+        $defaultPaginate = config('crud.paginate.default');
+
+        $statuses = Status::orderBy('name', 'asc')->paginate($defaultPaginate);
 
         return view('adminend.pages.status.index', [
             'statuses' => $statuses
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('adminend.pages.status.create');
     }
@@ -27,31 +29,42 @@ class StatusController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name'                => ['required', 'unique:order_statuses,name', new NotNumeric],
-            'customer_visibility' => ['required', 'boolean'],
-            'seller_visibility'   => ['required', 'boolean']
+            'name' => ['required', 'unique:statuses,name']
         ]);
 
-        $name               = $request->input('name', null);
-        $customerVisibility = $request->input('customer_visibility', false);
-        $sellerVisibility   = $request->input('seller_visibility', false);
-        $description        = $request->input('description', null);
+        $name      = $request->input('name', null);
+        $status    = $request->input('status', true);
+        $bgColor   = $request->input('bg_color', null);
+        $textColor = $request->input('text_color', null);
 
-        $statusObj = new Status();
+        try {
+            DB::beginTransaction();
 
-        $statusObj->name                = $name;
-        $statusObj->slug                = Str::slug($name);
-        $statusObj->customer_visibility = $customerVisibility;
-        $statusObj->seller_visibility   = $sellerVisibility;
-        $statusObj->description         = $description;
-        $statusObj->save();
+            $statusObj = new Status();
 
-        return redirect()->route('admin.order-statuses.index')->with('message', 'Order status create successfully');
+            $statusObj->name       = $name;
+            $statusObj->slug       = Str::slug($name);
+            $statusObj->status     = $status;
+            $statusObj->bg_color   = $bgColor;
+            $statusObj->text_color = $textColor;
+            $statusObj->save();
+            DB::commit();
+
+            return redirect()->route('admin.order.statuses.index')->with('success', 'Status created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went to wrong');
+        }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $status = Status::find($id);
+
+        if (!$status) {
+            abort(404);
+        }
 
         return view('adminend.pages.status.edit', [
             'status' => $status
@@ -61,25 +74,32 @@ class StatusController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'                => ['required', "unique:order_statuses,name,{$id}", new NotNumeric],
-            'customer_visibility' => ['required', 'boolean'],
-            'seller_visibility'   => ['required', 'boolean']
+            'name' => ['required', "unique:statuses,name,{$id}"]
         ]);
 
-        $name               = $request->input('name', null);
-        $customerVisibility = $request->input('customer_visibility', false);
-        $sellerVisibility   = $request->input('seller_visibility', false);
-        $description        = $request->input('description', null);
+        $name      = $request->input('name', null);
+        $status    = $request->input('status', 'active');
+        $bgColor   = $request->input('bg_color', null);
+        $textColor = $request->input('text_color', null);
 
-        $statusObj = Status::find($id);
+        try {
+            DB::beginTransaction();
 
-        $statusObj->name                = $name;
-        $statusObj->slug                = Str::slug($name);
-        $statusObj->customer_visibility = $customerVisibility;
-        $statusObj->seller_visibility   = $sellerVisibility;
-        $statusObj->description         = $description;
-        $res = $statusObj->save();
+            $statusObj = Status::find($id);
 
-        return redirect()->route('admin.order-statuses.index')->with('message', 'Order status updated successfully');
+            $statusObj->name       = $name;
+            $statusObj->slug       = Str::slug($name);
+            $statusObj->status     = $status;
+            $statusObj->bg_color   = $bgColor;
+            $statusObj->text_color = $textColor;
+            $statusObj->save();
+            DB::commit();
+
+            return redirect()->route('admin.order.statuses.index')->with('success', 'Status updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went to wrong');
+        }
     }
 }

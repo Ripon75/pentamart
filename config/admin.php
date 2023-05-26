@@ -74,7 +74,7 @@ return [
                     'label'      => 'Coupons',
                     'icon'       => 'fa-solid fa-tag',
                     'route'      => 'admin.coupons.index',
-                    'permission' => 'coupon-codes-read'
+                    'permission' => 'coupons-read'
                 ],
                 [
                     'label'      => 'Orders',
@@ -83,9 +83,9 @@ return [
                     'permission' => 'orders-read'
                 ],
                 [
-                    'label'      => 'Order Status',
+                    'label'      => 'Status',
                     'icon'       => 'fa-solid fa-truck-arrow-right',
-                    'route'      => 'admin.order-statuses.index',
+                    'route'      => 'admin.order.statuses.index',
                     'permission' => 'order-status-read'
                 ]
             ]

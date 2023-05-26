@@ -10,9 +10,12 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('message'))
-        <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+
+        {{-- Show success message --}}
+        @if(Session::has('success'))
+        <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
+
         <div>
             <table class="table w-full">
                 <thead>

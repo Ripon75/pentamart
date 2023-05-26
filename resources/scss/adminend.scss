@@ -229,7 +229,7 @@ fieldset {
         &.btn-success {
             @apply bg-primaryPositive-dark text-white hover:bg-primaryPositive-darker;
         }
-        &.btn-clear {
+        &.btn-danger {
             @apply bg-red-500 text-white hover:bg-red-600;
         }
         &.btn-sm {

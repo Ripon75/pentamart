@@ -13,9 +13,7 @@ class Status extends Model
     protected $fillable = [
         'name',
         'slug',
-        'seller_visibility',
-        'customer_visibility',
-        'description',
+        'status',
         'bg_color',
         'text_color',
         'created_by',
@@ -25,9 +23,7 @@ class Status extends Model
     protected $casts = [
         'name'                => 'string',
         'slug'                => 'string',
-        'seller_visibility'   => 'boolean',
-        'customer_visibility' => 'boolean',
-        'description'         => 'string',
+        'status'              => 'string',
         'created_by'          => 'integer',
         'updated_by'          => 'integer',
         'created_at'          => 'datetime:Y-m-d H:i:s',
@@ -38,6 +34,6 @@ class Status extends Model
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_status', 'status_id', 'order_id')
-            ->withPivot('created_by_id', 'created_at');
+            ->withTimestamps();
     }
 }

@@ -38,7 +38,7 @@ class CouponController extends Controller
 
         $coupons = $coupons->orderBy('created_at', 'desc')->paginate($paginate);
 
-        return view('adminend.pages.couponCode.index', [
+        return view('adminend.pages.coupon.index', [
             'coupons' => $coupons
         ]);
     }
@@ -56,6 +56,7 @@ class CouponController extends Controller
             'min_cart_amount' => ['required'],
             'discount_amount' => ['required'],
             'discount_type'   => ['required'],
+            'applicable_on'   => ['required'],
             'started_at'      => ['required'],
             'ended_at'        => ['required']
         ]);
@@ -69,6 +70,7 @@ class CouponController extends Controller
             $discountType   = $request->input('discount_type', 'fixed');
             $discountAmount = $request->input('discount_amount', 0);
             $minCartAmount  = $request->input('min_cart_amount', 0);
+            $applicableOn   = $request->input('applicable_on', null);
             $description    = $request->input('description', null);
             $startedAt      = $request->input('started_at', null);
             $endedAt        = $request->input('ended_at', null);
@@ -82,19 +84,32 @@ class CouponController extends Controller
             $coupon->discount_type   = $discountType;
             $coupon->discount_amount = $discountAmount;
             $coupon->min_cart_amount = $minCartAmount;
+            $coupon->applicable_on   = $applicableOn;
             $coupon->description     = $description;
             $coupon->started_at      = $startedAt;
             $coupon->ended_at        = $endedAt;
             $res = $coupon->save();
             if ($res) {
                 DB::commit();
-                return redirect()->route('admin.coupons.index')->with("Coupon created successfully");
+                return redirect()->route('admin.coupons.index')->with('success', 'Coupon created successfully');
             }
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
-            return back()->with('Something went wrong');
+            return back()->with('error', 'Something went wrong');
         }
+    }
+
+    public function show($id)
+    {
+        $coupon = Coupon::find($id);
+        if (!$coupon) {
+            abort(404);
+        }
+
+        return view('adminend.pages.coupon.show', [
+            'coupon' => $coupon
+        ]);
     }
 
     public function edit($id)
@@ -117,6 +132,7 @@ class CouponController extends Controller
             'min_cart_amount' => ['required'],
             'discount_amount' => ['required'],
             'discount_type'   => ['required'],
+            'applicable_on'   => ['required'],
             'started_at'      => ['required'],
             'ended_at'        => ['required']
         ]);
@@ -130,6 +146,7 @@ class CouponController extends Controller
             $discountType   = $request->input('discount_type', 'fixed');
             $discountAmount = $request->input('discount_amount', 0);
             $minCartAmount  = $request->input('min_cart_amount', 0);
+            $applicableOn   = $request->input('applicable_on', null);
             $description    = $request->input('description', null);
             $startedAt      = $request->input('started_at', null);
             $endedAt        = $request->input('ended_at', null);
@@ -143,18 +160,19 @@ class CouponController extends Controller
             $coupon->discount_type   = $discountType;
             $coupon->discount_amount = $discountAmount;
             $coupon->min_cart_amount = $minCartAmount;
+            $coupon->applicable_on   = $applicableOn;
             $coupon->description     = $description;
             $coupon->started_at      = $startedAt;
             $coupon->ended_at        = $endedAt;
             $res = $coupon->save();
             if ($res) {
                 DB::commit();
-                return redirect()->route('admin.coupons.index')->with("Coupon updated successfully");
+                return redirect()->route('admin.coupons.index')->with('success', 'Coupon updated successfully');
             }
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
-            return back()->with('Something went wrong');
+            return back()->with('error', 'Something went wrong');
         }
     }
 }
