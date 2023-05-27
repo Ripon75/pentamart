@@ -3,8 +3,8 @@
     <input id="input-product-id" type="hidden" name="product_id" value="">
     <input id="input-product-name" type="hidden" name="product_name" value="">
     <input id="input-product-image-src" type="hidden" name="product_image_src" value="">
-    <input id="input-product-mrp" type="hidden" name="product_mrp" value="">
-    <input id="input-product-selling-price" type="hidden" name="product_selling_price" value="">
+    <input id="input-product-price" type="hidden" name="product_price" value="">
+    <input id="input-product-offer-price" type="hidden" name="product_offer_price" value="">
     <input id="input-brand-name" type="hidden" name="brand_name" value="">
     <input id="input-category-name" type="hidden" name="category_name" value="">
     {{-- End hidden field --}}
@@ -19,18 +19,16 @@
 
 @push('scripts')
     <script>
-        var searchInput           = $('#input-product-search');
-        var inputProductId        = $('#input-product-id');
-        var inputProductName      = $('#input-product-name');
-        var inputProductImageSRC  = $('#input-product-image-src');
-        var inputProductMRP       = $('#input-product-mrp');
-        var inputProductSallPrice = $('#input-product-selling-price');
-        var inputProductPackSize  = $('#input-product-pack-size');
-        var inputProductPackName  = $('#input-product-pack-name');
-        var searchResult          = $('.search-result');
-        var searchResultList      = $('.search-list');
-        var searchItem            = $('.search-item');
-        var debounceTime          = 750;
+        var debounceTime           = 750;
+        var searchInput            = $('#input-product-search');
+        var inputProductId         = $('#input-product-id');
+        var inputProductName       = $('#input-product-name');
+        var inputProductImageSRC   = $('#input-product-image-src');
+        var inputProductPrice      = $('#input-product-price');
+        var inputProductOfferPrice = $('#input-product-offer-price');
+        var searchResult           = $('.search-result');
+        var searchResultList       = $('.search-list');
+        var searchItem             = $('.search-item');
 
         $(function() {
             // If click outside of the model search box hide the search result list
@@ -40,6 +38,8 @@
                     searchResult.hide();
                 }
             });
+
+            // Product search
             searchInput.keyup(__debounce(function(e) {
                 var key = e.which;
                 var searchKeywords = $(this).val();
@@ -62,24 +62,17 @@
                 var productId        = $(this).data('product-id');
                 var productName      = $(this).data('product-name');
                 var productImageSRC  = $(this).data('product-image-src');
-                var productMRP       = $(this).data('product-mrp');
-                var productSalePrice = $(this).data('product-selling-price');
-                var productPackSize  = $(this).data('product-pack-size');
-                var productPackName  = $(this).data('product-pack-name');
+                var productPrice     = $(this).data('product-price');
+                var productOfferPrice = $(this).data('product-offer-price');
 
                 inputProductId.val(productId);
                 inputProductName.val(productName);
                 inputProductImageSRC.val(productImageSRC);
-                inputProductMRP.val(productMRP);
-                inputProductSallPrice.val(productSalePrice);
-                inputProductPackSize.val(productPackSize);
-                inputProductPackName.val(productPackName);
+                inputProductPrice.val(productPrice);
+                inputProductOfferPrice.val(productOfferPrice);
                 searchInput.val(productName);
 
                 searchResult.hide();
-
-                onSearchProductSelect(productPackSize, null, null);
-
             });
         })
 
@@ -91,6 +84,7 @@
                 }
             })
             .then((response) => {
+                console.log(response);
                 var result = [];
                 if (response.data.success) {
                     result = response.data.result;
@@ -105,7 +99,9 @@
         function renderSearchResult(data) {
             searchResultList.html('');
             for (let index = 0; index < data.length; index++) {
-                const product        = data[index];
+                const product      = data[index];
+                var   brandName    = product.brand ? product.brand.name : '';
+                var   categoryName = product.category ? product.category.name : '';
 
                 var itemHTML = `
                     <div
@@ -113,16 +109,16 @@
                         data-product-id="${product.id}"
                         data-product-name="${product.name}"
                         data-product-image-src="${product.image_src}"
-                        data-product-mrp="${product.price}"
-                        data-product-selling-price="${product.offer_price}">
+                        data-product-price="${product.price}"
+                        data-product-offer-price="${product.offer_price}">
 
                         <div class="w-14 h-14">
                             <img class="w-full h-full" src="${product.image_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
-                            <h4 class="text-xs text-gray-500">Brand name</h4>
+                            <h4 class="text-xs text-gray-500">${brandName}</h4>
                             <h2 class="text-base text-primary">${product.name}</h2>
-                            <span class="text-xxs text-gray-500">Category Name</span>
+                            <span class="text-xxs text-gray-500">${categoryName}</span>
                         </div>
                         <div class="flex justify-center items-center text-sm">
                             <span class="text-gray-500">${product.price} tk</span>
@@ -133,6 +129,5 @@
             }
             searchResult.show();
         }
-
     </script>
 @endpush

@@ -12,12 +12,17 @@
         <form class="card grid grid-cols-12 gap-4" action="{{ route('admin.orders.update', $order->id) }}" method="POST">
             @csrf
             @method('PUT')
-            {{-- Show flash message --}}
+
+            {{-- Show success or error message --}}
             <div class="col-span-12">
                 @if(Session::has('success'))
                     <div class="alert success">{{ Session::get('success') }}</div>
                 @endif
+                @if(Session::has('error'))
+                    <div class="alert success">{{ Session::get('error') }}</div>
+                @endif
             </div>
+
             {{-- =========Order edit titile========== --}}
             <div class="col-span-12">
                 <x-frontend.header-title
@@ -31,7 +36,7 @@
                  {{-- Payment status --}}
                  <div class="form-item">
                     <label class="form-label">Payment Status <span class="text-red-500 font-medium">*</span> </label>
-                    <select class="form-select form-input w-full" name="payment_status">
+                    <select class="form-select form-input w-full" name="is_paid">
                         <option value="1" {{ $order->is_paid === 1 ? 'selected' : '' }}>Paid</option>
                         <option value="0" {{ $order->is_paid === 0 ? 'selected' : '' }}>Unpaid</option>
                     </select>
@@ -706,7 +711,7 @@
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
 
-            axios.post('/admin/order-items/remove', {
+            axios.post('/admin/order/items/remove', {
                 order_id: orderId,
                 order_item_id: orderItemId
             })

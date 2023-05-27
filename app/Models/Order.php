@@ -100,32 +100,6 @@ class Order extends Model implements Auditable
     {
         return $this->hasOne(PaymentTransaction::class, 'order_id', 'id');
     }
-
-    public function setStatus($status, $orderDatetime = null)
-    {
-        $statusObj = null;
-        if(is_numeric($status)) {
-            $statusObj = Status::find($status);
-        } else {
-            $statusObj = Status::where('slug', $status)->first();
-        }
-
-        if (!$statusObj) {
-            return false;
-        }
-
-        $userId   = Auth::id();
-        $statusId = $statusObj->id;
-
-        $this->status()->attach([
-            $statusId => [
-                'created_by' => $userId
-            ]
-        ]);
-
-        $this->status_id = $statusId;
-        $this->save();
-    }
     // End relation
 
     // Helper function

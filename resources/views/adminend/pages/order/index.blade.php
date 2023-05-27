@@ -49,18 +49,6 @@
                     </select>
                 </div>
                 <div class="flex flex-col">
-                    <label class="text-sm" for="">Payment Type</label>
-                    <select class="text-sm border border-gray-300 rounded h-10 w-36" name="pg_id">
-                        <option value="">Select</option>
-                        @foreach ($pGateways as $pGateway)
-                        <option value="{{ $pGateway->id }}"
-                            {{ $pGateway->id == request()->input('pg_id') ? "selected" : '' }}>
-                            {{ $pGateway->name }}
-                        </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="flex flex-col">
                     <label class="text-sm" for="">Status</label>
                     <select class="text-sm border border-gray-300 rounded h-10 w-32" name="status_id">
                         <option value="">Select</option>
@@ -72,19 +60,6 @@
                         @endforeach
                     </select>
                 </div>
-                <div class="flex flex-col">
-                    <label class="text-sm" for="">Prescription</label>
-                    <select class="text-sm border border-gray-300 rounded h-10 w-24" name="is_prescription">
-                        <option value="">Select</option>
-                        <option value="yes" {{ request()->input('is_prescription') === 'yes' ? "selected" : '' }}>YES</option>
-                        <option value="no" {{ request()->input('is_prescription') === 'no' ? "selected" : '' }}>NO</option>
-                    </select>
-                </div>
-                <div class="flex flex-col">
-                    <label class="text-sm" for="">Reference Code</label>
-                    <input type="text" class="text-sm border border-gray-300 rounded w-32 h-10" name="ref_code"
-                        value="{{ request()->input('ref_code') }}">
-                </div>
                 <button name="action" value="filter" type="submit" class="btn border h-10">Filter</button>
                 <button name="action" value="export" class="btn border h-10">Export</button>
                 <a href="{{ route('admin.orders.index') }}" class="btn border h-10 bg-red-500 text-white ml-1">Clear</a>
@@ -93,10 +68,10 @@
                     class="btn border h-10 bg-green-500 text-white ml-1">
                     Paid
                 </button>
-                <a href="{{ route('admin.orders.multiple.invoice', ['start_date' => request()->input('start_date'), 'end_date' => request()->input('end_date')]) }}"
+                {{-- <a href="{{ route('admin.orders.multiple.invoice', ['start_date' => request()->input('start_date'), 'end_date' => request()->input('end_date')]) }}"
                     class="btn border h-10 bg-green-500 text-white ml-1">
                     Print
-                </a>
+                </a> --}}
             </div>
         </form>
         @if(Session::has('error'))
@@ -113,15 +88,13 @@
                         <input id="input-check-all" type="checkbox">
                     </th>
                     <th class="text-left">Order ID</th>
-                    <th class="text-left">Order Date</th>
+                    <th class="text-left">Created Date</th>
                     <th class="text-left" >Customer</th>
                     <th class="text-left">Phone Number</th>
                     <th class="text-left">Payment Type</th>
                     <th class="text-left">Delivery Area</th>
-                    <th class="text-left">Reference ID</th>
                     <th class="w-14">Paid</th>
                     <th class="w-24">Status</th>
-                    <th class="w-14">Rx</th>
                     <th class="w-14">Coupon</th>
                     <th class="w-24">Actions</th>
                 </thead>
@@ -132,25 +105,14 @@
                             <input type="checkbox" class="input-bulk-order-paid" name="paid_order_ids" value="{{ $data->id }}">
                         </td>
                         <td>{{ $data->id }}</td>
-                        @if ($data->ordered_at)
-                            <td>
-                                {{ date('d-m-Y', strtotime($data->ordered_at)) }}
-                            </td>
-                        @else
-                            <td>NULL</td>
-                        @endif
+                        <td>
+                            {{ date('d-m-Y', strtotime($data->created_at)) }}
+                        </td>
 
                         <td>{{ ($data->user->name) ?? null }}</td>
                         <td>{{ ($data->user->phone_number) ?? null }}</td>
                         <td>{{ ($data->paymentGateway->name) ?? null }}</td>
                         <td>{{ ($data->shippingAddress->area->name) ?? null }}</td>
-                        <td>
-                            @if ($data->ref_code)
-                                {{ $data->ref_code }}
-                            @else
-                                N/A
-                            @endif
-                        </td>
                         <td class="text-center">
                             @if ($data->is_paid)
                             <span class="block w-full rounded border px-2 py-1 text-sm text-white bg-green-500">Yes</span>
@@ -159,23 +121,16 @@
                             @endif
                         </td>
                         @php
-                            $statusSlug = $data->currentStatus->slug ?? null;
-                            $label      = 'N/A';
-                            $bgColor    = '#f94449';
-                            $fontColor  = '#ffff';
+                            $currentStatus = $data->currentStatus ?? null;
+                            $label         = $currentStatus->name ?? 'N/A';
+                            $bgColor       = $currentStatus->bg_color ?? '#f94449';
+                            $textColor     = $currentStatus->text_color ?? '#ffffff';
                         @endphp
                         <td class="text-center">
                             <span class="block rounded border px-2 py-1 text-sm w-full"
-                                style="background-color:{{ $bgColor }};color:{{ $fontColor }};">
+                                style="background-color:{{ $bgColor }};color:{{ $textColor }};">
                                 {{ $label }}
                             </span>
-                        </td>
-                        <td class="text-center">
-                            @if (count($data->prescriptions))
-                                <span class="block w-full rounded border px-2 py-1 text-sm text-white bg-green-500">Yes</span>
-                            @else
-                                <span class="block w-full rounded border px-2 py-1 text-sm text-white bg-red-500">No</span>
-                            @endif
                         </td>
                         <td class="text-center">
                             @if ($data->coupon)
@@ -203,33 +158,12 @@
                                             <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                                                 href="{{ route('admin.orders.invoice', $data->id) }}" target="_blank">Invoice</a>
                                         </li>
-                                        {{-- <li>
-                                            <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.orders.refund', [$data->id, 'bkash']) }}">Refund</a>
-                                        </li> --}}
-                                        <li>
-                                            <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.orders.shipping.label', $data->id) }}" target="_blank">Shipping Label</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.orders.purchase.order', $data->id) }}" target="_blank">Purchase order</a>
-                                        </li>
                                         @if (!$data->is_paid)
                                             <li>
                                                 <a class="btn-admin-order-paid dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
                                                     href="#" data-order-id="{{ $data->id }}">Make Paid</a>
                                             </li>
-                                        @else
                                         @endif
-                                        <li>
-                                            <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.orders.processing', $data->id) }}" target="_blank">Order Processing</a>
-                                        </li>
-                                        <li>
-                                            <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.prescription.upload', $data->id) }}" target="_blank">Upload Prescriptions</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -256,8 +190,10 @@
 @push('scripts')
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 <script>
-    var btnOrderPaid     = $('.btn-admin-order-paid');
-    var btnOrderBulkPaid = $('#btn-order-bulk-paid');
+    var btnOrderPaid       = $('.btn-admin-order-paid');
+    var btnOrderBulkPaid   = $('#btn-order-bulk-paid');
+    var inputBulkOrderPaid = $('.input-bulk-order-paid');
+    var inputCheckAll      = $("#input-check-all");
 
     // disable order paid button
     btnOrderBulkPaid.prop("disabled", true);
@@ -265,7 +201,7 @@
 
     $(function () {
         // Bulk order paid event with single checkbox click
-        $('.input-bulk-order-paid').click(() => {
+        inputBulkOrderPaid.click(() => {
             var orderId = [];
             $('input[name="paid_order_ids"]:checked').each(function() {
                 orderId.push(this.value);
@@ -280,7 +216,7 @@
         });
 
         // Bulk order paid event with all checkbox click
-        $("#input-check-all").click(function () {
+        inputCheckAll.click(function () {
             $('input:checkbox').not(this).prop('checked', this.checked);
             var orderId = [];
             $('input[name="paid_order_ids"]:checked').each(function() {

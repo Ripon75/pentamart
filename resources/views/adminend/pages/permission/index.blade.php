@@ -10,9 +10,12 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+
+        {{-- Show success message --}}
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
+
         <form class="mb-3" action="{{ route('admin.permissions') }}" method="GET">
             <input class="" value="{{ request()->input('search_keyword') }}" name="search_keyword" type="search" placeholder="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -23,8 +26,8 @@
                 <thead>
                 <tr class="">
                     <th class="w-20">SL</th>
-                    <th class="text-left">Name</th>
                     <th class="text-left">Display Name</th>
+                    <th class="text-left">Name</th>
                     <th class="text-left">Description</th>
                     <th class="w-40">Action</th>
                 </tr>
@@ -33,8 +36,8 @@
                     @foreach ($permissions as $key => $permission)
                     <tr class="text-center">
                         <td>{{ ++$key }}</td>
-                        <td class="text-left">{{ $permission->name }}</td>
                         <td class="text-left">{{ $permission->display_name }}</td>
+                        <td class="text-left">{{ $permission->name }}</td>
                         <td class="text-left">{{ $permission->description }}</td>
                         <td>
                             <a class="btn btn-success btn-sm" href="{{ route('admin.permissions.edit', $permission->id) }}">Edit</a>

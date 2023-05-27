@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Classes\Utility;
 use Illuminate\Http\Request;
 use App\Events\CustomerRegistration;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +12,13 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    protected $util;
+
+    function __construct(Utility $Util)
+    {
+        $this->util = $Util;
+    }
+
     public function index(Request $request)
     {
         $paginate    = config('crud.paginate.default');
@@ -67,7 +75,7 @@ class UserController extends Controller
         $email       = $request->input('email', null);
         $phoneNumber = $request->input('phone_number', null);
         $roleIds     = $request->input('role_ids', []);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
 
         try {
@@ -122,7 +130,7 @@ class UserController extends Controller
         $email       = $request->input('email', null);
         $phoneNumber = $request->input('phone_number', null);
         $roleIds     = $request->input('role_ids', []);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
 
         try {
@@ -144,21 +152,6 @@ class UserController extends Controller
             info($e);
             DB::rollback();
             return back()->with('error', 'User updated successfully');
-        }
-    }
-
-    public function formatPhoneNumber($phoneNumber)
-    {
-        if (str_starts_with($phoneNumber, '0')) {
-            return $phoneNumber = '88'.$phoneNumber;
-        } elseif (str_starts_with($phoneNumber, '1')) {
-            return $phoneNumber = '880'.$phoneNumber;
-        }elseif (str_starts_with($phoneNumber, '80')) {
-            return $phoneNumber = '8'.$phoneNumber;
-        } elseif(str_starts_with($phoneNumber, '+88')) {
-            return $phoneNumber = substr($phoneNumber, 1);
-        } else {
-            return $phoneNumber = $phoneNumber;
         }
     }
 }

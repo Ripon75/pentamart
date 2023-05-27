@@ -44,14 +44,14 @@ class RoleController extends Controller
 
         try {
             DB::beginTransaction();
-            $roleObj = new Role();
+            $role = new Role();
 
-            $roleObj->display_name = $displayName;
-            $roleObj->name         = $name;
-            $roleObj->description  = $description;
-            $res = $roleObj->save();
+            $role->display_name = $displayName;
+            $role->name         = $name;
+            $role->description  = $description;
+            $res = $role->save();
             if ($res) {
-                $roleObj->syncPermissions($permissionIds);
+                $role->syncPermissions($permissionIds);
                 DB::commit();
             }
 

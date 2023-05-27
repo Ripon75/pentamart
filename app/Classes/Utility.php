@@ -82,4 +82,19 @@ class Utility
 
         return response()->json($response, 201);
     }
+
+    public function formatPhoneNumber($phoneNumber)
+    {
+        if (str_starts_with($phoneNumber, '0')) {
+            return $phoneNumber = '88' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '1')) {
+            return $phoneNumber = '880' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '80')) {
+            return $phoneNumber = '8' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '+88')) {
+            return $phoneNumber = substr($phoneNumber, 1);
+        } else {
+            return $phoneNumber = $phoneNumber;
+        }
+    }
 }

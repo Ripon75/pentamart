@@ -276,8 +276,7 @@ class ProductController extends Controller
                 $productName  = trim($data['3']);
                 $price        = trim($data['4']);
                 $offerPrice   = trim($data['5']);
-                $offerPercent = trim($data['6']);
-                $description  = trim($data['7']);
+                $description  = trim($data['6']);
 
                 try {
                     DB::beginTransaction();
@@ -313,6 +312,9 @@ class ProductController extends Controller
                             $categoryId = $category->id;
                         }
                     }
+
+                    // Calculate offer percent
+                    $offerPercent = 0;
 
                     // $productRes = false;
                     if ($productName && $price) {

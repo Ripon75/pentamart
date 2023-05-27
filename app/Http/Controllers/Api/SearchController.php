@@ -22,6 +22,8 @@ class SearchController extends Controller
             ->query(fn ($query) => $query->with([
                     'brand:id,slug,name',
                     'category:id,name,slug',
+                    'colors:id,name',
+                    'sizes:id,name'
                 ])->where('status', 'active')
             );
         }

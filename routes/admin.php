@@ -70,7 +70,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/orders/{id}/edit',     [OrderController::class, 'edit'])->name('orders.edit')->middleware(['permission:orders-update']);
     Route::get('/orders/{id}/invoice',  [OrderController::class, 'invoice'])->name('orders.invoice')->middleware(['permission:orders-read']);
     Route::put('/orders/{id}',          [OrderController::class, 'update'])->name('orders.update')->middleware(['permission:orders-update']);
-    Route::post('/order-items/remove',  [OrderController::class, 'orderItemRemove'])->name('orders.item.remove')->middleware(['permission:orders-update']);
+    Route::post('/order/items/remove',  [OrderController::class, 'orderItemRemove'])->name('orders.item.remove')->middleware(['permission:orders-update']);
+    Route::post('/orders/make/paid',    [Ordercontroller::class, 'makePaid'])->name('make.paid')->middleware(['permission:orders-update']);
 
     // Order report
     Route::get('order/report', [ReportController::class, 'orderReport'])->name('orders.report')->middleware(['permission:sell-reports-read']);

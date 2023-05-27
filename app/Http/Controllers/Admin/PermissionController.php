@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Permission;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-
 class PermissionController extends Controller
 {
     public function index(Request $request)
@@ -28,7 +28,7 @@ class PermissionController extends Controller
         ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         return view('adminend.pages.permission.create');
     }
@@ -43,20 +43,30 @@ class PermissionController extends Controller
         $description = $request->input('description', null);
         $name        = Str::slug($displayName, '-');
 
-        $permissionObj = new Permission();
+        try {
+            DB::beginTransaction();
 
-        $permissionObj->name         = $name;
-        $permissionObj->display_name = $displayName;
-        $permissionObj->description  = $description;
-        $res = $permissionObj->save();
-        if ($res) {
-            return redirect()->route('admin.permissions')->with('message', 'Permission created successfully');
+            $permission = new Permission();
+
+            $permission->name         = $name;
+            $permission->display_name = $displayName;
+            $permission->description  = $description;
+            $permission->save();
+            DB::commit();
+            return redirect()->route('admin.permissions')->with('success', 'Permission created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went wrong');
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $permission = Permission::find($id);
+        if (!$permission) {
+            abort(404);
+        }
 
         return view('adminend.pages.permission.edit', [
             'permission' => $permission
@@ -73,14 +83,21 @@ class PermissionController extends Controller
         $description = $request->input('description', null);
         $name        = Str::slug($displayName, '-');
 
-        $permissionObj = Permission::find($id);
+        try {
+            DB::beginTransaction();
 
-        $permissionObj->name         = $name;
-        $permissionObj->display_name = $displayName;
-        $permissionObj->description  = $description;
-        $res = $permissionObj->save();
-        if ($res) {
-            return redirect()->route('admin.permissions')->with('message', 'Permission updated successfully');
+            $permission = Permission::find($id);
+
+            $permission->name         = $name;
+            $permission->display_name = $displayName;
+            $permission->description  = $description;
+            $permission->save();
+            DB::commit();
+            return redirect()->route('admin.permissions')->with('success', 'Permission updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went wrong');
         }
     }
 }
