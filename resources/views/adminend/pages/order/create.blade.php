@@ -227,8 +227,8 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         var items                        = [];
-        var itemsIndex                   = -1;
-        var deliveryCharge               = 50;
+        var itemIndex                    = -1;
+        var deliveryCharge               = {{ $deliveryCharge->promo_price ? $deliveryCharge->promo_price : $deliveryCharge->price }};
         var manualOrderCreateEndpoint    = '/admin/orders/manual';
         var inputQuantity                = $('.input-item-qty');
         var totalPriceLabel              = $('#total-price-label');
@@ -242,6 +242,8 @@
         var loddingIcon                  = $('.lodding-icon').hide();
         var inputProductQty              = $('#input-product-qty');
         var btnCreateAddress             = $('#btn-create-address');
+
+        totalPriceCalculation();
 
         $(function() {
             // Set time to flash message
@@ -458,7 +460,7 @@
                 return false
             }
 
-            itemsIndex++;
+            itemIndex++;
             var singleItem = {
                 'img_src': productImgSRC,
                 'id': productId,
@@ -484,7 +486,7 @@
                 <td class="border p-2 text-sm"> ${productName} </td>
                 <td class="border p-2">
                     <select
-                        data-index="${itemsIndex}"
+                        data-index="${itemIndex}"
                         data-unit-price="${sellPrice}"
                         data-total-item-price-label="total-price-${productId}"
                         name="items[${productId}][quantity]"
@@ -500,7 +502,7 @@
                         step="any"
                         type="number"
                         name="items[${ productId }][price]"
-                        data-index="${itemsIndex}"
+                        data-index="${itemIndex}"
                         data-total-item-price-label="total-price-${productId}"
                         value="${sellPrice}"
                         class="product-sell-price w-24 rounded">
@@ -517,7 +519,7 @@
                     <button class="btn-delete-order-item"
                         type="button"
                         data-order-item-id="${productId}"
-                        data-index="${itemsIndex}">
+                        data-index="${itemIndex}">
                         <i class="trash-icon text-xl text-gray-600 fa-regular fa-trash-can"></i>
                     </button>
                 </td>
