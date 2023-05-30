@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\User;
 use App\Models\Product;
+use App\Classes\Utility;
 use Illuminate\Support\Facades\DB;
 use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
@@ -75,7 +76,7 @@ class Cart extends Model
         $product = Product::find($itemId);
 
         if(!$product) {
-            return $this->_makeResponse(false, null, 'Product not found');
+            return $this->s(false, null, 'Product not found');
         }
 
         $itemPrice  = $product->price;
@@ -88,7 +89,7 @@ class Cart extends Model
             if (count($cart->items)) {
                 foreach ($cart->items as $item) {
                     if ($item->id == $itemId && $item->pivot->size_id == $sizeId && $item->pivot->color_id == $colorId) {
-                        return $this->_makeResponse(false, null, 'Product already added to cart');
+                        return Utility::sendError('Product already added to cart');
                     }
                 }
             }
@@ -104,7 +105,7 @@ class Cart extends Model
         } else {
             $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
         }
-        return $this->_makeResponse(true, $res, 'Item added successfully');
+        return Utility::sendResponse($res, 'Item added successfully');
     }
 
     public function removeItem($request)
@@ -123,7 +124,7 @@ class Cart extends Model
         // $cart = $this->getCurrentCustomerCart();
         // $res  = $cart->items()->detach($itemId);
 
-        return $this->_makeResponse(true, $res, 'Item removed successfuly');
+        return Utility::sendResponse($res, 'Item removed successfuly');
     }
 
     public function emptyCart()
@@ -135,7 +136,7 @@ class Cart extends Model
         $cart->note  = null;
         $cart->save();
 
-        return $this->_makeResponse(true, $res, 'Cart empty successfuly');
+        return Utility::sendResponse($res, 'Cart empty successfuly');
     }
 
     public function addMetaData($request)
