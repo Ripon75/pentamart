@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
-use Carbon\Carbon;
 use App\Models\Brand;
 use App\Models\Rating;
-use App\Models\Banner;
 use App\Models\Slider;
 use App\Models\Section;
-use App\Models\Company;
 use App\Models\Product;
 use App\Classes\Utility;
 use App\Models\Category;
 use App\Models\Wishlist;
-use App\Models\DosageForm;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -23,10 +19,6 @@ class PageController extends Controller
 {
     public function home()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'home'
-        ]);
-
         $sliders = Slider::where('status', 'active')->get();
 
         // $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
@@ -72,11 +64,6 @@ class PageController extends Controller
 
     public function index(Request $request, $thumbOnly = false)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'all-products'
-        ]);
-
-        $searchKey           = $request->input('search_key', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
         $filterBrandIds    = $request->input('filter_brand_ids', []);
 
@@ -126,10 +113,6 @@ class PageController extends Controller
 
     public function productShow(Request $request, $id, $slug = null)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'product-details'
-        ]);
-
         $currentURL = url()->current();
         Utility::saveIntendedURL($currentURL);
 
@@ -194,10 +177,6 @@ class PageController extends Controller
 
     public function about()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'about'
-        ]);
-
         return view('frontend.pages.about');
     }
 
@@ -218,19 +197,11 @@ class PageController extends Controller
 
     public function contact()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'contact'
-        ]);
-
         return view('frontend.pages.contact');
     }
 
     public function categoryPage(Request $request, $id)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'category'
-        ]);
-
         $category = Category::find($id);
 
         if(!$category) {
@@ -265,10 +236,6 @@ class PageController extends Controller
 
     public function brandPage(Request $request, $id)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'brand'
-        ]);
-
         $brand = Brand::find($id);
 
         if(!$brand) {
@@ -303,15 +270,8 @@ class PageController extends Controller
         ]);
     }
 
-    public function offerProduct(Request $request, $thumbOnly=false)
+    public function offerProduct(Request $request)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'offer-product'
-        ]);
-
-        $paginate = config('crud.paginate.default');
-        $now = Carbon::now();
-        $searchKey           = $request->input('search_key', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
         $filterCompanyIds    = $request->input('filter_company_ids', []);
         $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
@@ -342,31 +302,10 @@ class PageController extends Controller
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $companies = Company::distinct()
-            ->join('products', 'companies.id', '=', 'products.company_id')
-            ->select('companies.id', 'companies.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.selling_price', '>', 0)
-            ->where('products.status', 'activated')
-            ->orderBy('companies.name', 'ASC')
-            ->get();
 
-        $dosageForms = DosageForm::distinct()
-            ->join('products', 'dosage_forms.id', '=', 'products.dosage_form_id')
-            ->select('dosage_forms.id', 'dosage_forms.name')
-            ->whereNull('products.deleted_at')
-            ->where('products.selling_price', '>', 0)
-            ->where('products.status', 'activated')
-            ->orderBy('dosage_forms.name', 'ASC')
-            ->get();
-
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.offer-products';
-
-        return view($viewPage, [
+        return view('frontend.pages.offer-products', [
             'products'            => $products,
-            'companies'           => $companies,
             'categories'          => $categories,
-            'dosageForms'         => $dosageForms,
             'filterCategoryIds'   => $filterCategoryIds,
             'filterCompanyIds'    => $filterCompanyIds,
             'filterDosageFormIds' => $filterDosageFormIds
@@ -426,8 +365,6 @@ class PageController extends Controller
         $percent             = $request->input('percent', null);
         $subCategorySlug     = $request->input('sub_category', null);
         $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
 
         $products = Product::getDefaultMetaData();
         $products = $products->where('offer_price', '>', 0);
@@ -454,22 +391,6 @@ class PageController extends Controller
                 $query->whereIn('id', $filterCategoryIds);
             });
         }
-
-        // if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-        //     $filterCompanyIds = explode(",", $filterCompanyIds);
-
-        //     $products = $products->whereHas('company', function($query) use ($filterCompanyIds) {
-        //         $query->whereIn('id', $filterCompanyIds);
-        //     });
-        // }
-
-        // if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-        //     $filterDosageFormIds = explode(",", $filterDosageFormIds);
-
-        //     $products = $products->whereHas('dosageForm', function($query) use ($filterDosageFormIds) {
-        //         $query->whereIn('id', $filterDosageFormIds);
-        //     });
-        // }
 
         $order = $order === 'desc' ? 'desc' : 'asc';
         $products = $products->orderBy($orderBy, $order);

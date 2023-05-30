@@ -21,20 +21,12 @@
                             <x-frontend.customer-nav/>
                         </div>
                     </div>
-                    <div class="mb-4 flex-1">
-                        <x-frontend.header-title
-                            type="else"
-                            title="Wishlist"
-                            bgImageSrc=""
-                            bgColor="#00798c"
-                        />
-                    </div>
                 </div>
                 <div class="card p-0 sm:p-0 md:p-2 lg:p-4 xl:p-4 2xl:p-4">
                     <div class="w-full overflow-x-scroll">
                         <table class="table-auto w-full text-xs sm:text-xs md:text-sm">
                             <thead class="">
-                                <tr class="bg-gray-100">
+                                <tr class="bg-secondary">
                                     <th class="text-left border p-2 w-20">Image</th>
                                     <th class="text-left border p-2">Product</th>
                                     <th class="text-left border p-2">Brand</th>

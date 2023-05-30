@@ -31,7 +31,7 @@
                     <div class="w-full overflow-x-scroll">
                         <table class="table-auto w-full text-xs sm:text-xs md:text-sm">
                             <thead class="">
-                                <tr class="bg-gray-100">
+                                <tr class="bg-secondary">
                                     <th class="text-left border p-2">Title</th>
                                     <th class="text-left border p-2">Address</th>
                                     <th class="text-left border p-2">Phone</th>

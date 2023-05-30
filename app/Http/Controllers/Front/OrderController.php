@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Front;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
-use App\Classes\Utility;
 use App\Events\OrderCreate;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
@@ -14,22 +13,10 @@ use App\Models\PaymentTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
 class OrderController extends Controller
 {
-    public $currency;
-
-    public function __construct()
-    {
-        $this->currency = 'Tk';
-    }
-
     public function dashboard()
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'customer-dashboard',
-        ]);
-
         $orders = Order::withSum('items as total_amount', DB::raw('order_item.sell_price * order_item.quantity'))
             ->where('user_id', Auth::id())
             ->get();
@@ -54,10 +41,6 @@ class OrderController extends Controller
 
     public function index(Request $request)
     {
-        Utility::setUserEvent('pageview', [
-            'page' => 'customer-order-list',
-        ]);
-
         $paginate = config('crud.paginate.default');
 
         $orders = Order::withSum('items as total_amount', DB::raw('(order_item.sell_price * order_item.quantity)'))
@@ -69,7 +52,7 @@ class OrderController extends Controller
 
         return view('frontend.pages.my-order', [
             'orders'          => $orders,
-            'currency'        => $this->currency,
+            'currency'        => 'Tk',
             'paymentGateways' => $paymentGateways
         ]);
     }
@@ -152,23 +135,13 @@ class OrderController extends Controller
                 $orderId    = $orderObj->id;
                 $paymentTrx = new PaymentTransaction();
                 $paymentTrx->make($orderId, null, 'sale', 1, 'pending');
-
-                Utility::setUserEvent('order-submit', [
-                    'order' => $orderObj,
-                    'user'  => $user
-                ]);
-
                 DB::commit();
+
                 return redirect()->route('my.order.success');
             }
-
         } catch (\Exception $e) {
             info($e);
             DB::rollBack();
-            Utility::setUserEvent('order-failed', [
-                'user'  => $user
-            ]);
-
             return redirect()->route('my.order.failed');
         }
     }
@@ -185,14 +158,9 @@ class OrderController extends Controller
             abort(404);
         }
 
-        Utility::setUserEvent('pageView', [
-            'page'  => 'customer-order-details',
-            'order' => $order
-        ]);
-
         return view('frontend.pages.my-order-details', [
             'order'           => $order,
-            'currency'        => $this->currency,
+            'currency'        => 'Tk',
             'paymentGateways' => $paymentGateways
         ]);
     }

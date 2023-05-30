@@ -2,20 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
-use Auth;
 use App\Models\Wishlist;
-use App\Classes\Utility;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
 class WishlistController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        Utility::setUserEvent('pageView', [
-            'page' => 'customer-wishlist',
-        ]);
-
         $result  = Wishlist::with(['product'])->where('user_id', Auth::id())->get();
 
         return view('frontend.pages.my-wishlist', [
@@ -47,10 +41,6 @@ class WishlistController extends Controller
         $wishlist->user_id    = $userId;
         $data = $wishlist->save();
 
-        Utility::setUserEvent('product-add-wishlist', [
-            'product_id' => $productId,
-        ]);
-
         if ($data) {
             $res = [
                 'data'    => $data,
@@ -73,13 +63,8 @@ class WishlistController extends Controller
         if ($product) {
             $res = $product->delete();
             if ($res) {
-                Utility::setUserEvent('product-removed-wishlist', [
-                    'product_id' => $productId,
-                ]);
-
-                $res = ['success' => 'Product wishlist remove successfully'];
+                $this->sendResponse(null, 'Product wishlist remove successfully');
             }
-            return $res;
         }
     }
 
@@ -94,10 +79,6 @@ class WishlistController extends Controller
         $result = Wishlist::find($itemId);
 
         if ($result) {
-
-            Utility::setUserEvent('removed-wishlist', [
-                'wishlist' => $result,
-            ]);
 
             $result->delete();
         }

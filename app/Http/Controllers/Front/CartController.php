@@ -50,8 +50,6 @@ class CartController extends Controller
     {
         $res = $this->cartObj->addItem($request);
 
-        Utility::setUserEvent('add-to-cart', $request->all());
-
         return $res;
     }
 
@@ -65,16 +63,12 @@ class CartController extends Controller
     {
         $this->cartObj->removeItem($request);
 
-        Utility::setUserEvent('remove-from-cart', $request->all());
-
         return back()->with('success', 'Item remove successfully');
     }
 
-    public function emptyCart(Request $request)
+    public function emptyCart()
     {
         $res = $this->cartObj->emptyCart();
-
-        Utility::setUserEvent('empty-cart', $request->all());
 
         return $res;
     }
@@ -101,12 +95,9 @@ class CartController extends Controller
         $cart = $this->cartObj->getCurrentCustomerCart();
         if ($addressId) {
             $cart->address_id = $addressId;
-            $res = $cart->save();
+            $cart->save();
 
-            return $res = [
-                'code'    => 200,
-                'message' => 'Shipping address updated successfully'
-            ];
+            return $this->sendResponse(null, 'Shipping address updated successfully');
         }
     }
 }

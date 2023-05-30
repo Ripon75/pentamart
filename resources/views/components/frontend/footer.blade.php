@@ -5,26 +5,26 @@
                 <div class="col-span-1 flex flex-col space-y-2 order-last md:order-first">
                     <div class="logo-wrapper hidden md:block">
                         {{-- TODO: Make a logo component --}}
-                        <img class="logo w-[200px] sm:w-[200px] md:w-[250px] h-[56px] sm:h-[56px] md:h-[64px] mx-auto sm:mx-auto md:mx-auto lg:mr-auto xl:mr-auto xl:ml-0 lg:ml-0" src="{{ $about['logo'] }}">
+                        <img class="logo w-[200px] sm:w-[200px] md:w-[250px] h-[56px] sm:h-[56px] md:h-[64px] mx-auto sm:mx-auto md:mx-auto lg:mr-auto xl:mr-auto xl:ml-0 lg:ml-0" src="/images/logos/logo.png">
                     </div>
                 </div>
                 {{-- =====footer-navs====== --}}
                 <div class="col-span-1 grid grid-cols-3 gap-2 sm:gap-2 md:gap-4 lg:gap-4 xl:gap-4 text-white">
                     <div class="">
                         <div class="nav mt-6 text-center md:text-center lg:text-left">
-                            <a href="/about" class="item">{{ $nav1['about'] }}</a>
-                            <a href="/contact" class="item">{{ $nav3['contact'] }}</a>
+                            <a href="/about" class="item">About</a>
+                            <a href="/contact" class="item">Contact Us</a>
                         </div>
                     </div>
                     <div class="">
                         <div class="nav mt-6 text-center md:text-center lg:text-left">
-                            <a href="{{ route('terms.and.condition') }}" class="item">{{ $nav1['termsAndConditions'] }}</a>
+                            <a href="{{ route('terms.and.condition') }}" class="item">Terms & Conditions</a>
                         </div>
                     </div>
                     <div class="">
                         <div class="nav mt-6 text-center sm:text-center lg:text-left">
-                            <a href="/privacy-policy" class="item">{{ $nav3['privacy'] }}</a>
-                            <a href="/return-policy" class="item">{{ $nav3['return'] }}</a>
+                            <a href="/privacy-policy" class="item">Privacy & Policy</a>
+                            <a href="/return-policy" class="item">Return & Refund</a>
                         </div>
                     </div>
                 </div>
@@ -42,7 +42,7 @@
                         </a>
                     </div> --}}
                     <div class="text-center sm:text-center md:text-center lg:text-left xl:text-left">
-                        <div class="text-lg text-primary font-medium">{{ $nav4['title2'] }}</div>
+                        <div class="text-lg text-primary font-medium">Join with us</div>
                     </div>
                     <div class="mt-5 flex space-x-4 justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
                         {{-- social --}}

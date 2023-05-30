@@ -8,7 +8,7 @@
                     <div>
                         <div class="overflow-auto">
                             <table class="table-auto w-full bg-white">
-                                <thead class="border bg-gray-300">
+                                <thead class="border bg-secondary">
                                     <tr class="text-sm sm:text-sm md:text-sm lg:text-base">
                                         <th class="hidden sm:hidden md:block text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r">
                                             Image
