@@ -2,23 +2,28 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Size extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
         'name',
-        'slug'
+        'slug',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
         'name'       => 'string',
         'slug'       => 'string',
-        'created_at' => 'timestamp',
-        'updated_at' => 'timestamp'
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
+        'created_at' => 'datetime:Y-m-d H:i:s',
+        'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     public function products()

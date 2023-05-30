@@ -10,14 +10,18 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('message'))
-        <div class="alert mb-8 success">{{ Session::get('message') }}</div>
+
+        {{-- Show success message --}}
+        @if(Session::has('success'))
+        <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
+
         <div>
             <table class="table w-full">
                 <thead>
                 <tr class="">
                     <th class="w-20">ID</th>
+                    <th class="text-left">Display Name</th>
                     <th class="text-left">Name</th>
                     <th class="w-40">Action</th>
                 </tr>
@@ -27,6 +31,7 @@
                     <tr class="text-center">
                         <td>{{ $role->id }}</td>
                         <td class="text-left">{{ $role->display_name }}</td>
+                        <td class="text-left">{{ $role->name }}</td>
                         <td>
                             <a class="btn btn-success btn-sm" href="{{ route('admin.roles.edit', $role->id) }}">Edit</a>
                             {{-- <a class="btn btn-primary btn-sm" href="{{ route('admin.roles.show', $role->id) }}">Show</a> --}}

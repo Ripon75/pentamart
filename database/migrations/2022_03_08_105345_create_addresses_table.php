@@ -22,6 +22,8 @@ class CreateAddressesTable extends Migration
             $table->string('phone_number', 20)->nullable();
             $table->foreignId('area_id')->nullable()->constrained('areas')
                   ->onUpdate('cascade')->onDelete('cascade')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

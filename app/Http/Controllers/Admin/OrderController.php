@@ -7,137 +7,254 @@ use App\Models\Area;
 use App\Models\User;
 use App\Models\Order;
 use App\Classes\Bkash;
-use App\Classes\Utility;
 use App\Models\Status;
 use App\Models\Address;
+use App\Classes\Utility;
 use Illuminate\Http\Request;
-use App\Models\Prescription;
 use App\Exports\OrdersExport;
 use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
+use App\Models\DeliveryGateway;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Hash;
 use Maatwebsite\Excel\Facades\Excel;
-use Illuminate\Support\Facades\Validator;
-
 class OrderController extends Controller
 {
-    public $util;
-    public $currency;
+    protected $util;
 
-    public function __construct()
+    function __construct(Utility $Util)
     {
-        $this->currency = 'tk';
-        $this->util     = new Utility;
+        $this->util = $Util;
     }
 
     public function index(Request $request)
     {
         $now           = Carbon::now();
+        $paginate      = config('crud.paginate.default');
         $startDate     = $request->input('start_date', null);
         $endDate       = $request->input('end_date', null);
         $action        = $request->input('action', null);
         $areaId        = $request->input('area_id', null);
-        $dGateway      = $request->input('dg_id', null);
         $pGateway      = $request->input('pg_id', null);
         $phoneNumber   = $request->input('phone_number', null);
         $orderId       = $request->input('order_id', null);
         $statusId      = $request->input('status_id', null);
-        $prescription  = $request->input('is_prescription', null);
-        $refCode       = $request->input('ref_code', null);
         $customerName  = $request->input('customer_name', null);
         $endDate       = $endDate ?? $now;
-        $paginate      = config('crud.paginate.default');
-        $sellPartnerId = Auth::user()->sell_partner_id;
 
-        $orderObj = new Order();
-        $orderObj = $orderObj->with(['status']);
+        $order = new Order();
+        $order = $order->with(['status']);
 
         if ($startDate && $endDate) {
             $startDate = $startDate.' 00:00:00';
             $endDate   = $endDate.' 23:59:59';
-            $orderObj  = $orderObj->whereBetween('ordered_at', [$startDate, $endDate]);
+            $order  = $order->whereBetween('created_at', [$startDate, $endDate]);
         }
 
         if ($areaId) {
-            $orderObj = $orderObj->whereHas('shippingAddress', function ($query) use ($areaId) {
+            $order = $order->whereHas('shippingAddress', function ($query) use ($areaId) {
                 $query->where('area_id', $areaId);
             });
         }
         // User name wise filter
         if ($customerName) {
-            $orderObj = $orderObj->whereHas('user', function ($query) use ($customerName) {
+            $order = $order->whereHas('user', function ($query) use ($customerName) {
                 $query->where('name', 'like', "%{$customerName}%");
             });
         }
 
         // User contact wise filter
         if ($phoneNumber) {
-            $orderObj = $orderObj->whereHas('user', function ($query) use ($phoneNumber) {
+            $order = $order->whereHas('user', function ($query) use ($phoneNumber) {
                 $query->where('phone_number', 'like', "%{$phoneNumber}%");
             });
         }
 
-        if ($sellPartnerId) {
-            $orderObj = $orderObj->where('sell_partner_id', $sellPartnerId);
-        }
-
-        if ($dGateway) {
-            $orderObj = $orderObj->where('dg_id', $dGateway);
-        }
-
         if ($pGateway) {
-            $orderObj = $orderObj->where('pg_id', $pGateway);
+            $order = $order->where('pg_id', $pGateway);
         }
 
         if ($orderId) {
-            $orderObj = $orderObj->where('id', $orderId);
+            $order = $order->where('id', $orderId);
         }
 
         if ($statusId) {
-            $orderObj = $orderObj->where('current_status_id', $statusId);
+            $order = $order->where('status_id', $statusId);
         }
 
-        if ($prescription) {
-            if ($prescription === 'yes') {
-                $orderObj = $orderObj->whereHas('prescriptions');
-            }
-            if ($prescription === 'no') {
-                $orderObj = $orderObj->doesntHave('prescriptions');
-            }
-        }
-
-        if ($refCode) {
-            $orderObj = $orderObj->where('ref_code', $refCode);
-        }
-
-        $result = $orderObj->orderBy('ordered_at', 'desc')->paginate($paginate);
+        $result = $order->orderBy('created_at', 'desc')->paginate($paginate);
 
         if ($action === 'export') {
             $maxPaginate = config('crud.paginate.max');
-            $result = $orderObj->orderBy('ordered_at', 'desc')->paginate($maxPaginate);
+            $result = $order->orderBy('created_at', 'desc')->paginate($maxPaginate);
             return Excel::download(new OrdersExport($result), 'orders.xlsx');
         }
 
         $areas       = Area::orderBy('name', 'asc')->get();
-        $dGateways   = DeliveryGateway::where('status', 'activated')->orderBy('name', 'asc')->get();
-        $pGateways   = PaymentGateway::where('status', 'activated')->orderBy('name', 'asc')->get();
-        $orderStatus = Status::where('seller_visibility', 1)->get();
+        $pgs         = PaymentGateway::where('status', 'active')->orderBy('name', 'asc')->get();
+        $orderStatus = Status::orderBy('name', 'asc')->get();
 
         return view('adminend.pages.order.index', [
             'result'      => $result,
             'areas'       => $areas,
-            'dGateways'   => $dGateways,
-            'pGateways'   => $pGateways,
+            'pgs'         => $pgs,
             'orderStatus' => $orderStatus
         ]);
     }
 
-    public function edit(Request $request, $id)
+    public function manualCreate()
+    {
+        $areas          = Area::orderBy('name', 'asc')->get();
+        $orderStatus    = Status::orderBy('name', 'asc')->get();
+        $deliveryCharge = DeliveryGateway::select('price', 'promo_price')->where('status', 'active')->first();
+        // $pgs         = PaymentGateway::where('status', 'active')->get();
+
+        return view('adminend.pages.order.create', [
+              // 'pgs'         => $pgs,
+            'areas'          => $areas,
+            'orderStatus'    => $orderStatus,
+            'deliveryCharge' => $deliveryCharge
+        ]);
+    }
+
+    public function manualStore(Request $request)
+    {
+        $request->validate(
+            [
+                'items'               => ['required'],
+                'address_id'          => ['required'],
+                'pg_id'               => ['required'],
+                'address_title'       => ['required_if:address_id,0'],
+                'address_line'        => ['required_if:address_id,0'],
+                'area_id'             => ['required_if:address_id,0'],
+                'customer_name'       => ['required_if:user_id,0'],
+                'search_phone_number' => ['required']
+            ],
+            [
+                'address_title.required_if'    => 'The address title field is required',
+                'address_line.required_if'     => 'The address field is required',
+                'area_id.required_if'          => 'The area field is required',
+                'customer_name.required_if'    => 'The customer name field is required',
+                'pg_id.required'               => 'The payment method is required',
+                'search_phone_number.required' => 'The user phone is required',
+            ]
+        );
+
+        $items             = $request->input('items', []);
+        $userId            = $request->input('user_id', null);
+        $addressId         = $request->input('address_id', null);
+        $paymentMethodId   = $request->input('pg_id', null);
+        $searchPhoneNumber = $request->input('search_phone_number', null);
+        $deliveryCharge    = $request->input('delivery_charge', null);
+        $customerName      = $request->input('customer_name', null);
+        $isPaid            = $request->input('is_paid', false);
+
+        try {
+            DB::beginTransaction();
+            // When existing user was not selected
+            if (!$userId) {
+                $searchPhoneNumber = $this->util->formatPhoneNumber($searchPhoneNumber);
+                // Search user by given phone number
+                $checkUser = User::where('phone_number', $searchPhoneNumber)->first();
+                if ($checkUser) {
+                    $userId = $checkUser->id;
+                } else {
+                    // Create new user by given phone number and customer name
+                    $user = new User();
+
+                    $user->name         = $customerName;
+                    $user->phone_number = $searchPhoneNumber;
+                    $res = $user->save();
+                    if ($res) {
+                        $userId = $user->id;
+                    }
+                }
+            }
+
+            // Create new address when shipping address was not selected
+            if ($addressId == 0) {
+                $addressTitle = $request->input('address_title', null);
+                $addressLine  = $request->input('address_line', null);
+                $phoneNumber  = $request->input('phone_number', null);
+                $areaId       = $request->input('area_id', null);
+                $phoneNumber  = $this->util->formatPhoneNumber($phoneNumber);
+                $phoneNumber  = $phoneNumber ? $phoneNumber : $searchPhoneNumber;
+
+                // Check shipping address was already exist
+                $userAddress = Address::where('title', $addressTitle)->where('user_id', $userId)->first();
+                if ($userAddress) {
+                    $userAddress->title        = $addressTitle;
+                    $userAddress->address      = $addressLine;
+                    $userAddress->phone_number = $phoneNumber;
+                    $userAddress->user_id      = $userId;
+                    $userAddress->area_id      = $areaId;
+                    $res = $userAddress->save();
+                } else {
+                    $userAddress = new Address();
+
+                    $userAddress->title        = $addressTitle;
+                    $userAddress->address      = $addressLine;
+                    $userAddress->phone_number = $phoneNumber;
+                    $userAddress->user_id      = $userId;
+                    $userAddress->area_id      = $areaId;
+                    $res = $userAddress->save();
+                }
+            }
+
+            $addressId = $addressId ? $addressId : $userAddress->id;
+
+            // Create new order
+            $order = new Order();
+
+            $order->user_id         = $userId;
+            $order->pg_id           = 1;
+            $order->status_id       = 1;
+            $order->address_id      = $addressId;
+            $order->address         = $userAddress->address;
+            $order->delivery_charge = $deliveryCharge;
+            $order->is_paid         = $isPaid;
+            $res = $order->save();
+
+            if ($res) {
+                $itemIds = [];
+                foreach ($items as $item) {
+                    $itemIds[$item['product_id']] = [
+                        'size_id'       => $item['size_id'],
+                        'color_id'      => $item['color_id'],
+                        'quantity'      => $item['quantity'],
+                        'item_price'    => $item['price'],
+                        'sell_price'    => $item['price'],
+                        'item_discount' => $item['discount']
+                    ];
+                }
+                $res = $order->items()->sync($itemIds);
+
+                // Update order total_items_discount, order_net_value and coupon_value
+                $order->updateOrderValue($order);
+
+                // Set order status
+
+                $request->session()->forget('items');
+
+                // Create payment transaction
+                $orderId       = $order->id;
+                $payablePrice  = round($order->payable_price);
+                $paymentTrx = new PaymentTransaction();
+
+                $paymentTrx->make($orderId, $payablePrice, 'sale', $paymentMethodId, 'pending');
+                DB::commit();
+
+                return back()->with('success', 'Order created succfully');
+            }
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong');
+        }
+    }
+
+    public function edit($id)
     {
         $order = Order::with(['items' => function($query) {
             $query->withTrashed();
@@ -146,20 +263,19 @@ class OrderController extends Controller
         if (!$order) {
             abort(404);
         }
+
         $areas             = Area::orderBy('name', 'asc')->get();
-        $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
-        $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
+        $pgs               = PaymentGateway::where('status', 'activated')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
         $orderStatus       = $order->getNextStatus($order->status_id);
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,
             'areas'             => $areas,
-            'deliveryGateways'  => $deliveryGateways,
-            'paymentGateways'   => $paymentGateways,
+            'pgs'   => $pgs,
             'shippingAddresses' => $shippingAddresses,
             'orderStatus'       => $orderStatus,
-            'currency'          => $this->currency
+            'currency'          => 'Tk'
         ]);
     }
 
@@ -167,87 +283,78 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'dg_id'    => ['required', 'integer'],
-            'pg_id'   => ['required', 'integer'],
+            'pg_id'      => ['required', 'integer'],
             'address_id' => ['required', 'integer'],
-            'area_id'             => ['required', 'integer'],
-            'address'             => ['required'],
+            'area_id'    => ['required', 'integer'],
+            'address'    => ['required'],
         ],
         [
             'address_id.required' => 'Please select shipping address'
         ]);
 
-        $deliveryTypeId       = $request->input('dg_id');
-        $paymentMethodId      = $request->input('pg_id');
-        $addressId            = $request->input('address_id');
-        $orderedAt            = $request->input('ordered_at');
-        $statusId             = $request->input('status_id', null);
-        $deliveryCharge       = $request->input('delivery_charge', 0);
-        $totalSpecialDiscount = $request->input('total_special_discount', 0);
-        $items                = $request->input('items');
-        $address              = $request->input('address');
-        $phoneNumber          = $request->input('phone_number');
-        $areaID               = $request->input('area_id');
-        $paymentStatus        = $request->input('payment_status');
+        $paymentMethodId = $request->input('pg_id');
+        $addressId       = $request->input('address_id');
+        $statusId        = $request->input('status_id', null);
+        $deliveryCharge  = $request->input('delivery_charge', 0);
+        $items           = $request->input('items');
+        $address         = $request->input('address');
+        $phoneNumber     = $request->input('phone_number');
+        $areaID          = $request->input('area_id');
+        $isPaid          = $request->input('is_paid');
 
-        $order = Order::find($id);
+        try {
+            DB::beginTransaction();
 
-        if (!$order) {
-            abort(404);
-        }
+            $order = Order::find($id);
 
-        // Set order status
-        $order->setStatus($statusId);
-        // Update shipping address
-        if ($addressId) {
-            $shippingAddress               = Address::find($addressId);
-            $shippingAddress->address      = $address;
-            $shippingAddress->phone_number = $phoneNumber;
-            $shippingAddress->area_id      = $areaID;
-            $shippingAddress->save();
-        }
+            // Update shipping address
+            if ($addressId) {
+                $shippingAddress               = Address::find($addressId);
+                $shippingAddress->address      = $address;
+                $shippingAddress->phone_number = $phoneNumber;
+                $shippingAddress->area_id      = $areaID;
+                $shippingAddress->save();
+            }
 
-        if ($deliveryTypeId === '-1') {
-            $deliveryTypeId = null;
-        }
-
-        // Update order and order details
-        $order->dg_id       = $deliveryTypeId;
-        $order->pg_id      = $paymentMethodId;
-        $order->address_id             = $addressId;
-        $order->ordered_at             = $orderedAt;
-        $order->created_by             = Auth::id();
-        $order->delivery_charge        = $deliveryCharge;
-        $order->total_special_discount = $totalSpecialDiscount;
-        $order->is_paid                = $paymentStatus;
-        $res = $order->save();
-        if ($res) {
-            if ($items) {
-                $itemIds = [];
-                foreach ($items as $item) {
-                    $itemIds[$item['product_id']] = [
-                        'quantity'          => $item['quantity'],
-                        'item_mrp'          => $item['item_mrp'],
-                        'price'             => $item['price'],
-                        'discount'          => $item['discount'],
-                        'pack_size'         => $item['pack_size']
-                    ];
+            $order->pg_id           = $paymentMethodId;
+            $order->address_id      = $addressId;
+            $order->created_by      = Auth::id();
+            $order->delivery_charge = $deliveryCharge;
+            $order->is_paid         = $isPaid;
+            $res = $order->save();
+            if ($res) {
+                if ($items) {
+                    $itemIds = [];
+                    foreach ($items as $item) {
+                        $itemIds[$item['product_id']] = [
+                            'quantity'          => $item['quantity'],
+                            'item_mrp'          => $item['item_mrp'],
+                            'price'             => $item['price'],
+                            'discount'          => $item['discount'],
+                            'pack_size'         => $item['pack_size']
+                        ];
+                    }
+                    $res = $order->items()->sync($itemIds);
                 }
-                $res = $order->items()->sync($itemIds);
+
+                // Update order total_items_discount, order_net_value and coupon_value
+                $order->updateOrderValue($order);
+
+                // Update payment transaction
+                $paymentTransaction = PaymentTransaction::where('order_id', $id)->first();
+                if ($paymentTransaction) {
+                    $paymentTransaction->amount = round($order->payable_order_value);
+                    $paymentTransaction->save();
+                }
+                DB::commit();
             }
 
-            // Update order total_items_discount, order_net_value and coupon_value
-            $order->updateOrderValue($order);
-
-            // Update payment transaction
-            $paymentTransaction = PaymentTransaction::where('order_id', $id)->first();
-            if ($paymentTransaction) {
-                $paymentTransaction->amount = round($order->payable_order_value);
-                $paymentTransaction->save();
-            }
+            return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong');
         }
-
-        return back()->with('success', 'Order updated successfully');
     }
 
     public function show($id)
@@ -262,7 +369,7 @@ class OrderController extends Controller
 
         return view('adminend.pages.order.show', [
             'order'    => $order,
-            'currency' => $this->currency
+            'currency' => 'Tk'
         ]);
     }
 
@@ -300,36 +407,6 @@ class OrderController extends Controller
         ]);
     }
 
-    public function shippingLabel($id)
-    {
-        $order = Order::with(['items' => function($query) {
-            $query->withTrashed();
-        }, 'status'])->find($id);
-
-        if (!$order) {
-            abort(404);
-        }
-
-        return view('adminend.pages.order.shipping-label', [
-            'order' => $order
-        ]);
-    }
-
-    public function purchaseOrder($id)
-    {
-        $order = Order::with(['items' => function($query) {
-            $query->withTrashed();
-        }, 'status'])->find($id);
-
-        if (!$order) {
-            abort(404);
-        }
-
-        return view('adminend.pages.order.purchase-order', [
-            'order' => $order
-        ]);
-    }
-
     // Remome order item
     public function orderItemRemove(Request $request)
     {
@@ -352,166 +429,6 @@ class OrderController extends Controller
         return back();
     }
 
-    public function manualCreate(Request $request)
-    {
-        $areas             = Area::orderBy('name', 'asc')->get();
-        $deliveryGateways  = DeliveryGateway::where('status', 'activated')->get();
-        $paymentGateways   = PaymentGateway::where('status', 'activated')->get();
-        $orderStatus       = Status::where('seller_visibility', 1)->get();
-
-        return view('adminend.pages.order.create', [
-            'areas'             => $areas,
-            'deliveryGateways'  => $deliveryGateways,
-            'paymentGateways'   => $paymentGateways,
-            'orderStatus'       => $orderStatus
-        ]);
-    }
-
-    public function manualStore(Request $request)
-    {
-        $request->validate([
-            'items'                  => ['required'],
-            'address_id'    => ['required'],
-            'pg_id'      => ['required'],
-            'shipping_address_title' => ['required_if:address_id,0'],
-            'shipping_address_line'  => ['required_if:address_id,0'],
-            'area_id'                => ['required_if:address_id,0'],
-            'customer_name'          => ['required_if:user_id,0'],
-            'others_title'           => ['required_if:shipping_address_title,Others'],
-            'search_phone_number'    => ['required']
-        ],
-        [
-            'shipping_address_title.required_if' => 'The address title field is required',
-            'shipping_address_line.required_if'  => 'The address field is required',
-            'area_id.required_if'                => 'The area field is required',
-            'customer_name.required_if'          => 'The customer name field is required',
-            'others_title.required_if'           => 'The others title field is required',
-            'pg_id.required'         => 'The payment method is required',
-            'search_phone_number.required'       => 'The user phone is required',
-        ]);
-
-        $items             = $request->input('items', null);
-        $userId            = $request->input('user_id', null);
-        $addressId         = $request->input('address_id', null);
-        $deliveryTypeId    = $request->input('dg_id', null);
-        $paymentMethodId   = $request->input('pg_id', null);
-        $searchPhoneNumber = $request->input('search_phone_number', null);
-        $deliveryCharge    = $request->input('delivery_charge', null);
-        $customerName      = $request->input('customer_name', null);
-        $paymentStatus     = $request->input('payment_status', false);
-        $orderedAt         = $request->input('ordered_at', false);
-
-        $orderedAt = $orderedAt ? $orderedAt : Carbon::now();
-
-        // When existing user was not selected
-        if (!$userId) {
-            if (str_starts_with($searchPhoneNumber, '0')) {
-                $searchPhoneNumber = '88'.$searchPhoneNumber;
-            } else {
-                $searchPhoneNumber = $searchPhoneNumber;
-            }
-            // Search user by given phone number
-            $checkUser = User::where('phone_number', $searchPhoneNumber)->first();
-            if ($checkUser) {
-                $userId = $checkUser->id;
-            } else {
-                // Create new user by given phone number and customer name
-                $userObj = new User();
-                $password = 123456789;
-
-                $userObj->phone_number        = $searchPhoneNumber;
-                $userObj->password            = Hash::make($password);
-                $userObj->terms_and_conditons = 1;
-                $userObj->ac_active           = 1;
-                $userObj->name                = $customerName;
-                $res = $userObj->save();
-                if ($res) {
-                    $userId = $userObj->id;
-                }
-            }
-        }
-
-        // Create new address when shipping address was not selected
-        if ($addressId == 0) {
-            $addressTitle = $request->input('shipping_address_title', null);
-            $addressLine  = $request->input('shipping_address_line', null);
-            $phoneNumber  = $request->input('phone_number', null);
-            $areaId       = $request->input('area_id', null);
-            $otherTitle   = $request->input('others_title', false);
-
-            $addressTitle = $otherTitle ? $otherTitle : $addressTitle;
-
-            // Check shipping address was already exist
-            $checkShippingAddress = Address::where('title', $addressTitle)->where('user_id', $userId)->first();
-            if ($checkShippingAddress) {
-                return back()->with('title_exist', 'The address title already taken');
-            }
-
-            $phoneNumber = $phoneNumber ? $phoneNumber : $searchPhoneNumber;
-
-            $userAddressObj = new Address();
-
-            $userAddressObj->title        = $addressTitle;
-            $userAddressObj->address      = $addressLine;
-            $userAddressObj->phone_number = $phoneNumber;
-            $userAddressObj->user_id      = $userId;
-            $userAddressObj->area_id      = $areaId;
-            $res = $userAddressObj->save();
-        }
-
-        // Create new order
-        $orderObj = new Order();
-
-        if ($deliveryTypeId === '-1') {
-            $deliveryTypeId = null;
-        }
-
-        $orderObj->user_id             = $userId;
-        $orderObj->address_id = $addressId == 0 ? $userAddressObj->id : $addressId;
-        $orderObj->dg_id    = $deliveryTypeId;
-        $orderObj->pg_id   = $paymentMethodId;
-        $orderObj->delivery_charge     = $deliveryCharge;
-        $orderObj->is_paid             = $paymentStatus;
-        $orderObj->ordered_at          = $orderedAt;
-        $orderObj->created_by          = Auth::id();
-        $orderObj->sell_partner_id     = Auth::user()->sell_partner_id;
-        $res = $orderObj->save();
-
-        if ($res) {
-            // Create order details
-            $now = Carbon::now();
-            $itemIds = [];
-            foreach ($items as $item) {
-                $itemIds[$item['product_id']] = [
-                    'quantity'  => $item['quantity'],
-                    'pack_size' => $item['pack_size'],
-                    'item_mrp'  => $item['item_mrp'],
-                    'price'     => $item['price'],
-                    'discount'  => $item['discount'],
-                ];
-            }
-            $res = $orderObj->items()->sync($itemIds);
-
-            // Update order total_items_discount, order_net_value and coupon_value
-            $orderObj->updateOrderValue($orderObj);
-
-            // Dispatch manual order create event
-
-            $request->session()->forget('items');
-
-            // Create payment transaction
-            $paymentTrx = new PaymentTransaction();
-
-            $paymentTrxRes = $paymentTrx->make($orderObj->id, null, 'sale', $paymentMethodId, 'pending');
-
-            if ($res) {
-                return back()->with('message', 'Order create successfully');
-            }
-        } else {
-            return back()->with('message', 'Order does not create successfully');
-        }
-    }
-
     public function makePaid(Request $request)
     {
         $request->validate([
@@ -522,72 +439,7 @@ class OrderController extends Controller
 
         PaymentTransaction::whereIn('order_id', $orderID)->update(['status' => 'completed']);
         Order::whereIn('id', $orderID)->update(['is_paid' => 1]);
-        return $this->util->makeResponse(null, 'Order paid successfully', 200);
-    }
-
-    public function prescriptionShow($id)
-    {
-        $prescriptions = Prescription::where('order_id', $id)->get();
-
-        if (!$prescriptions) {
-            abort(404);
-        }
-
-        return view('adminend.pages.prescription.show', [
-            'prescriptions' => $prescriptions
-        ]);
-    }
-
-    public function statusUpdate(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'order_id' => ['required'],
-            'status'   => ['required'],
-            'area_id'  => ['required']
-        ]);
-
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->util->makeResponse(null, $validator->errors(), 403);
-        }
-
-        $token   = $request->input('token');
-        $status  = $request->input('status');
-        $orderId = $request->input('order_id', null);
-        $areaId  = $request->input('area_id', null);
-        $businessId = null;
-        $branchId   = null;
-        $areaName   = null;
-
-        $order = Order::find($orderId);
-        if ($order) {
-            $businessId = $order->pos_business_id;
-            $branchId = $order->pos_branch_id;
-        }
-
-        if (!$businessId || !$branchId) {
-            return $this->util->makeResponse(null, 'Business or branch not found', 404);
-        }
-
-        $areaObj = Area::find($areaId);
-        if ($areaObj) {
-            $areaName = $areaObj->name;
-        }
-
-        $baseURL = config('pos.api.base_url');
-        $url     = "{$baseURL}/api/online/order/data/private/status/change";
-
-        $response = Http::withHeaders([
-            'Accept' => 'application/json',
-            'Authorization' => "Bearer {$token}"
-            ])->post($url, [
-            'business_id'     => $businessId,
-            'branch_id'       => $branchId,
-            'online_order_id' => $orderId,
-            'status'          => $status,
-            'area_name'       => $areaName,
-        ]);
-
-        return $response;
+        return $this->sendResponse(null, 'Order paid successfully');
     }
 
     public function refund(Request $request, $orderId, $paymentGateway)

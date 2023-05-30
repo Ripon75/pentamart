@@ -10,13 +10,11 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('error'))
-            <div class="alert mb-8 error">{{ Session::get('message') }}</div>
+
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
-        @endif
         <form class="mb-3" action="{{ route('admin.sections.index') }}" method="GET">
             <input class="" value="{{ request()->input('search_keyword') }}" name="search_keyword" type="search" placeholder="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
@@ -27,8 +25,6 @@
                 <thead>
                 <tr class="">
                     <th class="w-40">Name</th>
-                    <th class="w-40">Title</th>
-                    <th class="w-28">Link</th>
                     <th class="w-40">Status</th>
                     <th class="w-40">Action</th>
                 </tr>
@@ -37,8 +33,6 @@
                     @foreach ($sections as $data)
                     <tr class="">
                         <td>{{ $data->name }}</td>
-                        <td>{{ $data->title }}</td>
-                        <td>{{ $data->link }}</td>
                         <td class="text-center">
                             {{ $data->status }}
                         </td>

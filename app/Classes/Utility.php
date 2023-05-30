@@ -62,7 +62,7 @@ class Utility
         }
     }
 
-    static public function response($result, $message)
+    static public function sendResponse($result, $message)
     {
     	$response = [
             'success' => true,
@@ -72,7 +72,7 @@ class Utility
         return response()->json($response, 200);
     }
 
-    static public function error($message)
+    static public function sendError($message)
     {
     	$response = [
             'success' => false,
@@ -81,5 +81,20 @@ class Utility
         ];
 
         return response()->json($response, 201);
+    }
+
+    public function formatPhoneNumber($phoneNumber)
+    {
+        if (str_starts_with($phoneNumber, '0')) {
+            return $phoneNumber = '88' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '1')) {
+            return $phoneNumber = '880' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '80')) {
+            return $phoneNumber = '8' . $phoneNumber;
+        } elseif (str_starts_with($phoneNumber, '+88')) {
+            return $phoneNumber = substr($phoneNumber, 1);
+        } else {
+            return $phoneNumber = $phoneNumber;
+        }
     }
 }

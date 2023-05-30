@@ -9,10 +9,8 @@ use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvi
 // Event
 use App\Events\OrderCreate;
 use App\Events\ProductSearch;
-use App\Events\OrderStatusChange;
 use App\Events\CustomerRegistration;
 // Listeners
-use App\Listeners\NotifyUser;
 use App\Listeners\StoreSearchLog;
 use App\Listeners\CreateCustomerCart;
 use App\Listeners\SendOrderSubmitSMS;
@@ -38,9 +36,6 @@ class EventServiceProvider extends ServiceProvider
         OrderCreate::class => [
             SetOrderStatusSubmit::class,
             // SendOrderSubmitSMS::class
-        ],
-        OrderStatusChange::class => [
-            NotifyUser::class
         ]
     ];
 

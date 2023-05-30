@@ -1,23 +1,22 @@
 @extends('adminend.layouts.default')
-@section('title', 'Coupon codes')
+@section('title', 'Coupons')
 @section('content')
 
 <div class="page">
     <div class="page-toolbar">
-        <h6 class="title">All Coupon Code</h6>
+        <h6 class="title">All Coupon</h6>
         <div class="actions">
-            <a href="{{ route('admin.coupon-codes.create') }}" class="action btn btn-primary">Create</a>
+            <a href="{{ route('admin.coupons.create') }}" class="action btn btn-primary">Create</a>
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('error'))
-            <div class="alert mb-8 error">{{ Session::get('message') }}</div>
+
+        {{-- Success message --}}
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
-        @endif
-        <form action="{{ route('admin.coupon-codes.index') }}" method="GET">
+        <form action="{{ route('admin.coupons.index') }}" method="GET">
             @csrf
             <div class="action-bar mb-4 flex items-end space-x-2">
                 <div class="flex flex-col">
@@ -41,7 +40,7 @@
                         value="{{ request()->input('status') }}">
                 </div>
                 <button class="btn btn-outline-success" type="submit">Search</button>
-                <a href="{{ route('admin.coupon-codes.index') }}" class="btn border h-10 bg-red-500 text-white ml-1">Clear</a>
+                <a href="{{ route('admin.coupons.index') }}" class="btn border h-10 bg-red-500 text-white ml-1">Clear</a>
             </div>
         </form>
         <div>
@@ -51,13 +50,13 @@
                     <th>ID</th>
                     <th>Name</th>
                     <th>Code</th>
-                    <th>Discount Type</th>
-                    <th>Discount amount</th>
-                    <th>Minimum cart amount</th>
+                    <th>Type</th>
+                    <th>Discount</th>
+                    <th>Min Amount</th>
                     <th>Stataus</th>
                     <th>Applicable ON</th>
-                    <th>Started at</th>
-                    <th>Ended at</th>
+                    <th>Started At</th>
+                    <th>Ended At</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -70,13 +69,21 @@
                         <td>{{ $data->discount_type }}</td>
                         <td class="text-right">{{ $data->discount_amount }}</td>
                         <td class="text-right">{{ $data->min_cart_amount }}</td>
-                        <td class="text-center">{{ $data->status }}</td>
+                        @if ($data->status === 'active')
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm">{{ $data->status }}</button>
+                            </td>
+                        @else
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-sm">{{ $data->status }}</button>
+                            </td>
+                        @endif
                         <td>{{ $data->applicable_on }}</td>
                         <td>{{ $data->started_at->format('Y-m-d') ?? null }}</td>
                         <td>{{ $data->ended_at->format('Y-m-d') ?? null }}</td>
                         <td>
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.coupon-codes.edit', $data->id) }}">Edit</a>
-                            <a class="btn btn-primary btn-sm" href="{{ route('admin.coupon-codes.show', $data->id) }}">Show</a>
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.coupons.edit', $data->id) }}">Edit</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('admin.coupons.show', $data->id) }}">Show</a>
                         </td>
                     </tr>
                     @endforeach

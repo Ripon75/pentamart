@@ -18,7 +18,6 @@ class CreateOrderStatusTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('status_id')->nullable()->constrained('statuses')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->unsignedInteger('created_by')->nullable();
             $table->timestamps();
         });
     }

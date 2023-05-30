@@ -3,9 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use Carbon\Carbon;
-use App\Models\User;
 use App\Models\Order;
-use App\Models\UserEvent;
 use App\Charts\SampleChart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -82,21 +80,6 @@ class DashboardController extends Controller
             $neutralOrdersValuePercent = 0;
         }
 
-        // Count all user
-        $totalUser = User::count();
-
-        // Calculate cart items value
-        $cartValue = DB::table('cart_item')->select(DB::raw("SUM(sell_price) as cart_value"))->first();
-
-        // Calculate number of login and current login user
-        $userEvent = UserEvent::select(
-            DB::raw("
-                SUM(CASE WHEN event = 'customer-login' THEN 1 ELSE 0 END) as number_of_login,
-                SUM(CASE WHEN (event = 'pageView' AND JSON_VALID(data) AND  JSON_EXTRACT(data, '$.page') ='home') THEN 1 ELSE 0 END) as number_of_browse,
-                COUNT(DISTINCT user_id) as unique_user
-            ")
-        )->whereBetween('created_at', [$startDate, $endDate])->first();
-
         // Get latest five orders
         $orders = Order::take(5)->orderBy('created_at', 'DESC')->get();
 
@@ -110,19 +93,15 @@ class DashboardController extends Controller
         });
 
         $orderItemAmount = $orderGraph->pluck('item_subtotal');
-        $dataDate = $orderGraph->pluck('created_at');
         $dataOrdrCount = $orderGraph->pluck('order_count');
 
         $chart = new SampleChart;
         $chart->labels($lables);
         $chart->dataset('Amount', 'bar', $orderItemAmount);
-        $chart->dataset('Order Count', 'line', $dataOrdrCount);
-       
+        $chart->dataset('Order Count', 'line', $dataOrdrCount)->backgroundColor('#ff0000');
+
         return view('adminend.pages.dashboard', [
             'orderReport' => $orderReport,
-            'totalUser'   => $totalUser,
-            'cartValue'   => $cartValue,
-            'userEvent'   => $userEvent,
             'orders'      => $orders,
             'chart'       => $chart,
             'positiveOrdersValuePercent' => $positiveOrdersValuePercent,

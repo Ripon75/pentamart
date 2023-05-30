@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Support\Facades\Auth;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class PaymentTransaction extends Model
 {
-    use HasFactory;
+    use HasFactory, Userstamps;
 
     protected $fillable = [
         'order_id',
@@ -19,7 +19,8 @@ class PaymentTransaction extends Model
         'pg_trxid',
         'status',
         'remark',
-        'trx_by_id'
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
@@ -31,7 +32,8 @@ class PaymentTransaction extends Model
         'pg_trxid'   => 'string',
         'status'     => 'string',
         'remark'     => 'string',
-        'trx_by_id'  => 'integer',
+        'created_by' => 'integer',
+        'updated_by' => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
@@ -46,30 +48,17 @@ class PaymentTransaction extends Model
         return $this->belongsTo(User::class, 'trx_by_id', 'id');
     }
 
-    public function make($orderID, $amount = null, $type = null, $method = null, $status = null, $remark = null)
+    public function make($orderId, $amount = null, $type = null, $method = null, $status = null)
     {
-        $order = Order::find($orderID);
-
-        $method = $method ?? 1;
-        $status = $status ?? 'completed';
-        $userID = Auth::id();
-
-        $amount = $amount ?? round($order->payable_price);
-
         $trxObj = new Self();
 
-        $trxObj->order_id  = $orderID;
-        $trxObj->amount    = $amount;
-        $trxObj->type      = $type;
-        $trxObj->pg_id     = $method;
-        $trxObj->status    = $status;
-        $trxObj->remark    = $remark;
-        $trxObj->trx_by_id = $userID;
-        $res               = $trxObj->save();
-        if ($res) {
-            return $trxObj;
-        }
+        $trxObj->order_id = $orderId;
+        $trxObj->amount   = $amount;
+        $trxObj->type     = $type;
+        $trxObj->pg_id    = $method ?? 1;
+        $trxObj->status   = $status ?? 'pending';
+        $trxObj->save();
 
-        return false;
+        return $trxObj;
     }
 }

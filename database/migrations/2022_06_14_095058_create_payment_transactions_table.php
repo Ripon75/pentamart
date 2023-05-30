@@ -25,7 +25,8 @@ class CreatePaymentTransactionsTable extends Migration
                 ->comment('This data will come from the gateway api.');
             $table->string('status')->default('submitted');
             $table->string('remark', 1000)->nullable();
-            $table->foreignId('trx_by_id')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

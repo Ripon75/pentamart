@@ -19,6 +19,8 @@ class CreateWishlistsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('product_id')->nullable()->constrained('products')
                   ->onUpdate('cascade')->onDelete('cascade');
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

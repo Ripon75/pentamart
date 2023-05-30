@@ -31,11 +31,12 @@ class CreateOrdersTable extends Migration
             $table->decimal('price', 20, 2)->default(0);
             $table->decimal('sell_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
+            $table->decimal('net_price', 20, 2)->default(0);
             $table->decimal('payable_price', 20, 2)->default(0);
             $table->boolean('is_paid')->default(false);
-            $table->timestamp('paid_at')->nullable();
-            $table->foreignId('created_by')->nullable();
             $table->string('note', 1024)->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
         });
     }

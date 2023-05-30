@@ -15,6 +15,13 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
+    protected $util;
+
+    function __construct(Utility $Util)
+    {
+        $this->util = $Util;
+    }
+
     public function registrationCreate()
     {
         if (Auth::check()) {
@@ -48,7 +55,7 @@ class AuthController extends Controller
             DB::beginTransaction();
 
             // Format phone number
-            $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+            $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
             $user = User::where('phone_number', $phoneNumber)->first();
 
@@ -91,7 +98,7 @@ class AuthController extends Controller
     public function checkUser(Request $request)
     {
         $phoneNumber = $request->input('phone_number', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
         $user = User::where('phone_number', $phoneNumber)->first();
 
@@ -120,7 +127,7 @@ class AuthController extends Controller
 
         $phoneNumber = $request->input('phone_number', null);
         $otpCode     = $request->input('otp_code', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
         $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
 
@@ -146,7 +153,7 @@ class AuthController extends Controller
         }
 
         $phoneNumber = $request->input('phone_number', null);
-        $phoneNumber = $this->formatPhoneNumber($phoneNumber);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
         $user = User::where('phone_number', $phoneNumber)->first();
 
@@ -278,20 +285,5 @@ class AuthController extends Controller
         $randomCode = rand(1111, 9999);
 
         return $randomCode;
-    }
-
-    public function formatPhoneNumber($phoneNumber)
-    {
-        if (str_starts_with($phoneNumber, '0')) {
-            return $phoneNumber = '88'.$phoneNumber;
-        } elseif (str_starts_with($phoneNumber, '1')) {
-            return $phoneNumber = '880'.$phoneNumber;
-        }elseif (str_starts_with($phoneNumber, '80')) {
-            return $phoneNumber = '8'.$phoneNumber;
-        } elseif(str_starts_with($phoneNumber, '+88')) {
-            return $phoneNumber = substr($phoneNumber, 1);
-        } else {
-            return $phoneNumber = $phoneNumber;
-        }
     }
 }

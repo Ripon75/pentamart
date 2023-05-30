@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use App\Models\Permission;
 use App\Models\Role;
+use App\Models\Permission;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 
 class RoleController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $paginate = config('crud.paginate.default');
         $roles    = Role::paginate($paginate);
@@ -20,7 +21,7 @@ class RoleController extends Controller
        ]);
     }
 
-    public function create(Request $request)
+    public function create()
     {
         $permissions = Permission::orderBy('name', 'asc')->get();
 
@@ -39,23 +40,30 @@ class RoleController extends Controller
         $displayName   = $request->input('display_name', null);
         $description   = $request->input('description', null);
         $permissionIds = $request->input('permission_ids', []);
+        $name          = Str::slug($displayName, '-');
 
-        $name = Str::slug($displayName, '-');
+        try {
+            DB::beginTransaction();
+            $role = new Role();
 
-        $roleObj = new Role();
+            $role->display_name = $displayName;
+            $role->name         = $name;
+            $role->description  = $description;
+            $res = $role->save();
+            if ($res) {
+                $role->syncPermissions($permissionIds);
+                DB::commit();
+            }
 
-        $roleObj->display_name = $displayName;
-        $roleObj->name         = $name;
-        $roleObj->description  = $description;
-        $res = $roleObj->save();
-        if ($res) {
-            $roleObj->syncPermissions($permissionIds);
+            return redirect()->route('admin.roles')->with('success', 'Role create successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something went wrong');
         }
-
-        return redirect()->route('admin.roles')->with('message', 'Role create successfully');
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $role = Role::with('permissions')->find($id);
         if (!$role) {
@@ -82,20 +90,23 @@ class RoleController extends Controller
         $description   = $request->input('description', null);
         $permissionIds = $request->input('permission_ids', []);
 
-        $role = Role::find($id);
+        try {
+            DB::beginTransaction();
+            $role = Role::find($id);
 
-        $role->display_name = $displayName;
-        $role->description  = $description;
-        $res = $role->save();
-        if ($res) {
-            $role->syncPermissions($permissionIds);
+            $role->display_name = $displayName;
+            $role->description  = $description;
+            $res = $role->save();
+            if ($res) {
+                $role->syncPermissions($permissionIds);
+                DB::commit();
+            }
+
+            return redirect()->route('admin.roles')->with('success', 'Role update successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went wrong');
         }
-
-        return redirect()->route('admin.roles')->with('message', 'Role update successfully');
-    }
-
-    public function destroy($id)
-    {
-        //
     }
 }

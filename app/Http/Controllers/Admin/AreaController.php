@@ -5,15 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Models\Area;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class AreaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         $paginate = config('crud.paginate.default');
@@ -25,29 +21,18 @@ class AreaController extends Controller
             $areas = $areas->where('name', 'like', "%$name%");
         }
 
-        $areas = $areas->orderBy('created_at', 'desc')->paginate($paginate);
+        $areas = $areas->orderBy('name', 'asc')->paginate($paginate);
 
         return view('adminend.pages.area.index', [
             'areas' => $areas
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
+    public function create()
     {
         return view('adminend.pages.area.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
         $request->validate([
@@ -57,36 +42,24 @@ class AreaController extends Controller
         $name = $request->input('name', null);
         $slug = Str::slug($name, '-');
 
-        $areaObj = new Area();
+        try {
+            DB::beginTransaction();
 
-        $areaObj->name = $name;
-        $areaObj->slug = $slug;
-        $res = $areaObj->save();
-        if ($res) {
-            return redirect()->route('admin.areas.index')->with('message', 'Area created successfully');
-        } else {
-            return back()->with('error', 'Something went to wrong');
+            $area = new Area();
+
+            $area->name = $name;
+            $area->slug = $slug;
+            $area->save();
+            DB::commit();
+            return redirect()->route('admin.areas.index')->with('success', 'Area created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something weint wrong');
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $area = Area::find($id);
 
@@ -99,13 +72,6 @@ class AreaController extends Controller
         ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $request->validate([
@@ -115,30 +81,21 @@ class AreaController extends Controller
         $name = $request->input('name', null);
         $slug = Str::slug($name, '-');
 
-        $area = Area::find($id);
+        try {
+            DB::beginTransaction();
 
-        if (!$area) {
-            abort(404);
+            $area = Area::find($id);
+
+            $area->name = $name;
+            $area->slug = $slug;
+            $area->save();
+            DB::commit();
+
+            return redirect()->route('admin.areas.index')->with('success', 'Area created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'Something weint wrong');
         }
-
-        $area->name = $name;
-        $area->slug = $slug;
-        $res = $area->save();
-        if ($res) {
-            return back()->with('message', 'Area updated successfully');
-        } else {
-            return back()->with('error', 'Something went to wrong');
-        }
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

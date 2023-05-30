@@ -10,13 +10,11 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('error'))
-            <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
-        @endif
         <form action="{{ route('admin.areas.index') }}" method="GET">
             @csrf
             <div class="action-bar mb-4 flex items-end space-x-2">

@@ -10,53 +10,51 @@
         </div>
     </div>
     <div class="page-content">
-        @if(Session::has('error'))
-            <div class="alert mb-8 error">{{ Session::get('message') }}</div>
+
+        {{-- Show success message --}}
+        @if(Session::has('success'))
+            <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
-        @if(Session::has('message'))
-            <div class="alert mb-8 success">{{ Session::get('message') }}</div>
-        @endif
         <div>
             <table class="table w-full">
                 <thead>
                 <tr class="">
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Code</th>
                     <th>Price</th>
+                    <th>Promo Price</th>
                     <th>Min time</th>
                     <th>Max time</th>
-                    <th>Unit</th>
+                    <th>Time Unit</th>
                     <th>Status</th>
                     <th class="w-40">Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($result as $data)
+                    @foreach ($dgs as $dg)
                     <tr>
-                        <td class="text-center">{{ $data->id }}</td>
-                        <td>{{ $data->name }}</td>
-                        <td>{{ $data->code }}</td>
-                        <td class="text-right">{{ $data->price }}</td>
-                        <td class="text-right">{{ $data->min_delivery_time }}</td>
-                        <td class="text-right">{{ $data->max_delivery_time }}</td>
-                        <td>{{ $data->delivery_time_unit }}</td>
+                        <td class="text-center">{{ $dg->id }}</td>
+                        <td>{{ $dg->name }}</td>
+                        <td class="text-right">{{ $dg->price }}</td>
+                        <td class="text-right">{{ $dg->promo_price }}</td>
+                        <td class="text-right">{{ $dg->min_time }}</td>
+                        <td class="text-right">{{ $dg->max_time }}</td>
+                        <td>{{ $dg->time_unit }}</td>
                         <td class="text-center">
-                            <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">{{ $data->status }}</button>
+                            <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">{{ $dg->status }}</button>
                         </td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.deliveries.edit', $data->id) }}">Edit</a>
-                            <a class="btn btn-primary btn-sm" href="{{ route('admin.deliveries.show', $data->id) }}">Show</a>
+                            <a class="btn btn-success btn-sm" href="{{ route('admin.deliveries.edit', $dg->id) }}">Edit</a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
             {{-- ========Pagination============ --}}
-            @if ($result->hasPages())
+            @if ($dgs->hasPages())
                 <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
-                    {{ $result->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
+                    {{ $dgs->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
                 </div>
             @endif
         </div>

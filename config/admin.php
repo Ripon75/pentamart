@@ -10,13 +10,6 @@ return [
             'sub'         => []
         ],
         [
-            'label'       => 'Banners',
-            'icon'        => 'fa-solid fa-panorama',
-            'route'       => 'admin.banners',
-            'permission'  => 'banners-read',
-            'sub'         => []
-        ],
-        [
             'label'       => 'Sliders',
             'icon'        => 'fa-solid fa-panorama',
             'route'       => 'admin.sliders.index',
@@ -29,17 +22,17 @@ return [
             'route'      => '#',
             'permission' => 'payment-types-read',
             'sub' => [
+                // [
+                //     'label'      => 'Payment Type',
+                //     'icon'       => 'fa-solid fa-credit-card',
+                //     'route'      => 'admin.payments.index',
+                //     'permission' => 'payment-types-read'
+                // ],
                 [
-                    'label'      => 'Delivery Type',
-                    'icon'       => 'fa-solid fa-truck',
+                    'label'      => 'Delivery Gateway',
+                    'icon'       => 'fa-solid fa-credit-card',
                     'route'      => 'admin.deliveries.index',
                     'permission' => 'delivery-types-read'
-                ],
-                [
-                    'label'      => 'Payment Type',
-                    'icon'       => 'fa-solid fa-credit-card',
-                    'route'      => 'admin.payments.index',
-                    'permission' => 'payment-types-read'
                 ],
             ]
         ],
@@ -86,8 +79,8 @@ return [
                 [
                     'label'      => 'Coupons',
                     'icon'       => 'fa-solid fa-tag',
-                    'route'      => 'admin.coupon-codes.index',
-                    'permission' => 'coupon-codes-read'
+                    'route'      => 'admin.coupons.index',
+                    'permission' => 'coupons-read'
                 ],
                 [
                     'label'      => 'Orders',
@@ -96,9 +89,9 @@ return [
                     'permission' => 'orders-read'
                 ],
                 [
-                    'label'      => 'Order Status',
+                    'label'      => 'Status',
                     'icon'       => 'fa-solid fa-truck-arrow-right',
-                    'route'      => 'admin.order-statuses.index',
+                    'route'      => 'admin.order.statuses.index',
                     'permission' => 'order-status-read'
                 ]
             ]

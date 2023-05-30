@@ -13,15 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        $status = config('enum.status');
-
-        Schema::create('sliders', function (Blueprint $table) use ($status) {
+        Schema::create('sliders', function (Blueprint $table) {
             $table->id();
             $table->string('name', 100);
             $table->string('slug', 100);
-            $table->enum('status', $status)->default('active');
+            $table->string('status')->default('active');
             $table->string('large_src', 2048)->nullable();
             $table->string('small_src', 2048)->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
+            $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -4,17 +4,21 @@ namespace App\Http\Controllers\Admin;
 
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Cart;
 use App\Classes\Utility;
-use App\Models\Permission;
-
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
+use App\Events\CustomerRegistration;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
+    protected $util;
+
+    function __construct(Utility $Util)
+    {
+        $this->util = $Util;
+    }
+
     public function index(Request $request)
     {
         $paginate    = config('crud.paginate.default');
@@ -50,53 +54,104 @@ class UserController extends Controller
         ]);
     }
 
-    public function edit(Request $request, $id)
+    public function create()
     {
-        $user          = User::find($id);
-        $roles         = Role::get();
-        $permissions   = Permission::orderBy('name', 'asc')->get();
-        $userRoles     = $user->getRoles();
-        $permissionIds = $user->permissions()->select('id')->get()->pluck('id')->all();
+        $roles = Role::orderBy('name', 'asc')->get();
 
-        return view('adminend.pages.user.edit', [
-            'user'          => $user,
-            'roles'         => $roles,
-            'userRoles'     => $userRoles,
-            'permissions'   => $permissions,
-            'permissionIds' => $permissionIds
+        return view('adminend.pages.user.create', [
+            'roles' => $roles
         ]);
     }
 
-    public function update(Request $request, $id)
+    public function store(Request $request)
     {
-        $user = User::find($id);
+        $request->validate([
+            'name'         => ['required'],
+            'phone_number' => ['required', "unique:users,phone_number"],
+            'email'        => ['nullable', 'email', "unique:users,email"],
+        ]);
+
+        $name        = $request->input('name', null);
+        $email       = $request->input('email', null);
+        $phoneNumber = $request->input('phone_number', null);
+        $roleIds     = $request->input('role_ids', []);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+
+
+        try {
+            DB::beginTransaction();
+
+            $user = new User();
+
+            $user->name         = $name;
+            $user->email        = $email;
+            $user->phone_number = $phoneNumber;
+            $res = $user->save();
+            if ($res) {
+                CustomerRegistration::dispatch($user);
+                $user->syncRoles($roleIds);
+            }
+            DB::commit();
+
+            return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'User updated successfully');
+        }
+    }
+
+    public function edit($id)
+    {
+        $user      = User::find($id);
+        $roles     = Role::orderBy('name', 'asc')->get();
+        $userRoles = $user->getRoles();
 
         if (!$user) {
             abort(404);
         }
 
-        $roleID        = $request->input('role_id', []);
-        $permissionIds = $request->input('permission_ids', []);
-
-        $user->syncRoles($roleID);
-
-        $user->syncPermissions($permissionIds);
-
-        return redirect()->route('admin.users.index')->with('message', 'Update successfully');
+        return view('adminend.pages.user.edit', [
+            'user'      => $user,
+            'roles'     => $roles,
+            'userRoles' => $userRoles
+        ]);
     }
 
-    public function formatPhoneNumber($phoneNumber)
+    public function update(Request $request, $id)
     {
-        if (str_starts_with($phoneNumber, '0')) {
-            return $phoneNumber = '88'.$phoneNumber;
-        } elseif (str_starts_with($phoneNumber, '1')) {
-            return $phoneNumber = '880'.$phoneNumber;
-        }elseif (str_starts_with($phoneNumber, '80')) {
-            return $phoneNumber = '8'.$phoneNumber;
-        } elseif(str_starts_with($phoneNumber, '+88')) {
-            return $phoneNumber = substr($phoneNumber, 1);
-        } else {
-            return $phoneNumber = $phoneNumber;
+        $request->validate([
+            'name'         => ['required'],
+            'phone_number' => ['required', "unique:users,phone_number,$id"],
+            'email'        => ['nullable', 'email', "unique:users,email,$id"],
+        ]);
+
+        $name        = $request->input('name', null);
+        $email       = $request->input('email', null);
+        $phoneNumber = $request->input('phone_number', null);
+        $roleIds     = $request->input('role_ids', []);
+        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+
+
+        try {
+            DB::beginTransaction();
+
+            $user = User::find($id);
+
+            $user->name         = $name;
+            $user->email        = $email;
+            $user->phone_number = $phoneNumber;
+            $res = $user->save();
+            if ($res) {
+                $user->syncRoles($roleIds);
+            }
+            DB::commit();
+
+            return redirect()->route('admin.users.index')->with('success', 'User updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollback();
+            return back()->with('error', 'User updated successfully');
         }
     }
 }

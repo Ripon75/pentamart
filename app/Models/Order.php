@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Traits\BaseStatusMap;
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -10,38 +10,51 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model implements Auditable
 {
-    use HasFactory, BaseStatusMap;
+    use HasFactory, Userstamps;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
         'user_id',
-        'dg_id',
         'pg_id',
+        'status_id',
         'address_id',
-        'terms_and_condition',
-        'note'
+        'address',
+        'coupon_id',
+        'coupon_value',
+        'delivery_charge',
+        'price',
+        'sell_price',
+        'discount',
+        'net_price',
+        'payable_price',
+        'is_paid',
+        'note',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
-        'id'                  => 'integer',
-        'user_id'             => 'integer',
-        'dg_id'               => 'integer',
-        'pg_id'               => 'integer',
-        'address_id'          => 'integer',
-        'terms_and_condition' => 'string',
-        'current_status_id'   => 'integer',
-        'note'                => 'string',
-        'current_status_at'   => 'datetime:Y-m-d H:i:s',
-        'ordered_at'          => 'date:Y-m-d',
-        'created_at'          => 'datetime:Y-m-d H:i:s',
-        'updated_at'          => 'datetime:Y-m-d H:i:s',
-        'deleted_at'          => 'datetime:Y-m-d H:i:s'
+        'user_id'         => 'integer',
+        'pg_id'           => 'integer',
+        'status_id'       => 'integer',
+        'address_id'      => 'integer',
+        'address'         => 'string',
+        'coupon_id'       => 'integer',
+        'coupon_value'    => 'decimal:2',
+        'delivery_charge' => 'decimal:2',
+        'price'           => 'decimal:2',
+        'sell_price'      => 'decimal:2',
+        'discount'        => 'decimal:2',
+        'net_price'       => 'decimal:2',
+        'payable_price'   => 'decimal:2',
+        'is_paid'         => 'boolean',
+        'note'            => 'string',
+        'created_by'      => 'integer',
+        'updated_by'      => 'integer',
+        'created_at'      => 'datetime:Y-m-d H:i:s',
+        'updated_at'      => 'datetime:Y-m-d H:i:s',
+        'deleted_at'      => 'datetime:Y-m-d H:i:s'
     ];
-
-    function __construct()
-    {
-        $this->initStatusMap('order');
-    }
 
     // Start relation
     public function items()
@@ -54,18 +67,13 @@ class Order extends Model implements Auditable
     public function status()
     {
         return $this->belongsToMany(Status::class, 'order_status', 'order_id', 'status_id')
-            ->withPivot('created_by', 'created_at')->orderBy('order_status.created_at', 'asc')
+            ->orderBy('order_status.created_at', 'asc')
             ->withTimestamps();
     }
 
     public function user()
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function deliveryGateway()
-    {
-        return $this->belongsTo(DeliveryGateway::class, 'dg_id', 'id');
     }
 
     public function paymentGateway()
@@ -88,40 +96,9 @@ class Order extends Model implements Auditable
         return $this->belongsTo(Coupon::class, 'coupon_id', 'id');
     }
 
-    public function prescriptions()
-    {
-        return $this->hasMany(Prescription::class, 'order_id', 'id');
-    }
-
     public function transaction()
     {
         return $this->hasOne(PaymentTransaction::class, 'order_id', 'id');
-    }
-
-    public function setStatus($status, $orderDatetime = null)
-    {
-        $statusObj = null;
-        if(is_numeric($status)) {
-            $statusObj = Status::find($status);
-        } else {
-            $statusObj = Status::where('slug', $status)->first();
-        }
-
-        if (!$statusObj) {
-            return false;
-        }
-
-        $userId   = Auth::id();
-        $statusId = $statusObj->id;
-
-        $this->status()->attach([
-            $statusId => [
-                'created_by' => $userId
-            ]
-        ]);
-
-        $this->status_id = $statusId;
-        $this->save();
     }
     // End relation
 
@@ -198,7 +175,7 @@ class Order extends Model implements Auditable
         return $totalWithDeliveryCharge;
     }
 
-    public function getGrandTotal()
+    public function getNetPrice()
     {
         $totalWithDeliveryCharge = $this->getTotalWithDeliveryCharge();
         $couponValue = $this->getCouponValue();
@@ -209,15 +186,16 @@ class Order extends Model implements Auditable
 
     public function getPayablePrice($roundType = null)
     {
-        $grandTotal = $this->getGrandTotal();
+        $netPrice = $this->getNetPrice();
+
         if ($roundType === 'ceil') {
-            return ceil($grandTotal);
+            return ceil($netPrice);
         } else if ($roundType === 'floor') {
-            return floor($grandTotal);
+            return floor($netPrice);
         } else if ($roundType === 'round') {
-            return round($grandTotal);
+            return round($netPrice);
         } else {
-            return $grandTotal;
+            return $netPrice;
         }
     }
 
@@ -227,12 +205,14 @@ class Order extends Model implements Auditable
         $totalSellPrice = $orderObj->getTotalSellPrice() ?? 0;
         $couponValue    = $orderObj->getCouponValue() ?? 0;
         $totalDiscount  = $orderObj->getTotalDiscount() ?? 0;
-        $payablePrice   = $orderObj->getPayablePrice() ?? 0;
+        $netPrice       = $orderObj->getNetPrice() ?? 0;
+        $payablePrice   = $orderObj->getPayablePrice('round') ?? 0;
 
         $orderObj->coupon_value  = $couponValue;
         $orderObj->price         = $totalPrice;
         $orderObj->sell_price    = $totalSellPrice;
         $orderObj->discount      = $totalDiscount;
+        $orderObj->net_price     = $netPrice;
         $orderObj->payable_price = $payablePrice;
         $orderObj->save();
     }

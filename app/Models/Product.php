@@ -2,113 +2,58 @@
 
 namespace App\Models;
 
-// use Image;
-use Intervention\Image\Facades\Image;
 use Carbon\Carbon;
-use App\Classes\Model;
-use App\Rules\NotNumeric;
 use Laravel\Scout\Searchable;
 use Wildside\Userstamps\Userstamps;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use App\Http\Resources\ProductThumbCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
 {
-    use SoftDeletes, Searchable, HasFactory, Userstamps;
+    use HasFactory, Searchable, Userstamps, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
-    protected $table      = 'products';
-    protected $_className = 'Product';
-
-    // All view templates
-    protected $_views = [
-        'index'  => 'adminend.pages.product.index',
-        'create' => 'adminend.pages.product.create',
-        'edit'   => 'adminend.pages.product.edit',
-        'show'   => 'adminend.pages.product.show',
-        'bulk'   => 'adminend.pages.product.bulk'
+    protected $fillable = [
+        'name',
+        'slug',
+        'brand_id',
+        'category_id',
+        'price',
+        'offer_price',
+        'discount',
+        'offer_percent',
+        'current_stock',
+        'status',
+        'image_src',
+        'description',
+        'created_by',
+        'updated_by'
     ];
 
-    // All routes
-    protected $_routeNames = [
-        'index'  => 'admin.products.index',
-        'create' => 'admin.products.create',
-        'edit'   => 'admin.products.edit',
-        'show'   => 'admin.products.show'
+    protected $casts = [
+        'name'          => 'string',
+        'slug'          => 'string',
+        'brand_id'      => 'integer',
+        'category_id'   => 'integer',
+        'price'         => 'decimal:2',
+        'offer_price'   => 'decimal:2',
+        'discount'      => 'decimal:2',
+        'offer_percent' => 'decimal:2',
+        'current_stock' => 'integer',
+        'status'        => 'string',
+        'image_src'     => 'string',
+        'description'   => 'string',
+        'created_by'    => 'integer',
+        'updated_by'    => 'integer',
+        'created_at'    => 'datetime:Y-m-d H:i:s',
+        'updated_at'    => 'datetime:Y-m-d H:i:s',
+        'deleted_at'    => 'datetime:Y-m-d H:i:s'
     ];
 
-    protected $_columns = [
-        'id' => [
-            'cast'   => 'integer',
-            'filter' => [
-                'type'     => 'default',
-                'opration' => '='
-            ]
-        ],
-        'slug' => [
-            'cast'     => 'string',
-            'fillable' => true,
-            'filter'   => [
-                'type'     => 'default',
-                'opration' => 'like_left'
-            ]
-        ],
-        'name' => [
-            'cast'       => 'string',
-            'fillable'   => true
-        ],
-        'brand_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'category_id' => [
-            'cast'     => 'integer',
-            'fillable' => true
-        ],
-        'price' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'offer_price' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'offer_percent' => [
-            'cast'     => 'decimal:2',
-            'fillable' => true
-        ],
-        'status' => [
-            'cast'     => 'string',
-            'fillable' => true
-        ],
-        'description' => [
-            'cast'     => 'string',
-            'fillable' => true
-        ],
-        'created_by' => [
-            'fillable' => true
-        ],
-        'updated_by' => [
-            'fillable' => true
-        ],
-        'created_at' => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'updated_at' => [
-            'cast'     => 'datetime:Y-m-d H:i:s',
-            'fillable' => true
-        ],
-        'deleted_at' => [
-            'cast' => 'datetime:Y-m-d H:i:s'
-        ]
-    ];
-
-    protected $_defaultWith = [
+    public $_defaultWith = [
         'brand:id,slug,name',
         'category:id,slug,name',
     ];
@@ -184,10 +129,14 @@ class Product extends Model implements Auditable
 
     }
 
-    // get image source
-    public function getImageSrcValueAttribute()
+    public function getImageUploadPath()
     {
-        return $this->attributes['image_src'];
+        return 'images/products';
+    }
+
+    public function getOldPath($path)
+    {
+        return str_replace('http://localhost:3000/storage/', '/', $path);
     }
 
     // Scope start ======================================================================
@@ -212,168 +161,5 @@ class Product extends Model implements Auditable
         ])
         ->where('status', 'active')
         ->where('price', '>', 0);
-    }
-
-
-    public function scopeThumbs($query)
-    {
-        return $query->with($this->_defaultWith)
-                     ->where('status', 'active');
-    }
-
-    // Scope end ======================================================================
-
-    public function _index($request, $resource = false)
-    {
-        $paginate    = $request->input('paginate');
-        $id          = $request->input('id', null);
-        $name        = $request->input('name', null);
-        $status      = $request->input('status', null);
-        $startDate   = $request->input('start_date', null);
-        $endDate     = $request->input('end_date', null);
-
-        $paginate = $this->_checkPaginate($paginate);
-        $obj      = $this->with($this->_defaultWith);
-
-        // Filter product name
-        if($id) {
-            $obj = $obj->where('id', $id);
-        }
-
-        // Filter product name
-        if($name) {
-            $obj = $obj->where('name', 'like', "%{$name}%");
-        }
-
-        // Filter status
-        if($status) {
-            $obj = $obj->where('status', $status);
-        }
-
-        // Date range wise filter
-        if ($startDate && $endDate) {
-            $startDate = $startDate.' 00:00:00';
-            $endDate   = $endDate.' 23:59:59';
-            $obj       = $obj->whereBetween('created_at', [$startDate, $endDate]);
-        }
-
-        $data = $obj->orderBy('created_at', 'desc')->paginate($paginate);
-
-        $msg = $this->_getMessage('index');
-        return $this->_makeResponse(true, $data, $msg);
-    }
-
-    public function _storeOrUpdate($request, $id = 0, $action = 'store')
-    {
-        $oldPrice = null;
-        $oldOfferPrice = null;
-        $obj = null;
-        $rules = [];
-        if ($action === 'store') {
-            $rules = [
-                'name'           => ['required', "unique:{$this->table}", new NotNumeric],
-                'brand_id'       => ['required'],
-                'category_id'    => ['required'],
-                'price'          => ['required'],
-                'current_stock'  => ['required']
-            ];
-            $request->validate($rules);
-            $obj = new Self();
-
-        } else {
-            $rules = [
-                'name'           => ['required', new NotNumeric],
-                'brand_id'       => ['required'],
-                'category_id'    => ['required'],
-                'price'          => ['required'],
-                'current_stock'  => ['required']
-            ];
-            $request->validate($rules);
-
-            $obj = Self::find($id);
-            if (!$obj) {
-                $msg = $this->_getMessage('not_found');
-                return $this->_makeResponse(false, null, $msg);
-            }
-
-            // Get old mrp and selling price
-            $oldPrice = $obj->price;
-            $oldOfferPrice = $obj->offer_price;
-        }
-
-        // Get input value form request
-        $name         = $request->input('name', null);
-        $brandId      = $request->input('brand_id', null);
-        $categoryId   = $request->input('category_id', null);
-        $price        = $request->input('price', 0);
-        $offerPrice   = $request->input('offer_price', 0);
-        $currentStock = $request->input('current_stock', 0);
-        $status       = $request->input('status', 'active');
-        $description  = $request->input('description', null);
-
-        $obj->name                 = $name;
-        $obj->slug                 = $name;
-        $obj->brand_id             = $brandId;
-        $obj->category_id          = $categoryId;
-        $obj->price                = $price;
-        $obj->offer_price          = $offerPrice;
-        $obj->status               = $status;
-        $obj->current_stock        = $currentStock;
-        $obj->description          = $description;
-        $obj->created_by_id        = Auth::id();
-        $res = $obj->save();
-
-        if ($res) {
-            $action = $action === 'store' ? $action : 'update';
-
-            // Save product price log
-            ProductPriceLog::_store($obj->id, $price, $offerPrice, $oldPrice, $oldOfferPrice);
-
-            if($request->hasFile('image')) {
-                $oldImagePath = $action === 'store' ? '' : $obj->attributes['image_src'];
-                if ($oldImagePath && Storage::disk('public')->exists($oldImagePath)) {
-                    Storage::disk('public')->delete($oldImagePath);
-                }
-
-                $file       = $request->file('image');
-                $uploadPath = $this->_getImageUploadPath();
-                $path       = Storage::put($uploadPath, $file);
-                $storepath  = Storage::path($path);
-                $watermarkImgPath = public_path('images/logos/watermark.png');
-
-                // open an image file
-                $img = Image::make($storepath);
-
-                // now you are able to resize the instance
-                $img->resize(1024, 1024);
-
-                // and insert a watermark for example
-                $img->insert($watermarkImgPath, 'center');
-                Storage::disk('public')->delete($storepath);
-
-                // finally we save the image as a new file
-                $img->save($storepath);
-
-                $obj->image_src = $path;
-                $obj->save();
-            }
-
-            $msg = $this->_getMessage($action);
-            return $this->_makeResponse(true, $obj, $msg);
-        } else {
-            $action = $action === 'store' ? 'failed_store' : 'failed_update';
-            $msg = $this->_getMessage($action);
-            return $this->_makeResponse(true, $obj, $msg);
-        }
-    }
-
-    public function _getThumbs($take = 24)
-    {
-        $take = $take > 100 ? 100 : $take;
-        $products = Self::thumbs()->take($take)->get();
-
-        $res = new ProductThumbCollection($products);
-
-        return $res;
     }
 }

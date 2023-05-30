@@ -2,84 +2,242 @@
 
 namespace App\Http\Controllers\Admin;
 
-use DB;
-use Auth;
+
 use Carbon\Carbon;
 use App\Models\Brand;
-use App\Models\Company;
-use App\Models\Generic;
 use App\Models\Product;
-use App\Models\Symptom;
 use App\Models\Category;
-use App\Models\DosageForm;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-
+use Illuminate\Support\Facades\Storage;
 class ProductController extends Controller
 {
-    protected $_responseFormat = 'view';
-
-    function __construct() {
-        $this->modelObj = new Product();
-    }
-
-    public function create(Request $request)
+    public function index(Request $request)
     {
-        $view = $this->modelObj->_getView('create');
+        $id              = $request->input('id', null);
+        $name            = $request->input('name', null);
+        $status          = $request->input('status', null);
+        $startDate       = $request->input('start_date', null);
+        $endDate         = $request->input('end_date', null);
+        $defaultPaginate = config('crud.paginate.default');
 
-        $brands      = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
-        $categories  = Category::select('id', 'name')->orderBy('name', 'asc')->get();
-        $generics    = Generic::select('id', 'name')->orderBy('name', 'asc')->get();
-        $dosageForms = DosageForm::select('id', 'name')->orderBy('name', 'asc')->get();
-        $symptoms    = Symptom::select('id', 'name')->orderBy('name', 'asc')->get();
-        $companies   = Company::select('id', 'name')->orderBy('name', 'asc')->get();
+        $products = new Product();
+        $products = $products->with($products->_defaultWith);
 
-        return view($view, [
-            'brands'      => $brands,
-            'categories'  => $categories,
-            'generics'    => $generics,
-            'dosageForms' => $dosageForms,
-            'symptoms'    => $symptoms,
-            'companies'   => $companies
-        ]);
-    }
-
-    public function edit(Request $request, $id)
-    {
-        $result      = $this->modelObj->_show($id);
-
-        if ($result['data']['tags']) {
-            $tagNames = [];
-            foreach ($result['data']['tags'] as $tag) {
-                $tagNames [] = $tag->name;
-            }
-            $tagNames = implode("," ,$tagNames);
+        // Filter product name
+        if ($id) {
+            $products = $products->where('id', $id);
         }
 
-        $brands      = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
-        $categories  = Category::select('id', 'name')->orderBy('name', 'asc')->get();
-        $generics    = Generic::select('id', 'name')->orderBy('name', 'asc')->get();
-        $dosageForms = DosageForm::select('id', 'name')->orderBy('name', 'asc')->get();
-        $symptoms    = Symptom::select('id', 'name')->orderBy('name', 'asc')->get();
-        $companies   = Company::select('id', 'name')->orderBy('name', 'asc')->get();
-        $view        = $this->modelObj->_getView('edit');
+        // Filter product name
+        if ($name) {
+            $products = $products->where('name', 'like', "%{$name}%");
+        }
 
-        return view($view, $result, [
-            'brands'      => $brands,
-            'categories'  => $categories,
-            'generics'    => $generics,
-            'dosageForms' => $dosageForms,
-            'symptoms'    => $symptoms,
-            'tagNames'    => $tagNames,
-            'companies'   => $companies
+        // Filter status
+        if ($status) {
+            $products = $products->where('status', $status);
+        }
+
+        // Date range wise filter
+        if ($startDate && $endDate) {
+            $startDate = $startDate . ' 00:00:00';
+            $endDate   = $endDate . ' 23:59:59';
+            $products       = $products->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        $products = $products->orderBy('created_at', 'desc')->paginate($defaultPaginate);
+
+        return view('adminend.pages.product.index', [
+            'products' => $products
         ]);
     }
 
-    public function bulk(Request $request)
+    public function create()
     {
-        $view = $this->modelObj->_getView('bulk');
-        return view($view);
+        $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('adminend.pages.product.create', [
+            'brands'      => $brands,
+            'categories'  => $categories
+        ]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name'        => ['required', "unique:products,name"],
+            'brand_id'    => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'price'       => ['required']
+        ]);
+
+        $name         = $request->input('name', null);
+        $brandId      = $request->input('brand_id', null);
+        $categoryId   = $request->input('category_id', null);
+        $price        = $request->input('price', 0);
+        $offerPrice   = $request->input('offer_price', 0);
+        $offerPercent = $request->input('offer_percent', 0);
+        $currentStock = $request->input('current_stock', 0);
+        $status       = $request->input('status', 'active');
+        $description  = $request->input('description', null);
+        $slug         = Str::slug($name, '-');
+
+        try {
+            DB::beginTransaction();
+
+            $product = new Product();
+
+            $product->name          = $name;
+            $product->slug          = $slug;
+            $product->brand_id      = $brandId;
+            $product->category_id   = $categoryId;
+            $product->price         = $price;
+            $product->offer_price   = $offerPrice ?? 0;
+            $product->offer_percent = $offerPercent ?? 0;
+            $product->status        = $status;
+            $product->current_stock = $currentStock ?? 0;
+            $product->description   = $description;
+            $product->created_by    = Auth::id();
+            $res = $product->save();
+            if ($res) {
+                if ($request->hasFile('image_src')) {
+                    $imageSRC   = $request->file('image_src');
+                    $uploadPath = $product->getImageUploadPath();
+                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    // $storePath  = Storage::path($imagePath);
+                    // $watermarkImgPath = public_path('images/logos/watermark.png');
+
+                    // open an image file
+                    // $img = Image::make($storePath);
+
+                    // now you are able to resize the instance
+                    // $img->resize(1024, 1024);
+
+                    // and insert a watermark for example
+                    // $img->insert($watermarkImgPath, 'center');
+                    // Storage::disk('public')->delete($storePath);
+
+                    // finally we save the image as a new file
+                    // $img->save($storePath);
+
+                    $product->image_src = $imagePath;
+                    $product->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.products.index')->with('success', 'Product created successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something is wrong');
+        }
+    }
+
+    public function edit($id)
+    {
+       $product = Product::find($id);
+
+       if (!$product) {
+            abort(404);
+       }
+
+        $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
+        $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+
+        return view('adminend.pages.product.edit',[
+            'product'    => $product,
+            'brands'     => $brands,
+            'categories' => $categories
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'name'        => ['required', "unique:products,name,$id"],
+            'brand_id'    => ['required', 'numeric'],
+            'category_id' => ['required', 'numeric'],
+            'price'       => ['required']
+        ]);
+
+        $name         = $request->input('name', null);
+        $brandId      = $request->input('brand_id', null);
+        $categoryId   = $request->input('category_id', null);
+        $price        = $request->input('price', 0);
+        $offerPrice   = $request->input('offer_price', 0);
+        $offerPercent = $request->input('offer_percent', 0);
+        $currentStock = $request->input('current_stock', 0);
+        $status       = $request->input('status', 'active');
+        $description  = $request->input('description', null);
+        $slug         = Str::slug($name, '-');
+
+        try {
+            DB::beginTransaction();
+            $product = Product::find($id);
+            if (!$product) {
+                abort(404);
+            }
+
+            $product->name          = $name;
+            $product->slug          = $slug;
+            $product->brand_id      = $brandId;
+            $product->category_id   = $categoryId;
+            $product->price         = $price;
+            $product->offer_price   = $offerPrice ?? 0;
+            $product->offer_percent = $offerPercent ?? 0;
+            $product->status        = $status;
+            $product->current_stock = $currentStock ?? 0;
+            $product->description   = $description;
+            $product->created_by    = Auth::id();
+            $res = $product->save();
+
+            if ($res) {
+                if ($request->hasFile('image_src')) {
+                    $oldImagePath = $product->getOldPath($product->image_src);
+                    if ($oldImagePath) {
+                        Storage::disk('public')->delete($oldImagePath);
+                    }
+
+                    $imageSRC   = $request->file('image_src');
+                    $uploadPath = $product->getImageUploadPath();
+                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    // $storePath  = Storage::path($imagePath);
+                    // $watermarkImgPath = public_path('images/logos/watermark.png');
+
+                    // open an image file
+                    // $img = Image::make($storePath);
+
+                    // now you are able to resize the instance
+                    // $img->resize(1024, 1024);
+
+                    // and insert a watermark for example
+                    // $img->insert($watermarkImgPath, 'center');
+                    // Storage::disk('public')->delete($storePath);
+
+                    // finally we save the image as a new file
+                    // $img->save($storePath);
+
+                    $product->image_src = $imagePath;
+                    $product->save();
+                }
+            }
+            DB::commit();
+            return redirect()->route('admin.products.index')->with('success', 'Product updated successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+            return back()->with('error', 'Something went to wrong');
+        }
+    }
+
+    public function bulk()
+    {
+        return view('adminend.pages.product.bulk');
     }
 
     public function bulkUpload(Request $request)
@@ -111,32 +269,14 @@ class ProductController extends Controller
 
         while (($data = fgetcsv($file, 2500, ",")) !== false) {
             if (!$firstline) {
-                // Get All data from csv
-                $imageName         = trim($data['0']) ?? null;
-                $mediposId         = trim($data['1']) ?? null;
-                $brandName         = trim($data['2']) ?? null;
-                $productName       = trim($data['3']);
-                $companyId         = trim($data['4']) ?? null;
-                $genericName       = trim($data['5']) ?? null;
-                $mrp               = trim($data['6']) ?? 0;
-                $dosageFormId      = trim($data['7']) ?? null;
-                $counterType       = trim($data['8']) ?? 'none';
-                $packSize          = trim($data['9']) ?? 1;
-                $packName          = trim($data['10']) ?? null;
-                $numberOfPack      = trim($data['11']) ?? 10;
-                $uom               = trim($data['12']) ?? null;
-                $isSingleSellAllow = trim($data['13']) ?? 0;
-                $isRefrigerated    = trim($data['14']) ?? 0;
-                $isExpressDelivery = trim($data['15']) ?? 0;
-                $description       = trim($data['16']) ?? 0;
-                // $tags           = trim($data['18']);
-                // $categoryName   = trim($data['19']);
-                // $symptoms       = trim($data['20']);
 
-                // $tags     = explode(',', $tags);
-                // $symptoms = explode(',', $symptoms);
-
-                $mrp = (float)$mrp;
+                $imageName    = trim($data['0']);
+                $brandName    = trim($data['1']);
+                $categoryName = trim($data['2']);
+                $productName  = trim($data['3']);
+                $price        = trim($data['4']);
+                $offerPrice   = trim($data['5']);
+                $description  = trim($data['6']);
 
                 try {
                     DB::beginTransaction();
@@ -148,130 +288,73 @@ class ProductController extends Controller
                         if ($brand) {
                             $brandId = $brand->id;
                         } else {
-                            $brandObj             = new Brand();
-                            $brandObj->slug       = $brandSlug;
-                            $brandObj->name       = $brandName;
-                            $brandObj->company_id = $companyId;
-                            $brandObj->status     = 'activated';
-                            $brandObj->save();
-                            $brandId = $brandObj->id;
+                            $brand         = new Brand();
+                            $brand->slug   = $brandSlug;
+                            $brand->name   = $brandName;
+                            $brand->status = 'active';
+                            $brand->save();
+                            $brandId = $brand->id;
                         }
                     }
 
-                    $genericId = null;
-                    if ($genericName) {
-                        $genericSlug = Str::slug($genericName, '-');
-                        $generic = Generic::where('slug', $genericSlug)->first();
-                        if ($generic) {
-                            $genericId = $generic->id;
+                    $categoryId = null;
+                    if ($categoryName) {
+                        $cagtegorySlug = Str::slug($categoryName, '-');
+                        $category = Category::where('slug', $cagtegorySlug)->first();
+                        if ($category) {
+                            $categoryId = $category->id;
                         } else {
-                            $genericObj           = new Generic();
-                            $genericObj->slug     = $genericSlug;
-                            $genericObj->name     = $genericName;
-                            // $genericObj->strength = $strength;
-                            $genericObj->save();
-                            $genericId = $genericObj->id;
+                            $category         = new Category();
+                            $category->slug   = $cagtegorySlug;
+                            $category->name   = $categoryName;
+                            $category->status = 'active';
+                            $category->save();
+                            $categoryId = $category->id;
                         }
                     }
+
+                    // Calculate offer percent
+                    $offerPercent = 0;
 
                     // $productRes = false;
-                    if ($productName && $mrp) {
+                    if ($productName && $price) {
                         $productSlug = Str::slug($productName, '-');
                         $product = Product::where('slug', $productSlug)->first();
                         // if product found then update product
                         if ($product) {
-                            $product->name                 = $productName;
-                            $product->slug                 = $productSlug;
-                            $product->dosage_form_id       = $dosageFormId;
-                            $product->brand_id             = $brandId;
-                            $product->company_id           = $companyId;
-                            $product->generic_id           = $genericId;
-                            $product->pos_product_id       = $mediposId;
-                            $product->mrp                  = $mrp;
-                            $product->selling_price        = 0;
-                            $product->selling_percent      = 0;
-                            $product->status               = 'activated';
-                            $product->description          = $description;
-                            $product->counter_type         = $counterType;
-                            $product->pack_size            = $packSize;
-                            $product->pack_name            = $packName;
-                            $product->num_of_pack          = $numberOfPack;
-                            $product->uom                  = $uom;
-                            $product->is_single_sell_allow = $isSingleSellAllow;
-                            $product->is_refrigerated      = $isRefrigerated;
-                            $product->is_express_delivery  = $isExpressDelivery;
-                            $product->created_by_id        = Auth::id();
+                            $product->name          = $productName;
+                            $product->slug          = $productSlug;
+                            $product->brand_id      = $brandId;
+                            $product->price         = $price;
+                            $product->offer_price   = $offerPrice;
+                            $product->offer_percent = $offerPercent;
+                            $product->status        = 'active';
+                            $product->description   = $description;
+                            $product->created_by    = Auth::id();
                             $product->save();
 
-                            $product->image_src = "images/products/{$now->year}/{$now->month}/{$imageName}.jpg";
-                            $productRes = $product->save();
+                            $product->image_src = "images/products/{$imageName}.jpg";
+                            $product->save();
                             info('Update ' . $imageName);
-                            info('Update ' . $product->id);
                         } else {
-                            $productObj                       = new Product();
-                            $productObj->name                 = $productName;
-                            $productObj->slug                 = $productSlug;
-                            $productObj->dosage_form_id       = $dosageFormId;
-                            $productObj->brand_id             = $brandId;
-                            $productObj->company_id           = $companyId;
-                            $productObj->generic_id           = $genericId;
-                            $productObj->pos_product_id       = $mediposId;
-                            $productObj->mrp                  = $mrp;
-                            $productObj->selling_price        = 0;
-                            $productObj->selling_percent      = 0;
-                            $productObj->status               = 'activated';
-                            $productObj->description          = $description;
-                            $productObj->counter_type         = $counterType;
-                            $productObj->pack_size            = $packSize;
-                            $productObj->pack_name            = $packName;
-                            $productObj->num_of_pack          = $numberOfPack;
-                            $productObj->uom                  = $uom;
-                            $productObj->is_single_sell_allow = $isSingleSellAllow;
-                            $productObj->is_refrigerated      = $isRefrigerated;
-                            $productObj->is_express_delivery  = $isExpressDelivery;
-                            $productObj->created_by_id        = Auth::id();
+                            $productObj                = new Product();
+                            $productObj->name          = $productName;
+                            $productObj->slug          = $productSlug;
+                            $productObj->brand_id      = $brandId;
+                            $productObj->category_id   = $categoryId;
+                            $productObj->price         = $price;
+                            $productObj->offer_price   = 0;
+                            $productObj->offer_percent = 0;
+                            $productObj->status        = 'active';
+                            $productObj->description   = $description;
+                            $productObj->created_by    = Auth::id();
                             $productObj->save();
 
-                            $productObj->image_src      = "images/products/{$now->year}/{$now->month}/{$imageName}.jpg";
-                            $productRes = $productObj->save();
+                            $productObj->image_src = "images/products/{$imageName}.jpg";
+                            $productObj->save();
                             info('Create ' . $imageName);
-                            info('Create ' . $productObj->id);
                         }
                     }
-                    // if ($productRes) {
-                    //     // Find or create tags and attach with product
-                    //     foreach ($tags as $tagName) {
-                    //         if ($tagName) {
-                    //             $ttag = Tag::where('name', $tagName)->first();
-                    //             if (!$ttag) {
-                    //                 $ttag       = new Tag();
-                    //                 $ttag->slug = Str::slug($tagName, '-');
-                    //                 $ttag->name = $tagName;
-                    //                 $ttag->save();
-                    //             }
-
-                    //             $productObj->tags()->sync([$ttag->id]);
-                    //         }
-                    //     }
-                    //     // Find or create tags and attach with product
-                    //     foreach ($symptoms as $symptomName) {
-                    //         if ($symptomName) {
-                    //             $symptomObj = Symptom::where('name', $symptomName)->first();
-                    //             if (!$symptomObj) {
-                    //                 $symptomObj       = new Symptom();
-                    //                 $symptomObj->slug = Str::slug($symptomName, '-');
-                    //                 $symptomObj->name = $symptomName;
-                    //                 $symptomObj->save();
-                    //             }
-
-                    //             $productObj->symptoms()->sync([$symptomObj->id]);
-                    //         }
-                    //     }
-                    //     // Attach category with product
-                    //     if ($categoryID) {
-                    //         $productObj->categories()->attach($categoryID);
-                    //     }
-                    // }
                     DB::commit();
                 } catch (\Exception $e) {
                     info($e);
@@ -293,10 +376,10 @@ class ProductController extends Controller
         if (in_array(strtolower($extension), $valid_extension)) {
             if ($fileSize <= $maxFileSize) {
             } else {
-                throw new \Exception('No file was uploaded', Response::HTTP_REQUEST_ENTITY_TOO_LARGE); //413 error
+                return $this->sendError('File size is very large');
             }
         } else {
-            throw new \Exception('Invalid file extension', Response::HTTP_UNSUPPORTED_MEDIA_TYPE); //415 error
+            return $this->sendError('Invalid file format');
         }
     }
 

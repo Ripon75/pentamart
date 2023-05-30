@@ -2,36 +2,33 @@
 
 namespace App\Models;
 
+use Wildside\Userstamps\Userstamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Address extends Model
 {
-    use SoftDeletes;
-    use HasFactory;
+    use HasFactory, Userstamps, SoftDeletes;
 
     protected $fillable = [
         'title',
+        'address',
         'user_id',
-        'contact_name',
         'phone_number',
-        'line_1',
-        'line_2',
-        'postal_code',
-        'area_id'
+        'area_id',
+        'created_by',
+        'updated_by'
     ];
 
     protected $casts = [
-        'id'           => 'integer',
         'title'        => 'string',
+        'address'      => 'string',
         'user_id'      => 'integer',
-        'contact_name' => 'string',
         'phone_number' => 'string',
-        'line_1'       => 'string',
-        'line_2'       => 'string',
-        'postal_code'  => 'string',
         'area_id'      => 'integer',
+        'created_by'   => 'integer',
+        'updated_by'   => 'integer',
         'created_at'   => 'datetime:Y-m-d H:i:s',
         'updated_at'   => 'datetime:Y-m-d H:i:s',
         'deleted_at'   => 'datetime:Y-m-d H:i:s'

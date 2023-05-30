@@ -12,6 +12,11 @@
     <div class="page-content">
         <div class="container">
             <div class="lg:w-[500px] xl:w-[500px] mx-auto">
+
+                @if(Session::has('error'))
+                    <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+                @endif
+
                 <div class="card shadow">
                     <div class="body p-4">
                         <form action="{{ route('admin.payments.store') }}" method="POST" enctype="multipart/form-data">
@@ -25,31 +30,20 @@
                                 @enderror
                             </div>
                             <div class="form-item">
-                                <label for="" class="form-label">Code Name</label>
-                                <input type="text" name="code" class="w-full" value="{{ old('code') }}">
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Icon</label>
-                                <input type="text" name="icon" class="w-full" value="{{ old('icon') }}">
-                            </div>
-                            <div class="form-item">
                                 <label for="" class="form-label">Status</label>
                                 <select class="form-select w-full" name="status">
                                     <option value="activated">Select Status</option>
-                                    <option value="draft">Draft</option>
-                                    <option value="activated">Activated</option>
-                                    <option value="inactivated">Inactivated</option>
+                                    <option value="active">Active</option>
+                                    <option value="inactive">Inactive</option>
                                 </select>
                             </div>
                             <div class="form-item">
-                                <label for="" class="form-label">Description</label>
-                                <textarea class="w-full" name="description">{{ old('description') }}</textarea>
-                            </div>
-                            <div class="form-item">
                                 <label for="" class="form-label">Upload File</label>
-                                <input type="file" name="file" class="w-full">
+                                <input type="file" name="img_src" class="w-full">
                             </div>
-                            <button type="submit" class="btn btn-primary">Create</button>
+                            <div class="flex justify-end">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                            </div>
                         </form>
                     </div>
                 </div>
