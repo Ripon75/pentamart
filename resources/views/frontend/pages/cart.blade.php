@@ -8,7 +8,7 @@
                     <div>
                         <div class="overflow-auto">
                             <table class="table-auto w-full bg-white">
-                                <thead class="border bg-gray-300">
+                                <thead class="border bg-secondary">
                                     <tr class="text-sm sm:text-sm md:text-sm lg:text-base">
                                         <th class="hidden sm:hidden md:block text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r">
                                             Image
@@ -208,7 +208,6 @@
                                 <span>Delivery Charge (+)</span>
                                 <span>{{ $currency }}
                                     <span id="delivery-charge-lavel" class="ml-1"></span>
-                                    <input id="input-delivery-charge" type="hidden" value="{{ $deliveryGateways[0]->price }}">
                                 </span>
                             </div>
                         </div>
@@ -229,25 +228,8 @@
                         {{-- ========Choose Delivery Type===== --}}
                         <section class="mt-4">
                             <div class="card border-2">
-                                {{-- <div class="header">
-                                    <h1 class="title">Choose Delivery Type <i class="ml-3 fa-solid fa-truck-fast"></i></h1>
-                                </div> --}}
-                                <div class="p-2 space-x-2 first:space-x-0 hidden">
-                                    <input type="hidden" id="input-delivery-gateway-id" value="">
-                                    @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
-                                        <button
-                                            type="button"
-                                            data-delivery-gateway-price="{{ $deliveryGateways[$i]->price }}"
-                                            data-delivery-gateway-id="{{ $deliveryGateways[$i]->id }}"
-                                            class="btn-delivery-gateway
-                                            {{ $i === 0 ? 'active' : '' }}">
-                                            <span class="text-sm tracking-wide font-bold">{{ $deliveryGateways[$i]->name }}</span>
-                                            <span class="text-xs">
-                                                {{ $deliveryGateways[$i]->min_delivery_time }} to {{ $deliveryGateways[$i]->max_delivery_time }}
-                                                &nbsp;{{ $deliveryGateways[$i]->delivery_time_unit }}
-                                            </span>
-                                        </button>
-                                    @endfor
+                                <div class="header">
+                                    <h1 class="title">Select shipping address <span class="text-red-500">*</span> </h1>
                                 </div>
                                 <div class="p-2">
                                     <div class="flex justify-between items-center">
@@ -256,10 +238,6 @@
                                                 <i class="text-lg text-gray-500 fa-solid fa-location-dot"></i>
                                             </div>
                                             <div class="">
-                                                <div class="text-sm sm:text-sm md:text-sm font-semibold">
-                                                    Select Address
-                                                    <span class="text-red-500 ml-1">*</span>
-                                                </div>
                                                 <input type="hidden" class="shipping-address-id" name="address_id"
                                                     value="{{ ($cart->address->id) ?? null }}">
                                                 <div id="" class="shipping-address-label text-sm text-gray-500">
@@ -270,7 +248,7 @@
                                         <div class="">
                                             <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
                                             data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth
-                                            @guest data-bs-target="#loginModalCenter" @endguest>Choose</button>
+                                            @guest data-bs-target="#loginModalCenter" @endguest>Select</button>
                                         </div>
                                     </div>
                                 </div>
@@ -308,7 +286,7 @@
                         <section class="mt-4">
                             <div class="card border-2">
                                 <div class="header">
-                                    <h1 class="title">Have a coupon code? <i class="ml-3 fa-solid fa-tag"></i></h1>
+                                    <h1 class="title">Have a coupon code</h1>
                                 </div>
                                 <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
                                     <div id="apply-coupon-box">
@@ -385,25 +363,23 @@
 
 @push('scripts')
     <script>
-        var aleartTime                = '{{ config('crud.alear_time') }}';
-        var cartAddItemEndPoint       = '/cart/items/add';
-        var cartAddMetaDataEndPoint   = '/cart/meta/add';
-        var deleteCartItemBtn         = $('.delete-cart-item-btn');
-        var iconLoadding              = $('.loadding-icon');
-        var iconTrash                 = $('.trash-icon');
-        var continueCartIcon          = $('#continue-cart-icon');
-        var emptyCart                 = $('#empty-cart');
-        var cartInputItemQty          = $('.cart-input-item-qty');
-        var btnDeliveryGateway        = $('.btn-delivery-gateway');
-        var btnPaymentMethod          = $('.btn-payment-method');
-        var inputDeliveryGateway      = $('#input-delivery-gateway-id');
-        var inputPaymentMethod        = $('#input-payment-method-id');
-        var btnOrderSubmit            = $('#btn-order-submit');
-        var formCheckOut              = $('#form-checkout');
-        var subTotalPriceLabel        = $('#sub-total-price-label');
-        var cartTotalPriceLabel       = $('#cart-total-price-label');
-        var deliveryGatewayPriceLabel = $('#delivery-charge-lavel');
-        var inputDelivaryCharge       = $('#input-delivery-charge');
+        var cartAddItemEndPoint     = '/cart/items/add';
+        var cartAddMetaDataEndPoint = '/cart/meta/add';
+        var deleteCartItemBtn       = $('.delete-cart-item-btn');
+        var iconLoadding            = $('.loadding-icon');
+        var iconTrash               = $('.trash-icon');
+        var continueCartIcon        = $('#continue-cart-icon');
+        var emptyCart               = $('#empty-cart');
+        var cartInputItemQty        = $('.cart-input-item-qty');
+        var btnPaymentMethod        = $('.btn-payment-method');
+        var inputDeliveryGateway    = $('#input-delivery-gateway-id');
+        var inputPaymentMethod      = $('#input-payment-method-id');
+        var btnOrderSubmit          = $('#btn-order-submit');
+        var formCheckOut            = $('#form-checkout');
+        var subTotalPriceLabel      = $('#sub-total-price-label');
+        var cartTotalPriceLabel     = $('#cart-total-price-label');
+        var deliveryCharge          = "{{ $deliveryCharge }}";
+        var deliveryChargeLabel     = $('#delivery-charge-lavel');
         // For address create
         var addressModal         = $('#address-modal');
         var btnAddressChangeCart = $('#btn-address-change');
@@ -426,13 +402,9 @@
         iconTrash.show();
         iconLoadding.hide();
 
-        cartTotalPriceCalculation();
+        totalPriceCalculation();
 
         $(function() {
-            // Remove cart drawer & button
-            $('#btn-cart-drawer').remove();
-            $('#drawerCart').remove();
-
             // Delete item
             deleteCartItemBtn.click(function() {
                 var itemId = $(this).data('item-id');
@@ -483,21 +455,6 @@
                 removedCouponCode();
             });
 
-            // On Choose Delivery Type item
-            btnDeliveryGateway.click(function() {
-                btnDeliveryGateway.removeClass('active');
-                $(this).addClass('active');
-
-                var gatewayID    = $(this).data('delivery-gateway-id');
-                var gatewayPrice = $(this).data('delivery-gateway-price');
-                inputDelivaryCharge.val(gatewayPrice);
-                deliveryGatewayPriceLabel.text(gatewayPrice);
-                inputDeliveryGateway.val(gatewayID);
-
-                cartTotalPriceCalculation();
-                addCartMetaData('delevery_type_id', gatewayID);
-            });
-
             // On choose payment method
             btnPaymentMethod.click(function() {
                 btnPaymentMethod.removeClass('active');
@@ -519,11 +476,11 @@
                     if (checked == 1) {
                         formCheckOut.submit();
                     } else {
-                        __showNotification('error', 'Please checked terms and conditons', aleartTime);
+                        __showNotification('error', 'Please checked terms and conditons');
                         return false;
                     }
                 } else {
-                    __showNotification('error', 'Please select shipping address to continue', aleartTime);
+                    __showNotification('error', 'Please select shipping address to continue');
                     return false;
                 }
                 $(this).find(iconLoadding).show();
@@ -545,7 +502,7 @@
             // On remove coupon code
             btnRemoveCouponCode.click(function() {
                 removedCouponCode();
-                cartTotalPriceCalculation();
+                totalPriceCalculation();
             });
 
             $('#terms-and-conditons').click(function() {
@@ -591,7 +548,7 @@
             .then((response) => {
                 if (response.data.error) {
                     inputCouponCode.val('');
-                    __showNotification('error', response.data.message, aleartTime);
+                    __showNotification('error', response.data.message);
                     return false;
                 } else {
                     var coupon = response.data
@@ -623,7 +580,7 @@
             .then(function (response) {
                 btn.parent().parent().remove();
                 removedCouponCode();
-                cartTotalPriceCalculation();
+                totalPriceCalculation();
                 __cartItemCount();
             })
             .catch(function (error) {
@@ -655,7 +612,7 @@
                 is_update: true
             })
             .then((response) => {
-                cartTotalPriceCalculation();
+                totalPriceCalculation();
             })
             .catch((error) => {
                 console.log(error);
@@ -682,16 +639,15 @@
             .then((response) => {
             })
             .catch((error) => {
-                __showNotification('error', response.data.message, aleartTime);
+                __showNotification('error', response.data.message);
                 return false;
             });
         }
 
         // Calculate total price
-        function cartTotalPriceCalculation() {
+        function totalPriceCalculation() {
             var itemsTotalPrice         = 0;
             var itemTotalDiscount       = 0;
-            var deliveryCharge          = 0;
             var totalWithDeliveryCharge = 0;
             $(".sub-total-price").each(function() {
                 var itemPrice = parseFloat($(this).text());
@@ -706,8 +662,8 @@
 
 
             // Get seltected delivery charge text
-            deliveryCharge = parseFloat(inputDelivaryCharge.val());
-            deliveryGatewayPriceLabel.text(deliveryCharge.toFixed(2));
+            deliveryCharge = parseFloat(deliveryCharge);
+            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
 
             // get coupon discount
             couponDiscount = inputItemsDiscount.val();
@@ -728,7 +684,6 @@
         }
 
         function removedCouponCode() {
-            var deliveryGatewayPrice = btnDeliveryGateway.data('delivery-gateway-price');
             applyCouponBox.show();
             activeCouponBox.hide();
             inputCouponCodeId.val('');
@@ -740,8 +695,7 @@
 
         function couponCodeOnDelivery(coupon) {
             var couponAmount = coupon.discount_amount;
-            var deliveryGatewayPrice = btnDeliveryGateway.data('delivery-gateway-price');
-            deliveryGatewayPrice = deliveryGatewayPrice - couponAmount;
+            deliveryCharge = deliveryCharge - couponAmount;
             applyCouponBox.hide();
             activeCouponBox.show();
             labelCouponCode.text(coupon.code);
@@ -750,11 +704,10 @@
             inputItemsDiscount.val(couponAmount)
             var couponCode = coupon.code;
             couponCode     = couponCode.toUpperCase();
-            deliveryGatewayPriceLabel.text(deliveryGatewayPrice.toFixed(2));
+            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
             discountLabel.text(0.0);
             inputItemsDiscount.val(0.0);
-            inputDelivaryCharge.val(deliveryGatewayPrice);
-            cartTotalPriceCalculation();
+            totalPriceCalculation();
         }
 
         function couponCodeOnCart(coupon) {
@@ -781,7 +734,7 @@
             couponCode     = couponCode.toUpperCase();
             $('#coupon-discount-div').show();
             $('#coupon-discount-label').text(couponAmount.toFixed(2));
-            cartTotalPriceCalculation();
+            totalPriceCalculation();
         }
     </script>
 @endpush

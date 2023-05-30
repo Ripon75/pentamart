@@ -99,7 +99,7 @@
                                 <div class="hidden absolute top-full left-0 z-20 group-hover:block">
                                     <div class="flex flex-col bg-gray-50 rounded-lg rounded-t-none w-40 shadow">
                                         @role('superadministrator')
-                                            <a href="/admin/dashboard" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                            <a href="/admin/dashboard" target="_blank" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                                 <i class="mr-3 text-xs fa-solid fa-user"></i>Admin Panel
                                             </a>
                                         @endrole

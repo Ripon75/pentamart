@@ -26,7 +26,7 @@
                     <div class="w-full overflow-x-scroll">
                         <table class="table-auto w-full text-xs sm:text-xs md:text-sm">
                             <thead class="">
-                                <tr class="bg-gray-100">
+                                <tr class="bg-secondary">
                                     <th class="text-left border p-2">Order ID</th>
                                     <th class="text-right border p-2">Items</th>
                                     <th class="text-right border p-2">Price</th>
@@ -48,18 +48,15 @@
                                             <span class="ml-1">{{ number_format($payableTotal, 2) }}</span>
                                         </td>
                                         @php
-                                            $statusSlug = $order->currentStatus->slug ?? null;
-                                            $label      = 'N/A';
-                                            $bgColor    = '#f94449';
-                                            $fontColor  = '#ffff';
+                                            $label      = $order->currentStatus->name ?? 'N/A';
+                                            $bgColor    = $order->currentStatus->bg_color ?? '#f94449';
+                                            $fontColor  = $order->currentStatus->font_color ?? '#ffff';
                                         @endphp
                                         <td class="border border-l-0 p-2 text-center">
-                                            @if ($order->currentStatus)
-                                                <span class="rounded border px-2 py-1 text-xs"
-                                                    style="background-color:{{ $bgColor }};color:{{ $fontColor }};">
-                                                    {{ ($order->currentStatus->name) ?? null }}
-                                                </span>
-                                            @endif
+                                            <span class="rounded border px-2 py-1 text-xs"
+                                                style="background-color:{{ $bgColor }};color:{{ $fontColor }};">
+                                                {{ $label }}
+                                            </span>
                                         </td>
                                         <td class="border border-l-0 p-2">{{ $order->created_at }}</td>
                                         <td class="border border-l-0 p-2 flex flex-wrap space-y-1 md:space-y-0 space-x-2 items-center justify-center">
