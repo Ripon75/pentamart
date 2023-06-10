@@ -163,7 +163,7 @@
                                 </button>
                             </div>
                             <div class="">
-                                <button id="empty-cart" class="btn btn-md btn-danger">
+                                <button id="input-cart-empty" class="btn btn-md btn-danger">
                                     Clear cart
                                     <i class="ml-2 trash-icon text-white fa-regular fa-trash-can"></i>
                                     <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
@@ -369,7 +369,7 @@
         var iconLoadding            = $('.loadding-icon');
         var iconTrash               = $('.trash-icon');
         var continueCartIcon        = $('#continue-cart-icon');
-        var emptyCart               = $('#empty-cart');
+        var inputCartEmpty          = $('#input-cart-empty');
         var cartInputItemQty        = $('.cart-input-item-qty');
         var btnPaymentMethod        = $('.btn-payment-method');
         var inputDeliveryGateway    = $('#input-delivery-gateway-id');
@@ -415,7 +415,7 @@
             });
 
             // Empty item
-            emptyCart.click(function() {
+            inputCartEmpty.click(function() {
                 $(this).find(iconTrash).hide()
                 $(this).find(iconLoadding).show();
                 emptyCart();

@@ -267,14 +267,14 @@ class OrderController extends Controller
         $areas             = Area::orderBy('name', 'asc')->get();
         $pgs               = PaymentGateway::where('status', 'activated')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
-        $orderStatus       = $order->getNextStatus($order->status_id);
+        // $orderStatus       = $order->getNextStatus($order->status_id);
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,
             'areas'             => $areas,
             'pgs'   => $pgs,
             'shippingAddresses' => $shippingAddresses,
-            'orderStatus'       => $orderStatus,
+            'orderStatus'       => [],
             'currency'          => 'Tk'
         ]);
     }
