@@ -216,17 +216,11 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="flex justify-between">
-                                    <span>Total Price</span>
-                                    <span>{{ $currency }}
-                                        <span id="sub-total-price-label" class="ml-1"></span>
-                                    </span>
-                                </div> --}}
                                 <div class="mt-4">
-                                    <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
+                                    <a href="{{ route('checkout') }}" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
                                         <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
                                         Checkout
-                                    </button>
+                                    </a>
                                 </div>
                             </div>
                         </div>
