@@ -8264,6 +8264,10 @@ textarea.form-control.is-invalid{
   margin-top: 1.5rem;
   margin-bottom: 1.5rem;
 }
+.mx-2{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
 .my-16{
   margin-top: 4rem;
   margin-bottom: 4rem;
@@ -8896,6 +8900,9 @@ textarea.form-control.is-invalid{
 .border-r{
   border-right-width: 1px;
 }
+.border-b-2{
+  border-bottom-width: 2px;
+}
 .border-l{
   border-left-width: 1px;
 }
@@ -9025,6 +9032,10 @@ textarea.form-control.is-invalid{
 .bg-red-600{
   --tw-bg-opacity: 1;
   background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+}
+.bg-\[\#c03375\]{
+  --tw-bg-opacity: 1;
+  background-color: rgb(192 51 117 / var(--tw-bg-opacity));
 }
 .bg-sky-400{
   --tw-bg-opacity: 1;
@@ -20252,6 +20263,10 @@ readers do not read off random characters that represent icons */
   gap: 2rem;
 }
 
+.last\:gap-4:last-child{
+  gap: 1rem;
+}
+
 .last\:border-b-0:last-child{
   border-bottom-width: 0px;
 }
@@ -21491,6 +21506,9 @@ readers do not read off random characters that represent icons */
   }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .\32xl\:grid-cols-5{
+    grid-template-columns: repeat(5, minmax(0, 1fr));
   }
   .\32xl\:grid-cols-6{
     grid-template-columns: repeat(6, minmax(0, 1fr));
