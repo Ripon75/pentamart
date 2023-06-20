@@ -32,6 +32,7 @@ Route::post('/registration', [AuthController::class, 'registrationStore'])->name
 Route::get('/login',           [AuthController::class, 'loginCreate'])->name('login.create');
 Route::post('/login',          [AuthController::class, 'login'])->name('login');
 Route::post('/check-user',     [AuthController::class, 'checkUser'])->name('check.user');
+Route::get('/send-otp-code',   [AuthController::class, 'sendOtp'])->name('send.otp');
 Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
 // Socialite
@@ -49,6 +50,7 @@ Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.sin
 Route::middleware(['auth'])->group(function(){
     // All Cart route
     Route::get('/cart/items',         [CartController::class, 'cartItem'])->name('cart.items');
+    Route::get('/checkout',           [CartController::class, 'checkout'])->name('checkout');
     Route::post('/cart/items/add',    [CartController::class, 'addItem'])->name('cart.item.add');
     Route::post('/cart/items/remove', [CartController::class, 'removeItem'])->name('cart.item.remove');
     Route::get('/cart/items/count',   [CartController::class, 'cartItemCount']);

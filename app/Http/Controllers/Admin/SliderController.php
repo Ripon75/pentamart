@@ -31,13 +31,11 @@ class SliderController extends Controller
     {
         $request->validate(
             [
-                'name'      => ['required'],
-                'large_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
-                'small_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
+                'name'    => ['required'],
+                'img_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
             ],
             [
-                'large_src.required' => 'Image field is required',
-                'small_src.required' => 'Image field is required'
+                'img_src.required' => 'Image field is required',
             ]
         );
 
@@ -55,13 +53,10 @@ class SliderController extends Controller
             $brand->status = $status;
             $res = $brand->save();
             if ($res) {
-                if ($request->hasFile('large_src') &&  $request->hasFile('small_src')) {
-                    $largeSRC         = $request->file('large_src');
-                    $smallSRC         = $request->file('small_src');
-                    $largePath        = Storage::put('images/sliders', $largeSRC);
-                    $smallPath        = Storage::put('images/sliders', $smallSRC);
-                    $brand->large_src = $largePath;
-                    $brand->small_src = $smallPath;
+                if ($request->hasFile('img_src') ) {
+                    $imgSrc         = $request->file('img_src');
+                    $imgPath        = Storage::put('images/sliders', $imgSrc);
+                    $brand->img_src = $imgPath;
                     $brand->save();
                 }
             }
@@ -74,7 +69,7 @@ class SliderController extends Controller
         }
     }
 
-    public function edit(Request $request, $id)
+    public function edit($id)
     {
         $slider = Slider::find($id);
 
@@ -107,24 +102,14 @@ class SliderController extends Controller
             $slider->status = $status;
             $res = $slider->save();
             if ($res) {
-                if ($request->hasFile('large_src')) {
-                    $largeSRC = $request->file('large_src');
-                    $oldPath = $slider->getOldPath($slider->large_src);
+                if ($request->hasFile('img_src')) {
+                    $imgSRC = $request->file('img_src');
+                    $oldPath = $slider->getOldPath($slider->img_src);
                     if ($oldPath) {
                         Storage::delete($oldPath);
                     }
-                    $largePath = Storage::put('images/sliders', $largeSRC);
-                    $slider->large_src = $largePath;
-                    $slider->save();
-                }
-                if ($request->hasFile('small_src')) {
-                    $smallSRC = $request->file('small_src');
-                    $oldPath = $slider->getOldPath($slider->small_src);
-                    if ($oldPath) {
-                        Storage::delete($oldPath);
-                    }
-                    $smallPath = Storage::put('images/sliders', $smallSRC);
-                    $slider->small_src = $smallPath;
+                    $imgPath = Storage::put('images/sliders', $imgSRC);
+                    $slider->img_src = $imgPath;
                     $slider->save();
                 }
             }

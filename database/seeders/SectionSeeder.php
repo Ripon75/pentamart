@@ -21,14 +21,14 @@ class SectionSeeder extends Seeder
 
         Section::insert([
             [
-                'name'       => 'Top Products' ,
-                'slug'       => 'top-products',
+                'name'       => 'First section' ,
+                'slug'       => 'first-section',
                 'title'      => 'Top Products',
                 'created_at' => $now
             ],
             [
-                'name'       => 'Medical Devices' ,
-                'slug'       => 'medical-devices',
+                'name'       => 'Second section' ,
+                'slug'       => 'second-section',
                 'title'      => 'Watch',
                 'created_at' => $now
             ],

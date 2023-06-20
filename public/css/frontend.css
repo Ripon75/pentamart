@@ -8369,6 +8369,9 @@ textarea.form-control.is-invalid{
 .-ml-px{
   margin-left: -1px;
 }
+.mb-5{
+  margin-bottom: 1.25rem;
+}
 .box-content{
   box-sizing: content-box;
 }
@@ -9052,6 +9055,10 @@ textarea.form-control.is-invalid{
 .bg-green-400{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
+}
+.bg-gray-500{
+  --tw-bg-opacity: 1;
+  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;

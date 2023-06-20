@@ -85,7 +85,7 @@ class DashboardController extends Controller
 
         // Graph for order items and value
         $orderGraph = Order::leftJoin('order_item', 'orders.id', '=', 'order_item.order_id')
-            ->select([DB::raw('(orders.created_at) as created_at'), DB::raw('SUM(order_item.quantity * order_item.sell_price) as item_subtotal'), DB::raw('COUNT(distinct orders.id) as order_count')])
+            ->select([DB::raw('(orders.created_at) as created_at'), DB::raw('SUM(order_item.quantity * order_item.item_sell_price) as item_subtotal'), DB::raw('COUNT(distinct orders.id) as order_count')])
             ->groupBy(DB::raw('date(orders.created_at)'))->whereBetween('orders.created_at', [$startDate, $endDate])->orderBy('orders.created_at', 'ASC')->get();
 
         $lables = $orderGraph->pluck('created_at')->map(function ($oat) {

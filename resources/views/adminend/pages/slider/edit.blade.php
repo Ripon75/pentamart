@@ -33,17 +33,10 @@
                                 </select>
                             </div>
                             <div class="form-item">
-                                <label for="" class="form-label">Large Image</label>
-                                <input type="file" name="large_src" class="w-full">
-                                @if ($slider->large_src)
-                                    <img class="w-20 h-16 mt-2" src="{{ $slider->large_src }}" alt="{{ $slider->name }}">
-                                @endif
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Samll Image</label>
-                                <input type="file" name="small_src" class="w-full">
-                                @if ($slider->small_src)
-                                    <img class="w-20 h-14 mt-2" src="{{ $slider->small_src }}" alt="{{ $slider->name }}">
+                                <label for="" class="form-label">Upload Image</label>
+                                <input type="file" name="img_src" class="w-full">
+                                @if ($slider->img_src)
+                                    <img class="w-auto h-16 mt-2" src="{{ $slider->img_src }}" alt="{{ $slider->name }}">
                                 @endif
                             </div>
                             <div class="flex justify-end">

@@ -21,17 +21,15 @@ class PageController extends Controller
     {
         $sliders = Slider::where('status', 'active')->get();
 
-        // $hotSales = Banner::where('position', 'medical-device-offer')->where('status', 'active')->get();
-
-        $brands = Brand::where('status', 'active')->where('is_top', 1)->get();
+        $topBrands = Brand::where('status', 'active')->where('is_top', 1)->get();
 
         $topCategories = Category::where('status', 'active')->where('is_top', 1)->get();
 
         // Top products
-        $topProduct = Section::with(['products'])->where('slug', 'top-products')->first();
+        $topProduct = Section::with(['products'])->where('slug', 'first-section')->first();
 
         // Medical device products
-        $watch = Section::with(['products'])->where('slug', 'watch')->first();
+        $otherProduct = Section::with(['products'])->where('slug', 'second-section')->first();
 
         $features = [
             [
@@ -53,11 +51,11 @@ class PageController extends Controller
 
         return view('frontend.pages.home', [
             'sliders'       => $sliders,
-            'topProduct'    => $topProduct,
-            'watch'         => $watch,
-            'brands'        => $brands,
             'topCategories' => $topCategories,
-            // 'hotSales'      => $hotSales,
+            'topBrands'     => $topBrands,
+            'topProduct'    => $topProduct,
+            'otherProduct'  => $otherProduct,
+            // 'hotSales'   => $hotSales,
             'features'      => $features,
         ]);
     }
@@ -99,9 +97,7 @@ class PageController extends Controller
             ->orderBy('brands.name', 'ASC')
             ->get();
 
-        $viewPage = $thumbOnly ? 'frontend.pages.product-thumbs-page' : 'frontend.pages.product-index';
-
-        return view($viewPage, [
+        return view('frontend.pages.product-index', [
             'products'          => $products,
             'brands'            => $barnds,
             'categories'        => $categories,
@@ -111,7 +107,7 @@ class PageController extends Controller
         ]);
     }
 
-    public function productShow(Request $request, $id, $slug = null)
+    public function productShow($id)
     {
         $currentURL = url()->current();
         Utility::saveIntendedURL($currentURL);
@@ -351,7 +347,7 @@ class PageController extends Controller
                 $query->where('status', 'active');
             })->paginate($paginate);
         } else {
-            $products = $products->where('price', '>', 0)->paginate($paginate);
+            $products = $products->where('mrp', '>', 0)->paginate($paginate);
         }
 
         return $products;

@@ -34,22 +34,22 @@ class AuthController extends Controller
     public function registrationStore(Request $request)
     {
         $request->validate([
-            'name'                  => ['required'],
-            'email'                 => ['nullable', 'email', 'unique:users'],
-            'phone_number'          => ['required', 'unique:users'],
-            'terms_and_conditons'   => ['required']
+            'name'            => ['required'],
+            'email'           => ['nullable', 'email', 'unique:users'],
+            'phone_number'    => ['required', 'unique:users'],
+            'terms_conditons' => ['required']
         ],
         [
-            'terms_and_conditons.required' => 'Please checked terms and conditions'
+            'terms_conditons.required' => 'Please checked terms and conditions'
         ]
         );
 
         Utility::saveIntendedURL();
 
-        $name               = $request->input('name');
-        $email              = $request->input('email', null);
-        $phoneNumber        = $request->input('phone_number', null);
-        $termsAndConditions = $request->input('terms_and_conditons', null);
+        $name            = $request->input('name');
+        $email           = $request->input('email', null);
+        $phoneNumber     = $request->input('phone_number', null);
+        $termsConditions = $request->input('terms_conditons', null);
 
         try {
             DB::beginTransaction();
@@ -64,10 +64,10 @@ class AuthController extends Controller
             } else {
                 $user = new User();
 
-                $user->name  = $name;
-                $user->email = $email;
-                $user->phone_number        = $phoneNumber;
-                $user->terms_and_conditons = $termsAndConditions;
+                $user->name            = $name;
+                $user->email           = $email;
+                $user->phone_number    = $phoneNumber;
+                $user->terms_conditons = $termsConditions;
                 $res = $user->save();
 
                 if ($res) {
@@ -92,7 +92,7 @@ class AuthController extends Controller
 
         Utility::saveIntendedURL();
 
-        return redirect()->route('home');
+        return view('frontend.pages.login');
     }
 
     public function checkUser(Request $request)
@@ -114,31 +114,65 @@ class AuthController extends Controller
         }
     }
 
+    // public function login(Request $request)
+    // {
+    //     $validator = Validator::make($request->all(), [
+    //         'phone_number' => 'required',
+    //         'otp_code'     => 'required'
+    //     ]);
+
+    //     if ($validator->stopOnFirstFailure()->fails()) {
+    //         return $this->sendError($validator->errors());
+    //     }
+
+    //     $phoneNumber = $request->input('phone_number', null);
+    //     $otpCode     = $request->input('otp_code', null);
+    //     $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+
+    //     $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
+
+    //     if ($user) {
+    //         Auth::login($user, true);
+    //         $request->session()->regenerate();
+
+    //         return $this->sendResponse($user, 'Successfully login');
+    //     } else {
+    //         return $this->sendError("Invalid your OTP");
+    //     }
+    // }
+
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'phone_number' => 'required',
-            'otp_code'     => 'required'
+        $request->validate([
+            'phone_number' => ['required'],
+            'password'     => ['required']
         ]);
 
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->sendError($validator->errors());
-        }
-
         $phoneNumber = $request->input('phone_number', null);
-        $otpCode     = $request->input('otp_code', null);
+        $password    = $request->input('password', null);
         $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
-        $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
+        $user = User::where('phone_number', $phoneNumber)->first();
+        if ($user && !$user->ac_status) {
+            $user->otp_code = $this->getRandomCode();
+            $user->save();
+            // TODO::send user activation code
 
-        if ($user) {
-            Auth::login($user, true);
+            return redirect("/send-otp-code?phone_number={$phoneNumber}");
+        }
+
+        if (Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password], true)) {
             $request->session()->regenerate();
 
-            return $this->sendResponse($user, 'Successfully login');
+            return redirect()->route('home');
         } else {
-            return $this->sendError("Invalid your OTP");
+            return back()->with('error', 'Invalid credential');
         }
+    }
+
+    public function sendOtp()
+    {
+        return view('frontend.pages.send-otp');
     }
 
     // Resend otp code

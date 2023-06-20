@@ -29,10 +29,10 @@
                     </div>
                 </div>
                 <div class="thumb-image-wrapper aspect-w-1 aspect-h-1">
-                    @if ($product->image_src)
+                    @if ($product->img_src)
                     <a class="p-2 sm:p-2 md:p-6 lg:p-6 xl:p-8 2xl:p-8" href="{{ route('products.show', [$product->id, $product->slug]) }}">
                         <img class="rounded-t-md w-full h-full object-fill max-w-xs hover:scale-110 transition duration-300 ease-in-out"
-                            src="{{ $product->image_src }}" />
+                            src="{{ $product->img_src }}" />
                     </a>
                     @endif
                 </div>
@@ -63,7 +63,7 @@
                 {{-- Price show for type default --}}
                 <div class="prices mt-1 text-xs sm:text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base flex space-x-4">
                     @php
-                        $productPrice      = $product->price;
+                        $productPrice      = $product->mrp;
                         $productOfferPrice = $product->offer_price;
                     @endphp
                     @if ($product->offer_price > 0)
@@ -96,7 +96,7 @@
             <div class="flex items-center">
                 <div class="thumb-image-wrapper w-28 h-28 p-2">
                     <img class="w-full h-full object-center object-cover"
-                        src="{{ $product->image_src }}" />
+                        src="{{ $product->img_src }}" />
                 </div>
                 <div class="content px-3 py-2 flex-1">
                     {{-- Show brand name --}}
@@ -119,9 +119,9 @@
                     <div class="prices mt-2 flex space-x-4">
                         @if ($product->offer_price > 0)
                         <span class="text-primary text-sm">{{ $currency }} {{ $product->offer_price }}</span>
-                        <span class="line-through text-sm text-gray-500 self-end">{{ $currency }} {{ $product->price }}</span>
+                        <span class="line-through text-sm text-gray-500 self-end">{{ $currency }} {{ $product->mrp }}</span>
                         @else
-                        <span class="text-primary">{{ $currency }} {{ $product->price }}</span>
+                        <span class="text-primary">{{ $currency }} {{ $product->mrp }}</span>
                         @endif
                     </div>
                 </div>
@@ -133,12 +133,12 @@
         <div class="product-thumb">
             <div class="aspect-w-1 aspect-h-1">
                 <img class="rounded-t-md w-full h-full object-center object-cover"
-                    src="{{ $product->image_src }}">
+                    src="{{ $product->img_src }}">
             </div>
             <div
                 class="text-center p-4 rounded-b-md bg-gray-50 text-primary-dark hover:text-primary-dark">
                 <a href="{{ route('products.show', [$product->id, $product->slug]) }}" class="inline-block text-sm font-medium">{{ $product->name  }}</a>
-                <h2 class="text-sm">{{ $currency }} {{ $product->price }} </h2>
+                <h2 class="text-sm">{{ $currency }} {{ $product->mrp }} </h2>
             </div>
         </div>
     </div>

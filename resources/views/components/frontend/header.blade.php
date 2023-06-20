@@ -62,8 +62,7 @@
                 <div class="col-span-2">
                     <div class="actions">
                         <a href="{{ route('my.wishlist') }}" class="flex items-center space-x-2"
-                            data-mc-on-previous-url="{{ route('my.wishlist') }}"
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            data-mc-on-previous-url="{{ route('my.wishlist') }}">
                             <div class="item relative" title="Wishlist">
                                 <button class="block" type="button">
                                     <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
@@ -72,8 +71,7 @@
                         </a>
 
                         <a href="{{ route('cart.items') }}" class="flex items-center space-x-2" title="Cart"
-                            data-mc-on-previous-url="{{ route('cart.items') }}"
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            data-mc-on-previous-url="{{ route('cart.items') }}">
                             <div class="item relative">
                                 <button class="block" type="button">
                                     <i class="icon fa-solid fa-cart-shopping text-primary hover:text-secondary"></i>
@@ -115,9 +113,8 @@
                         @endauth
 
                         @guest
-                            <a href="" class="bg-gray-50 group-hover:text-secondary h-12 flex items-center rounded-md shadow"
-                                data-mc-on-previous-url="{{ url()->current() }}"
-                                @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            <a href="{{ route('login.create') }}" class="bg-gray-50 group-hover:text-secondary h-12 flex items-center rounded-md shadow"
+                                data-mc-on-previous-url="{{ url()->current() }}">
                                 <div class="flex items-center justify-center w-12 border-r">
                                     <i class="icon fa-regular fa-user"></i>
                                 </div>
@@ -171,16 +168,14 @@
                     </div>
                 @endauth
                 @guest
-                    <a href="" title="Login" class=""
-                        data-mc-on-previous-url="{{ url()->current() }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                    <a href="{{ route('login.create') }}" title="Login" class=""
+                        data-mc-on-previous-url="{{ url()->current() }}">
                         <i class="text-lg text-secondary fa-solid fa-right-to-bracket"></i>
                     </a>
                 @endguest
                 <div class="pr-2">
                     <a href="{{ route('cart.items') }}" class="flex items-center space-x-2"
-                        data-mc-on-previous-url="{{ route('cart.items') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        data-mc-on-previous-url="{{ route('cart.items') }}">
                         <div class="item relative">
                             <button class="block">
                                 <i class="icon text-lg text-secondary fa-solid fa-cart-shopping"></i>
@@ -291,14 +286,12 @@
                     </a>
                     <a href="{{ route('my.wishlist') }}"
                         class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.wishlist') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        data-mc-on-previous-url="{{ route('my.wishlist') }}">
                         <i class="pr-3 fa-solid fa-heart"></i>
                         Wishcart
                     </a>
                     <a href="{{ route('my.address.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.address.index') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        data-mc-on-previous-url="{{ route('my.address.index') }}">
                         <i class="pr-3 fa-solid fa-location-dot"></i>
                         Address
                     </a>
@@ -309,9 +302,8 @@
                         </a>
                     @endauth
                     @guest
-                        <a href="{{ route('login') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ url()->current() }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        <a href="{{ route('login.create') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ url()->current() }}">
                             <i class="pr-3 fa-solid fa-right-to-bracket"></i>
                             Login
                         </a>

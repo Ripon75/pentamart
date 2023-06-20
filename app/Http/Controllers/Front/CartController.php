@@ -21,6 +21,63 @@ class CartController extends Controller
 
     public function cartItem()
     {
+        $products        = [];
+        $selelctedColors = [];
+        $selelctedSizes  = [];
+
+        $carObj   = new Cart();
+        $cart     = $carObj->getCurrentCustomerCart();
+        if ($cart) {
+            $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
+        }
+
+        foreach ($products as $product) {
+            $colors  = json_decode($product->colors, true);
+            $sizes   = json_decode($product->sizes, true);
+            $colorId = $product->pivot->color_id;
+            $sizeId  = $product->pivot->size_id;
+
+            foreach ($colors as $color) {
+                if (isset($color['id']) && $color['id'] === $colorId) {
+                    $selelctedColors[] = $color;
+                }
+            }
+
+            foreach ($sizes as $size) {
+                if (isset($size['id']) && $size['id'] === $sizeId) {
+                    $selelctedSizes[] = $size;
+                }
+            }
+        }
+
+        $areas              = Area::orderBy('name', 'asc')->get();
+        $userAddress        = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $paymentGateways    = PaymentGateway::where('status', 'active')->get();
+        $deliveryGateway    = DeliveryGateway::where('status', 'active')->first();
+        $cartTotalSellPrice = Auth::user()->cart->getTotalSellPrice();
+        $deliveryCharge     = 0;
+        $currency           = 'tk';
+
+        if ($deliveryGateway) {
+            $deliveryCharge = $deliveryGateway->promo_price ? $deliveryGateway->promo_price : $deliveryGateway->price ;
+        }
+
+        return view('frontend.pages.cart', [
+            'cart'               => $cart,
+            'areas'              => $areas,
+            'products'           => $products,
+            'selelctedColors'    => $selelctedColors,
+            'selelctedSizes'     => $selelctedSizes,
+            'userAddress'        => $userAddress,
+            'paymentGateways'    => $paymentGateways,
+            'deliveryCharge'     => $deliveryCharge,
+            'cartTotalSellPrice' => $cartTotalSellPrice,
+            'currency'           => $currency
+        ]);
+    }
+
+    public function checkout()
+    {
         $products = [];
         $carObj   = new Cart();
         $cart     = $carObj->getCurrentCustomerCart();
@@ -39,7 +96,7 @@ class CartController extends Controller
             $deliveryCharge = $deliveryGateway->promo_price ? $deliveryGateway->promo_price : $deliveryGateway->price ;
         }
 
-        return view('frontend.pages.cart', [
+        return view('frontend.pages.checkout', [
             'cart'            => $cart,
             'areas'           => $areas,
             'products'        => $products,

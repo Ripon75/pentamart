@@ -44,7 +44,11 @@ class Category extends Model
         if ($value) {
             if (Storage::disk('public')->exists($value)) {
                 return Storage::url($value);
+            } else {
+                return '/images/sample/category.jpeg';
             }
+        } else {
+            return '/images/sample/category.jpeg';
         }
     }
 

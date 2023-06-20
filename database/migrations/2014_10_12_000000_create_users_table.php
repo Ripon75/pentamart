@@ -22,7 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('otp_code', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password')->nullable();
-            $table->boolean('terms_and_conditons')->default(false);
+            $table->boolean('terms_conditons')->default(false);
             $table->string('google_id', 1000)->nullable();
             $table->string('google_token', 1000)->nullable();
             $table->string('google_refresh_token', 1000)->nullable();

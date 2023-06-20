@@ -30,7 +30,7 @@
                         </div>
                         {{-- end --}}
                     </div>
-                    <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->image_src }}">
+                    <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->img_src }}">
                 </div>
                {{-- ======================product single image for mobile============================ --}}
                 <div class="block md:hidden aspect-w-1 aspect-h-1 border rounded-md">
@@ -49,7 +49,7 @@
                         </div>
                         {{-- end --}}
                     </div>
-                    <img class="w-full h-full p-10 object-cover object-center rounded-md" src="{{ $product->image_src }}">
+                    <img class="w-full h-full p-10 object-cover object-center rounded-md" src="{{ $product->img_src }}">
                </div>
             </div>
             <div class="col-span-1 p-2 pr-20">
@@ -107,9 +107,9 @@
                             @endphp
                             <input type="hidden" value="{{ $sellPrice }}" id="input-price">
                         @else
-                            <input type="hidden" value="{{ $product->price }}" id="input-price">
+                            <input type="hidden" value="{{ $product->mrp }}" id="input-price">
                         @endif
-                        <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
+                        <input type="hidden" value="{{ $product->mrp }}" id="input-product-mrp">
                     </div>
                     <div class="prices flex space-x-2 items-center mb-1">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
@@ -120,11 +120,11 @@
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
-                                    {{ $product->price }}
+                                    {{ $product->mrp }}
                                 </span>
                             @else
                                 <span id="item-price-label" class="text-primary text-xl font-medium">
-                                    {{ number_format(($product->price), 2) }}
+                                    {{ number_format(($product->mrp), 2) }}
                                 </span>
                                 <span id="item-mrp-label" class="line-through text-primary text-xl font-medium">
                                 </span>
@@ -152,8 +152,7 @@
                             </select>
                             <div class="flex space-x-4">
                                 <button class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
-                                    data-mc-on-previous-url="{{ url()->current() }}"
-                                    @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                    data-mc-on-previous-url="{{ url()->current() }}">
                                     <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
                                     <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
                                     Add to cart
@@ -163,8 +162,7 @@
                                         <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
-                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
-                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
                                         <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @else
@@ -172,8 +170,7 @@
                                         <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white"
-                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
-                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
                                         <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @endif

@@ -22,17 +22,20 @@
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                             Size
                                         </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            MRP
+                                        </th>
+                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-right border-r pr-0 sm:pr-0 md:pr-2">
+                                            Discount
+                                        </th>
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
                                             Price
                                         </th>
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center border-r">
                                             Qty
                                         </th>
-                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-right border-r pr-0 sm:pr-0 md:pr-2">
-                                            Discount
-                                        </th>
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
-                                            Item total
+                                            Total
                                         </th>
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center">
                                             Action
@@ -44,10 +47,9 @@
                                     @php $subTotal = 0; @endphp
                                     @foreach ($products as $key => $product)
                                         <tr class="item-row border">
-                                            <input type="hidden" value="{{ $product->counter_type }}" class="input-counter-type">
                                             <td class="hidden sm:hidden md:block p-1 w-14 h-14 mx-auto">
                                                 <div class="">
-                                                    <img class="" src="{{ $product->image_src }}" alt="Product Image">
+                                                    <img class="" src="{{ $product->img_src }}" alt="Product Image">
                                                 </div>
                                             </td>
                                             <td class="border text-left pl-1 sm:pl-1 md:pl-2">
@@ -60,32 +62,52 @@
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 @if ($product->pivot->color_id)
                                                     <span class="ml-1">
-                                                        {{ $product->colors[$product->pivot->color_id - 1]->name ?? '' }}
+                                                        @if ($key < count($selelctedColors))
+                                                            @if (array_key_exists('name', $selelctedColors[$key]))
+                                                                {{ $selelctedColors[$key]['name'] }}
+                                                            @endif
+                                                        @else
+                                                            <span class="ml-1">N/A</span>
+                                                        @endif
                                                     </span>
                                                 @else
-                                                    <span class="ml-1">
-                                                        N/A
-                                                    </span>
+                                                    <span class="ml-1">N/A</span>
                                                 @endif
                                             </td>
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 @if ($product->pivot->size_id)
-                                                        <span class="ml-1">
-                                                        {{ $product->sizes[$product->pivot->size_id - 1]->name ?? '' }}
+                                                    <span class="ml-1">
+                                                        @if ($key < count($selelctedSizes))
+                                                            @if (array_key_exists('name', $selelctedSizes[$key]))
+                                                                {{ $selelctedSizes[$key]['name'] }}
+                                                            @endif
+                                                        @else
+                                                            <span class="ml-1">N/A</span>
+                                                        @endif
                                                     </span>
                                                 @else
-                                                    <span class="ml-1">
-                                                        N/A
-                                                    </span>
+                                                    <span class="ml-1">N/A</span>
                                                 @endif
                                             </td>
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 <span class="ml-1">
-                                                    {{ $product->pivot->item_price }}
+                                                    {{ $product->pivot->item_mrp }}
+                                                </span>
+                                            </td>
+                                            <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                <span id="total-discount-{{ $product->pivot->item_id }}" class="sub-total-discount ml-1">
+                                                    <span id="discount-show-{{ $product->pivot->item_id}}">
+                                                        {{ $product->pivot->item_discount }}
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                <span class="ml-1">
+                                                    {{ $product->pivot->item_sell_price }}
                                                 </span>
                                             </td>
                                             <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
-                                                <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
+                                                {{-- <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
                                                     data-item-id="{{ $product->id }}"
                                                     data-unit-sell-price="{{ $product->offer_price }}"
                                                     data-total-item-sell-price-label="total-sell-price-{{ $product->pivot->item_id }}"
@@ -101,23 +123,26 @@
                                                             {{ $i }}
                                                         </option>
                                                     @endfor
-                                                </select>
-                                            </td>
-                                            <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
-                                                @php
-                                                    $itemTotalDiscount = $product->pivot->item_discount * $product->pivot->quantity;
-                                                    $itemTotalDiscount = number_format((float)$itemTotalDiscount, 2);
-                                                @endphp
-                                                <span id="total-discount-{{ $product->pivot->item_id }}" class="sub-total-discount ml-1">
-                                                    <span id="discount-show-{{ $product->pivot->item_id}}">
-                                                        {{ $itemTotalDiscount }}
-                                                    </span>
-                                                </span>
-                                            </td>
+                                                </select> --}}
 
+                                                <div class="flex items-center border rounded border-gray-300" style="height: 32px">
+                                                    <button class="w-8 h-8 border-r border-gray-300">
+                                                        <i class="fa-solid fa-minus text-gray-500"></i>
+                                                    </button>
+                                                    <div>
+                                                        <input class="text-center text-gray-500 border-none focus:outline-none focus:ring-0"
+                                                            style="width: 45px; height:28px" type="text" name="" value="1"
+                                                            min="1" max="5">
+                                                    </div>
+                                                    <button class="w-8 h-8 border-l border-gray-300">
+                                                        <i class="fa-solid fa-plus text-gray-500"></i>
+                                                    </button>
+                                                </div>
+
+                                            </td>
                                             <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                                 @php
-                                                    $itemTotalSellPrice = $product->pivot->sell_price * $product->pivot->quantity;
+                                                    $itemTotalSellPrice = $product->pivot->item_sell_price * $product->pivot->quantity;
                                                     $itemTotalSellPrice = number_format((float)$itemTotalSellPrice, 2);
                                                 @endphp
                                                 <span id="total-sell-price-{{ $product->pivot->item_id }}" class="sub-total-sell-price ml-1">
@@ -129,7 +154,7 @@
 
                                             <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                                 @php
-                                                    $itemTotalPrice = $product->pivot->item_price * $product->pivot->quantity;
+                                                    $itemTotalPrice = $product->pivot->item_sell_price * $product->pivot->quantity;
                                                 @endphp
                                                 <span id="total-price-{{ $product->pivot->item_id }}" class="sub-total-price ml-1">
                                                     <span id="mrp-show-{{ $product->pivot->item_id}}">
@@ -158,7 +183,7 @@
                                 <button id="btn-shopping-continue" class="btn btn-md btn-primary">
                                     <a class="hover:text-white" href="{{ route('products.index') }}">
                                         Continue shopping
-                                        <i id="continue-cart-icon" class="ml-2 fa-solid fa-cart-plus"></i></a>
+                                    </a>
                                         <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
                                 </button>
                             </div>
@@ -174,167 +199,67 @@
                 </div>
 
                 <div class="col-span-1">
-                    <section class="card border-2">
-                        <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
-                            <div class="flex justify-between">
-                                <span>Total Price</span>
-                                <span>{{ $currency }}
-                                    <span id="sub-total-price-label" class="ml-1"></span>
-                                </span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Discount (-)</span>
-                                <span>{{ $currency }}
-                                    <input id="input-items-discount" type="hidden" value="">
-                                    <span id="items-total-discount-label" class="ml-1"></span>
-                                </span>
-                            </div>
-                            <div id="coupon-discount-div" class="hidden">
-                                <div class="flex justify-between">
-                                    <span>Coupon Discount (-)</span>
-                                    <span>{{ $currency }}
-                                        <input type="hidden" value="">
-                                        <span id="coupon-discount-label" class="ml-1">0.00</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Total Price(-Discount)</span>
-                                <span>{{ $currency }}
-                                    <span id="sub-total-sell-price-label" class="ml-1"></span>
-                                </span>
-                            </div>
-                            <div class="flex justify-between">
-                                <span>Delivery Charge (+)</span>
-                                <span>{{ $currency }}
-                                    <span id="delivery-charge-lavel" class="ml-1"></span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="bg-[#00798c] p-2 rounded-b">
-                            <div class="flex justify-between text-white font-medium">
-                                <span class="text-base sm:text-base md:text-lg">Total</span>
-                                <span class="text-base sm:text-base md:text-lg font-medium">
-                                    <span>{{ $currency }}
-                                        <span id="cart-total-price-label" class="ml-1">
+                    <section class="">
+                        <div class="card border-2">
+                            <div class="px-4 py-2">
+
+                                <div class="p-2 rounded">
+                                    <div class="flex justify-between font-medium">
+                                        <span class="text-base sm:text-base md:text-lg">Total</span>
+                                        <span class="text-base sm:text-base md:text-lg font-medium">
+                                            <span>{{ $currency }}
+                                                <span id="cart-total-price-label" class="ml-1">
+                                                    {{ $cartTotalSellPrice }}
+                                                </span>
+                                            </span>
                                         </span>
+                                    </div>
+                                </div>
+
+                                {{-- <div class="flex justify-between">
+                                    <span>Total Price</span>
+                                    <span>{{ $currency }}
+                                        <span id="sub-total-price-label" class="ml-1"></span>
                                     </span>
-                                </span>
+                                </div> --}}
+                                <div class="mt-4">
+                                    <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
+                                        <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                        Checkout
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </section>
-                    <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
-                        @csrf
-                        {{-- ========Choose Delivery Type===== --}}
-                        <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="header">
-                                    <h1 class="title">Select shipping address <span class="text-red-500">*</span> </h1>
-                                </div>
-                                <div class="p-2">
-                                    <div class="flex justify-between items-center">
-                                        <div class="flex space-x-2 items-center">
-                                            <div class="h-8 w-8 border rounded flex items-center justify-center">
-                                                <i class="text-lg text-gray-500 fa-solid fa-location-dot"></i>
+
+                    {{-- =========Choose Payment Method======= --}}
+                    {{-- <section class="mt-4">
+                        <div class="card border-2">
+                            <div class="header">
+                                <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
+                            </div>
+                            <div class="flex p-2 space-x-2">
+                                <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
+                                @for ($i=0 ; $i < count($paymentGateways) ; $i++)
+                                    <button
+                                        type="button"
+                                        data-payment-method-id="{{ $paymentGateways[$i]->id }}"
+                                        class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
+                                        @if ($paymentGateways[$i]->img_src)
+                                            <div class="icon text-xl">
+                                                <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
                                             </div>
-                                            <div class="">
-                                                <input type="hidden" class="shipping-address-id" name="address_id"
-                                                    value="{{ ($cart->address->id) ?? null }}">
-                                                <div id="" class="shipping-address-label text-sm text-gray-500">
-                                                    {{ ($cart->address->title) ?? null }}
-                                                </div>
+                                        @else
+                                            <div class="icon text-xl">
+                                                <i class="{{ $paymentGateways[$i]->icon }}"></i>
                                             </div>
-                                        </div>
-                                        <div class="">
-                                            <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
-                                            data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth
-                                            @guest data-bs-target="#loginModalCenter" @endguest>Select</button>
-                                        </div>
-                                    </div>
-                                </div>
+                                        @endif
+                                        <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
+                                    </button>
+                                @endfor
                             </div>
-                        </section>
-                        {{-- =========Choose Payment Method======= --}}
-                        {{-- <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="header">
-                                    <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
-                                </div>
-                                <div class="flex p-2 space-x-2">
-                                    <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
-                                    @for ($i=0 ; $i < count($paymentGateways) ; $i++)
-                                        <button
-                                            type="button"
-                                            data-payment-method-id="{{ $paymentGateways[$i]->id }}"
-                                            class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
-                                            @if ($paymentGateways[$i]->img_src)
-                                                <div class="icon text-xl">
-                                                    <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
-                                                </div>
-                                            @else
-                                                <div class="icon text-xl">
-                                                    <i class="{{ $paymentGateways[$i]->icon }}"></i>
-                                                </div>
-                                            @endif
-                                            <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
-                                        </button>
-                                    @endfor
-                                </div>
-                            </div>
-                        </section> --}}
-                        {{-- ===========Use coupon==================== --}}
-                        <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="header">
-                                    <h1 class="title">Have a coupon code</h1>
-                                </div>
-                                <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
-                                    <div id="apply-coupon-box">
-                                        <div class="flex space-x-2">
-                                            <div class="flex-1">
-                                                <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
-                                                <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
-                                            </div>
-                                            <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
-                                        </div>
-                                    </div>
-                                    <div id="active-coupon-box" class="hidden">
-                                        <div class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
-                                            <span class="text-sm">
-                                                <span class="label-coupon-code font-medium ml-2 uppercase">FREE10</span>
-                                                &nbsp;Applied
-                                            </span>
-                                            <button type="button" id="btn-remove-coupon-code" class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                        {{-- ===============Checkout================== --}}
-                        <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="px-4 py-2">
-                                    <div class="mt-4">
-                                        <label class="text-sm" for="">Write note here</label><br>
-                                        <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
-                                    </div>
-                                    <div class="flex space-x-2 mt-2">
-                                        <input id="terms-and-conditons" class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
-                                        <span class="text-gray-500 text-xs">
-                                            I agree with
-                                            <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and Conditions</a>,
-                                        </span>
-                                    </div>
-                                    <div class="mt-4">
-                                        <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
-                                            <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                                            SUBMIT ORDER
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
-                    </form>
+                        </div>
+                    </section> --}}
                 </div>
             </div>
         </section>
@@ -368,7 +293,6 @@
         var deleteCartItemBtn       = $('.delete-cart-item-btn');
         var iconLoadding            = $('.loadding-icon');
         var iconTrash               = $('.trash-icon');
-        var continueCartIcon        = $('#continue-cart-icon');
         var inputCartEmpty          = $('#input-cart-empty');
         var cartInputItemQty        = $('.cart-input-item-qty');
         var btnPaymentMethod        = $('.btn-payment-method');
@@ -381,28 +305,17 @@
         var deliveryCharge          = "{{ $deliveryCharge }}";
         var deliveryChargeLabel     = $('#delivery-charge-lavel');
         // For address create
-        var addressModal         = $('#address-modal');
         var btnAddressChangeCart = $('#btn-address-change');
         var btnContinueShopping  = $('#btn-shopping-continue');
         // Coupon code
-        var inputCouponCode         = $('#input-coupon-code');
-        var btnApplyCoupon          = $('#btn-check-coupon');
-        var applyCouponBox          = $('#apply-coupon-box');
-        var activeCouponBox         = $('#active-coupon-box');
-        var labelCouponCode         = $('.label-coupon-code');
-        var btnRemoveCouponCode     = $('#btn-remove-coupon-code');
-        var inputCouponCodeId       = $('#input-coupon-code-id');
         var itemsTotalDiscountLabel = $('#items-total-discount-label');
         var subTotalSellPriceLabel  = $('#sub-total-sell-price-label');
         var inputItemsDiscount      = $('#input-items-discount');
-        // disable order submit button
-        btnOrderSubmit.prop("disabled", true);
-        btnOrderSubmit.addClass('disabled:opacity-50');
         // Trash and loading icon
         iconTrash.show();
         iconLoadding.hide();
 
-        totalPriceCalculation();
+        // totalPriceCalculation();
 
         $(function() {
             // Delete item
@@ -451,8 +364,6 @@
                 $(`#${totalItemSellPriceLabelID}`).text(itemTotalSellPrice);
                 $(`#${totalDiscountLabelID}`).text(itemTotalDiscount);
                 $(`#${totalItemPriceLabelID}`).text(itemTotalPrice);
-
-                removedCouponCode();
             });
 
             // On choose payment method
@@ -465,107 +376,16 @@
                 addCartMetaData('pg_id', paymentID);
             });
 
-            btnAddressChangeCart.click(function () {
-                addressModal.show();
-            });
 
             btnOrderSubmit.click(function () {
-                var addressID = $('.header-shipping-address').find(":selected").val();
-                if (addressID) {
-                    var checked = $('input[name=terms_and_conditons]:checked').val();
-                    if (checked == 1) {
-                        formCheckOut.submit();
-                    } else {
-                        __showNotification('error', 'Please checked terms and conditons');
-                        return false;
-                    }
-                } else {
-                    __showNotification('error', 'Please select shipping address to continue');
-                    return false;
-                }
                 $(this).find(iconLoadding).show();
             });
 
-            inputCouponCode.on("keypress", function(e) {
-                if (e.keyCode == 13) {
-                    btnApplyCoupon.click();
-                    return false; // prevent the button click from happening
-                }
-            });
-
-            // Check coupon code
-            btnApplyCoupon.click(function() {
-                var couponCode = inputCouponCode.val();
-                applyCouponCode(couponCode);
-            });
-
-            // On remove coupon code
-            btnRemoveCouponCode.click(function() {
-                removedCouponCode();
-                totalPriceCalculation();
-            });
-
-            $('#terms-and-conditons').click(function() {
-                var checked = $('input[name=terms_and_conditons]:checked').val();
-                var addressID = inputShippingAddress.find(":selected").val();
-                checked   = checked ? checked : null;
-                addressID = addressID ? addressID : null;
-                if (checked && addressID) {
-                    btnOrderSubmit.prop("disabled", false);
-                    btnOrderSubmit.removeClass('disabled:opacity-50');
-                } else {
-                    btnOrderSubmit.prop("disabled", true);
-                    btnOrderSubmit.addClass('disabled:opacity-50');
-                }
-            });
-
-            inputShippingAddress.change(function() {
-                var checked = $('input[name=terms_and_conditons]:checked').val();
-                var addressID = inputShippingAddress.find(":selected").val();
-                checked   = checked ? checked : null;
-                addressID = addressID ? addressID : null;
-                if (checked && addressID) {
-                    btnOrderSubmit.prop("disabled", false);
-                    btnOrderSubmit.removeClass('disabled:opacity-50');
-                } else {
-                    btnOrderSubmit.prop("disabled", true);
-                    btnOrderSubmit.addClass('disabled:opacity-50');
-                }
-            });
 
             btnContinueShopping.click( function() {
                 $(this).find(iconLoadding).show();
-                continueCartIcon.hide();
             });
         });
-
-        // Check coupon code function
-        function applyCouponCode(couponCode) {
-            var endpoint = "{{ route('coupon.check') }}";
-            axios.post(endpoint, {
-                coupon_code: couponCode
-            })
-            .then((response) => {
-                if (response.data.error) {
-                    inputCouponCode.val('');
-                    __showNotification('error', response.data.message);
-                    return false;
-                } else {
-                    var coupon = response.data
-
-                    if (coupon.applicable_on === 'delivery_fee') {
-                        couponCodeOnDelivery(coupon);
-                    }
-
-                    if (coupon.applicable_on === 'cart') {
-                        couponCodeOnCart(coupon);
-                    }
-                }
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
 
         // Remove single cart item
         function removeCartItem(itemId, colorId, sizeId, btn) {
@@ -579,7 +399,6 @@
             })
             .then(function (response) {
                 btn.parent().parent().remove();
-                removedCouponCode();
                 totalPriceCalculation();
                 __cartItemCount();
             })
@@ -681,60 +500,6 @@
             totalWithDeliveryCharge = totalWithDeliveryCharge.toFixed(2);
             subTotalPriceLabel.text(itemsTotalPrice);
             cartTotalPriceLabel.text(totalWithDeliveryCharge);
-        }
-
-        function removedCouponCode() {
-            applyCouponBox.show();
-            activeCouponBox.hide();
-            inputCouponCodeId.val('');
-            inputCouponCode.val('');
-            discountLabel.text('0.00');
-            inputItemsDiscount.val(0);
-            $('#coupon-discount-div').hide();
-        }
-
-        function couponCodeOnDelivery(coupon) {
-            var couponAmount = coupon.discount_amount;
-            deliveryCharge = deliveryCharge - couponAmount;
-            applyCouponBox.hide();
-            activeCouponBox.show();
-            labelCouponCode.text(coupon.code);
-            inputCouponCodeId.val(coupon.id);
-            discountLabel.text(couponAmount);
-            inputItemsDiscount.val(couponAmount)
-            var couponCode = coupon.code;
-            couponCode     = couponCode.toUpperCase();
-            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
-            discountLabel.text(0.0);
-            inputItemsDiscount.val(0.0);
-            totalPriceCalculation();
-        }
-
-        function couponCodeOnCart(coupon) {
-            var total        = 0;
-            var couponAmount = 0;
-            if (coupon.discount_type == 'fixed') {
-                couponAmount = coupon.discount_amount;
-            } else {
-                var couponPercent = coupon.discount_amount;
-                $(".sub-total-sell-price").each(function() {
-                    var st = parseFloat($(this).text());
-                    total = total + st;
-                });
-                couponAmount = (total * couponPercent)/100;
-            }
-            couponAmount = parseFloat(couponAmount);
-            applyCouponBox.hide();
-            activeCouponBox.show();
-            labelCouponCode.text(coupon.code);
-            inputCouponCodeId.val(coupon.id);
-            // discountLabel.text(couponAmount.toFixed(2));
-            inputItemsDiscount.val(couponAmount)
-            var couponCode = coupon.code;
-            couponCode     = couponCode.toUpperCase();
-            $('#coupon-discount-div').show();
-            $('#coupon-discount-label').text(couponAmount.toFixed(2));
-            totalPriceCalculation();
         }
     </script>
 @endpush

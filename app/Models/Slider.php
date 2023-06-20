@@ -14,8 +14,7 @@ class Slider extends Model
     protected $fillable = [
         'name',
         'slug',
-        'large_img',
-        'small_img',
+        'img_src',
         'created_by',
         'updated_by'
     ];
@@ -23,15 +22,14 @@ class Slider extends Model
     protected $casts = [
         'name'       => 'string',
         'slug'       => 'string',
-        'large_img'  => 'string',
-        'small_img'  => 'string',
+        'img_src'    => 'string',
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
         'updated_at' => 'datetime:Y-m-d H:i:s'
     ];
 
-    public function getLargeSrcAttribute($value)
+    public function getImgSrcAttribute($value)
     {
         if ($value) {
             if (Storage::disk('public')->exists($value)) {
@@ -40,14 +38,6 @@ class Slider extends Model
         }
     }
 
-    public function getSmallSrcAttribute($value)
-    {
-        if ($value) {
-            if (Storage::disk('public')->exists($value)) {
-                return Storage::url($value);
-            }
-        }
-    }
 
     public function getOldPath($path)
     {

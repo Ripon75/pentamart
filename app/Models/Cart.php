@@ -19,7 +19,6 @@ class Cart extends Model
         'user_id',
         'pg_id',
         'address_id',
-        'note',
         'created_by',
         'updated_by'
     ];
@@ -28,7 +27,6 @@ class Cart extends Model
         'user_id'    => 'integer',
         'pg_id'      => 'integer',
         'address_id' => 'integer',
-        'note'       => 'string',
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -44,7 +42,7 @@ class Cart extends Model
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-            ->withPivot('size_id', 'color_id', 'quantity', 'item_price', 'sell_price', 'item_discount')
+            ->withPivot('size_id', 'color_id', 'quantity', 'item_buy_price','item_mrp', 'item_sell_price', 'item_discount')
             ->withTimestamps();
     }
 
@@ -79,10 +77,11 @@ class Cart extends Model
             return $this->s(false, null, 'Product not found');
         }
 
-        $itemPrice  = $product->price;
-        $offerPrice = $product->offer_price;
-        $discount   = $product->discount;
-        $sellPrice  = $offerPrice > 0 ? $offerPrice : $itemPrice;
+        $itemBuyPrice  = $product->buy_price;
+        $itemMRP       = $product->mrp;
+        $offerPrice    = $product->offer_price;
+        $itemDiscount  = $product->discount;
+        $itemSellPrice = $offerPrice > 0 ? $offerPrice : $itemMRP;
 
         $cart = $this->getCurrentCustomerCart();
         if (!$isUpdate) {
@@ -95,12 +94,13 @@ class Cart extends Model
             }
 
             $res = $cart->items()->attach($itemId, [
-                'size_id'       => $sizeId,
-                'color_id'      => $colorId,
-                'quantity'      => $quantity,
-                'item_price'    => $itemPrice,
-                'sell_price'    => $sellPrice,
-                'item_discount' => $discount
+                'size_id'         => $sizeId,
+                'color_id'        => $colorId,
+                'quantity'        => $quantity,
+                'item_buy_price'  => $itemBuyPrice,
+                'item_mrp'        => $itemMRP,
+                'item_sell_price' => $itemSellPrice,
+                'item_discount'   => $itemDiscount
             ]);
         } else {
             $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
@@ -182,24 +182,15 @@ class Cart extends Model
         return $cart;
     }
 
-    public function getSubTotalAmount()
+    public function getTotalSellPrice()
     {
-        $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $itemPrice = $item->pivot->item_price;
-            $quantity  = $item->pivot->quantity;
+        $totalSellPrice = $this->items->sum(function ($item) {
+            $itemSellPrice = $item->pivot->item_sell_price;
+            $quantity      = $item->pivot->quantity;
 
-            return $itemPrice * $quantity;
+            return $itemSellPrice * $quantity;
         });
 
-        return $itemsSubtotalAmount;
-    }
-
-    public function getSubTotalAmountWithDeliveryCharge()
-    {
-        $itemsSubtotalAmount     = $this->getSubTotalAmount();
-        $deliveryCharge          = $this->deliveryGateway->price;
-        $totalWithDeliveryCharge = $itemsSubtotalAmount + $deliveryCharge;
-
-        return $totalWithDeliveryCharge;
+        return $totalSellPrice;
     }
 }
