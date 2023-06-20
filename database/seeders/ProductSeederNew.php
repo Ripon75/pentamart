@@ -25,8 +25,8 @@ class ProductSeederNew extends Seeder
                 $name = $data['0'];
                 $slug = Str::slug($name, '-');
 
-                $price = $data['1'];
-                $price = (float)$price;
+                $mrp = $data['1'];
+                $mrp = (float)$mrp;
 
                 $offerPrice = $data['2'];
                 $offerPrice = (float)$offerPrice;
@@ -37,18 +37,19 @@ class ProductSeederNew extends Seeder
                 $currentStock = $data['4'];
                 $currentStock = (float)$currentStock;
 
-                if ($name && $price) {
+                if ($name && $mrp) {
                     $productObj                = new Product();
                     $productObj->name          = $name;
                     $productObj->slug          = $slug;
                     $productObj->brand_id      = rand(1, 3);
                     $productObj->category_id   = rand(1, 4);
-                    $productObj->price         = $price;
+                    $productObj->buy_price     = $mrp - 50;
+                    $productObj->mrp           = $mrp;
                     $productObj->offer_price   = $offerPrice;
                     $productObj->offer_percent = $offerPercent;
                     $productObj->current_stock = $currentStock;
                     $productObj->status        = 'active';
-                    $productObj->image_src     = null;
+                    $productObj->img_src       = null;
                     $productObj->save();
                 }
             }

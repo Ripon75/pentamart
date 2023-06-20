@@ -21,13 +21,14 @@ class CreateProductsTable extends Migration
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('category_id')->nullable()->constrained('categories')
                   ->onUpdate('cascade')->onDelete('cascade');
-            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('buy_price', 20, 2)->default(0);
+            $table->decimal('mrp', 20, 2)->default(0);
             $table->decimal('offer_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('offer_percent', 20, 2)->default(0);
             $table->bigInteger('current_stock')->default(0);
             $table->string('status')->default('active');
-            $table->string('image_src', 1000)->nullable();
+            $table->string('img_src', 1000)->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();

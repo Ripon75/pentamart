@@ -16,8 +16,8 @@ class CreateAreasTable extends Migration
 
         Schema::create('areas', function (Blueprint $table) {
             $table->id();
-            $table->string('slug', 100)->unique();
-            $table->string('name', 100)->unique();
+            $table->string('slug', 100);
+            $table->string('name', 100);
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

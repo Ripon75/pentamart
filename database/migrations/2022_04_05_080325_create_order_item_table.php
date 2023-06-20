@@ -18,13 +18,14 @@ class CreateOrderItemTable extends Migration
                 ->onDelete('cascade');
             $table->foreignId('item_id')->constrained('products')->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->foreignId('size_id')->nullable()->constrained('sizes')->onUpdate('cascade')
-                ->onDelete('cascade');
             $table->foreignId('color_id')->nullable()->constrained('colors')->onUpdate('cascade')
                 ->onDelete('cascade');
+            $table->foreignId('size_id')->nullable()->constrained('sizes')->onUpdate('cascade')
+                ->onDelete('cascade');
             $table->unsignedInteger('quantity')->default(1);
-            $table->decimal('item_price', 20, 2)->default(0);
-            $table->decimal('sell_price', 20, 2)->default(0);
+            $table->decimal('item_buy_price', 20, 2)->default(0);
+            $table->decimal('item_mrp', 20, 2)->default(0);
+            $table->decimal('item_sell_price', 20, 2)->default(0);
             $table->decimal('item_discount', 20, 2)->default(0);
             $table->timestamps();
         });

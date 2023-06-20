@@ -22,9 +22,7 @@ class PaymentGatewaySeeder extends Seeder
                 'id'         => 1,
                 'slug'       => 'cash-on-delivery',
                 'name'       => 'Cash on Delivery',
-                'code'       => 'PG101',
-                'icon'       => 'fa-solid fa-hand-holding-dollar',
-                'status'     => 'activated',
+                'status'     => 'active',
                 'created_at' => $now
             ]
         ]);

@@ -28,7 +28,8 @@ class CreateOrdersTable extends Migration
                     ->onDelete('cascade');
             $table->decimal('coupon_value', 20, 2)->default(0);
             $table->decimal('delivery_charge', 20, 2)->default(0);
-            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('buy_price', 20, 2)->default(0);
+            $table->decimal('mrp', 20, 2)->default(0);
             $table->decimal('sell_price', 20, 2)->default(0);
             $table->decimal('discount', 20, 2)->default(0);
             $table->decimal('net_price', 20, 2)->default(0);

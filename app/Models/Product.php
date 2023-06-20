@@ -136,7 +136,8 @@ class Product extends Model implements Auditable
 
     public function getOldPath($path)
     {
-        return str_replace('http://localhost:3000/storage/', '/', $path);
+        $appUrl = config('app.url');
+        return str_replace("$appUrl/storage/", '/', $path);
     }
 
     // Scope start ======================================================================
