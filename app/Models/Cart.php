@@ -127,9 +127,6 @@ class Cart extends Model
         $res = DB::table('cart_item')->where('item_id', $itemId)->where('size_id', $sizeId)
         ->where('color_id', $colorId)->delete();
 
-        // $cart = $this->getCurrentCustomerCart();
-        // $res  = $cart->items()->detach($itemId);
-
         return Utility::sendResponse($res, 'Item removed successfuly');
     }
 

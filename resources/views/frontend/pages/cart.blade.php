@@ -107,28 +107,6 @@
                                                 </span>
                                             </td>
                                             <td width="70px" class="text-xs md:text-sm lg:text-base text-center border px-2">
-                                                {{-- <select class="cart-input-item-qty rounded text-xs md:text-sm lg:text-base py-1" name=""
-                                                    data-item-id="{{ $product->id }}"
-                                                    data-unit-sell-price="{{ $product->offer_price }}"
-                                                    data-total-item-sell-price-label="total-sell-price-{{ $product->pivot->item_id }}"
-                                                    data-total-item-price-label="total-price-{{ $product->pivot->item_id }}"
-                                                    data-item-discount="{{ $product->discount }}"
-                                                    data-total-item-discount-label="total-discount-{{ $product->pivot->item_id }}"
-                                                    data-unit-price="{{ $product->price }}"
-                                                    data-color-id="{{ $product->pivot->color_id }}"
-                                                    data-size-id="{{ $product->pivot->size_id }}">
-
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        <option value="{{ $i }}" {{ $product->pivot->quantity == $i ? 'selected' : '' }}>
-                                                            {{ $i }}
-                                                        </option>
-                                                    @endfor
-                                                </select> --}}
-
-
-
-
-
                                                 {{-- input item quantity --}}
                                                 @php
                                                     $productId = $product->id;
@@ -161,10 +139,6 @@
                                                         <i class="fa-solid fa-plus text-gray-500"></i>
                                                     </button>
                                                 </div>
-
-
-
-
                                             </td>
                                             <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
                                                 @php
@@ -240,35 +214,6 @@
                             </div>
                         </div>
                     </section>
-
-                    {{-- =========Choose Payment Method======= --}}
-                    {{-- <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="header">
-                                <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
-                            </div>
-                            <div class="flex p-2 space-x-2">
-                                <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
-                                @for ($i=0 ; $i < count($paymentGateways) ; $i++)
-                                    <button
-                                        type="button"
-                                        data-payment-method-id="{{ $paymentGateways[$i]->id }}"
-                                        class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
-                                        @if ($paymentGateways[$i]->img_src)
-                                            <div class="icon text-xl">
-                                                <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
-                                            </div>
-                                        @else
-                                            <div class="icon text-xl">
-                                                <i class="{{ $paymentGateways[$i]->icon }}"></i>
-                                            </div>
-                                        @endif
-                                        <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
-                                    </button>
-                                @endfor
-                            </div>
-                        </div>
-                    </section> --}}
                 </div>
             </div>
         </section>
@@ -297,34 +242,17 @@
 
 @push('scripts')
     <script>
-        var cartAddItemEndPoint     = '/cart/items/add';
-        var cartAddMetaDataEndPoint = '/cart/meta/add';
-        var deleteCartItemBtn       = $('.delete-cart-item-btn');
-        var iconLoadding            = $('.loadding-icon');
-        var iconTrash               = $('.trash-icon');
-        var inputCartEmpty          = $('#input-cart-empty');
-        var cartInputItemQty        = $('.cart-input-item-qty');
-        var btnPaymentMethod        = $('.btn-payment-method');
-        var inputDeliveryGateway    = $('#input-delivery-gateway-id');
-        var inputPaymentMethod      = $('#input-payment-method-id');
-        var btnOrderSubmit          = $('#btn-order-submit');
-        var formCheckOut            = $('#form-checkout');
-        var subTotalPriceLabel      = $('#sub-total-price-label');
-        var cartTotalPriceLabel     = $('#cart-total-price-label');
-        var deliveryCharge          = "{{ $deliveryCharge }}";
-        var deliveryChargeLabel     = $('#delivery-charge-lavel');
-        // For address create
-        var btnAddressChangeCart = $('#btn-address-change');
-        var btnContinueShopping  = $('#btn-shopping-continue');
-        // Coupon code
-        var itemsTotalDiscountLabel = $('#items-total-discount-label');
-        var totalSellPriceLabel  = $('#total-sell-price-label');
-        var inputItemsDiscount      = $('#input-items-discount');
+        var cartAddItemEndPoint = '/cart/items/add';
+        var deleteCartItemBtn   = $('.delete-cart-item-btn');
+        var iconLoadding        = $('.loadding-icon');
+        var iconTrash           = $('.trash-icon');
+        var inputCartEmpty      = $('#input-cart-empty');
+        var btnOrderSubmit      = $('#btn-order-submit');
+        var btnContinueShopping = $('#btn-shopping-continue');
+        var totalSellPriceLabel = $('#total-sell-price-label');
         // Trash and loading icon
         iconTrash.show();
         iconLoadding.hide();
-
-        // totalPriceCalculation();
 
         $(function() {
             // Delete item
@@ -340,55 +268,12 @@
             inputCartEmpty.click(function() {
                 $(this).find(iconTrash).hide()
                 $(this).find(iconLoadding).show();
-                emptyCart();
-            });
-
-            // Event with pack size
-            cartInputItemQty.change(function() {
-                var quantity = $(this).val();
-                var itemId   = $(this).data('item-id');
-                var colorId  = $(this).data('color-id');
-                var sizeId   = $(this).data('size-id');
-
-                addCartItem(itemId, quantity, colorId, sizeId);
-
-                var itemTotalSellPrice        = 0;
-                var itemTotalPrice            = 0;
-                var itemTotalDiscount         = 0;
-                var unitSellPrice             = $(this).data('unit-sell-price');
-                var unitPrice                 = $(this).data('unit-price');
-                var totalItemSellPriceLabelID = $(this).data('total-item-sell-price-label');
-                var totalItemPriceLabelID     = $(this).data('total-item-price-label');
-                var itemDiscount              = $(this).data('item-discount');
-                var totalDiscountLabelID      = $(this).data('total-item-discount-label');
-
-                itemTotalSellPrice = parseFloat(unitSellPrice * quantity);
-                itemTotalPrice     = parseFloat(unitPrice * quantity);
-                itemTotalDiscount  = parseFloat(itemDiscount * quantity);
-
-                itemTotalSellPrice = itemTotalSellPrice ? itemTotalSellPrice : itemTotalPrice;
-
-                itemTotalDiscount  = itemTotalDiscount.toFixed(2);
-                itemTotalSellPrice = itemTotalSellPrice.toFixed(2);
-                $(`#${totalItemSellPriceLabelID}`).text(itemTotalSellPrice);
-                $(`#${totalDiscountLabelID}`).text(itemTotalDiscount);
-                $(`#${totalItemPriceLabelID}`).text(itemTotalPrice);
-            });
-
-            // On choose payment method
-            btnPaymentMethod.click(function() {
-                btnPaymentMethod.removeClass('active');
-                $(this).addClass('active');
-
-                var paymentID = $(this).data('payment-method-id');
-                inputPaymentMethod.val(paymentID);
-                addCartMetaData('pg_id', paymentID);
+                emptyCartItems();
             });
 
             btnOrderSubmit.click(function () {
                 $(this).find(iconLoadding).show();
             });
-
 
             btnContinueShopping.click( function() {
                 $(this).find(iconLoadding).show();
@@ -417,7 +302,7 @@
         }
 
          // Empty cart
-        function emptyCart(){
+        function emptyCartItems(){
             axios.get('/cart/items/empty')
             .then(function (response) {
                 // handle success
@@ -430,7 +315,7 @@
         }
 
         // Add cart item
-        function addCartItem(productID, productQty, colorId, sizeId) {
+        function updateCartItemQty(productID, productQty, colorId, sizeId) {
             axios.post(cartAddItemEndPoint, {
                 item_id: productID,
                 quantity: productQty,
@@ -443,31 +328,6 @@
             })
             .catch((error) => {
                 console.log(error);
-            });
-        }
-
-        // Add cart meta data
-        function addCartMetaData(inputName, value) {
-            var data = {};
-
-            if (inputName === 'delevery_type_id') {
-                data = {
-                    'delevery_type_id': value
-                };
-            }
-
-            if (inputName === 'pg_id') {
-                data = {
-                    'pg_id': value
-                };
-            }
-
-            axios.post(cartAddMetaDataEndPoint, data)
-            .then((response) => {
-            })
-            .catch((error) => {
-                __showNotification('error', response.data.message);
-                return false;
             });
         }
 
@@ -484,30 +344,27 @@
         }
     </script>
 
+    {{-- quantity script --}}
     <script>
         var btnInputMinus = $('.btn-input-minus');
         var btnInputPlus  = $('.btn-input-plus');
 
         $(function() {
             btnInputMinus.on('click', function() {
-                changeCountNumber($(this), 'minus');
+                changeInputQty($(this), 'minus');
             });
 
             btnInputPlus.on('click', function() {
-                changeCountNumber($(this), 'plus');
+                changeInputQty($(this), 'plus');
             });
         });
 
-        function changeCountNumber(actionOn, action = 'minus') {
+        function changeInputQty(actionOn, action = 'minus') {
             var productId = actionOn.data('input-product-id');
             var sellPrice = actionOn.data('input-sell-price');
             var colorId   = actionOn.data('input-color-id');
             var sizeId    = actionOn.data('input-size-id');
             var itemSellPriceLabel = $(`#item-sell-price-label-${productId}-${colorId}-${sizeId}`);
-
-            console.log('product id '+ productId);
-            console.log('color id '+ colorId);
-            console.log('size id '+ sizeId);
 
             var inputQuantity  = $(`#input-quantity-${productId}-${colorId}-${sizeId}`);
             var quantity   = inputQuantity.val();
@@ -517,7 +374,7 @@
                 var itemTotalSellPrice = parseFloat(sellPrice * quantity);
                 itemSellPriceLabel.text(itemTotalSellPrice.toFixed(2));
 
-                addCartItem(productId, quantity, colorId, sizeId);
+                updateCartItemQty(productId, quantity, colorId, sizeId);
             }
 
             if (action === 'plus') {
@@ -525,11 +382,10 @@
                 var itemTotalSellPrice = parseFloat(sellPrice * quantity);
                 itemSellPriceLabel.text(itemTotalSellPrice.toFixed(2));
 
-                addCartItem(productId, quantity, colorId, sizeId);
+                updateCartItemQty(productId, quantity, colorId, sizeId);
             }
 
             inputQuantity.val(quantity);
         }
-
     </script>
 @endpush
