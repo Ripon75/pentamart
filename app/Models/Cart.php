@@ -103,7 +103,13 @@ class Cart extends Model
                 'item_discount'   => $itemDiscount
             ]);
         } else {
-            $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
+            // $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
+
+            $res = $cart->items()
+                ->wherePivot('item_id', $itemId)
+                ->wherePivot('color_id', $colorId)
+                ->wherePivot('size_id', $sizeId)
+                ->update(['quantity' => $quantity]);
         }
         return Utility::sendResponse($res, 'Item added successfully');
     }
@@ -133,7 +139,6 @@ class Cart extends Model
         $res = $cart->items()->detach();
 
         $cart->pg_id = 1;
-        $cart->note  = null;
         $cart->save();
 
         return Utility::sendResponse($res, 'Cart empty successfuly');
@@ -142,13 +147,9 @@ class Cart extends Model
     public function addMetaData($request)
     {
         $pgId = $request->input('pg_id', null);
-        $note = $request->input('note', null);
 
         $cart = $this->getCurrentCustomerCart();
 
-        if ($note) {
-            $cart->note = $note;
-        }
         if ($pgId) {
             $cart->pg_id = $pgId;
         }

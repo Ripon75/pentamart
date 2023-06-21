@@ -3,7 +3,7 @@
 @section('content')
     @if (count($products))
         <section class="container page-section page-top-gap">
-            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 last:gap-4">
                 <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-2 xl:col-span-2 2xl:col-span-2">
                     <div>
                         <div class="overflow-auto">
@@ -125,19 +125,45 @@
                                                     @endfor
                                                 </select> --}}
 
+
+
+
+
+                                                {{-- input item quantity --}}
+                                                @php
+                                                    $productId = $product->id;
+                                                    $colorId   = $product->pivot->color_id;
+                                                    $sizeId    = $product->pivot->size_id;
+                                                    $sellPrice = $product->pivot->item_sell_price;
+                                                @endphp
                                                 <div class="flex items-center border rounded border-gray-300" style="height: 32px">
-                                                    <button class="w-8 h-8 border-r border-gray-300">
+                                                    <button
+                                                        data-input-product-id="{{ $productId }}"
+                                                        data-input-color-id="{{ $colorId }}"
+                                                        data-input-size-id="{{ $sizeId }}"
+                                                        data-input-sell-price="{{ $sellPrice }}"
+                                                        class="btn-input-minus w-8 h-8 border-r border-gray-300">
                                                         <i class="fa-solid fa-minus text-gray-500"></i>
                                                     </button>
                                                     <div>
-                                                        <input class="text-center text-gray-500 border-none focus:outline-none focus:ring-0"
-                                                            style="width: 45px; height:28px" type="text" name="" value="1"
-                                                            min="1" max="5">
+                                                        <input id="input-quantity-{{ $productId }}-{{ $colorId }}-{{ $sizeId }}"
+                                                            class="qty-input text-center text-gray-500 border-none focus:outline-none focus:ring-0"
+                                                            style="width: 45px; height:28px" type="text" name=""
+                                                            value="{{ $product->pivot->quantity }}" value="1"
+                                                            min="1" readonly>
                                                     </div>
-                                                    <button class="w-8 h-8 border-l border-gray-300">
+                                                    <button
+                                                        data-input-product-id="{{ $productId }}"
+                                                        data-input-color-id="{{ $colorId }}"
+                                                        data-input-size-id="{{ $sizeId }}"
+                                                        data-input-sell-price="{{ $sellPrice }}"
+                                                        class="btn-input-plus w-8 h-8 border-l border-gray-300">
                                                         <i class="fa-solid fa-plus text-gray-500"></i>
                                                     </button>
                                                 </div>
+
+
+
 
                                             </td>
                                             <td class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
@@ -145,21 +171,10 @@
                                                     $itemTotalSellPrice = $product->pivot->item_sell_price * $product->pivot->quantity;
                                                     $itemTotalSellPrice = number_format((float)$itemTotalSellPrice, 2);
                                                 @endphp
-                                                <span id="total-sell-price-{{ $product->pivot->item_id }}" class="sub-total-sell-price ml-1">
-                                                    <span id="price-show-{{ $product->pivot->item_id}}">
-                                                        {{ ($itemTotalSellPrice) }}
-                                                    </span>
-                                                </span>
-                                            </td>
-
-                                            <td class="hidden text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
-                                                @php
-                                                    $itemTotalPrice = $product->pivot->item_sell_price * $product->pivot->quantity;
-                                                @endphp
-                                                <span id="total-price-{{ $product->pivot->item_id }}" class="sub-total-price ml-1">
-                                                    <span id="mrp-show-{{ $product->pivot->item_id}}">
-                                                        {{ ($itemTotalPrice) }}
-                                                    </span>
+                                                <span
+                                                    id="item-sell-price-label-{{ $productId }}-{{ $colorId }}-{{ $sizeId }}"
+                                                    class="item-sell-price ml-1">
+                                                    {{ ($itemTotalSellPrice) }}
                                                 </span>
                                             </td>
 
@@ -208,8 +223,8 @@
                                         <span class="text-base sm:text-base md:text-lg">Total</span>
                                         <span class="text-base sm:text-base md:text-lg font-medium">
                                             <span>{{ $currency }}
-                                                <span id="cart-total-price-label" class="ml-1">
-                                                    {{ $cartTotalSellPrice }}
+                                                <span id="total-sell-price-label" class="ml-1">
+                                                    {{ number_format($cartTotalSellPrice, 2) }}
                                                 </span>
                                             </span>
                                         </span>
@@ -303,7 +318,7 @@
         var btnContinueShopping  = $('#btn-shopping-continue');
         // Coupon code
         var itemsTotalDiscountLabel = $('#items-total-discount-label');
-        var subTotalSellPriceLabel  = $('#sub-total-sell-price-label');
+        var totalSellPriceLabel  = $('#total-sell-price-label');
         var inputItemsDiscount      = $('#input-items-discount');
         // Trash and loading icon
         iconTrash.show();
@@ -369,7 +384,6 @@
                 inputPaymentMethod.val(paymentID);
                 addCartMetaData('pg_id', paymentID);
             });
-
 
             btnOrderSubmit.click(function () {
                 $(this).find(iconLoadding).show();
@@ -459,41 +473,63 @@
 
         // Calculate total price
         function totalPriceCalculation() {
-            var itemsTotalPrice         = 0;
-            var itemTotalDiscount       = 0;
-            var totalWithDeliveryCharge = 0;
-            $(".sub-total-price").each(function() {
-                var itemPrice = parseFloat($(this).text());
-                itemsTotalPrice = itemsTotalPrice + itemPrice;
+            var totalSellPrice = 0;
+            $(".item-sell-price").each(function() {
+                var itemSellPrice = parseFloat($(this).text());
+                totalSellPrice = totalSellPrice + itemSellPrice;
             });
 
-            $(".sub-total-discount").each(function() {
-                itemTotalDiscount = +itemTotalDiscount;
-                var subDiscount = parseFloat($(this).text());
-                itemTotalDiscount = itemTotalDiscount + subDiscount;
-            });
-
-
-            // Get seltected delivery charge text
-            deliveryCharge = parseFloat(deliveryCharge);
-            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
-
-            // get coupon discount
-            couponDiscount = inputItemsDiscount.val();
-            couponDiscount = +couponDiscount;
-
-            // Items total sell price
-            var itemsTotalSellPrice = itemsTotalPrice - (itemTotalDiscount + couponDiscount);
-
-            itemsTotalDiscountLabel.text(itemTotalDiscount.toFixed(2));
-            subTotalSellPriceLabel.text(itemsTotalSellPrice.toFixed(2));
-
-            totalWithDeliveryCharge = (itemsTotalPrice + deliveryCharge) - (itemTotalDiscount + couponDiscount);
-
-            itemsTotalPrice         = itemsTotalPrice.toFixed(2);
-            totalWithDeliveryCharge = totalWithDeliveryCharge.toFixed(2);
-            subTotalPriceLabel.text(itemsTotalPrice);
-            cartTotalPriceLabel.text(totalWithDeliveryCharge);
+            totalSellPrice = totalSellPrice.toFixed(2);
+            totalSellPriceLabel.text(totalSellPrice);
         }
+    </script>
+
+    <script>
+        var btnInputMinus = $('.btn-input-minus');
+        var btnInputPlus  = $('.btn-input-plus');
+
+        $(function() {
+            btnInputMinus.on('click', function() {
+                changeCountNumber($(this), 'minus');
+            });
+
+            btnInputPlus.on('click', function() {
+                changeCountNumber($(this), 'plus');
+            });
+        });
+
+        function changeCountNumber(actionOn, action = 'minus') {
+            var productId = actionOn.data('input-product-id');
+            var sellPrice = actionOn.data('input-sell-price');
+            var colorId   = actionOn.data('input-color-id');
+            var sizeId    = actionOn.data('input-size-id');
+            var itemSellPriceLabel = $(`#item-sell-price-label-${productId}-${colorId}-${sizeId}`);
+
+            console.log('product id '+ productId);
+            console.log('color id '+ colorId);
+            console.log('size id '+ sizeId);
+
+            var inputQuantity  = $(`#input-quantity-${productId}-${colorId}-${sizeId}`);
+            var quantity   = inputQuantity.val();
+
+            if (action === 'minus' && quantity > 1) {
+                quantity--;
+                var itemTotalSellPrice = parseFloat(sellPrice * quantity);
+                itemSellPriceLabel.text(itemTotalSellPrice.toFixed(2));
+
+                addCartItem(productId, quantity, colorId, sizeId);
+            }
+
+            if (action === 'plus') {
+                quantity++;
+                var itemTotalSellPrice = parseFloat(sellPrice * quantity);
+                itemSellPriceLabel.text(itemTotalSellPrice.toFixed(2));
+
+                addCartItem(productId, quantity, colorId, sizeId);
+            }
+
+            inputQuantity.val(quantity);
+        }
+
     </script>
 @endpush

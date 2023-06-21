@@ -10337,6 +10337,9 @@ textarea.form-control.is-invalid{
 .mt-\[140px\]{
   margin-top: 140px;
 }
+.mb-5{
+  margin-bottom: 1.25rem;
+}
 .mb-10{
   margin-bottom: 2.5rem;
 }
@@ -10351,9 +10354,6 @@ textarea.form-control.is-invalid{
 }
 .-ml-px{
   margin-left: -1px;
-}
-.mb-5{
-  margin-bottom: 1.25rem;
 }
 .box-content{
   box-sizing: content-box;
@@ -10886,11 +10886,11 @@ textarea.form-control.is-invalid{
 .border-r{
   border-right-width: 1px;
 }
-.border-b-2{
-  border-bottom-width: 2px;
-}
 .border-l{
   border-left-width: 1px;
+}
+.border-b-2{
+  border-bottom-width: 2px;
 }
 .border-solid{
   border-style: solid;
@@ -11038,10 +11038,6 @@ textarea.form-control.is-invalid{
 .bg-green-400{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
-}
-.bg-gray-500{
-  --tw-bg-opacity: 1;
-  background-color: rgb(107 114 128 / var(--tw-bg-opacity));
 }
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
@@ -13957,9 +13953,6 @@ fieldset legend{
   }
   .lg\:grid-cols-5{
     grid-template-columns: repeat(5, minmax(0, 1fr));
-  }
-  .lg\:grid-cols-6{
-    grid-template-columns: repeat(6, minmax(0, 1fr));
   }
   .lg\:justify-start{
     justify-content: flex-start;
