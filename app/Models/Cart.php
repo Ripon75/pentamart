@@ -180,6 +180,30 @@ class Cart extends Model
         return $cart;
     }
 
+    public function getTotalMRP()
+    {
+        $totalMRP = $this->items->sum(function ($item) {
+            $itemMRP  = $item->pivot->item_mrp;
+            $quantity = $item->pivot->quantity;
+
+            return $itemMRP * $quantity;
+        });
+
+        return $totalMRP;
+    }
+
+    public function getTotalDiscount()
+    {
+        $totalDiscount = $this->items->sum(function ($item) {
+            $itemDiscount = $item->pivot->item_discount;
+            $quantity     = $item->pivot->quantity;
+
+            return $itemDiscount * $quantity;
+        });
+
+        return $totalDiscount;
+    }
+
     public function getTotalSellPrice()
     {
         $totalSellPrice = $this->items->sum(function ($item) {

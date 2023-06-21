@@ -66,9 +66,9 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/profile',   [CustomerController::class, 'profileUpdate'])->name('profile.update');
 
         // User address route
-        Route::get('/address',           [AddressController::class, 'index'])->name('address.index');
+        Route::get('/address',           [AddressController::class, 'index'])->name('address');
+        Route::get('/address/create',    [AddressController::class, 'create'])->name('address.create');
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
-        Route::post('/address/others',   [AddressController::class, 'otherStore'])->name('address.other.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
         Route::put('/address/{id}',      [AddressController::class, 'update'])->name('address.update');
         Route::get('/shipping/addrss',   [AddressController::class, 'shippingAddress'])->name('single.address');

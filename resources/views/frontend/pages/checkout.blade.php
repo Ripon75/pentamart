@@ -1,14 +1,19 @@
 @extends('frontend.layouts.default')
 @section('title', 'Checkout')
 @section('content')
+
+    {{-- @if(Session::has('success'))
+        <div class="alert mb-8 success">{{ Session::get('success') }}</div>
+    @endif --}}
+
     @if (count($products))
         <section class="container page-section page-top-gap">
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 last:gap-4">
                 <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-3 xl:col-span-3 2xl:col-span-3">
                     <div class="card border-2 p-4">
-                        <div class="flex justify-between sm:justify-between md:justify-between lg:justify-end xl:justify-end 2xl:justify-end space-x-6 mt-4">
+                        <div class="flex justify-between sm:justify-between md:justify-between lg:justify-end xl:justify-end 2xl:justify-end space-x-6 mt-1">
                             <div class="">
-                                <button id="btn-shopping-continue" class="btn btn-md btn-secondary">
+                                <button id="btn-shopping-continue" class="btn btn-md btn-primary">
                                     <a class="hover:text-white" href="{{ route('products.index') }}">
                                         Continue shopping
                                     </a>
@@ -18,47 +23,51 @@
                         </div>
 
                         <div class="">
-                            <form class="">
-                                <div class="form-item">
-                                    <label class="form-label font-medium">
-                                        Select Shipping Address <span class="ml-1 text-red-500 font-medium">*</span>
-                                    </label>
-                                    <div class="flex space-x-2 md:space-x-4">
-                                        <select class="header-shipping-address form-input w-full">
-                                            <option class="text-xs md:text-sm" value="">Select address</option>
-                                            @foreach ($userAddress as $address)
-                                                <option value="{{ $address->id }}" {{ $cart->address_id == $address->id ? "selected" : '' }}>
-                                                    {{ $address->title }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    <div id="header-address-show-dev" class="mt-1 hidden items-center">
-                                        <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
-                                        <span id="show-address-label" class="text-sm text-primary font-medium"></span>
-                                    </div>
+                            <div class="form-item">
+                                <label class="form-label font-medium">
+                                    Select Shipping Address <span class="ml-1 text-red-500 font-medium">*</span>
+                                </label>
+                                <div class="flex space-x-2 md:space-x-4">
+                                    <select id="input-shipping-address" class="form-input w-full">
+                                        <option class="text-xs md:text-sm" value="">Select address</option>
+                                        @foreach ($userAddress as $address)
+                                            <option value="{{ $address->id }}">
+                                                {{ $address->title }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                            </form>
+                                <div id="address-show-div" class="mt-1 hidden items-center">
+                                    <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
+                                    <span id="address-show-label" class="text-sm text-primary font-medium"></span>
+                                </div>
+                            </div>
+
+                            {{-- create new address --}}
                             <h3 class="mt-2 md:mt-2 mb-2 text-base text-center font-bold">Add new address</h3>
-                            <form class="mb-0">
+                            <form class="mb-0" id="address-create-form" action="{{ route('my.address.store') }}" method="POST">
+                                @csrf
+
                                 <div class="grid grid-cols-1">
                                     <div class="form-item">
                                         <label for="" class="form-label">Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="address-title" class="form-select form-input w-full">
+                                        <select id="input-address-title" name="title" class="form-select form-input w-full">
                                             <option value="">Select</option>
                                             <option value="Home">Home</option>
                                             <option value="Office">Office</option>
                                             <option value="Others">Others</option>
                                         </select>
+                                        @error('title')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-item">
                                         <label class="form-label">Alternative Phone Number</label>
-                                        <input id="contact-person-number" class="form-input" type="text"
-                                            placeholder="Enter Your Phone Number" />
+                                        <input class="form-input" type="text" placeholder="Enter Your Phone Number" name="phone_number"/>
                                     </div>
                                     <div class="form-item">
                                         <label class="form-label">Area<span class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="header-area-id" class="form-input">
+                                        <select id="input-address-area" name="area_id" class="form-input">
                                             <option value="" selected>Select</option>
                                             @foreach ($areas as $area)
                                                 <option value="{{ $area->id }}">
@@ -66,13 +75,19 @@
                                                 </option>
                                             @endforeach
                                         </select>
+                                        @error('title')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-item">
                                         <label class="form-label">Address<span class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <textarea id="address-line" class="form-input" rows="2" cols="50" placeholder="Enter your address here..."></textarea>
+                                        <textarea id="input-address" name="address" class="form-input" rows="2" cols="50" placeholder="Enter your address here..."></textarea>
+                                        @error('address')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                     <div class="form-item">
-                                        <button id="addredd-create-btn" type="button" class="btn btn-secondary">
+                                        <button id="btn-address-create" type="button" class="btn btn-primary">
                                             Create
                                             <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
                                         </button>
@@ -88,33 +103,37 @@
                         <div class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
 
                             <div class="mb-4">
-                                <div class="flex justify-between border-b-2">
-                                    <span>Product 1 x 2</span>
-                                    <span>{{ $currency }}
-                                        <span class="ml-1">250</span>
-                                    </span>
-                                </div>
-
-                                <div class="flex justify-between border-b-2">
-                                    <span>Product 1 x 2</span>
-                                    <span>{{ $currency }}
-                                        <span class="ml-1">250</span>
-                                    </span>
-                                </div>
+                                @foreach ($products as $product)
+                                    <div class="flex justify-between border-b-2">
+                                        <span>{{ $product->name }} x {{ $product->pivot->quantity ?? '' }}</span>
+                                        <span>{{ $currency }}
+                                            @php
+                                                $itemSellPrice = $product->pivot->item_mrp;
+                                                $itemQty  = $product->pivot->quantity;
+                                                $itemTotalSellPrice = $itemSellPrice * $itemQty;
+                                            @endphp
+                                            <span class="ml-1">{{ number_format($itemTotalSellPrice, 2) }}</span>
+                                        </span>
+                                    </div>
+                                @endforeach
                             </div>
 
                             <div class="flex justify-between">
                                 <span>Total Price</span>
                                 <span>{{ $currency }}
-                                    <span id="sub-total-price-label" class="ml-1">500</span>
+                                    <span class="ml-1">
+                                        {{ number_format($cart->getTotalMRP(), 2) }}
+                                    </span>
                                 </span>
                             </div>
 
                             <div class="flex justify-between">
                                 <span>Discount (-)</span>
                                 <span>{{ $currency }}
-                                    <input id="input-items-discount" type="hidden" value="">
-                                    <span id="items-total-discount-label" class="ml-1">100</span>
+                                    <input type="hidden" value="">
+                                    <span class="ml-1">
+                                        {{ number_format($cart->getTotalDiscount(), 2) }}
+                                    </span>
                                 </span>
                             </div>
 
@@ -131,24 +150,29 @@
                             <div class="flex justify-between">
                                 <span>Total Price(-Discount)</span>
                                 <span>{{ $currency }}
-                                    <span id="sub-total-sell-price-label" class="ml-1">400</span>
+                                    <span class="ml-1">
+                                        {{ number_format($cart->getTotalSellPrice(), 2) }}
+                                    </span>
                                 </span>
                             </div>
 
                             <div class="flex justify-between">
                                 <span>Delivery Charge (+)</span>
                                 <span>{{ $currency }}
-                                    <span id="delivery-charge-lavel" class="ml-1"></span>
+                                    <span class="ml-1">
+                                        {{ number_format($deliveryCharge, 2) }}
+                                    </span>
                                 </span>
                             </div>
 
                         </div>
-                        <div class="bg-[#c03375] p-2 rounded mx-2 mb-2">
+                        <div class="bg-primary p-2 rounded mx-2 mb-2">
                             <div class="flex justify-between text-white font-medium">
                                 <span class="text-base sm:text-base md:text-lg">Total</span>
                                 <span class="text-base sm:text-base md:text-lg font-medium">
                                     <span>{{ $currency }}
-                                        <span id="cart-total-price-label" class="ml-1">
+                                        <span class="ml-1">
+                                            {{ number_format(($cart->getTotalSellPrice() + $deliveryCharge), 2) }}
                                         </span>
                                     </span>
                                 </span>
@@ -157,35 +181,10 @@
                     </section>
                     <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
                         @csrf
-                        {{-- <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="header">
-                                    <h1 class="title">Select shipping address <span class="text-red-500">*</span> </h1>
-                                </div>
-                                <div class="p-2">
-                                    <div class="flex justify-between items-center">
-                                        <div class="flex space-x-2 items-center">
-                                            <div class="h-8 w-8 border rounded flex items-center justify-center">
-                                                <i class="text-lg text-gray-500 fa-solid fa-location-dot"></i>
-                                            </div>
-                                            <div class="">
-                                                <input type="hidden" class="shipping-address-id" name="address_id"
-                                                    value="{{ ($cart->address->id) ?? null }}">
-                                                <div id="" class="shipping-address-label text-sm text-gray-500">
-                                                    {{ ($cart->address->title) ?? null }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="">
-                                            <button id="btn-address-change" type="button" class="ml-2 btn btn-sm sm:btn-sm md:btn-md btn-primary"
-                                            data-bs-toggle="modal" @auth data-bs-target="#address-modal" @endauth>
-                                            Select
-                                        </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </section> --}}
+
+                        {{-- hidden field for shipping address --}}
+                        <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
+
                         {{-- =========Choose Payment Method======= --}}
                         {{-- <section class="mt-4">
                             <div class="card border-2">
@@ -227,7 +226,7 @@
                                                 <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
                                                 <input id="input-coupon-code" class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0" placeholder="Enter coupon code" >
                                             </div>
-                                            <button id="btn-check-coupon" type="button" class="btn btn-md btn-secondary">Apply</button>
+                                            <button id="btn-check-coupon" type="button" class="btn btn-md btn-primary">Apply</button>
                                         </div>
                                     </div>
                                     <div id="active-coupon-box" class="hidden">
@@ -248,17 +247,17 @@
                                 <div class="px-4 py-2">
                                     <div class="mt-4">
                                         <label class="text-sm" for="">Write note here</label><br>
-                                        <textarea name="note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                        <textarea name="order_note" class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
                                     </div>
                                     <div class="flex space-x-2 mt-2">
-                                        <input id="terms-and-conditons" class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
+                                        <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
                                         <span class="text-gray-500 text-xs">
                                             I agree with
                                             <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and Conditions</a>,
                                         </span>
                                     </div>
                                     <div class="mt-4">
-                                        <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-secondary">
+                                        <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
                                             <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
                                             SUBMIT ORDER
                                         </button>
@@ -295,97 +294,29 @@
 
 @push('scripts')
     <script>
-        var cartAddItemEndPoint     = '/cart/items/add';
-        var cartAddMetaDataEndPoint = '/cart/meta/add';
-        var deleteCartItemBtn       = $('.delete-cart-item-btn');
-        var iconLoadding            = $('.loadding-icon');
-        var iconTrash               = $('.trash-icon');
-        var inputCartEmpty          = $('#input-cart-empty');
-        var cartInputItemQty        = $('.cart-input-item-qty');
-        var btnPaymentMethod        = $('.btn-payment-method');
-        var inputDeliveryGateway    = $('#input-delivery-gateway-id');
-        var inputPaymentMethod      = $('#input-payment-method-id');
-        var btnOrderSubmit          = $('#btn-order-submit');
-        var formCheckOut            = $('#form-checkout');
-        var subTotalPriceLabel      = $('#sub-total-price-label');
-        var cartTotalPriceLabel     = $('#cart-total-price-label');
-        var deliveryCharge          = "{{ $deliveryCharge }}";
-        var deliveryChargeLabel     = $('#delivery-charge-lavel');
+        var iconLoadding        = $('.loadding-icon');
+        var btnPaymentMethod    = $('.btn-payment-method');
+        var btnOrderSubmit      = $('#btn-order-submit');
+        var formCheckOut        = $('#form-checkout');
+        var btnContinueShopping = $('#btn-shopping-continue');
+
         // For address create
-        var addressModal         = $('#address-modal');
-        var btnAddressChangeCart = $('#btn-address-change');
-        var btnContinueShopping  = $('#btn-shopping-continue');
+        var btnAddressCreate       = $('#btn-address-create');
+        var inputShippingAddress   = $('#input-shipping-address');
+        var inputShippingAddressId = $('#input-shipping-address-id');
+
         // Coupon code
-        var inputCouponCode         = $('#input-coupon-code');
-        var btnApplyCoupon          = $('#btn-check-coupon');
-        var applyCouponBox          = $('#apply-coupon-box');
-        var activeCouponBox         = $('#active-coupon-box');
-        var labelCouponCode         = $('.label-coupon-code');
-        var btnRemoveCouponCode     = $('#btn-remove-coupon-code');
-        var inputCouponCodeId       = $('#input-coupon-code-id');
-        var itemsTotalDiscountLabel = $('#items-total-discount-label');
-        var subTotalSellPriceLabel  = $('#sub-total-sell-price-label');
-        var inputItemsDiscount      = $('#input-items-discount');
-        // disable order submit button
-        btnOrderSubmit.prop("disabled", true);
-        btnOrderSubmit.addClass('disabled:opacity-50');
-        // Trash and loading icon
-        iconTrash.show();
+        var inputCouponCode     = $('#input-coupon-code');
+        var btnApplyCoupon      = $('#btn-check-coupon');
+        var applyCouponBox      = $('#apply-coupon-box');
+        var activeCouponBox     = $('#active-coupon-box');
+        var labelCouponCode     = $('.label-coupon-code');
+        var btnRemoveCouponCode = $('#btn-remove-coupon-code');
+        var inputCouponCodeId   = $('#input-coupon-code-id');
+
         iconLoadding.hide();
 
-        // totalPriceCalculation();
-
         $(function() {
-            // Delete item
-            deleteCartItemBtn.click(function() {
-                var itemId = $(this).data('item-id');
-                var colorId = $(this).data('color-id');
-                var sizeId = $(this).data('size-id');
-
-                removeCartItem(itemId, colorId, sizeId, $(this));
-            });
-
-            // Empty item
-            inputCartEmpty.click(function() {
-                $(this).find(iconTrash).hide()
-                $(this).find(iconLoadding).show();
-                emptyCart();
-            });
-
-            // Event with pack size
-            cartInputItemQty.change(function() {
-                var quantity = $(this).val();
-                var itemId   = $(this).data('item-id');
-                var colorId  = $(this).data('color-id');
-                var sizeId   = $(this).data('size-id');
-
-                addCartItem(itemId, quantity, colorId, sizeId);
-
-                var itemTotalSellPrice        = 0;
-                var itemTotalPrice            = 0;
-                var itemTotalDiscount         = 0;
-                var unitSellPrice             = $(this).data('unit-sell-price');
-                var unitPrice                 = $(this).data('unit-price');
-                var totalItemSellPriceLabelID = $(this).data('total-item-sell-price-label');
-                var totalItemPriceLabelID     = $(this).data('total-item-price-label');
-                var itemDiscount              = $(this).data('item-discount');
-                var totalDiscountLabelID      = $(this).data('total-item-discount-label');
-
-                itemTotalSellPrice = parseFloat(unitSellPrice * quantity);
-                itemTotalPrice     = parseFloat(unitPrice * quantity);
-                itemTotalDiscount  = parseFloat(itemDiscount * quantity);
-
-                itemTotalSellPrice = itemTotalSellPrice ? itemTotalSellPrice : itemTotalPrice;
-
-                itemTotalDiscount  = itemTotalDiscount.toFixed(2);
-                itemTotalSellPrice = itemTotalSellPrice.toFixed(2);
-                $(`#${totalItemSellPriceLabelID}`).text(itemTotalSellPrice);
-                $(`#${totalDiscountLabelID}`).text(itemTotalDiscount);
-                $(`#${totalItemPriceLabelID}`).text(itemTotalPrice);
-
-                removedCouponCode();
-            });
-
             // On choose payment method
             btnPaymentMethod.click(function() {
                 btnPaymentMethod.removeClass('active');
@@ -396,25 +327,55 @@
                 addCartMetaData('pg_id', paymentID);
             });
 
-            btnAddressChangeCart.click(function () {
-                addressModal.show();
+            inputShippingAddress.on('change', function() {
+                var addressId = $(this).val();
+
+                inputShippingAddressId.val(addressId)
+                getShippingAddress(addressId);
+            });
+
+            // create user address
+            btnAddressCreate.click(function() {
+                var addressCreateForm = $('#address-create-form');
+                var inputAddressTitle = $('#input-address-title');
+                var inputAddressArea  = $('#input-address-area');
+                var inputAddress      = $("#input-address");
+
+                if (!inputAddressTitle.val()) {
+                    inputAddressTitle.focus();
+                    return false;
+                }
+
+                if (!inputAddressArea.val()) {
+                    inputAddressArea.focus();
+                    return false;
+                }
+
+                if (!inputAddress.val()) {
+                    inputAddress.focus();
+                    return false;
+                }
+
+                addressCreateForm.submit();
             });
 
             btnOrderSubmit.click(function () {
-                var addressID = $('.header-shipping-address').find(":selected").val();
-                if (addressID) {
-                    var checked = $('input[name=terms_and_conditons]:checked').val();
-                    if (checked == 1) {
-                        formCheckOut.submit();
-                    } else {
-                        __showNotification('error', 'Please checked terms and conditons');
-                        return false;
-                    }
-                } else {
-                    __showNotification('error', 'Please select shipping address to continue');
+                var addressId = inputShippingAddressId.val();
+                var checked   = $('input[name=terms_conditons]:checked').val();
+
+                if (!addressId) {
+                    __showNotification('error', 'Please select shipping address');
+                    inputShippingAddress.focus();
                     return false;
                 }
+
+                if (!checked) {
+                    __showNotification('error', 'Please check terms and conditions');
+                    return false;
+                }
+
                 $(this).find(iconLoadding).show();
+                formCheckOut.submit();
             });
 
             inputCouponCode.on("keypress", function(e) {
@@ -436,38 +397,35 @@
                 totalPriceCalculation();
             });
 
-            $('#terms-and-conditons').click(function() {
-                var checked = $('input[name=terms_and_conditons]:checked').val();
-                var addressID = inputShippingAddress.find(":selected").val();
-                checked   = checked ? checked : null;
-                addressID = addressID ? addressID : null;
-                if (checked && addressID) {
-                    btnOrderSubmit.prop("disabled", false);
-                    btnOrderSubmit.removeClass('disabled:opacity-50');
-                } else {
-                    btnOrderSubmit.prop("disabled", true);
-                    btnOrderSubmit.addClass('disabled:opacity-50');
-                }
-            });
-
-            inputShippingAddress.change(function() {
-                var checked = $('input[name=terms_and_conditons]:checked').val();
-                var addressID = inputShippingAddress.find(":selected").val();
-                checked   = checked ? checked : null;
-                addressID = addressID ? addressID : null;
-                if (checked && addressID) {
-                    btnOrderSubmit.prop("disabled", false);
-                    btnOrderSubmit.removeClass('disabled:opacity-50');
-                } else {
-                    btnOrderSubmit.prop("disabled", true);
-                    btnOrderSubmit.addClass('disabled:opacity-50');
-                }
-            });
-
             btnContinueShopping.click( function() {
                 $(this).find(iconLoadding).show();
             });
         });
+
+        function getShippingAddress(addressId) {
+            var addressShowDiv   = $('#address-show-div');
+            var addressShowLabel = $('#address-show-label');
+
+            axios.get('/my/shipping/addrss', {
+                params: {
+                    address_id: addressId
+                }
+            })
+            .then((res) => {
+                if (res.data.result) {
+                    let address = res.data.result.address;
+                    if (address) {
+                        addressShowDiv.show();
+                        addressShowLabel.text(address);
+                    } else {
+                        addressShowDiv.hide();
+                    }
+                }
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+        }
 
         // Check coupon code function
         function applyCouponCode(couponCode) {
@@ -476,141 +434,29 @@
                 coupon_code: couponCode
             })
             .then((response) => {
-                if (response.data.error) {
-                    inputCouponCode.val('');
-                    __showNotification('error', response.data.message);
-                    return false;
-                } else {
-                    var coupon = response.data
-
-                    if (coupon.applicable_on === 'delivery_fee') {
-                        couponCodeOnDelivery(coupon);
-                    }
-
-                    if (coupon.applicable_on === 'cart') {
-                        couponCodeOnCart(coupon);
-                    }
-                }
+                calculateCouponValue();
             })
             .catch((error) => {
                 console.log(error);
-            });
-        }
-
-        // Remove single cart item
-        function removeCartItem(itemId, colorId, sizeId, btn) {
-            btn.find(iconLoadding).show();
-            btn.find(iconTrash).hide();
-
-            axios.post('/cart/items/remove', {
-                item_id: itemId,
-                color_id: colorId,
-                size_id: sizeId,
-            })
-            .then(function (response) {
-                btn.parent().parent().remove();
-                removedCouponCode();
-                totalPriceCalculation();
-                __cartItemCount();
-            })
-            .catch(function (error) {
-                btn.find(iconLoadding).hide();
-                btn.find(iconTrash).show();
-            });
-        }
-
-         // Empty cart
-        function emptyCart(){
-            axios.get('/cart/items/empty')
-            .then(function (response) {
-                // handle success
-                location.reload();
-            })
-            .catch(function (error) {
-                // handle error
-                console.log(error);
-            });
-        }
-
-        // Add cart item
-        function addCartItem(productID, productQty, colorId, sizeId) {
-            axios.post(cartAddItemEndPoint, {
-                item_id: productID,
-                quantity: productQty,
-                color_id: colorId,
-                size_id: sizeId,
-                is_update: true
-            })
-            .then((response) => {
-                totalPriceCalculation();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
-
-        // Add cart meta data
-        function addCartMetaData(inputName, value) {
-            var data = {};
-
-            if (inputName === 'delevery_type_id') {
-                data = {
-                    'delevery_type_id': value
-                };
-            }
-
-            if (inputName === 'pg_id') {
-                data = {
-                    'pg_id': value
-                };
-            }
-
-            axios.post(cartAddMetaDataEndPoint, data)
-            .then((response) => {
-            })
-            .catch((error) => {
-                __showNotification('error', response.data.message);
-                return false;
             });
         }
 
         // Calculate total price
         function totalPriceCalculation() {
-            var itemsTotalPrice         = 0;
-            var itemTotalDiscount       = 0;
-            var totalWithDeliveryCharge = 0;
-            $(".sub-total-price").each(function() {
-                var itemPrice = parseFloat($(this).text());
-                itemsTotalPrice = itemsTotalPrice + itemPrice;
+            var itemsTotalSellPrice = 0;
+            $(".item-sell-price").each(function() {
+                var itemSellPrice = parseFloat($(this).text());
+                itemsTotalSellPrice = itemsTotalSellPrice + itemSellPrice;
             });
-
-            $(".sub-total-discount").each(function() {
-                itemTotalDiscount = +itemTotalDiscount;
-                var subDiscount = parseFloat($(this).text());
-                itemTotalDiscount = itemTotalDiscount + subDiscount;
-            });
-
-
-            // Get seltected delivery charge text
-            deliveryCharge = parseFloat(deliveryCharge);
-            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
 
             // get coupon discount
-            couponDiscount = inputItemsDiscount.val();
-            couponDiscount = +couponDiscount;
+            // couponDiscount = inputItemsDiscount.val();
+            // couponDiscount = +couponDiscount;
 
             // Items total sell price
-            var itemsTotalSellPrice = itemsTotalPrice - (itemTotalDiscount + couponDiscount);
+            // var itemsTotalSellPrice = itemsTotalSellPrice - couponDiscount;
 
-            itemsTotalDiscountLabel.text(itemTotalDiscount.toFixed(2));
-            subTotalSellPriceLabel.text(itemsTotalSellPrice.toFixed(2));
-
-            totalWithDeliveryCharge = (itemsTotalPrice + deliveryCharge) - (itemTotalDiscount + couponDiscount);
-
-            itemsTotalPrice         = itemsTotalPrice.toFixed(2);
-            totalWithDeliveryCharge = totalWithDeliveryCharge.toFixed(2);
-            subTotalPriceLabel.text(itemsTotalPrice);
-            cartTotalPriceLabel.text(totalWithDeliveryCharge);
+            // totalWithDeliveryCharge = itemsTotalSellPrice - deliveryCharge;
         }
 
         function removedCouponCode() {
@@ -623,24 +469,7 @@
             $('#coupon-discount-div').hide();
         }
 
-        function couponCodeOnDelivery(coupon) {
-            var couponAmount = coupon.discount_amount;
-            deliveryCharge = deliveryCharge - couponAmount;
-            applyCouponBox.hide();
-            activeCouponBox.show();
-            labelCouponCode.text(coupon.code);
-            inputCouponCodeId.val(coupon.id);
-            discountLabel.text(couponAmount);
-            inputItemsDiscount.val(couponAmount)
-            var couponCode = coupon.code;
-            couponCode     = couponCode.toUpperCase();
-            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
-            discountLabel.text(0.0);
-            inputItemsDiscount.val(0.0);
-            totalPriceCalculation();
-        }
-
-        function couponCodeOnCart(coupon) {
+        function calculateCouponValue(coupon) {
             var total        = 0;
             var couponAmount = 0;
             if (coupon.discount_type == 'fixed') {

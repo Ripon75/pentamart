@@ -51,7 +51,6 @@ class CartController extends Controller
         }
 
         $areas              = Area::orderBy('name', 'asc')->get();
-        $userAddress        = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
         $paymentGateways    = PaymentGateway::where('status', 'active')->get();
         $cartTotalSellPrice = Auth::user()->cart->getTotalSellPrice();
         $currency           = 'tk';
@@ -62,7 +61,6 @@ class CartController extends Controller
             'products'           => $products,
             'selelctedColors'    => $selelctedColors,
             'selelctedSizes'     => $selelctedSizes,
-            'userAddress'        => $userAddress,
             'paymentGateways'    => $paymentGateways,
             'cartTotalSellPrice' => $cartTotalSellPrice,
             'currency'           => $currency
@@ -78,25 +76,20 @@ class CartController extends Controller
             $products = $cart->items()->orderBy('id', 'desc')->getDefaultMetaData()->get();
         }
 
-        $areas            = Area::orderBy('name', 'asc')->get();
-        $userAddress      = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
-        $paymentGateways  = PaymentGateway::where('status', 'active')->get();
-        $deliveryGateway  = DeliveryGateway::where('status', 'active')->first();
-        $deliveryCharge   = 0;
-        $currency         = 'tk';
-
-        if ($deliveryGateway) {
-            $deliveryCharge = $deliveryGateway->promo_price ? $deliveryGateway->promo_price : $deliveryGateway->price ;
-        }
+        $areas          = Area::orderBy('name', 'asc')->get();
+        $userAddress    = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
+        $deliveryCharge = DeliveryGateway::where('status', 'active')->value('price');
+        $currency       = 'tk';
+        // $paymentGateways = PaymentGateway::where('status', 'active')->get();
 
         return view('frontend.pages.checkout', [
-            'cart'            => $cart,
-            'areas'           => $areas,
-            'products'        => $products,
-            'userAddress'     => $userAddress,
-            'paymentGateways' => $paymentGateways,
-            'deliveryCharge'  => $deliveryCharge,
-            'currency'        => $currency
+            'cart'           => $cart,
+            'areas'          => $areas,
+            'products'       => $products,
+            'userAddress'    => $userAddress,
+            'deliveryCharge' => $deliveryCharge,
+            'currency'       => $currency
+            // 'paymentGateways' => $paymentGateways,
         ]);
     }
 

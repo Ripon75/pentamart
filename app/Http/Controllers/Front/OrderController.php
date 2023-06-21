@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\Coupon;
+use App\Models\Address;
 use App\Events\OrderCreate;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
@@ -17,50 +18,38 @@ class OrderController extends Controller
 {
     public function dashboard()
     {
-        $orders = Order::withSum('items as total_amount', DB::raw('order_item.sell_price * order_item.quantity'))
-            ->where('user_id', Auth::id())
-            ->get();
-
-        $totalAmount = 0;
-
-        foreach ($orders as $order) {
-            $deliveryCharge = $order->delivery_charge;
-            $couponDiscount = ($order->coupon->discount_amount) ?? 0;
-            $specialDiscout = $order->total_special_discount;
-            $totalDiscount  = $couponDiscount + $specialDiscout;
-            $totalAmount += ($order->total_amount + $deliveryCharge) - $totalDiscount;
-        }
-
-        $totalAmount = round($totalAmount);
+        $orders      = Order::count();
+        $ordersValue = Order::sum('payable_price');
 
         return view('frontend.pages.my-dashboard', [
             'orders'      => $orders,
-            'totalAmount' => $totalAmount
+            'ordersValue' => $ordersValue
         ]);
     }
 
-    public function index(Request $request)
+    public function index()
     {
         $paginate = config('crud.paginate.default');
 
-        $orders = Order::withSum('items as total_amount', DB::raw('(order_item.sell_price * order_item.quantity)'))
-        ->where('user_id', Auth::id())
-        ->latest()
-        ->paginate($paginate);
-
-        $paymentGateways = PaymentGateway::whereNotIn('id', [1])->orderBy('name', 'asc')->get();
+        $orders = Order::where('user_id', Auth::id())->latest()->paginate($paginate);
 
         return view('frontend.pages.my-order', [
-            'orders'          => $orders,
-            'currency'        => 'Tk',
-            'paymentGateways' => $paymentGateways
+            'orders'   => $orders,
+            'currency' => 'tk'
         ]);
     }
 
     public function store(Request $request)
     {
-        $note     = $request->input('note', null);
-        $couponId = $request->input('coupon_id', null);
+        $request->validate([
+            'address_id' => ['required']
+        ]);
+
+        $addressId      = $request->input('address_id', null);
+        $note           = $request->input('note', null);
+        $couponId       = $request->input('coupon_id', null);
+        $address        = Address::where('id', $addressId)->value('address');
+        $deliveryCharge = DeliveryGateway::where('status', 'active')->value('price');
 
         try {
             DB::beginTransaction();
@@ -71,54 +60,33 @@ class OrderController extends Controller
 
             // Get current customer cart
             $cart = $cartObj->getCurrentCustomerCart();
-            $cart = Cart::find($cart->id);
             if (count($cart->items) == 0) {
-                return back();
-            }
-
-            // Save note inside cart
-            $cart->note = $note;
-            $cart->save();
-
-            $deliveryGatewayCharge = 0;
-            $deliveryGateway = DeliveryGateway::where('status', 'active')->first();
-            if ($deliveryGateway) {
-                $deliveryGatewayCharge = $deliveryGateway->price;
-            }
-
-            // Check coupon code applied on delivery charge
-            $deliveryChargeDiscount = 0;
-            if ($couponId) {
-                $coupon = Coupon::find($couponId);
-                if ($coupon && $coupon->applicable_on === 'delivery_fee') {
-                    $deliveryChargeDiscount = $coupon->discount_amount;
-                }
-            }
-
-            if ($deliveryGatewayCharge >= $deliveryChargeDiscount) {
-                $deliveryCharge = $deliveryGatewayCharge - $deliveryChargeDiscount;
+                return false;
             }
 
             $orderObj->user_id         = $user->id;
             $orderObj->pg_id           = 1;
-            $orderObj->address_id      = $cart->address_id;
-            $orderObj->address         = $cart->address->address ?? null;
+            $orderObj->status_id       = 1;
+            $orderObj->address_id      = $addressId;
+            $orderObj->address         = $address;
             $orderObj->coupon_id       = $couponId;
             $orderObj->is_paid         = 0;
             $orderObj->delivery_charge = $deliveryCharge;
             $orderObj->note            = $note;
-            $orderObj->created_by      = $user->id;
             $res = $orderObj->save();
             if ($res) {
                 $itemIds = [];
                 foreach ($cart->items as $item) {
-                    $itemIds[$item->pivot->item_id] = [
-                        'size_id'       => $item->pivot->size_id,
-                        'color_id'      => $item->pivot->color_id,
-                        'quantity'      => $item->pivot->quantity,
-                        'item_price'    => $item->pivot->item_price,
-                        'sell_price'    => $item->pivot->sell_price,
-                        'item_discount' => $item->pivot->item_discount
+                    $itemIds[] = [
+                        'order_id'        => $orderObj->id,
+                        'item_id'         => $item->pivot->item_id,
+                        'color_id'        => $item->pivot->color_id,
+                        'size_id'         => $item->pivot->size_id,
+                        'quantity'        => $item->pivot->quantity,
+                        'item_mrp'        => $item->pivot->item_mrp,
+                        'item_buy_price'  => $item->pivot->item_buy_price,
+                        'item_sell_price' => $item->pivot->item_sell_price,
+                        'item_discount'   => $item->pivot->item_discount
                     ];
                 }
 
@@ -127,14 +95,18 @@ class OrderController extends Controller
                 // Update order total_items_discount, order_net_value and coupon_value
                 $orderObj->updateOrderValue($orderObj);
 
-                $cart->emptyCart();
+                // $cart->emptyCart();
                 // Dispatch order create event
                 OrderCreate::dispatch($orderObj);
 
+                $orderObj->status()->attach(1);
+
                 // Create payment transaction
-                $orderId    = $orderObj->id;
+                $orderId      = $orderObj->id;
+                $payablePrice = $orderObj->payable_price;
+
                 $paymentTrx = new PaymentTransaction();
-                $paymentTrx->make($orderId, null, 'sale', 1, 'pending');
+                $paymentTrx->make($orderId, $payablePrice, 'sale', 1, 'pending');
                 DB::commit();
 
                 return redirect()->route('my.order.success');

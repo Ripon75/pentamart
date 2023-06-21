@@ -60,7 +60,7 @@ class Order extends Model implements Auditable
     public function items()
     {
         return $this->belongsToMany(Product::class, 'order_item', 'order_id', 'item_id')
-            ->withPivot('quantity', 'item_price', 'sell_price', 'item_discount')
+            ->withPivot('color_id', 'size_id', 'quantity', 'item_buy_price', 'item_mrp', 'item_sell_price', 'item_discount')
             ->withTimestamps();
     }
 
@@ -129,42 +129,55 @@ class Order extends Model implements Auditable
         return $couponAmount;
     }
 
-    // Calculate items total price
-    public function getTotalPrice()
+    // Calculate items total Buy price
+    public function getTotalBuyPrice()
     {
-        $totalPrice = $this->items->sum(function ($item) {
-            $itemPrice = $item->pivot->item_price;
-            $quantity  = $item->pivot->quantity;
+        $totalBuyPrice = $this->items->sum(function ($item) {
+            $itemBuyPrice = $item->pivot->item_buy_price;
+            $itemQty  = $item->pivot->quantity;
 
-            return $itemPrice * $quantity;
+            return $itemBuyPrice * $itemQty;
         });
 
-        return $totalPrice;
+        return $totalBuyPrice;
     }
 
-    // Calculate iems total MRP
-    public function getTotalSellPrice()
+    // Calculate items total mrp
+    public function getTotalMRP()
     {
-        $totalSellPrice = $this->items->sum(function ($item) {
-            $sellPrice = $item->pivot->sell_price;
-            $quantity  = $item->pivot->quantity;
+        $totalMRP = $this->items->sum(function ($item) {
+            $itemMRP = $item->pivot->item_mrp;
+            $itemQty  = $item->pivot->quantity;
 
-            return $sellPrice * $quantity;
+            return $itemMRP * $itemQty;
         });
 
-        return $totalSellPrice;
+        return $totalMRP;
     }
 
     // Get total items discount
     public function getTotalDiscount()
     {
         $totalDiscount = $this->items->sum(function ($item) {
-            $discount = $item->pivot->item_discount;
-            $quantity = $item->pivot->quantity;
-            return $discount * $quantity;
+            $itemDiscount = $item->pivot->item_discount;
+            $itemQty = $item->pivot->quantity;
+            return $itemDiscount * $itemQty;
         });
 
         return $totalDiscount;
+    }
+
+    // Calculate iems total MRP
+    public function getTotalSellPrice()
+    {
+        $totalSellPrice = $this->items->sum(function ($item) {
+            $itemSellPrice = $item->pivot->item_sell_price;
+            $itemQty  = $item->pivot->quantity;
+
+            return $itemSellPrice * $itemQty;
+        });
+
+        return $totalSellPrice;
     }
 
     public function getTotalWithDeliveryCharge()
@@ -201,7 +214,8 @@ class Order extends Model implements Auditable
 
     public function updateOrderValue($orderObj)
     {
-        $totalPrice     = $orderObj->getTotalPrice() ?? 0;
+        $totalBuyPrice  = $orderObj->getTotalBuyPrice() ?? 0;
+        $totalMRP       = $orderObj->getTotalMRP() ?? 0;
         $totalSellPrice = $orderObj->getTotalSellPrice() ?? 0;
         $couponValue    = $orderObj->getCouponValue() ?? 0;
         $totalDiscount  = $orderObj->getTotalDiscount() ?? 0;
@@ -209,7 +223,8 @@ class Order extends Model implements Auditable
         $payablePrice   = $orderObj->getPayablePrice('round') ?? 0;
 
         $orderObj->coupon_value  = $couponValue;
-        $orderObj->price         = $totalPrice;
+        $orderObj->buy_price     = $totalBuyPrice;
+        $orderObj->mrp           = $totalMRP;
         $orderObj->sell_price    = $totalSellPrice;
         $orderObj->discount      = $totalDiscount;
         $orderObj->net_price     = $netPrice;

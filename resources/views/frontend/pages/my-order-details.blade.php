@@ -5,29 +5,11 @@
 <section class="container page-top-gap">
     <div class="page-section">
         <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-4 gap-0 sm:gap-0 md:gap-0 lg:gap-4 xl:gap-4 2xl:gap-4">
-            {{-- =======List========= --}}
-            <div class="col-span-1 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
-                <x-frontend.customer-nav/>
-            </div>
-            {{-- =============== --}}
-            <div class="col-span-3">
-                <div class="flex space-x-2 sm:space-x-2 md:space-x-2 lg:space-x-0 xl:space-x-0 2xl:space-x-0">
-                    <div class="relative block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
-                        <button id="category-menu" onclick="menuToggleCategory()" class="h-[46px] w-14 bg-white flex items-center justify-center rounded border-2">
-                            <i class="text-xl fa-solid fa-ellipsis-vertical"></i>
-                        </button>
-                          {{-- ===Mobile menu for order details===== --}}
-                        <div id="category-list-menu" style="display: none" class="absolute left-0 w-60">
-                            <x-frontend.customer-nav/>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-span-4">
                 <div class="bg-white">
                     <div class="p-2 md:p-6">
-                        {{-- Info section --}}
                         <div class="flex-wrap md:flex justify-between">
                             <div>
-                                {{-- <div class="font-bold">Order Info</div> --}}
                                 <div>
                                     <span class="text-sm font-medium">Order ID:</span> <span class="text-sm">{{ $order->id }}</span>
                                 </div>
@@ -72,8 +54,9 @@
                                         <th width="32px" class="border-r border-black text-center">SN</th>
                                         <th width="auto" class="border-r border-black text-left pl-1">Product</th>
                                         <th width="100px" class="border-r border-black text-right pr-1">Quantity</th>
-                                        <th width="110px" class="border-r border-black text-right pr-1">Price</th>
+                                        <th width="110px" class="border-r border-black text-right pr-1">MRP</th>
                                         <th width="110px" class="border-r border-black text-right pr-1">Discount</th>
+                                        <th width="110px" class="border-r border-black text-right pr-1">Price</th>
                                         <th width="120px" class="text-right pr-1">Sub Total</th>
                                     </tr>
                                 </thead>
@@ -84,23 +67,28 @@
                                             <td width="auto" class="text-xs md:text-sm border-black border text-left font-medium pl-1">
                                                 {{ $item->name }}
                                             </td>
-                                            <td width="100px" class="border-black border text-right pr-1">
-                                                {{ $item->pivot->quantity }}
-                                            </td>
                                             @php
+                                                $currency           = config('crud.currency');
                                                 $quantity           = $item->pivot->quantity;
-                                                $itemTotalPrice     = $item->pivot->item_price * $quantity;
-                                                $itemTotalSellPrice = $item->pivot->sell_price * $quantity;
-                                                $itemTotalDiscount  = $itemTotalPrice - $itemTotalSellPrice;
+                                                $itemMRP            = $item->pivot->item_mrp;
+                                                $itemDiscount       = $item->pivot->item_discount;
+                                                $itemSellPrice      = $item->pivot->item_sell_price;
+                                                $itemTitalSellPrice = $itemSellPrice * $quantity;
                                             @endphp
                                             <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemTotalPrice, 2) }}
+                                                {{ $quantity }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemTotalDiscount, 2) }}
+                                                {{ number_format($itemMRP, 2) }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemTotalSellPrice, 2) }}
+                                                {{ number_format($itemDiscount, 2) }}
+                                            </td>
+                                            <td width="100px" class="border-black border text-right pr-1">
+                                                {{ number_format($itemSellPrice, 2) }}
+                                            </td>
+                                            <td width="100px" class="border-black border text-right pr-1">
+                                                {{ number_format($itemTitalSellPrice, 2) }}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -108,8 +96,8 @@
                                 <tfoot>
                                     <tr class="text-sm border border-black">
                                         <td class="text-center"colspan="1">#</td>
-                                        <td class="font-medium border border-black pl-1 text-right pr-2" colspan="2">Total</td>
-                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->price, 2) }}</td>
+                                        <td class="font-medium border border-black pl-1 text-right pr-2" colspan="3">Total</td>
+                                        <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->mrp, 2) }}</td>
                                         <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->discount, 2) }}</td>
                                         <td class="font-medium border border-black pl-1 text-right pr-1">{{ number_format($order->sell_price, 2) }}</td>
                                     </tr>
@@ -125,21 +113,6 @@
                                             </tfoot>
                                         </table>
                                     </div>
-                                    {{-- <div class="">
-                                        <table class="w-full">
-                                            <tfoot class=" ">
-                                                <span class="font-medium text-sm">Cannot return if:</span><br>
-                                                <ul class="text-xs mt-1">
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>The items have been opened, partially used or damaged.</li>
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>Any refrigerated items like insulin or products that are heat sensitive.</li>
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>The items have been opened, partially used or disfigured.</li>
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>The item’s packaging/box or seal has been remove/broken/tampered.</li>
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>The return window for items in an order has expired. 7 days from the delivery date.</li>
-                                                    <li><i class="mr-2 fa-solid fa-hand-point-right"></i>Mentioned on the product details page that the item is non-returnable.</li>
-                                                </ul>
-                                            </tfoot>
-                                        </table>
-                                    </div> --}}
                                 </div>
 
                                 <div class="w-full col-start-5 col-span-8 md:col-span-4">
@@ -148,36 +121,42 @@
                                             <tr class="text-sm text-right">
                                                 <td class="text-left font-medium" colspan="4"></td>
                                                 <td class="border border-black pr-1 font-medium">Total</td>
-                                                <td class="border pr-1 border-black">{{ number_format($order->price, 2) }} Tk.</td>
+                                                <td class="border pr-1 border-black">
+                                                    {{ number_format($order->mrp, 2) }} {{ $currency }}
+                                                </td>
                                             </tr>
                                             <tr class="text-sm text-right">
                                                 <td class="" colspan="4"></td>
                                                 <td class="border border-black pr-1 font-medium">Shipping</td>
                                                 <td class="border pr-1 border-black">
-                                                    {{ number_format((float)$order->delivery_charge, 2) }} Tk.
+                                                    {{ number_format((float)$order->delivery_charge, 2) }} {{ $currency }}
                                                 </td>
                                             </tr>
                                             <tr class="text-sm text-right">
                                                 <td class="" colspan="4"></td>
                                                 <td class="border border-black pr-1 font-medium">Items Discount</td>
                                                 <td class="border pr-1 border-black"> -
-                                                    {{ number_format($order->discount, 2) }}Tk.
+                                                    {{ number_format($order->discount, 2) }} {{ $currency }}
                                                 </td>
                                             </tr>
                                             @if($order->coupon)
                                                 <tr class="text-sm text-right">
                                                     <td class="" colspan="4"></td>
                                                     <td class="border border-black pr-1 font-medium">Coupon Discount</td>
-                                                    <td class="border pr-1 border-black"> - {{ number_format($order->coupon_value, 2) }} Tk.</td>
+                                                    <td class="border pr-1 border-black">
+                                                        - {{ number_format($order->coupon_value, 2) }} {{ $currency }}
+                                                    </td>
                                                 </tr>
                                             @endif
                                             <tr class="text-sm text-right">
                                                 <td class="" colspan="4"></td>
                                                 <td class="border border-black font-bold pr-1">Payable</td>
                                                 @if ($order->is_paid)
-                                                    <td class="border-b border-r pr-2 bg-gray-300 font-bold"> 0 Tk.</td>
+                                                    <td class="border-b border-r pr-2 bg-gray-300 font-bold"> 0 {{ $currency }}</td>
                                                 @else
-                                                    <td class="border pr-1 border-black font-bold">{{ number_format(round($order->payable_price), 2) }} Tk.</td>
+                                                    <td class="border pr-1 border-black font-bold">
+                                                        {{ number_format(round($order->payable_price), 2) }} {{ $currency }}
+                                                    </td>
                                                 @endif
                                             </tr>
                                         </tfoot>
