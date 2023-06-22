@@ -63,9 +63,9 @@ class Cart extends Model
 
         $itemId   = $request->input('item_id');
         $quantity = $request->input('quantity');
-        $colorId  = $request->input('color_id');
-        $sizeId   = $request->input('size_id');
         $isUpdate = $request->input('is_update');
+        $colorId  = $request->color_id ?? 1;
+        $sizeId   = $request->size_id ?? 1;
 
         if ($quantity <= 0) {
             return $this->removeItem($request);

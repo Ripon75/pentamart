@@ -92,7 +92,30 @@
                                <input id="input-offer-percent" type="number" step="any" name="offer_percent" value="{{ old('offer_percent') }}" class="w-full form-input">
                            </div>
                         </div>
-
+                        <div class="flex space-x-2">
+                            <div class="form-item w-full">
+                                <label for="" class="form-label">Colors <span class="text-red-500 font-medium">*</span> </label>
+                                <select class="form-select w-full select-2 form-input" name="color_ids[]" multiple>
+                                    @foreach ($colors as $color)
+                                        <option value="{{ $color->id }}">{{ $color->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('color_ids')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
+                            </div>
+                           <div class="form-item w-full">
+                                <label for="" class="form-label">Sizes <span class="text-red-500 font-medium">*</span></label>
+                                <select class="form-select w-full select-2 form-input" name="size_ids[]" multiple>
+                                    @foreach ($sizes as $size)
+                                        <option value="{{ $size->id }}">{{ $size->name }}</option>
+                                    @endforeach
+                                </select>
+                                @error('size_ids')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
                         <div class="form-item">
                             <label for="" class="form-label">Description</label>
                             <textarea class="w-full tinymce" name="description">{{ old('description') }}</textarea>

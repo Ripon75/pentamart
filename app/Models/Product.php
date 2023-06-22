@@ -70,10 +70,8 @@ class Product extends Model implements Auditable
         return [
             'id'            => (int) $this->id,
             'name'          => $this->name,
-            'buy_price'     => (float) $this->buy_price,
             'mrp'           => (float) $this->mrp,
             'offer_price'   => (float) $this->offer_price,
-            'status'        => $this->status,
             'brand'         => $this->brand->name ?? null,
             'category'      => $this->category->name ?? null,
             'created_at'    => $this->created_at

@@ -31,8 +31,8 @@
         </div>
     @elseif ($type === 'brand')
         <div class="service-new">
-            <div class="grid grid-cols-2 justify-items-center border bg-white p-2 sm:p-2 md:p-4 xl:p-6 2xl:p-6 rounded-md shadow-sm hover:shadow">
-                <div class="flex flex-col items-center justify-center space-y-4">
+            <div class="grid grid-cols-2 justify-items-center border bg-white p-2 sm:p-2 md:p-4 xl:p-4 2xl:p-4 rounded-md shadow-sm hover:shadow">
+                <div class="flex flex-col items-center justify-center space-y-2">
                     <div class="title">
                         <span class="text-base lg:text-base xl:text-lg 2xl:text-lg text-primary font-semibold">{{ $title }}</span>
                     </div>

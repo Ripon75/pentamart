@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,22 +17,33 @@ class SizeSeeder extends Seeder
      */
     public function run()
     {
+        $now = Carbon::now();
+
         $sizes = [
             [
-                'name' => 'M',
-                'slug' => 'm',
+                'name'       => 'NA',
+                'slug'       => 'na',
+                'created_at' => $now
             ],
             [
-                'name' => 'L',
-                'slug' => 'l',
+                'name'       => 'M',
+                'slug'       => 'm',
+                'created_at' => $now
             ],
             [
-                'name' => 'XL',
-                'slug' => 'xl',
+                'name'       => 'L',
+                'slug'       => 'l',
+                'created_at' => $now
             ],
             [
-                'name' => 'XLL',
-                'slug' => 'xll',
+                'name'       => 'XL',
+                'slug'       => 'xl',
+                'created_at' => $now
+            ],
+            [
+                'name'       => 'XLL',
+                'slug'       => 'xll',
+                'created_at' => $now
             ]
         ];
 

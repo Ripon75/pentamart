@@ -18,10 +18,6 @@ class ProductColorSeeder extends Seeder
         $productColors = [
             [
                 'product_id' => 1,
-                'color_id' => 1,
-            ],
-            [
-                'product_id' => 1,
                 'color_id' => 2,
             ],
             [
@@ -34,10 +30,6 @@ class ProductColorSeeder extends Seeder
             ],
             [
                 'product_id' => 2,
-                'color_id' => 1,
-            ],
-            [
-                'product_id' => 2,
                 'color_id' => 2,
             ],
             [
@@ -47,10 +39,6 @@ class ProductColorSeeder extends Seeder
             [
                 'product_id' => 2,
                 'color_id' => 4,
-            ],
-            [
-                'product_id' => 3,
-                'color_id' => 1,
             ],
             [
                 'product_id' => 3,

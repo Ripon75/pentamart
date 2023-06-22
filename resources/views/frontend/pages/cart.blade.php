@@ -67,11 +67,11 @@
                                                                 {{ $selelctedColors[$key]['name'] }}
                                                             @endif
                                                         @else
-                                                            <span class="ml-1">N/A</span>
+                                                            <span class="ml-1">NA</span>
                                                         @endif
                                                     </span>
                                                 @else
-                                                    <span class="ml-1">N/A</span>
+                                                    <span class="ml-1">NA</span>
                                                 @endif
                                             </td>
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
@@ -82,11 +82,11 @@
                                                                 {{ $selelctedSizes[$key]['name'] }}
                                                             @endif
                                                         @else
-                                                            <span class="ml-1">N/A</span>
+                                                            <span class="ml-1">NA</span>
                                                         @endif
                                                     </span>
                                                 @else
-                                                    <span class="ml-1">N/A</span>
+                                                    <span class="ml-1">NA</span>
                                                 @endif
                                             </td>
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
@@ -191,7 +191,6 @@
                     <section class="">
                         <div class="card border-2">
                             <div class="px-4 py-2">
-
                                 <div class="p-2 rounded">
                                     <div class="flex justify-between font-medium">
                                         <span class="text-base sm:text-base md:text-lg">Total</span>
