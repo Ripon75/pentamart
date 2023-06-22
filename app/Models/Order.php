@@ -231,4 +231,25 @@ class Order extends Model implements Auditable
         $orderObj->payable_price = $payablePrice;
         $orderObj->save();
     }
+
+    public function updateItemStock($order, $action)
+    {
+        foreach ($order->items as $item) {
+            $id  = $item->id;
+            $qty = $item->pivot->quantity;
+            $product = Product::find($id);
+            if ($product) {
+                $currentStock = $product->current_stock;
+                if ($action === 'plush') {
+                    $currentStock = $currentStock + $qty;
+                    $product->current_stock = $currentStock;
+                    $product->save();
+                } else {
+                    $currentStock = $currentStock - $qty;
+                    $product->current_stock = $currentStock;
+                    $product->save();
+                }
+            }
+        }
+    }
 }

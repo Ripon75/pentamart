@@ -95,10 +95,13 @@ class OrderController extends Controller
                 // Update order total_items_discount, order_net_value and coupon_value
                 $orderObj->updateOrderValue($orderObj);
 
-                // $cart->emptyCart();
+                // update items stock
+                $orderObj->updateItemStock($orderObj, 'minus');
+
                 // Dispatch order create event
                 OrderCreate::dispatch($orderObj);
 
+                // attach order status id
                 $orderObj->status()->attach(1);
 
                 // Create payment transaction
@@ -108,6 +111,9 @@ class OrderController extends Controller
                 $paymentTrx = new PaymentTransaction();
                 $paymentTrx->make($orderId, $payablePrice, 'sale', 1, 'pending');
                 DB::commit();
+
+                // removed all cart iems
+                $cart->emptyCart();
 
                 return redirect()->route('my.order.success');
             }

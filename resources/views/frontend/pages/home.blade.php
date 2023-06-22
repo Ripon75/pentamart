@@ -98,7 +98,7 @@
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-10">{{ $topProduct->title }}</h1>
+                    <h1 class="section-title mb-5">{{ $topProduct->title }}</h1>
                 </div>
                 <div class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
                     @foreach ($topProduct->products as $product)
@@ -141,7 +141,7 @@
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-10">{{ $otherProduct->title }}</h1>
+                    <h1 class="section-title mb-5">{{ $otherProduct->title }}</h1>
                 </div>
                 <div class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6">
                     @foreach ($otherProduct->products as $product)
