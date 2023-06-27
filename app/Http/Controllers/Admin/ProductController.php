@@ -132,10 +132,10 @@ class ProductController extends Controller
                 $product->sizes()->sync($sizeIds);
 
                 // upload file
-                if ($request->hasFile('image_src')) {
-                    $imageSRC   = $request->file('image_src');
+                if ($request->hasFile('img_src')) {
+                    $imgSRC     = $request->file('img_src');
                     $uploadPath = $product->getImageUploadPath();
-                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    $imgPath    = Storage::put($uploadPath, $imgSRC);
                     // $storePath  = Storage::path($imagePath);
                     // $watermarkImgPath = public_path('images/logos/watermark.png');
 
@@ -152,7 +152,7 @@ class ProductController extends Controller
                     // finally we save the image as a new file
                     // $img->save($storePath);
 
-                    $product->image_src = $imagePath;
+                    $product->img_src = $imgPath;
                     $product->save();
                 }
             }
@@ -254,15 +254,15 @@ class ProductController extends Controller
                 $product->sizes()->sync($sizeIds);
 
                 // upload file
-                if ($request->hasFile('image_src')) {
-                    $oldImagePath = $product->getOldPath($product->image_src);
-                    if ($oldImagePath) {
-                        Storage::disk('public')->delete($oldImagePath);
+                if ($request->hasFile('img_src')) {
+                    $oldImgPath = $product->getOldPath($product->img_src);
+                    if ($oldImgPath) {
+                        Storage::disk('public')->delete($oldImgPath);
                     }
 
-                    $imageSRC   = $request->file('image_src');
+                    $imgSRC     = $request->file('img_src');
                     $uploadPath = $product->getImageUploadPath();
-                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    $imgPath    = Storage::put($uploadPath, $imgSRC);
                     // $storePath  = Storage::path($imagePath);
                     // $watermarkImgPath = public_path('images/logos/watermark.png');
 
@@ -279,7 +279,7 @@ class ProductController extends Controller
                     // finally we save the image as a new file
                     // $img->save($storePath);
 
-                    $product->image_src = $imagePath;
+                    $product->img_src = $imgPath;
                     $product->save();
                 }
             }

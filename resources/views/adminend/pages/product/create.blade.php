@@ -32,7 +32,7 @@
                             </div>
                             <div class="form-item w-full">
                                 <label class="form-label">Upload Image</label>
-                                <input type="file" class="form-input" name="image_src">
+                                <input type="file" class="form-input" name="img_src">
                             </div>
                         </div>
                         <div class="flex space-x-2">

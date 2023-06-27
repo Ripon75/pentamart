@@ -36,15 +36,17 @@ class Utility
     public function formatPhoneNumber($phoneNumber)
     {
         if (str_starts_with($phoneNumber, '0')) {
-            return $phoneNumber = '88' . $phoneNumber;
+            return $phoneNumber;
         } elseif (str_starts_with($phoneNumber, '1')) {
-            return $phoneNumber = '880' . $phoneNumber;
+            return $phoneNumber = '0' . $phoneNumber;
         } elseif (str_starts_with($phoneNumber, '80')) {
-            return $phoneNumber = '8' . $phoneNumber;
-        } elseif (str_starts_with($phoneNumber, '+88')) {
             return $phoneNumber = substr($phoneNumber, 1);
+        } elseif (str_starts_with($phoneNumber, '88')) {
+            return $phoneNumber = substr($phoneNumber, 2);
+        } elseif (str_starts_with($phoneNumber, '+88')) {
+            return $phoneNumber = substr($phoneNumber, 3);
         } else {
-            return $phoneNumber = $phoneNumber;
+            return $phoneNumber;
         }
     }
 }

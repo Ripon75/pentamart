@@ -220,9 +220,6 @@
         <section class="container page-section page-top-gap">
             <div class="card p-8">
                 <div class="flex flex-col items-center justify-center">
-                    <div class="w-60">
-                        <img class="max-w-full h-auto" src="/images/sample/emptycart.png">
-                    </div>
                     <div class="mt-8 text-center">
                         <h1 class="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-medium tracking-wide text-primary">Your cart is empty</h1>
                     </div>

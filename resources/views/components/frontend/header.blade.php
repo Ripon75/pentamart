@@ -504,7 +504,7 @@
             for (let index = 0; index < data.length; index++) {
                 const product = data[index];
                 var offerPrice = product.offer_price;
-                var productPrice   = product.price;
+                var productPrice   = product.mrp;
                 var isPriceHidden = '';
                 var isofferPriceHidden = 'hidden';
                 if (offerPrice > 0) {
@@ -514,7 +514,7 @@
                 var itemHTML = `
                     <a href="/products/${product.id}/${product.slug}" class="hover:bg-gray-200 transition duration-150 ease-in-out border-b border-dashed flex space-x-2 py-2 pr-3 items-center" data-product-id="${product.id}">
                         <div class="w-14 h-14">
-                            <img class="w-full h-full" src="${product.image_src}" alt="">
+                            <img class="w-full h-full" src="${product.img_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
                             <h4 class="text-xs text-gray-500">${product.brand?.name}</h4>

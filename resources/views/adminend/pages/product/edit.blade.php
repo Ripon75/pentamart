@@ -34,9 +34,9 @@
                                 </div>
                                 <div class="form-item w-full">
                                     <label for="">Upload Image</label>
-                                    <input type="file" class="form-input" name="image_src">
-                                     @if ($product->image_src)
-                                        <img src="{{$product->image_src}}" class="w-16 h-14" alt="{{ $product->name }}">
+                                    <input type="file" class="form-input" name="img_src">
+                                     @if ($product->img_src)
+                                        <img src="{{$product->img_src}}" class="w-16 h-14" alt="{{ $product->name }}">
                                     @endif
                                 </div>
                             </div>
