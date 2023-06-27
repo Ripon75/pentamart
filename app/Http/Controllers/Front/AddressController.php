@@ -68,7 +68,7 @@ class AddressController extends Controller
 
             if ($res) {
                 DB::commit();
-                return redirect()->route('my.address')->with('success', 'Address created successfully');
+                return back()->with('success', 'Address created successfully');
             }
         } catch (\Exception $e) {
             info($e);

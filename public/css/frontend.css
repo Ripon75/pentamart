@@ -8353,9 +8353,6 @@ textarea.form-control.is-invalid{
 .mb-5{
   margin-bottom: 1.25rem;
 }
-.mb-10{
-  margin-bottom: 2.5rem;
-}
 .mt-3{
   margin-top: 0.75rem;
 }
@@ -19842,7 +19839,7 @@ readers do not read off random characters that represent icons */
 .filter-card .filter-box .box-wrapper{
   border-bottom-width: 1px;
   --tw-bg-opacity: 1;
-  background-color: rgb(221 229 250 / var(--tw-bg-opacity));
+  background-color: rgb(0 121 140 / var(--tw-bg-opacity));
   padding: 0.75rem;
 }
 .filter-card .filter-box .box-wrapper .box-title{
@@ -19850,6 +19847,8 @@ readers do not read off random characters that represent icons */
   align-items: center;
   justify-content: space-between;
   font-weight: 500;
+  --tw-text-opacity: 1;
+  color: rgb(255 255 255 / var(--tw-text-opacity));
 }
 .filter-card .filter-box .filter-list{
   display: flex;
@@ -21182,6 +21181,9 @@ readers do not read off random characters that represent icons */
   .lg\:grid-cols-5{
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
+  .lg\:grid-cols-6{
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
   .lg\:justify-start{
     justify-content: flex-start;
   }
@@ -21370,9 +21372,6 @@ readers do not read off random characters that represent icons */
   .xl\:gap-2{
     gap: 0.5rem;
   }
-  .xl\:gap-8{
-    gap: 2rem;
-  }
   .xl\:space-x-4 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
     margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -21388,17 +21387,11 @@ readers do not read off random characters that represent icons */
     margin-right: calc(0px * var(--tw-space-x-reverse));
     margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
   }
-  .xl\:p-6{
-    padding: 1.5rem;
-  }
   .xl\:p-4{
     padding: 1rem;
   }
   .xl\:p-8{
     padding: 2rem;
-  }
-  .xl\:p-2{
-    padding: 0.5rem;
   }
   .xl\:px-10{
     padding-left: 2.5rem;
@@ -21503,28 +21496,22 @@ readers do not read off random characters that represent icons */
   .\32xl\:gap-2{
     gap: 0.5rem;
   }
-  .\32xl\:gap-8{
-    gap: 2rem;
-  }
   .\32xl\:gap-4{
     gap: 1rem;
+  }
+  .\32xl\:gap-8{
+    gap: 2rem;
   }
   .\32xl\:space-x-0 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
     margin-right: calc(0px * var(--tw-space-x-reverse));
     margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
   }
-  .\32xl\:p-6{
-    padding: 1.5rem;
-  }
-  .\32xl\:p-8{
-    padding: 2rem;
-  }
   .\32xl\:p-4{
     padding: 1rem;
   }
-  .\32xl\:p-2{
-    padding: 0.5rem;
+  .\32xl\:p-8{
+    padding: 2rem;
   }
   .\32xl\:px-56{
     padding-left: 14rem;

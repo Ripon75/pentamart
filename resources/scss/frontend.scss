@@ -272,9 +272,9 @@
     .filter-box {
         @apply bg-white border rounded mb-4 last:mb-0;
         .box-wrapper {
-            @apply border-b p-3 bg-primary-lightest;
+            @apply border-b p-3 bg-primary;
             .box-title {
-                @apply flex items-center justify-between font-medium;
+                @apply flex items-center justify-between text-white font-medium;
             }
         }
         .filter-list {

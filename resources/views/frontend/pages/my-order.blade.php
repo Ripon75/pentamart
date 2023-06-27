@@ -56,7 +56,7 @@
                                         <td class="border border-l-0 p-2">{{ $order->created_at }}</td>
                                         <td class="border border-l-0 p-2 flex flex-wrap space-y-1 md:space-y-0 space-x-2 items-center justify-center">
                                             <a href="{{ route('my.order.show', $order->id) }}" class="">
-                                                <button title="View" class="btn px-2 py-1">
+                                                <button title="View" class="btn btn-primary px-2 py-1">
                                                     Show
                                                 </button>
                                             </a>

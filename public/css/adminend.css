@@ -10336,9 +10336,6 @@ textarea.form-control.is-invalid{
 .mb-5{
   margin-bottom: 1.25rem;
 }
-.mb-10{
-  margin-bottom: 2.5rem;
-}
 .mt-3{
   margin-top: 0.75rem;
 }
@@ -13933,6 +13930,9 @@ fieldset legend{
   .lg\:grid-cols-5{
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
+  .lg\:grid-cols-6{
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+  }
   .lg\:justify-start{
     justify-content: flex-start;
   }
@@ -14120,9 +14120,6 @@ fieldset legend{
   .xl\:gap-2{
     gap: 0.5rem;
   }
-  .xl\:gap-8{
-    gap: 2rem;
-  }
   .xl\:space-x-4 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
     margin-right: calc(1rem * var(--tw-space-x-reverse));
@@ -14138,17 +14135,11 @@ fieldset legend{
     margin-right: calc(0px * var(--tw-space-x-reverse));
     margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
   }
-  .xl\:p-6{
-    padding: 1.5rem;
-  }
   .xl\:p-4{
     padding: 1rem;
   }
   .xl\:p-8{
     padding: 2rem;
-  }
-  .xl\:p-2{
-    padding: 0.5rem;
   }
   .xl\:px-10{
     padding-left: 2.5rem;
@@ -14252,28 +14243,22 @@ fieldset legend{
   .\32xl\:gap-2{
     gap: 0.5rem;
   }
-  .\32xl\:gap-8{
-    gap: 2rem;
-  }
   .\32xl\:gap-4{
     gap: 1rem;
+  }
+  .\32xl\:gap-8{
+    gap: 2rem;
   }
   .\32xl\:space-x-0 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
     margin-right: calc(0px * var(--tw-space-x-reverse));
     margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
   }
-  .\32xl\:p-6{
-    padding: 1.5rem;
-  }
-  .\32xl\:p-8{
-    padding: 2rem;
-  }
   .\32xl\:p-4{
     padding: 1rem;
   }
-  .\32xl\:p-2{
-    padding: 0.5rem;
+  .\32xl\:p-8{
+    padding: 2rem;
   }
   .\32xl\:px-56{
     padding-left: 14rem;
