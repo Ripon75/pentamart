@@ -267,14 +267,14 @@ class OrderController extends Controller
         $areas             = Area::orderBy('name', 'asc')->get();
         $pgs               = PaymentGateway::where('status', 'activated')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
-        $orderStatus       = $order->getNextStatus($order->status_id);
+        // $orderStatus       = $order->getNextStatus($order->status_id);
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,
             'areas'             => $areas,
             'pgs'   => $pgs,
             'shippingAddresses' => $shippingAddresses,
-            'orderStatus'       => $orderStatus,
+            'orderStatus'       => [],
             'currency'          => 'Tk'
         ]);
     }
@@ -435,45 +435,12 @@ class OrderController extends Controller
             'order_id' => ['required']
         ]);
 
-        $orderID = $request->input('order_id', null);
+        $orderId = $request->input('order_id', null);
 
-        PaymentTransaction::whereIn('order_id', $orderID)->update(['status' => 'completed']);
-        Order::whereIn('id', $orderID)->update(['is_paid' => 1]);
+        PaymentTransaction::whereIn('order_id', $orderId)->update(['status' => 'completed']);
+
+        Order::whereIn('id', $orderId)->update(['is_paid' => 1]);
+
         return $this->sendResponse(null, 'Order paid successfully');
-    }
-
-    public function refund(Request $request, $orderId, $paymentGateway)
-    {
-        $order = Order::with(['transaction'])->find($orderId);
-
-        if (!$order) {
-            abort(404);
-        }
-
-        if ($paymentGateway === 'bkash') {
-            return view('adminend.pages.order.payment-refund', [
-                'order' => $order
-            ]);
-        }
-    }
-
-    public function refundStore(Request $request)
-    {
-        $request->validate([
-            'payment_id'            => ['required'],
-            'payment_gateway_trxid' => ['required'],
-            'price'                 => ['required']
-        ]);
-
-        $paymentID = $request->input('payment_id', null);
-        $PGTRXID   = $request->input('payment_gateway_trxid', null);
-        $price     = $request->input('price', 0);
-        $sku       = $request->input('sku', null);
-        $note      = $request->input('note', null);
-
-        $bKash = new Bkash();
-
-        $res = $bKash->refundTransaction($paymentID, $PGTRXID, $price, $sku, $note);
-        return $res;
     }
 }

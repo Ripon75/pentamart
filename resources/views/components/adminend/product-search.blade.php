@@ -2,7 +2,7 @@
     {{-- Hidden field --}}
     <input id="input-product-id" type="hidden" name="product_id" value="">
     <input id="input-product-name" type="hidden" name="product_name" value="">
-    <input id="input-product-image-src" type="hidden" name="product_image_src" value="">
+    <input id="input-product-img-src" type="hidden" name="product_img_src" value="">
     <input id="input-product-price" type="hidden" name="product_price" value="">
     <input id="input-product-offer-price" type="hidden" name="product_offer_price" value="">
     <input id="input-brand-name" type="hidden" name="brand_name" value="">
@@ -23,7 +23,7 @@
         var searchInput            = $('#input-product-search');
         var inputProductId         = $('#input-product-id');
         var inputProductName       = $('#input-product-name');
-        var inputProductImageSRC   = $('#input-product-image-src');
+        var inputProductImgSRC   = $('#input-product-img-src');
         var inputProductPrice      = $('#input-product-price');
         var inputProductOfferPrice = $('#input-product-offer-price');
         var searchResult           = $('.search-result');
@@ -59,15 +59,15 @@
             }, debounceTime));
 
             $('.search-list').on('click', '.search-item', function(e) {
-                var productId        = $(this).data('product-id');
-                var productName      = $(this).data('product-name');
-                var productImageSRC  = $(this).data('product-image-src');
-                var productPrice     = $(this).data('product-price');
+                var productId         = $(this).data('product-id');
+                var productName       = $(this).data('product-name');
+                var productImgSRC     = $(this).data('product-img-src');
+                var productPrice      = $(this).data('product-price');
                 var productOfferPrice = $(this).data('product-offer-price');
 
                 inputProductId.val(productId);
                 inputProductName.val(productName);
-                inputProductImageSRC.val(productImageSRC);
+                inputProductImgSRC.val(productImgSRC);
                 inputProductPrice.val(productPrice);
                 inputProductOfferPrice.val(productOfferPrice);
                 searchInput.val(productName);
@@ -108,12 +108,12 @@
                         class="search-item hover:bg-gray-200 transition duration-150 ease-in-out border-b border-dashed flex space-x-2 p-2 pr-3 items-center" data-product-id="${product.id}"
                         data-product-id="${product.id}"
                         data-product-name="${product.name}"
-                        data-product-image-src="${product.image_src}"
+                        data-product-image-src="${product.img_src}"
                         data-product-price="${product.price}"
                         data-product-offer-price="${product.offer_price}">
 
                         <div class="w-14 h-14">
-                            <img class="w-full h-full" src="${product.image_src}" alt="">
+                            <img class="w-full h-full" src="${product.img_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
                             <h4 class="text-xs text-gray-500">${brandName}</h4>
@@ -121,7 +121,7 @@
                             <span class="text-xxs text-gray-500">${categoryName}</span>
                         </div>
                         <div class="flex justify-center items-center text-sm">
-                            <span class="text-gray-500">${product.price} tk</span>
+                            <span class="text-gray-500">${product.mrp} tk</span>
                         </div>
                     </div>`;
 

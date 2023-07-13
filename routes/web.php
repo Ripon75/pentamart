@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\PageController;
 use App\Http\Controllers\Front\CartController;
@@ -12,6 +13,16 @@ use App\Http\Controllers\Front\RatingController;
 use App\Http\Controllers\Front\WishlistController;
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
+
+Route::get('/clear', function () {
+    Artisan::call('config:clear');
+    Artisan::call('cache:clear');
+    Artisan::call('view:clear');
+    Artisan::call('route:clear');
+    Artisan::call('config:cache');
+
+    return 'Success! Your are very lucky!'; //Return anything
+});
 
 Route:: get('/',               [PageController::class, 'home'])->name('home');
 Route:: get('/about',          [PageController::class, 'about'])->name('about');
@@ -32,6 +43,7 @@ Route::post('/registration', [AuthController::class, 'registrationStore'])->name
 Route::get('/login',           [AuthController::class, 'loginCreate'])->name('login.create');
 Route::post('/login',          [AuthController::class, 'login'])->name('login');
 Route::post('/check-user',     [AuthController::class, 'checkUser'])->name('check.user');
+Route::get('/send-otp-code',   [AuthController::class, 'sendOtp'])->name('send.otp');
 Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
 // Socialite
@@ -49,6 +61,7 @@ Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.sin
 Route::middleware(['auth'])->group(function(){
     // All Cart route
     Route::get('/cart/items',         [CartController::class, 'cartItem'])->name('cart.items');
+    Route::get('/checkout',           [CartController::class, 'checkout'])->name('checkout');
     Route::post('/cart/items/add',    [CartController::class, 'addItem'])->name('cart.item.add');
     Route::post('/cart/items/remove', [CartController::class, 'removeItem'])->name('cart.item.remove');
     Route::get('/cart/items/count',   [CartController::class, 'cartItemCount']);
@@ -64,9 +77,9 @@ Route::middleware(['auth'])->group(function(){
         Route::put('/profile',   [CustomerController::class, 'profileUpdate'])->name('profile.update');
 
         // User address route
-        Route::get('/address',           [AddressController::class, 'index'])->name('address.index');
+        Route::get('/address',           [AddressController::class, 'index'])->name('address');
+        Route::get('/address/create',    [AddressController::class, 'create'])->name('address.create');
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
-        Route::post('/address/others',   [AddressController::class, 'otherStore'])->name('address.other.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
         Route::put('/address/{id}',      [AddressController::class, 'update'])->name('address.update');
         Route::get('/shipping/addrss',   [AddressController::class, 'shippingAddress'])->name('single.address');

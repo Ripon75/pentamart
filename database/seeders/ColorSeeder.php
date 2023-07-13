@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -16,26 +17,38 @@ class ColorSeeder extends Seeder
      */
     public function run()
     {
+        $now = Carbon::now();
+
         $colors = [
             [
-                'name' => 'Black',
-                'slug' => 'black',
+                'name'       => 'NA',
+                'slug'       => 'na',
+                'created_at' => $now
             ],
             [
-                'name' => 'White',
-                'slug' => 'white',
+                'name'       => 'Black',
+                'slug'       => 'black',
+                'created_at' => $now
             ],
             [
-                'name' => 'Red',
-                'slug' => 'red',
+                'name'       => 'Blue',
+                'slug'       => 'blue',
+                'created_at' => $now
             ],
             [
-                'name' => 'Blue',
-                'slug' => 'blue',
+                'name'       => 'Green',
+                'slug'       => 'green',
+                'created_at' => $now
             ],
             [
-                'name' => 'Green',
-                'slug' => 'green',
+                'name'       => 'Red',
+                'slug'       => 'red',
+                'created_at' => $now
+            ],
+            [
+                'name'       => 'White',
+                'slug'       => 'white',
+                'created_at' => $now
             ]
         ];
 

@@ -45,12 +45,17 @@ class Brand extends Model
         if ($value) {
             if (Storage::disk('public')->exists($value)) {
                 return Storage::url($value);
+            } else {
+                return '/images/sample/brand.jpeg';
             }
+        } else {
+            return '/images/sample/brand.jpeg';
         }
     }
 
     public function getOldPath($path)
     {
-        return str_replace('http://localhost:3000/storage/', '/', $path);
+        $appUrl = config('app.url');
+        return str_replace("$appUrl/storage/", '/', $path);
     }
 }

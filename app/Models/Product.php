@@ -21,13 +21,14 @@ class Product extends Model implements Auditable
         'slug',
         'brand_id',
         'category_id',
-        'price',
+        'buy_price',
+        'mrp',
         'offer_price',
         'discount',
         'offer_percent',
         'current_stock',
         'status',
-        'image_src',
+        'img_src',
         'description',
         'created_by',
         'updated_by'
@@ -38,13 +39,14 @@ class Product extends Model implements Auditable
         'slug'          => 'string',
         'brand_id'      => 'integer',
         'category_id'   => 'integer',
-        'price'         => 'decimal:2',
+        'buy_price'     => 'decimal:2',
+        'mrp'           => 'decimal:2',
         'offer_price'   => 'decimal:2',
         'discount'      => 'decimal:2',
         'offer_percent' => 'decimal:2',
         'current_stock' => 'integer',
         'status'        => 'string',
-        'image_src'     => 'string',
+        'img_src'       => 'string',
         'description'   => 'string',
         'created_by'    => 'integer',
         'updated_by'    => 'integer',
@@ -68,9 +70,8 @@ class Product extends Model implements Auditable
         return [
             'id'            => (int) $this->id,
             'name'          => $this->name,
-            'price'         => (float) $this->price,
+            'mrp'           => (float) $this->mrp,
             'offer_price'   => (float) $this->offer_price,
-            'status'        => $this->status,
             'brand'         => $this->brand->name ?? null,
             'category'      => $this->category->name ?? null,
             'created_at'    => $this->created_at
@@ -115,7 +116,7 @@ class Product extends Model implements Auditable
 
     // Relation end ======================================================================
 
-    public function getImageSrcAttribute($value)
+    public function getImgSrcAttribute($value)
     {
         if ($value) {
             if (Storage::disk('public')->exists($value)) {
@@ -136,7 +137,8 @@ class Product extends Model implements Auditable
 
     public function getOldPath($path)
     {
-        return str_replace('http://localhost:3000/storage/', '/', $path);
+        $appUrl = config('app.url');
+        return str_replace("$appUrl/storage/", '/', $path);
     }
 
     // Scope start ======================================================================
@@ -150,8 +152,8 @@ class Product extends Model implements Auditable
         $now = Carbon::now();
 
         return $query->select(
-            'id', 'name', 'brand_id', 'category_id', 'current_stock', 'price', 'offer_price',
-            'discount', 'offer_percent', 'slug','image_src', 'description'
+            'id', 'name', 'brand_id', 'category_id', 'current_stock', 'mrp', 'offer_price',
+            'discount', 'offer_percent', 'slug','img_src', 'description'
         )
         ->with([
             'brand:id,name,slug',
@@ -160,6 +162,6 @@ class Product extends Model implements Auditable
             'colors'
         ])
         ->where('status', 'active')
-        ->where('price', '>', 0);
+        ->where('mrp', '>', 0);
     }
 }

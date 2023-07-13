@@ -4,10 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 
 use Carbon\Carbon;
+use App\Models\Size;
+use App\Models\Color;
 use App\Models\Brand;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -46,7 +49,7 @@ class ProductController extends Controller
         if ($startDate && $endDate) {
             $startDate = $startDate . ' 00:00:00';
             $endDate   = $endDate . ' 23:59:59';
-            $products       = $products->whereBetween('created_at', [$startDate, $endDate]);
+            $products  = $products->whereBetween('created_at', [$startDate, $endDate]);
         }
 
         $products = $products->orderBy('created_at', 'desc')->paginate($defaultPaginate);
@@ -60,32 +63,49 @@ class ProductController extends Controller
     {
         $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
         $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+        $colors     = Color::select('id', 'name')->orderBy('name', 'asc')->whereNotIn('id', [1])->get();
+        $sizes      = Size::select('id', 'name')->orderBy('name', 'asc')->whereNotIn('id', [1])->get();
 
         return view('adminend.pages.product.create', [
-            'brands'      => $brands,
-            'categories'  => $categories
+            'brands'     => $brands,
+            'categories' => $categories,
+            'colors'     => $colors,
+            'sizes'      => $sizes
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name'        => ['required', "unique:products,name"],
-            'brand_id'    => ['required', 'numeric'],
-            'category_id' => ['required', 'numeric'],
-            'price'       => ['required']
+            'name'          => ['required', "unique:products,name"],
+            'brand_id'      => ['required', 'integer'],
+            'category_id'   => ['required', 'integer'],
+            'color_ids'     => ['nullable', 'array'],
+            'size_ids'      => ['nullable', 'array'],
+            'current_stock' => ['required', 'integer'],
+            'buy_price'     => ['required'],
+            'mrp'           => ['required']
         ]);
 
         $name         = $request->input('name', null);
         $brandId      = $request->input('brand_id', null);
         $categoryId   = $request->input('category_id', null);
-        $price        = $request->input('price', 0);
+        $colorIds     = $request->input('color_ids', []);
+        $sizeIds      = $request->input('size_ids', []);
+        $BuyPrice     = $request->input('buy_price', 0);
+        $mrp          = $request->input('mrp', 0);
         $offerPrice   = $request->input('offer_price', 0);
         $offerPercent = $request->input('offer_percent', 0);
         $currentStock = $request->input('current_stock', 0);
         $status       = $request->input('status', 'active');
         $description  = $request->input('description', null);
         $slug         = Str::slug($name, '-');
+
+        // calculate discount
+        $discount = 0;
+        if ($offerPrice > 0) {
+            $discount = $mrp - $offerPrice;
+        }
 
         try {
             DB::beginTransaction();
@@ -96,8 +116,10 @@ class ProductController extends Controller
             $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
-            $product->price         = $price;
+            $product->buy_price     = $BuyPrice;
+            $product->mrp           = $mrp;
             $product->offer_price   = $offerPrice ?? 0;
+            $product->discount      = $discount;
             $product->offer_percent = $offerPercent ?? 0;
             $product->status        = $status;
             $product->current_stock = $currentStock ?? 0;
@@ -105,10 +127,15 @@ class ProductController extends Controller
             $product->created_by    = Auth::id();
             $res = $product->save();
             if ($res) {
-                if ($request->hasFile('image_src')) {
-                    $imageSRC   = $request->file('image_src');
+                // sync colors and sizes
+                $product->colors()->sync($colorIds);
+                $product->sizes()->sync($sizeIds);
+
+                // upload file
+                if ($request->hasFile('img_src')) {
+                    $imgSRC     = $request->file('img_src');
                     $uploadPath = $product->getImageUploadPath();
-                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    $imgPath    = Storage::put($uploadPath, $imgSRC);
                     // $storePath  = Storage::path($imagePath);
                     // $watermarkImgPath = public_path('images/logos/watermark.png');
 
@@ -125,7 +152,7 @@ class ProductController extends Controller
                     // finally we save the image as a new file
                     // $img->save($storePath);
 
-                    $product->image_src = $imagePath;
+                    $product->img_src = $imgPath;
                     $product->save();
                 }
             }
@@ -148,33 +175,56 @@ class ProductController extends Controller
 
         $brands     = Brand::select('id', 'name')->orderBy('name', 'asc')->get();
         $categories = Category::select('id', 'name')->orderBy('name', 'asc')->get();
+        $colors     = Color::select('id', 'name')->orderBy('name', 'asc')->whereNotIn('id', [1])->get();
+        $sizes      = Size::select('id', 'name')->orderBy('name', 'asc')->whereNotIn('id', [1])->get();
+
+        // Selected colors and sizes id
+        $selectedColorIDs = Arr::pluck($product->colors->toArray(), 'id');
+        $selectedSizeIDs   = Arr::pluck($product->sizes->toArray(), 'id');
 
         return view('adminend.pages.product.edit',[
-            'product'    => $product,
-            'brands'     => $brands,
-            'categories' => $categories
+            'product'          => $product,
+            'brands'           => $brands,
+            'categories'       => $categories,
+            'colors'           => $colors,
+            'sizes'            => $sizes,
+            'selectedColorIDs' => $selectedColorIDs,
+            'selectedSizeIDs'  => $selectedSizeIDs
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name'        => ['required', "unique:products,name,$id"],
-            'brand_id'    => ['required', 'numeric'],
-            'category_id' => ['required', 'numeric'],
-            'price'       => ['required']
+            'name'          => ['required', "unique:products,name,$id"],
+            'brand_id'      => ['required', 'integer'],
+            'category_id'   => ['required', 'integer'],
+            'color_ids'     => ['nullable', 'array'],
+            'size_ids'      => ['nullable', 'array'],
+            'current_stock' => ['required', 'integer'],
+            'buy_price'     => ['required'],
+            'mrp'           => ['required']
         ]);
 
         $name         = $request->input('name', null);
         $brandId      = $request->input('brand_id', null);
         $categoryId   = $request->input('category_id', null);
-        $price        = $request->input('price', 0);
+        $colorIds     = $request->input('color_ids', []);
+        $sizeIds      = $request->input('size_ids', []);
+        $buyPrice     = $request->input('buy_price', 0);
+        $mrp          = $request->input('mrp', 0);
         $offerPrice   = $request->input('offer_price', 0);
         $offerPercent = $request->input('offer_percent', 0);
         $currentStock = $request->input('current_stock', 0);
         $status       = $request->input('status', 'active');
         $description  = $request->input('description', null);
         $slug         = Str::slug($name, '-');
+
+        // calculate discount
+        $discount = 0;
+        if ($offerPrice > 0) {
+            $discount = $mrp - $offerPrice;
+        }
 
         try {
             DB::beginTransaction();
@@ -187,8 +237,10 @@ class ProductController extends Controller
             $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
-            $product->price         = $price;
+            $product->buy_price     = $buyPrice;
+            $product->mrp           = $mrp;
             $product->offer_price   = $offerPrice ?? 0;
+            $product->discount      = $discount;
             $product->offer_percent = $offerPercent ?? 0;
             $product->status        = $status;
             $product->current_stock = $currentStock ?? 0;
@@ -197,15 +249,20 @@ class ProductController extends Controller
             $res = $product->save();
 
             if ($res) {
-                if ($request->hasFile('image_src')) {
-                    $oldImagePath = $product->getOldPath($product->image_src);
-                    if ($oldImagePath) {
-                        Storage::disk('public')->delete($oldImagePath);
+                // sync colors and sizes
+                $product->colors()->sync($colorIds);
+                $product->sizes()->sync($sizeIds);
+
+                // upload file
+                if ($request->hasFile('img_src')) {
+                    $oldImgPath = $product->getOldPath($product->img_src);
+                    if ($oldImgPath) {
+                        Storage::disk('public')->delete($oldImgPath);
                     }
 
-                    $imageSRC   = $request->file('image_src');
+                    $imgSRC     = $request->file('img_src');
                     $uploadPath = $product->getImageUploadPath();
-                    $imagePath  = Storage::put($uploadPath, $imageSRC);
+                    $imgPath    = Storage::put($uploadPath, $imgSRC);
                     // $storePath  = Storage::path($imagePath);
                     // $watermarkImgPath = public_path('images/logos/watermark.png');
 
@@ -222,7 +279,7 @@ class ProductController extends Controller
                     // finally we save the image as a new file
                     // $img->save($storePath);
 
-                    $product->image_src = $imagePath;
+                    $product->img_src = $imgPath;
                     $product->save();
                 }
             }

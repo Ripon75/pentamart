@@ -23,7 +23,7 @@ class CategorySeeder extends Seeder
                 'slug'       => 'Category 1',
                 'name'       => 'category-1',
                 'status'     => 'active',
-                'img_src'    => '/images/sample/category.jpeg',
+                'is_top'     => 1,
                 'created_at' => $now
             ],
             [
@@ -31,7 +31,7 @@ class CategorySeeder extends Seeder
                 'slug'       => 'Category 2',
                 'name'       => 'category-2',
                 'status'     => 'active',
-                'img_src'    => '/images/sample/category.jpeg',
+                'is_top'     => 1,
                 'created_at' => $now
             ],
             [
@@ -39,7 +39,7 @@ class CategorySeeder extends Seeder
                 'slug'       => 'Category 3',
                 'name'       => 'category-3',
                 'status'     => 'active',
-                'img_src'    => '/images/sample/category.jpeg',
+                'is_top'     => 1,
                 'created_at' => $now
             ],
             [
@@ -47,7 +47,7 @@ class CategorySeeder extends Seeder
                 'slug'       => 'Category 4',
                 'name'       => 'category-4',
                 'status'     => 'active',
-                'img_src'    => '/images/sample/category.jpeg',
+                'is_top'     => 1,
                 'created_at' => $now
             ]
         ];

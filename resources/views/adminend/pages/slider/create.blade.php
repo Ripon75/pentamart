@@ -32,16 +32,9 @@
                                 </select>
                             </div>
                             <div class="form-item">
-                                <label for="" class="form-label">Large Image</label>
-                                <input type="file" name="large_src" class="w-full">
-                                @error('large_src')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item">
-                                <label for="" class="form-label">Small Image</label>
-                                <input type="file" name="small_src" class="w-full">
-                                @error('small_src')
+                                <label for="" class="form-label">Upload Image</label>
+                                <input type="file" name="img_src" class="w-full">
+                                @error('img_src')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>

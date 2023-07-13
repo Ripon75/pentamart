@@ -14,7 +14,6 @@ use App\Events\CustomerRegistration;
 use App\Listeners\StoreSearchLog;
 use App\Listeners\CreateCustomerCart;
 use App\Listeners\SendOrderSubmitSMS;
-use App\Listeners\SetOrderStatusSubmit;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -34,7 +33,6 @@ class EventServiceProvider extends ServiceProvider
             StoreSearchLog::class
         ],
         OrderCreate::class => [
-            SetOrderStatusSubmit::class,
             // SendOrderSubmitSMS::class
         ]
     ];

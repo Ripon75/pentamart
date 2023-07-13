@@ -10,7 +10,7 @@
                         @if (count($categories))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Categories</span>
+                                    <span class="box-title">Categories</span>
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($categories as $category)

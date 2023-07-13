@@ -30,7 +30,7 @@
                         </div>
                         {{-- end --}}
                     </div>
-                    <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->image_src }}">
+                    <img id="img-single-product" class="w-full object-cover object-center rounded-md" src="{{ $product->img_src }}">
                 </div>
                {{-- ======================product single image for mobile============================ --}}
                 <div class="block md:hidden aspect-w-1 aspect-h-1 border rounded-md">
@@ -49,7 +49,7 @@
                         </div>
                         {{-- end --}}
                     </div>
-                    <img class="w-full h-full p-10 object-cover object-center rounded-md" src="{{ $product->image_src }}">
+                    <img class="w-full h-full p-10 object-cover object-center rounded-md" src="{{ $product->img_src }}">
                </div>
             </div>
             <div class="col-span-1 p-2 pr-20">
@@ -99,34 +99,21 @@
                 </div>
 
                 <div class="mt-1">
-                    <div class="hidden">
-                        <input type="hidden" value="{{ $product->id }}" id="product-id" style="display: none">
-                        @if ($product->offer_price > 0)
-                            @php
-                                $sellPrice = $product->offer_price;
-                            @endphp
-                            <input type="hidden" value="{{ $sellPrice }}" id="input-price">
-                        @else
-                            <input type="hidden" value="{{ $product->price }}" id="input-price">
-                        @endif
-                        <input type="hidden" value="{{ $product->price }}" id="input-product-mrp">
-                    </div>
+                    <input type="hidden" value="{{ $product->id }}" id="product-id" style="display: none">
                     <div class="prices flex space-x-2 items-center mb-1">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
                             <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span id="item-price-label" class="text-primary text-md font-medium">
+                                <span class="text-primary text-md font-medium">
                                     {{ number_format(($product->offer_price), 2) }}
                                 </span>
-                                <span id="item-mrp-label" class="line-through text-sm text-gray-500 self-end">
-                                    {{ $product->price }}
+                                <span class="line-through text-sm text-gray-500 self-end">
+                                    {{ $product->mrp }}
                                 </span>
                             @else
-                                <span id="item-price-label" class="text-primary text-xl font-medium">
-                                    {{ number_format(($product->price), 2) }}
-                                </span>
-                                <span id="item-mrp-label" class="line-through text-primary text-xl font-medium">
+                                <span class="text-primary text-xl font-medium">
+                                    {{ number_format(($product->mrp), 2) }}
                                 </span>
                             @endif
                         </span>
@@ -145,15 +132,23 @@
 
                     <div class="flex flex-col space-y-2">
                         <div class="flex space-x-4">
-                            <select class="selected-pack-single w-32 rounded-md py-1.5 text-sm" id="input-qty">
-                                @for ($i = 1 ; $i <= 5 ; $i++)
-                                    <option value="{{ $i }}">{{ $i }} </option>
-                                @endfor
-                            </select>
+                            <div class="flex items-center border rounded border-gray-300" style="height: 32px">
+                                <button id="btn-input-minus" class="w-8 h-8 border-r border-gray-300">
+                                    <i class="fa-solid fa-minus text-gray-500"></i>
+                                </button>
+                                <div>
+                                    <input id="input-quantity" class="text-center text-gray-500 border-none focus:outline-none focus:ring-0"
+                                        style="width: 45px; height:28px" type="text" name="" value="1"
+                                        min="1">
+                                </div>
+                                <button id="btn-input-plush" class="w-8 h-8 border-l border-gray-300">
+                                    <i class="fa-solid fa-plus text-gray-500"></i>
+                                </button>
+                            </div>
+
                             <div class="flex space-x-4">
                                 <button class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
-                                    data-mc-on-previous-url="{{ url()->current() }}"
-                                    @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                    data-mc-on-previous-url="{{ url()->current() }}">
                                     <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
                                     <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
                                     Add to cart
@@ -163,8 +158,7 @@
                                         <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
-                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
-                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
                                         <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @else
@@ -172,8 +166,7 @@
                                         <i class="text-4xl text-primary fa-solid fa-heart"></i>
                                     </button>
                                     <button id="wish-button" type="button" class="h-[36px] bg-white"
-                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}"
-                                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                                        data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
                                         <i class="text-4xl text-primary fa-regular fa-heart"></i>
                                     </button>
                                 @endif
@@ -367,27 +360,20 @@
         easing: true,
     });
 
-    var aleartTime          = {{ config("crud.alear_time") }};
     var cartAddItemEndPoint = '/cart/items/add';
     var btnAddToCart        = $('.btn-add-to-car');
-    var productID           = $('#product-id').val();
-    var selectedPackSingle  = $('.selected-pack-single');
-    var priceLabel          = $('#item-price-label');
-    var itemMRPLabel        = $('#item-mrp-label');
-    var inputPrice          = $('#input-price');
-    var inputProductMRP     = $('#input-product-mrp');
-    var inputQty            = $('#input-qty');
+    var productId           = $('#product-id').val();
+    var inputQuantity       = $('#input-quantity');
     var iconLoadding        = $('.loadding-icon');
     var iconAddToCart       = $('#add-to-cart-icon');
     var wishButton          = $('#wish-button');
     var undoWishButton      = $('#undo-wish-button');
-    var packQtyLavel        = $('#pack-quantity-label');
-    var sUserID             = "{{ Auth::id() }}";
+    var authUserId          = "{{ Auth::id() }}";
     var productColorsCount  = {{ count($productColors) }};
     var productSizesCount   = {{ count($productSizes) }};
-    var productStock        = "{{ $product->current_stock }}";
+    var productCurrentStock = "{{ $product->current_stock }}";
 
-    if (productStock == 0) {
+    if (productCurrentStock == 0) {
         btnAddToCart.prop("disabled",true);
         btnAddToCart.addClass('disabled:opacity-50');
         btnAddToCart.text('Out of Stock');
@@ -402,71 +388,56 @@
         }
     @endauth
     @guest
-        sUserID = null;
+        authUserId = null;
     @endguest
 
     // initially hide loading icon
     iconLoadding.hide();
 
     $(function() {
-        selectedPackSingle.on('change', function() {
-            var productQty        = inputQty.val();
-            var productPrice      = inputPrice.val();
-            var productMRP        = inputProductMRP.val();
-            var totalPrice        = 0;
-            var totalMRP          = 0;
-
-            totalPrice = parseFloat(productQty * productPrice);
-            totalMRP   = parseFloat(productQty * productMRP);
-
-            if (totalPrice) {
-                var packNameLavel = inputQty.find(":selected").text();
-                packQtyLavel.text(packNameLavel);
-                priceLabel.text(totalPrice.toFixed(2));
-            }
-            if (totalMRP !== totalPrice) {
-                itemMRPLabel.text(totalMRP.toFixed(2));
-            }
-        });
-
         // Add product to cart
         btnAddToCart.click(function () {
-            var productQty = inputQty.val();
+
+            if (!authUserId) {
+                return false;
+            }
+
+            var quantity = inputQuantity.val();
             var colorId    = $('input[name="color_id"]:checked').val();
             var sizeId     = $('input[name="size_id"]:checked').val();
 
             if (productColorsCount > 0 && !colorId) {
-                __showNotification('error', 'Please select color', aleartTime);
+                __showNotification('error', 'Please select color');
                 return false;
             }
 
             if (productSizesCount > 0 && !sizeId) {
-                __showNotification('error', 'Please select size', aleartTime);
+                __showNotification('error', 'Please select size');
                 return false;
             }
 
-            if (productID != 0 && productQty != 0) {
-                addCartItem(productID, productQty, colorId, sizeId, $(this));
+            if (productId != 0 && quantity != 0) {
+                addCartItem(productId, quantity, colorId, sizeId, $(this));
             }
         });
 
         // Add event with wishlist button
         wishButton.click(function () {
-            if (!sUserID) {
-                localStorage.setItem('wish_product_id', productID);
+            if (!authUserId) {
+                localStorage.setItem('wish_product_id', productId);
             } else {
-                addWishlist(productID);
+                addWishlist(productId);
             }
         });
 
         undoWishButton.click(function () {
-            if (sUserID) {
-                undoWishList(productID);
+            if (authUserId) {
+                undoWishList(productId);
             }
         });
     });
 
-    function addCartItem(productID, productQty, colorId = null, sizeId = null, btn = null) {
+    function addCartItem(productId, productQty, colorId = null, sizeId = null, btn = null) {
         if (btn) {
             btn.prop("disabled", true);
         }
@@ -474,16 +445,16 @@
         iconAddToCart.hide();
 
         axios.post(cartAddItemEndPoint, {
-            item_id: productID,
+            item_id: productId,
             quantity: productQty,
             color_id: colorId,
             size_id: sizeId,
         })
         .then((response) => {
-            if (response.data.res) {
+            if (response.data.success) {
                 // __totalPriceCalculation();
             } else {
-                __showNotification('error', response.data.message, 1000);
+                __showNotification('error', response.data.msg);
                 iconLoadding.hide();
                 iconAddToCart.show();
                 if (btn) {
@@ -506,9 +477,9 @@
         });
     }
 
-    function addWishlist(productID) {
+    function addWishlist(productId) {
         axios.post('/my/wishlist', {
-            product_id: productID
+            product_id: productId
         })
         .then((response) => {
             wishButton.hide();
@@ -522,7 +493,7 @@
     function undoWishList(productId) {
         axios.get('/my/wishlist/undo', {
             params: {
-                product_id: productID
+                product_id: productId
             }
         })
         .then(function (response) {
@@ -533,6 +504,28 @@
             console.log(error);
         });
     }
+</script>
+
+{{-- input quantity script --}}
+<script>
+    var btnInputPlush = $('#btn-input-plush');
+    var btnInputMinus = $('#btn-input-minus');
+
+    $(function() {
+        btnInputPlush.click(function() {
+            var quantity = inputQuantity.val();
+            quantity++;
+            inputQuantity.val(quantity)
+        });
+
+        btnInputMinus.click(function() {
+            var quantity = inputQuantity.val();
+            if (quantity > 1) {
+                quantity--;
+                inputQuantity.val(quantity)
+            }
+        });
+    })
 </script>
 
 {{-- Order ratting script --}}

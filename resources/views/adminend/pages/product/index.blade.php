@@ -54,7 +54,9 @@
                         <th>ID</th>
                         <th>Image</th>
                         <th>Name</th>
-                        <th>Price</th>
+                        <th>Buy Price</th>
+                        <th>MRP</th>
+                        <th>Discount</th>
                         <th>Offer Price</th>
                         <th>Status</th>
                         <th>Created At</th>
@@ -66,10 +68,12 @@
                     <tr>
                         <td class="text-center">{{ $product->id }}</td>
                         <td>
-                            <img src="{{$product->image_src}}" style="width: 70px; height:40px" alt="Product Image">
+                            <img src="{{$product->img_src}}" style="width: 70px; height:40px" alt="Product Image">
                         </td>
                         <td>{{ $product->name }}</td>
-                        <td class="text-right">{{ $product->price }}</td>
+                        <td class="text-right">{{ $product->buy_price }}</td>
+                        <td class="text-right">{{ $product->mrp }}</td>
+                        <td class="text-right">{{ $product->discount }}</td>
                         <td class="text-right">{{ $product->offer_price }}</td>
                         <td class="text-center">
                             @if ($product->status === 'active')

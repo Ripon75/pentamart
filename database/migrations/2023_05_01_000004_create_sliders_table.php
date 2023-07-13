@@ -18,8 +18,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('slug', 100);
             $table->string('status')->default('active');
-            $table->string('large_src', 2048)->nullable();
-            $table->string('small_src', 2048)->nullable();
+            $table->string('img_src', 2048)->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

@@ -62,8 +62,7 @@
                 <div class="col-span-2">
                     <div class="actions">
                         <a href="{{ route('my.wishlist') }}" class="flex items-center space-x-2"
-                            data-mc-on-previous-url="{{ route('my.wishlist') }}"
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            data-mc-on-previous-url="{{ route('my.wishlist') }}">
                             <div class="item relative" title="Wishlist">
                                 <button class="block" type="button">
                                     <i class="icon text-primary fa-solid fa-heart hover:text-secondary"></i>
@@ -72,8 +71,7 @@
                         </a>
 
                         <a href="{{ route('cart.items') }}" class="flex items-center space-x-2" title="Cart"
-                            data-mc-on-previous-url="{{ route('cart.items') }}"
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            data-mc-on-previous-url="{{ route('cart.items') }}">
                             <div class="item relative">
                                 <button class="block" type="button">
                                     <i class="icon fa-solid fa-cart-shopping text-primary hover:text-secondary"></i>
@@ -104,7 +102,13 @@
                                             </a>
                                         @endrole
                                         <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                            <i class="mr-3 text-xs fa-solid fa-gauge"></i>My Dashboard
+                                            <i class="mr-3 text-xs fa-solid fa-gauge"></i>Dashboard
+                                        </a>
+                                        <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                            <i class="mr-3 text-xs fa-solid fa-list"></i>Orders
+                                        </a>
+                                        <a href="{{ route('my.address') }}" class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                            <i class="mr-3 text-sm fa-solid fa-location-dot"></i>Address
                                         </a>
                                         <a href="{{ route('logout') }}" class="text-xs px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                             <i class="mr-3 text-xs fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -115,9 +119,8 @@
                         @endauth
 
                         @guest
-                            <a href="" class="bg-gray-50 group-hover:text-secondary h-12 flex items-center rounded-md shadow"
-                                data-mc-on-previous-url="{{ url()->current() }}"
-                                @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                            <a href="{{ route('login.create') }}" class="bg-gray-50 group-hover:text-secondary h-12 flex items-center rounded-md shadow"
+                                data-mc-on-previous-url="{{ url()->current() }}">
                                 <div class="flex items-center justify-center w-12 border-r">
                                     <i class="icon fa-regular fa-user"></i>
                                 </div>
@@ -161,7 +164,13 @@
                         <div id="menu-profile" style="display: none" class="profile-list hidden absolute top-full -right-12 z-20 group-hover:block">
                             <div class="flex flex-col bg-gray-50 rounded-lg rounded-t-none w-40 shadow-xl">
                                 <a href="{{ route('my.dashboard') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
-                                    <i class="mr-2 fa-solid fa-chart-line"></i>My Dashboard
+                                    <i class="mr-2 fa-solid fa-chart-line"></i>Dashboard
+                                </a>
+                                <a href="{{ route('my.order') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                    <i class="mr-2 text-xs fa-solid fa-list"></i></i>Orders
+                                </a>
+                                <a href="{{ route('my.address') }}" class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                    <i class="mr-1 text-sm fa-solid fa-location-dot"></i>Address
                                 </a>
                                 <a href="{{ route('logout') }}" class="text-sm px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                     <i class="mr-2 fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -171,16 +180,14 @@
                     </div>
                 @endauth
                 @guest
-                    <a href="" title="Login" class=""
-                        data-mc-on-previous-url="{{ url()->current() }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                    <a href="{{ route('login.create') }}" title="Login" class=""
+                        data-mc-on-previous-url="{{ url()->current() }}">
                         <i class="text-lg text-secondary fa-solid fa-right-to-bracket"></i>
                     </a>
                 @endguest
                 <div class="pr-2">
                     <a href="{{ route('cart.items') }}" class="flex items-center space-x-2"
-                        data-mc-on-previous-url="{{ route('cart.items') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        data-mc-on-previous-url="{{ route('cart.items') }}">
                         <div class="item relative">
                             <button class="block">
                                 <i class="icon text-lg text-secondary fa-solid fa-cart-shopping"></i>
@@ -291,14 +298,12 @@
                     </a>
                     <a href="{{ route('my.wishlist') }}"
                         class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.wishlist') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        data-mc-on-previous-url="{{ route('my.wishlist') }}">
                         <i class="pr-3 fa-solid fa-heart"></i>
                         Wishcart
                     </a>
-                    <a href="{{ route('my.address.index') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.address.index') }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                    <a href="{{ route('my.address') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ route('my.address') }}">
                         <i class="pr-3 fa-solid fa-location-dot"></i>
                         Address
                     </a>
@@ -309,9 +314,8 @@
                         </a>
                     @endauth
                     @guest
-                        <a href="{{ route('login') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ url()->current() }}"
-                        @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
+                        <a href="{{ route('login.create') }}" class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ url()->current() }}">
                             <i class="pr-3 fa-solid fa-right-to-bracket"></i>
                             Login
                         </a>
@@ -348,91 +352,6 @@
         </div>
     </div>
 @endif
-
-{{-- New Address modal --}}
-<div id="address-modal" class="modal z-50 fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-    style="background-color: rgba(0,0,0,0.7);"
-    tabindex="-1" aria-modal="true" role="dialog">
-  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable relative w-auto pointer-events-none">
-    <div class="border-none shadow-lg relative flex flex-col w-full pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-      <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-        <h5 class="text-base md:text-lg font-medium leading-normal text-gray-800">
-          Address
-        </h5>
-        <button type="button"
-          class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-          data-bs-dismiss="modal" aria-label="Close">
-        </button>
-      </div>
-      <div class="modal-body relative p-4">
-        <div class="">
-            {{-- For select shipping address --}}
-            <form class="">
-                <div class="form-item">
-                    <label class="form-label font-medium">Select Shipping Address</label>
-                    <div class="flex space-x-2 md:space-x-4">
-                        <select class="header-shipping-address form-input w-full">
-                            <option class="text-xs md:text-sm" value="">Select address</option>
-                            @foreach ($userAddress as $address)
-                                <option value="{{ $address->id }}" {{ $cart->address_id == $address->id ? "selected" : '' }}>
-                                    {{ $address->title }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div id="header-address-show-dev" class="mt-1 hidden items-center">
-                        <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
-                        <span id="show-address-label" class="text-sm text-primary font-medium"></span>
-                    </div>
-                </div>
-            </form>
-            {{-- For create shipping address --}}
-            <h3 class="mt-2 md:mt-2 mb-2 text-base font-medium">Add new address</h3>
-            <form class="mb-0">
-                <div class="grid grid-cols-1">
-                    <div class="form-item">
-                        <label for="" class="form-label">Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
-                        <select id="address-title" class="form-select form-input w-full">
-                            <option value="">Select</option>
-                            <option value="Home">Home</option>
-                            <option value="Office">Office</option>
-                            <option value="Others">Others</option>
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">Alternative Phone Number</label>
-                        <input id="contact-person-number" class="form-input" type="text"
-                            placeholder="Enter Your Phone Number" />
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">Address<span class="ml-1 text-red-500 font-medium">*</span></label>
-                        <textarea id="address-line" class="form-input" rows="2" cols="50" placeholder="Enter your address here..."></textarea>
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">Area<span class="ml-1 text-red-500 font-medium">*</span></label>
-                        <select id="header-area-id" class="form-input">
-                            <option value="" selected>Select</option>
-                            @foreach ($areas as $area)
-                                <option value="{{ $area->id }}">
-                                    {{ $area->name }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="form-item">
-                        <button id="addredd-create-btn" type="button" class="btn btn-primary">
-                            Create
-                            <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-{{--./ New Address modal --}}
 
 @push('scripts')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -526,25 +445,9 @@
     var searchInput      = $('.search-box-input');
     var searchResult     = $('.search-box-result');
     var searchResultList = $('.search-box-result-list');
-    // Header address change
-    var addShippingEndPoint  = '/cart/shipping/add';
-    var addressModal         = $('#address-modal');
-    var btnAddressChange     = $('#btn-address-change');
-    var inputShippingAddress = $('.header-shipping-address');
-    var showAddress          = $('#show-address-label');
-    //Default selected shipping address id
-    var inputShippingId = inputShippingAddress.val();
-    // address create
-    var addressCreateBtn = $('#addredd-create-btn');
-    var addressTitle     = $('#address-title');
-    var addressLine      = $('#address-line');
-    var contactNumber    = $('#contact-person-number');
-    var headerAreaId     = $('#header-area-id');
-    var loaddingIcon     = $('.loadding-icon').hide();
 
     @auth
         __cartItemCount();
-        __getShippingAddress(inputShippingId);
     @endauth
 
     $(function() {
@@ -573,29 +476,6 @@
                 window.location.href = `/products?search_key=${searchKeywords}`;
             }
         }, 750));
-
-        // Header modal opration
-        $('.modal .close-btn').click(function (e) {
-            addressModal.modal('hide')
-        });
-
-        // event with address change
-        btnAddressChange.click(function () {
-            @auth
-                addressModal.show();
-            @endauth
-        });
-
-        inputShippingAddress.on('change', function() {
-            var addressId = $(this).val();
-            __addShippingAddress(addressId);
-            __getShippingAddress(addressId);
-        });
-
-        // create user address
-        addressCreateBtn.click(function() {
-            __addressCreate();
-        });
     });
 
     function productSearch(keywords) {
@@ -624,7 +504,7 @@
             for (let index = 0; index < data.length; index++) {
                 const product = data[index];
                 var offerPrice = product.offer_price;
-                var productPrice   = product.price;
+                var productPrice   = product.mrp;
                 var isPriceHidden = '';
                 var isofferPriceHidden = 'hidden';
                 if (offerPrice > 0) {
@@ -634,7 +514,7 @@
                 var itemHTML = `
                     <a href="/products/${product.id}/${product.slug}" class="hover:bg-gray-200 transition duration-150 ease-in-out border-b border-dashed flex space-x-2 py-2 pr-3 items-center" data-product-id="${product.id}">
                         <div class="w-14 h-14">
-                            <img class="w-full h-full" src="${product.image_src}" alt="">
+                            <img class="w-full h-full" src="${product.img_src}" alt="">
                         </div>
                         <div class="flex-1 flex flex-col">
                             <h4 class="text-xs text-gray-500">${product.brand?.name}</h4>
@@ -655,93 +535,6 @@
             searchResultList.html(`<strong>No product found by "${keywords}"</strong>`);
         }
         searchResult.show();
-    }
-
-    function __addShippingAddress(addressId) {
-        axios.post(addShippingEndPoint, {
-            address_id: addressId
-        })
-        .then((response) => {
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-
-    function __getShippingAddress(addressId) {
-        axios.get('/my/shipping/addrss', {
-            params: {
-                address_id: addressId
-            }
-        })
-        .then((response) => {
-            let id      = response.data.result ? response.data.result.id : '';
-            let title   = response.data.result ? response.data.result.title : '';
-            let address = response.data.result ? response.data.result.address : '';
-            // change shipping address id
-            $('.shipping-address-id').val(id);
-            // show address title in cart page
-            $('.shipping-address-label').text(title);
-            // show address in top nav
-            $('#show-address-top-nav').text(address);
-            // show address in address modal
-            if (address) {
-                $('#header-address-show-dev').show();
-                showAddress.text(address);
-            } else {
-                $('#header-address-show-dev').hide();
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-    }
-
-    function __addressCreate() {
-        var bodyFormData = new FormData();
-
-        var title   = addressTitle.val();
-        var address = addressLine.val();
-        var phone   = contactNumber.val();
-        var area    = headerAreaId.val();
-        if (!title) {
-            __showNotification('error', 'Please select address title');
-            addressTitle.focus();
-            return false;
-        }
-        if (!address) {
-            __showNotification('error', 'Please enter address');
-            addressLine.focus();
-            return false;
-        }
-        if (!area) {
-            __showNotification('error', 'Please select area');
-            headerAreaId.focus();
-            return false;
-        }
-
-
-        bodyFormData.append('title', title);
-        bodyFormData.append('address', address);
-        bodyFormData.append('phone_number', phone);
-        bodyFormData.append('area_id', area);
-        axios({
-            method: "post",
-            url: "/my/address",
-            data: bodyFormData
-        })
-        .then(function (response) {
-            if (response.data.error) {
-                __showNotification('error', response.data.message);
-                return false;
-            } else {
-                loaddingIcon.show();
-                location.reload(true);
-            }
-        })
-        .catch(function (error) {
-            console.log(error);
-        });
     }
 </script>
 @endpush

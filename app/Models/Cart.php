@@ -19,7 +19,6 @@ class Cart extends Model
         'user_id',
         'pg_id',
         'address_id',
-        'note',
         'created_by',
         'updated_by'
     ];
@@ -28,7 +27,6 @@ class Cart extends Model
         'user_id'    => 'integer',
         'pg_id'      => 'integer',
         'address_id' => 'integer',
-        'note'       => 'string',
         'created_by' => 'integer',
         'updated_by' => 'integer',
         'created_at' => 'datetime:Y-m-d H:i:s',
@@ -44,7 +42,7 @@ class Cart extends Model
     public function items()
     {
         return $this->belongsToMany(Product::class, 'cart_item', 'cart_id', 'item_id')
-            ->withPivot('size_id', 'color_id', 'quantity', 'item_price', 'sell_price', 'item_discount')
+            ->withPivot('size_id', 'color_id', 'quantity', 'item_buy_price','item_mrp', 'item_sell_price', 'item_discount')
             ->withTimestamps();
     }
 
@@ -65,9 +63,9 @@ class Cart extends Model
 
         $itemId   = $request->input('item_id');
         $quantity = $request->input('quantity');
-        $colorId  = $request->input('color_id');
-        $sizeId   = $request->input('size_id');
         $isUpdate = $request->input('is_update');
+        $colorId  = $request->color_id ?? 1;
+        $sizeId   = $request->size_id ?? 1;
 
         if ($quantity <= 0) {
             return $this->removeItem($request);
@@ -79,10 +77,11 @@ class Cart extends Model
             return $this->s(false, null, 'Product not found');
         }
 
-        $itemPrice  = $product->price;
-        $offerPrice = $product->offer_price;
-        $discount   = $product->discount;
-        $sellPrice  = $offerPrice > 0 ? $offerPrice : $itemPrice;
+        $itemBuyPrice  = $product->buy_price;
+        $itemMRP       = $product->mrp;
+        $offerPrice    = $product->offer_price;
+        $itemDiscount  = $product->discount;
+        $itemSellPrice = $offerPrice > 0 ? $offerPrice : $itemMRP;
 
         $cart = $this->getCurrentCustomerCart();
         if (!$isUpdate) {
@@ -95,15 +94,22 @@ class Cart extends Model
             }
 
             $res = $cart->items()->attach($itemId, [
-                'size_id'       => $sizeId,
-                'color_id'      => $colorId,
-                'quantity'      => $quantity,
-                'item_price'    => $itemPrice,
-                'sell_price'    => $sellPrice,
-                'item_discount' => $discount
+                'size_id'         => $sizeId,
+                'color_id'        => $colorId,
+                'quantity'        => $quantity,
+                'item_buy_price'  => $itemBuyPrice,
+                'item_mrp'        => $itemMRP,
+                'item_sell_price' => $itemSellPrice,
+                'item_discount'   => $itemDiscount
             ]);
         } else {
-            $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
+            // $res = $cart->items()->updateExistingPivot($itemId, ['quantity' => $quantity]);
+
+            $res = $cart->items()
+                ->wherePivot('item_id', $itemId)
+                ->wherePivot('color_id', $colorId)
+                ->wherePivot('size_id', $sizeId)
+                ->update(['quantity' => $quantity]);
         }
         return Utility::sendResponse($res, 'Item added successfully');
     }
@@ -121,9 +127,6 @@ class Cart extends Model
         $res = DB::table('cart_item')->where('item_id', $itemId)->where('size_id', $sizeId)
         ->where('color_id', $colorId)->delete();
 
-        // $cart = $this->getCurrentCustomerCart();
-        // $res  = $cart->items()->detach($itemId);
-
         return Utility::sendResponse($res, 'Item removed successfuly');
     }
 
@@ -133,7 +136,6 @@ class Cart extends Model
         $res = $cart->items()->detach();
 
         $cart->pg_id = 1;
-        $cart->note  = null;
         $cart->save();
 
         return Utility::sendResponse($res, 'Cart empty successfuly');
@@ -142,13 +144,9 @@ class Cart extends Model
     public function addMetaData($request)
     {
         $pgId = $request->input('pg_id', null);
-        $note = $request->input('note', null);
 
         $cart = $this->getCurrentCustomerCart();
 
-        if ($note) {
-            $cart->note = $note;
-        }
         if ($pgId) {
             $cart->pg_id = $pgId;
         }
@@ -182,24 +180,39 @@ class Cart extends Model
         return $cart;
     }
 
-    public function getSubTotalAmount()
+    public function getTotalMRP()
     {
-        $itemsSubtotalAmount = $this->items->sum(function ($item) {
-            $itemPrice = $item->pivot->item_price;
-            $quantity  = $item->pivot->quantity;
+        $totalMRP = $this->items->sum(function ($item) {
+            $itemMRP  = $item->pivot->item_mrp;
+            $quantity = $item->pivot->quantity;
 
-            return $itemPrice * $quantity;
+            return $itemMRP * $quantity;
         });
 
-        return $itemsSubtotalAmount;
+        return $totalMRP;
     }
 
-    public function getSubTotalAmountWithDeliveryCharge()
+    public function getTotalDiscount()
     {
-        $itemsSubtotalAmount     = $this->getSubTotalAmount();
-        $deliveryCharge          = $this->deliveryGateway->price;
-        $totalWithDeliveryCharge = $itemsSubtotalAmount + $deliveryCharge;
+        $totalDiscount = $this->items->sum(function ($item) {
+            $itemDiscount = $item->pivot->item_discount;
+            $quantity     = $item->pivot->quantity;
 
-        return $totalWithDeliveryCharge;
+            return $itemDiscount * $quantity;
+        });
+
+        return $totalDiscount;
+    }
+
+    public function getTotalSellPrice()
+    {
+        $totalSellPrice = $this->items->sum(function ($item) {
+            $itemSellPrice = $item->pivot->item_sell_price;
+            $quantity      = $item->pivot->quantity;
+
+            return $itemSellPrice * $quantity;
+        });
+
+        return $totalSellPrice;
     }
 }

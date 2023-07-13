@@ -9,4 +9,5 @@ return [
     'free_delivery_cart_amount' => 1000,
     'delivered_status_id' => 7,
     'confirmed_status_id' => 2,
+    'currency' => 'tk',
 ];
