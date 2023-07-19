@@ -11,41 +11,33 @@
             <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 last:gap-4">
                 <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-3 xl:col-span-3 2xl:col-span-3">
                     <div class="card border-2 p-4">
-                        <div class="flex justify-between sm:justify-between md:justify-between lg:justify-end xl:justify-end 2xl:justify-end space-x-6 mt-1">
-                            <div class="">
-                                <button id="btn-shopping-continue" class="btn btn-md btn-primary">
-                                    <a class="hover:text-white" href="{{ route('products.index') }}">
-                                        Continue shopping
-                                    </a>
-                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
-                                </button>
-                            </div>
-                        </div>
-
                         <div class="">
-                            <div class="form-item">
-                                <label class="form-label font-medium">
-                                    Select Shipping Address <span class="ml-1 text-red-500 font-medium">*</span>
-                                </label>
-                                <div class="flex space-x-2 md:space-x-4">
-                                    <select id="input-shipping-address" class="form-input w-full">
-                                        <option class="text-xs md:text-sm" value="">Select address</option>
-                                        @foreach ($userAddress as $address)
-                                            <option value="{{ $address->id }}">
-                                                {{ $address->title }}
-                                            </option>
-                                        @endforeach
-                                    </select>
+                            <div class="flex flex-col sm:flex-row md:flex-row space-x-2">
+                                <div class="border p-2 text-sm w-full">
+                                    <div class="flex items-center">
+                                        <input id="default-radio-1" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="default-radio-1" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Home</label>
+                                    </div>
+                                    <div>Malibagh dhaka bangladesh</div>
+                                    <div>Ripon ahmed</div>
+                                    <div>01764997485</div>
                                 </div>
-                                <div id="address-show-div" class="mt-1 hidden items-center">
-                                    <i class="mr-1 text-sm fa-solid fa-location-dot"></i>
-                                    <span id="address-show-label" class="text-sm text-primary font-medium"></span>
+                                <div class="border p-2 text-sm w-full">
+                                    <div class="flex items-center">
+                                        <input checked id="default-radio-2" type="radio" value="" name="default-radio" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="default-radio-2" class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Office</label>
+                                    </div>
+                                    <div>Malibagh dhaka bangladesh</div>
+                                    <div>Ripon ahmed</div>
+                                    <div>01764997485</div>
                                 </div>
                             </div>
 
                             {{-- create new address --}}
-                            <h3 class="mt-2 md:mt-2 mb-2 text-base text-center font-bold">Add new address</h3>
-                            <form class="mb-0" id="address-create-form" action="{{ route('my.address.store') }}" method="POST">
+                            <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto">
+                                <button id="btn-create-new-address" class="btn btn-success btn-sm">Add new address</button>
+                            </div>
+                            <form class="mb-0 hidden" id="address-create-form" action="{{ route('my.address.store') }}" method="POST">
                                 @csrf
 
                                 <div class="grid grid-cols-1">
@@ -156,10 +148,17 @@
                                 </span>
                             </div>
 
+                            @php
+                                $deliveryCharge = 0;
+                                if (count($deliveryGateways)) {
+                                    $deliveryCharge = $deliveryGateways[0]->price;
+                                }
+                            @endphp
+
                             <div class="flex justify-between">
                                 <span>Delivery Charge (+)</span>
                                 <span>{{ $currency }}
-                                    <span class="ml-1">
+                                    <span id="delivery-charge-label" class="ml-1">
                                         {{ number_format($deliveryCharge, 2) }}
                                     </span>
                                 </span>
@@ -171,7 +170,7 @@
                                 <span class="text-base sm:text-base md:text-lg">Total</span>
                                 <span class="text-base sm:text-base md:text-lg font-medium">
                                     <span>{{ $currency }}
-                                        <span class="ml-1">
+                                        <span id="total-with-delivery-charge-label" class="ml-1">
                                             {{ number_format(($cart->getTotalSellPrice() + $deliveryCharge), 2) }}
                                         </span>
                                     </span>
@@ -185,34 +184,26 @@
                         {{-- hidden field for shipping address --}}
                         <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
 
-                        {{-- =========Choose Payment Method======= --}}
-                        {{-- <section class="mt-4">
+                        {{-- =========Choose Delivery ======= --}}
+                        <section class="mt-4">
                             <div class="card border-2">
                                 <div class="header">
-                                    <h1 class="title">Choose Payment Method <i class="ml-3 fa-solid fa-wallet"></i></h1>
+                                    <h1 class="title">Delivery area</h1>
                                 </div>
                                 <div class="flex p-2 space-x-2">
-                                    <input type="hidden" name="pg_id" id="input-payment-method-id" value="">
-                                    @for ($i=0 ; $i < count($paymentGateways) ; $i++)
+                                    <input type="hidden" name="dg_id" id="input-delivery-gateway-id" value="">
+                                    @for ($i=0 ; $i < count($deliveryGateways) ; $i++)
                                         <button
                                             type="button"
-                                            data-payment-method-id="{{ $paymentGateways[$i]->id }}"
-                                            class="btn-payment-method {{ $i === 0 ? 'active' : '' }}">
-                                            @if ($paymentGateways[$i]->img_src)
-                                                <div class="icon text-xl">
-                                                    <img src="{{ $paymentGateways[$i]->img_src }}" class="w-6" alt="PG">
-                                                </div>
-                                            @else
-                                                <div class="icon text-xl">
-                                                    <i class="{{ $paymentGateways[$i]->icon }}"></i>
-                                                </div>
-                                            @endif
-                                            <div class="title text-sm">{{ $paymentGateways[$i]->name }}</div>
+                                            data-delivery-gateway-id="{{ $deliveryGateways[$i]->id }}"
+                                            data-delivery-charge="{{ $deliveryGateways[$i]->price }}"
+                                            class="btn-delivery-gateway {{ $i === 0 ? 'active' : '' }}">
+                                            <div class="title text-sm">{{ $deliveryGateways[$i]->name }}</div>
                                         </button>
                                     @endfor
                                 </div>
                             </div>
-                        </section> --}}
+                        </section>
                         {{-- ===========Use coupon==================== --}}
                         <section class="mt-4">
                             <div class="card border-2">
@@ -294,13 +285,20 @@
 
 @push('scripts')
     <script>
-        var iconLoadding        = $('.loadding-icon');
-        var btnPaymentMethod    = $('.btn-payment-method');
-        var btnOrderSubmit      = $('#btn-order-submit');
-        var formCheckOut        = $('#form-checkout');
-        var btnContinueShopping = $('#btn-shopping-continue');
+        var iconLoadding                 = $('.loadding-icon');
+        var btnDeliveryGateway           = $('.btn-delivery-gateway');
+        var btnOrderSubmit               = $('#btn-order-submit');
+        var formCheckOut                 = $('#form-checkout');
+        var btnCreateNewAddress          = $('#btn-create-new-address');
+        var inputDeliveryGatewayId       = $('#input-delivery-gateway-id');
+        var cartTotalSellPrice           = "{{ $cart->getTotalSellPrice() }}";
+        var deliveryCharge               = "{{ $deliveryCharge }}";
+        var deliveryChargeLabel          = $('#delivery-charge-label');
+        var totalWithDeliveryChargeLabel = $('#total-with-delivery-charge-label');
+
 
         // For address create
+        var addressCreateForm      = $('#address-create-form');
         var btnAddressCreate       = $('#btn-address-create');
         var inputShippingAddress   = $('#input-shipping-address');
         var inputShippingAddressId = $('#input-shipping-address-id');
@@ -318,13 +316,14 @@
 
         $(function() {
             // On choose payment method
-            btnPaymentMethod.click(function() {
-                btnPaymentMethod.removeClass('active');
+            btnDeliveryGateway.click(function() {
+                btnDeliveryGateway.removeClass('active');
                 $(this).addClass('active');
 
-                var paymentID = $(this).data('payment-method-id');
-                inputPaymentMethod.val(paymentID);
-                addCartMetaData('pg_id', paymentID);
+                var deliveryId   = $(this).data('delivery-gateway-id');
+                deliveryCharge   = $(this).data('delivery-charge');
+                inputDeliveryGatewayId.val(deliveryId);
+                totalPriceCalculation();
             });
 
             inputShippingAddress.on('change', function() {
@@ -336,7 +335,6 @@
 
             // create user address
             btnAddressCreate.click(function() {
-                var addressCreateForm = $('#address-create-form');
                 var inputAddressTitle = $('#input-address-title');
                 var inputAddressArea  = $('#input-address-area');
                 var inputAddress      = $("#input-address");
@@ -397,8 +395,8 @@
                 totalPriceCalculation();
             });
 
-            btnContinueShopping.click( function() {
-                $(this).find(iconLoadding).show();
+            btnCreateNewAddress.click(function() {
+                addressCreateForm.show();
             });
         });
 
@@ -443,11 +441,13 @@
 
         // Calculate total price
         function totalPriceCalculation() {
-            var itemsTotalSellPrice = 0;
-            $(".item-sell-price").each(function() {
-                var itemSellPrice = parseFloat($(this).text());
-                itemsTotalSellPrice = itemsTotalSellPrice + itemSellPrice;
-            });
+            cartTotalSellPrice = parseFloat(cartTotalSellPrice);
+            deliveryCharge      = parseFloat(deliveryCharge);
+
+            var totalWithDeliveryCharge = cartTotalSellPrice + deliveryCharge;
+
+            deliveryChargeLabel.text(deliveryCharge.toFixed(2));
+            totalWithDeliveryChargeLabel.text(totalWithDeliveryCharge.toFixed(2));
 
             // get coupon discount
             // couponDiscount = inputItemsDiscount.val();

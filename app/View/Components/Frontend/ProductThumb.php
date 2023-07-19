@@ -29,7 +29,7 @@ class ProductThumb extends Component
     public function render()
     {
         return view('components.frontend.product-thumb', [
-            'currency' => 'Tk'
+            'currency' => 'tk'
         ]);
     }
 }

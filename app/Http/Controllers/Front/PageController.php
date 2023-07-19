@@ -35,17 +35,17 @@ class PageController extends Controller
             [
                 'icon'      => 'fa-truck-fast',
                 'title'     => 'Free Shipping',
-                'postTitle' => 'On orders over tk. 499'
+                'postTitle' => ''
             ],
             [
-                'icon'      => 'fa-shield',
-                'title'     => 'Secure Checkout',
-                'postTitle' => 'COD and Digital payment'
+                'icon'      => 'fa-truck-fast',
+                'title'     => 'Free Shipping',
+                'postTitle' => ''
             ],
             [
-                'icon'      => 'fa-capsules',
-                'title'     => 'Genuine Products',
-                'postTitle' => 'Authentic and original products'
+                'icon'      => 'fa-truck-fast',
+                'title'     => 'Free Shipping',
+                'postTitle' => ''
             ]
         ];
 
@@ -167,33 +167,8 @@ class PageController extends Controller
             'ratingValue'     => $ratingValue,
             'ratingPercent'   => $ratingPercent,
             'ratingReport'    => $ratingReport,
-            'currency'        => 'Tk'
+            'currency'        => 'tk'
         ]);
-    }
-
-    public function about()
-    {
-        return view('frontend.pages.about');
-    }
-
-    public function termsAndConditions()
-    {
-        return view('frontend.pages.terms-and-conditions');
-    }
-
-    public function privacyPolicy()
-    {
-        return view('frontend.pages.privacy-policy');
-    }
-
-    public function returnPolicy()
-    {
-        return view('frontend.pages.return-policy');
-    }
-
-    public function contact()
-    {
-        return view('frontend.pages.contact');
     }
 
     public function categoryPage(Request $request, $id)
@@ -399,5 +374,30 @@ class PageController extends Controller
         }
 
         return $products;
+    }
+
+    public function about()
+    {
+        return view('frontend.pages.about');
+    }
+
+    public function termsAndConditions()
+    {
+        return view('frontend.pages.terms-and-conditions');
+    }
+
+    public function privacyPolicy()
+    {
+        return view('frontend.pages.privacy-policy');
+    }
+
+    public function returnPolicy()
+    {
+        return view('frontend.pages.return-policy');
+    }
+
+    public function contact()
+    {
+        return view('frontend.pages.contact');
     }
 }

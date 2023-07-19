@@ -63,13 +63,13 @@
                             </a>
                         @endif
                         {{-- show category --}}
-                        @if ($product->category_id)
+                        {{-- @if ($product->category_id)
                             <div class="text-sm text-gray-600">
                                 <a href="{{ route('category.page', $product->category_id) }}">
                                     {{ $product->category->name }}
                                 </a>
                             </div>
-                        @endif
+                        @endif --}}
 
                        <div class="mt-1 pt-1 pb-1">
                             @if (count($productColors))
@@ -103,29 +103,26 @@
                     <div class="prices flex space-x-2 items-center mb-1">
                         <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                         <span>
-                            <span>{{ $currency }}&nbsp;</span>
                             @if ($product->offer_price > 0)
-                                <span class="text-primary text-md font-medium">
-                                    {{ number_format(($product->offer_price), 2) }}
-                                </span>
-                                <span class="line-through text-sm text-gray-500 self-end">
-                                    {{ $product->mrp }}
-                                </span>
+                            <span class="text-primary text-2xl font-medium">
+                                {{ number_format(($product->offer_price), 2) }}
+                            </span>
+                            <span class="line-through text-xl text-gray-500 self-end">
+                                {{ $product->mrp }}
+                            </span>
                             @else
-                                <span class="text-primary text-xl font-medium">
-                                    {{ number_format(($product->mrp), 2) }}
-                                </span>
+                            <span class="text-primary text-2xl font-medium">
+                                {{ number_format(($product->mrp), 2) }}
+                            </span>
                             @endif
+                            <span class="ml-1">{{ $currency }}&nbsp;</span>
                         </span>
                     </div>
                     {{-- Extra information --}}
                     <div class="flex justify-between mb-3">
                         <div class="space-y-1">
                             <div class="text-sm text-gray-600">
-                                <span class="font-bold">Warranty : </span>12 Months Official Warranty
-                            </div>
-                            <div class="text-sm text-gray-600">
-                                <span class="font-bold">Emi Available : </span>3 Months
+                                <span class="font-bold">Warranty : </span>{{ $product->warranty }}
                             </div>
                         </div>
                     </div>

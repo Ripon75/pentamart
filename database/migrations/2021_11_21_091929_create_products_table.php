@@ -29,6 +29,7 @@ class CreateProductsTable extends Migration
             $table->bigInteger('current_stock')->default(0);
             $table->string('status')->default('active');
             $table->string('img_src', 1000)->nullable();
+            $table->string('warranty')->nullable();
             $table->text('description')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
