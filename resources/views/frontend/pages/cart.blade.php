@@ -16,12 +16,12 @@
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                             Product
                                         </th>
-                                        <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                        {{-- <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                             Color
                                         </th>
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                             Size
-                                        </th>
+                                        </th> --}}
                                         <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
                                             MRP
                                         </th>
@@ -59,7 +59,7 @@
                                                 </a>
                                                 @endif
                                             </td>
-                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                            {{-- <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 @if ($product->pivot->color_id)
                                                     <span class="ml-1">
                                                         @if ($key < count($selelctedColors))
@@ -73,8 +73,8 @@
                                                 @else
                                                     <span class="ml-1">NA</span>
                                                 @endif
-                                            </td>
-                                            <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                            </td> --}}
+                                            {{-- <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 @if ($product->pivot->size_id)
                                                     <span class="ml-1">
                                                         @if ($key < count($selelctedSizes))
@@ -88,7 +88,7 @@
                                                 @else
                                                     <span class="ml-1">NA</span>
                                                 @endif
-                                            </td>
+                                            </td> --}}
                                             <td class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
                                                 <span class="ml-1">
                                                     {{ $product->pivot->item_mrp }}

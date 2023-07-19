@@ -302,7 +302,7 @@
                                     @for ($i = 1; $i <= 4; $i++)
                                         <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @endfor
-                                        <i class="fa-solid fa-star text-xs"></i>
+                                        <i class="fa-regular fa-star text-xs"></i>
                                     <span>({{ $ratingReport->four_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
@@ -310,7 +310,7 @@
                                         <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @endfor
                                     @for ($j = 1; $j <= 2; $j++)
-                                        <i class="fa-solid fa-star text-xs"></i>
+                                        <i class="fa-regular fa-star text-xs"></i>
                                     @endfor
                                     <span>({{ $ratingReport->three_star ?? 0 }})</span>
                                 </div>
@@ -319,14 +319,14 @@
                                         <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @endfor
                                     @for ($j = 1; $j <= 3; $j++)
-                                        <i class="fa-solid fa-star text-xs"></i>
+                                        <i class="fa-regular fa-star text-xs"></i>
                                     @endfor
                                     <span>({{ $ratingReport->two_star ?? 0 }})</span>
                                 </div>
                                 <div class="space-x-1">
                                     <i class="fa-solid fa-star text-yellow-500 text-xs"></i>
                                     @for ($i = 1; $i <= 4; $i++)
-                                        <i class="fa-solid fa-star text-xs"></i>
+                                        <i class="fa-regular fa-star text-xs"></i>
                                     @endfor
                                     <span>({{ $ratingReport->one_star ?? 0 }})</span>
                                 </div>
