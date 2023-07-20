@@ -33,7 +33,7 @@ class EventServiceProvider extends ServiceProvider
             StoreSearchLog::class
         ],
         OrderCreate::class => [
-            // SendOrderSubmitSMS::class
+            SendOrderSubmitSMS::class
         ]
     ];
 

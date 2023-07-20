@@ -7,24 +7,16 @@ use Illuminate\Support\Facades\Http;
 
 class SMSGateway
 {
-    private $username;
-    private $password;
     private $endPoint;
-    private $source;
+    private $token;
+    private $senderId;
 
     public function __construct()
     {
-        $this->init();
-    }
-
-    private function init()
-    {
-        $this->username = config('sms.username');
-        $this->password = config('sms.password');
         $this->endPoint = config('sms.end_point');
-        $this->source   = config('sms.source');
+        $this->token    = config('sms.token');
+        $this->senderId = config('sms.sender_id');
     }
-
 
     public function sendActivationCode($phoneNumber, $code)
     {
@@ -44,15 +36,20 @@ class SMSGateway
 
     private function send($phoneNumber, $message)
     {
-        $response = Http::get($this->endPoint, [
-            'username'    => $this->username,
-            'password'    => $this->password,
-            'type'        => 0,
-            'dlr'         => 1,
-            'destination' => $phoneNumber,
-            'source'      => $this->source,
-            'message'     => $message,
-        ]);
+        $headers = [
+            "Accept"        => "application/json",
+            "Authorization" => "Bearer {$this->token}",
+            "Content-Type"  => "application/json",
+        ];
+
+        $data = [
+            'recipient' => '88' . $phoneNumber,
+            'sender_id' => $this->senderId,
+            'message'   => $message,
+        ];
+
+        $response = Http::withHeaders($headers)->post($this->endPoint, $data);
+
         return $response;
     }
 }

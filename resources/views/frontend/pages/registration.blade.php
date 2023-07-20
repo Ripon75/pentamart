@@ -39,7 +39,10 @@
                             <div class="form-item">
                                 <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
                                 <div class="relative flex items-center justify-end">
-                                    <input id="password-one" class="form-input flex-1" type="password" placeholder="Please enter your password" name="password"/>
+                                    <input id="password-one" class="form-input flex-1"
+                                        type="password"
+                                        placeholder="Please enter your password"
+                                        name="password" autocomplete="off"/>
                                     <div class="absolute mr-4">
                                         <i id="eye-open-one" class="fa-regular fa-eye"></i>
                                         <i id="eye-close-one" class="fa-regular fa-eye-slash"></i>
@@ -52,7 +55,9 @@
                             <div class="form-item">
                                 <label class="form-label">Confirm Password <span class="text-red-500 font-medium">*</span></label>
                                 <div class="relative flex items-center justify-end">
-                                    <input id="password-two" class="form-input flex-1" placeholder="Please confirm your password" type="password" name="password_confirmation"/>
+                                    <input id="password-two" class="form-input flex-1"
+                                        placeholder="Please confirm your password"
+                                        type="password" name="password_confirmation" autocomplete="off"/>
                                     <div class="absolute mr-4">
                                         <i id="eye-open-two" class="fa-regular fa-eye"></i>
                                         <i id="eye-close-two" class="fa-regular fa-eye-slash"></i>
@@ -63,14 +68,14 @@
                                 @enderror
                             </div>
                             <div class="flex space-x-2 items-center mt-2">
-                                <input class="focus:ring-0" type="checkbox" value="1" name="terms_and_conditons">
+                                <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
-                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">"Terms and Conditions"</a> &
+                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and Conditions</a>
                                 </span>
                             </div>
-                            @error('terms_and_conditons')
-                                <span class="form-helper error mt-2 text-xs text-red-700">{{ $message }}</span>
+                            @error('terms_conditons')
+                                <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
                             @enderror
                             <div class="mt-8">
                                 <button type="submit" class="btn btn-primary btn-block">Register</button>

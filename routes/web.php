@@ -44,6 +44,7 @@ Route::get('/login',           [AuthController::class, 'loginCreate'])->name('lo
 Route::post('/login',          [AuthController::class, 'login'])->name('login');
 Route::post('/check-user',     [AuthController::class, 'checkUser'])->name('check.user');
 Route::get('/send-otp-code',   [AuthController::class, 'sendOtp'])->name('send.otp');
+Route::post('/check-otp-code', [AuthController::class, 'checkOtp'])->name('check.otp');
 Route::get('/resend-otp-code', [AuthController::class, 'resendOtpCode']);
 
 // Socialite
