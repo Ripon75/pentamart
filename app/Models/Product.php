@@ -153,7 +153,7 @@ class Product extends Model implements Auditable
 
         return $query->select(
             'id', 'name', 'brand_id', 'category_id', 'current_stock', 'mrp', 'offer_price',
-            'discount', 'offer_percent', 'slug','img_src', 'description'
+            'discount', 'offer_percent', 'slug','img_src', 'warranty', 'description'
         )
         ->with([
             'brand:id,name,slug',
