@@ -96,15 +96,15 @@
     <section class="page-section bg-gray-100">
         <div class="container">
             <div class="text-center">
-                <h1 class="section-title mb-5">Top Brands</h1>
+                <h1 class="section-title mb-5">Subsidarics</h1>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-5 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
                 @foreach ($topBrands as $tBrand)
                     <x-frontend.banner-box
                         type="categories-banner"
                         :bg-color="'#fff'"
                         pre-title=""
-                        :title="$tBrand->name"
+                        title="By Now"
                         link-title=""
                         :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])"
                         :img-src="$tBrand->img_src"
@@ -157,7 +157,22 @@
         </div>
     </section> --}}
 
-    <section class="page-section bg-gray-100">
+    <section class="symptoms-section page-section bg-gray-100">
+        <div class="container">
+            <div class="headline text-center">
+                <h1 class="section-title">Top Categories</h1>
+            </div>
+            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
+                @foreach ( $topCategories as $tCategory)
+                <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
+                    <img class="img" src="{{ $tCategory->img_src }}">
+                </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- <section class="page-section bg-gray-100">
         <div class="container">
             <div class="text-center">
                 <h1 class="section-title mb-5">Top Categories</h1>
@@ -176,10 +191,10 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ==================Medical Devices================== --}}
-    @if ($otherProduct)
+    @if (count($otherProduct->products))
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
@@ -224,7 +239,7 @@
     </section> --}}
 
     {{-- ==================Features================== --}}
-    {{-- <section class="page-section bg-gray-100">
+    <section class="page-section bg-gray-100">
         <div class="container">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                 @foreach ($features as $feature)
@@ -242,7 +257,7 @@
                 @endforeach
             </div>
         </div>
-    </section> --}}
+    </section>
 
 @endsection
 @push('scripts')

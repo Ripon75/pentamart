@@ -1,8 +1,7 @@
 <?php
 
 return [
-    'end_point' => env('SMS_GATEWAY_ENDDPOINT'),
-    'username'  => env('SMS_GATEWAY_USERNAME'),
-    'password'  => env('SMS_GATEWAY_PASSWORD'),
-    'source'    => env('SMS_GATEWAY_SOURCE'),
+    'end_point' => env('SMS_GETEWAY_ENDPOINT'),
+    'token'     => env('SMS_GETEWAY_TOKEN'),
+    'sender_id' => env('SMS_GETEWAY_SENDER_ID')
 ];

@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Events\CustomerRegistration;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -37,12 +36,12 @@ class AuthController extends Controller
             'name'            => ['required'],
             'email'           => ['nullable', 'email', 'unique:users'],
             'phone_number'    => ['required', 'unique:users'],
-            'terms_conditons' => ['required']
+            'password'        => ['required', 'confirmed'],
+            'terms_conditons' => ['required'],
         ],
         [
             'terms_conditons.required' => 'Please checked terms and conditions'
-        ]
-        );
+        ]);
 
         Utility::saveIntendedURL();
 
@@ -64,17 +63,21 @@ class AuthController extends Controller
             } else {
                 $user = new User();
 
+                $otpCode = $this->getRandomCode();
+
                 $user->name            = $name;
                 $user->email           = $email;
                 $user->phone_number    = $phoneNumber;
+                $user->otp_code        = $otpCode;
                 $user->terms_conditons = $termsConditions;
                 $res = $user->save();
 
                 if ($res) {
                     CustomerRegistration::dispatch($user);
+                    // $this->sendSMS($phoneNumber, $otpCode);
 
                     DB::commit();
-                    return redirect()->route('login.create');
+                    return redirect("/send-otp-code?phone_number={$phoneNumber}");
                 }
             }
         } catch (\Exception $e) {
@@ -106,7 +109,7 @@ class AuthController extends Controller
             $otpCode = $this->getRandomCode();
             $user->otp_code = $otpCode;
             $user->save();
-            // $this->forwardOtpCode($phoneNumber, $otpCode);
+            // $this->sendSMS($phoneNumber, $otpCode);
 
             return $this->sendResponse($user, 'User exists');
         } else {
@@ -114,6 +117,7 @@ class AuthController extends Controller
         }
     }
 
+    // Login by otp
     // public function login(Request $request)
     // {
     //     $validator = Validator::make($request->all(), [
@@ -141,6 +145,7 @@ class AuthController extends Controller
     //     }
     // }
 
+    // Login by password
     public function login(Request $request)
     {
         $request->validate([
@@ -196,7 +201,7 @@ class AuthController extends Controller
             $user->otp_code = $otpCode;
             $res = $user->save();
             if ($res) {
-                // $this->forwardOtpCode($phoneNumber, $otpCode);
+                // $this->sendSMS($phoneNumber, $otpCode);
 
                 return $this->sendResponse($user, 'OTP send successfully');
             }
@@ -205,30 +210,31 @@ class AuthController extends Controller
         }
     }
 
-    // Socialite login
-    public function socialRedirect(Request $request, $service)
-    {
-        return Socialite::driver($service)->redirect();
+    public function checkOtp(Request $request) {
+        $request->validate([
+            'phone_number' => ['required'],
+            'otp_code'     => ['required'],
+        ]);
+
+        $phoneNumber = $request->input('phone_number', null);
+        $otpCode     = $request->input('otp_code', null);
+
+        $user = User::where('phone_number', $phoneNumber)->first();
+
+        if ($user) {
+            if ($user->otp_code === $otpCode) {
+                $user->ac_status = 1;
+                $user->save();
+                return redirect("/login?phone_number={$phoneNumber}");
+            } else {
+                return back()->with('error', 'Invalid otp');
+            }
+        } else {
+            return back()->with('error', 'User not found');
+        }
+
+        return 'check otp';
     }
-
-    // public function socialCallback(Request $request, $service)
-    // {
-    //     $user = null;
-    //     $socialUser = Socialite::driver($service)->stateless()->user();
-
-    //     if ($service === 'google') {
-    //         $user = $this->socialGoogleAuth($socialUser);
-    //     }
-    //     else if ($service === 'facebook') {
-    //         $user = $this->socialFacebookAuth($socialUser);
-    //     } else {
-    //         $user = $this->socialGoogleAuth($socialUser);
-    //     }
-
-    //     Auth::login($user);
-
-    //     return redirect('/');
-    // }
 
     // logout function
     public function logout(Request $request)
@@ -241,73 +247,7 @@ class AuthController extends Controller
         return redirect()->route('home');
     }
 
-    private function socialGoogleAuth($socialUser)
-    {
-        $user = User::where('google_id', $socialUser->id)->first();
-        if ($user) {
-            $user->name                 = $socialUser->name;
-            $user->google_token         = $socialUser->token;
-            $user->google_refresh_token = $socialUser->refreshToken;
-            $user->avatar               = $socialUser->avatar;
-            $user->save();
-        } else {
-            $user = User::where('email', $socialUser->email)->first();
-            if ($user) {
-                $user->google_id            = $socialUser->id;
-                $user->name                 = $socialUser->name;
-                $user->google_token         = $socialUser->token;
-                $user->google_refresh_token = $socialUser->refreshToken;
-                $user->avatar               = $socialUser->avatar;
-                $user->save();
-            } else {
-                $user = new User();
-
-                $user->name                 = $socialUser->name;
-                $user->email                = $socialUser->email;
-                $user->google_id            = $socialUser->id;
-                $user->google_token         = $socialUser->token;
-                $user->google_refresh_token = $socialUser->refreshToken;
-                $user->avatar               = $socialUser->avatar;
-                $user->save();
-            }
-        }
-        return $user;
-    }
-
-    private function socialFacebookAuth($socialUser)
-    {
-        $user = User::where('facebook_id', $socialUser->id)->first();
-        if ($user) {
-            $user->name                   = $socialUser->name;
-            $user->facebook_token         = $socialUser->token;
-            $user->facebook_refresh_token = $socialUser->refreshToken;
-            $user->avatar                 = $socialUser->avatar;
-            $user->save();
-        } else {
-            $user = User::where('email', $socialUser->email)->first();
-            if ($user) {
-                $user->facebook_id            = $socialUser->id;
-                $user->name                   = $socialUser->name;
-                $user->facebook_token         = $socialUser->token;
-                $user->facebook_refresh_token = $socialUser->refreshToken;
-                $user->avatar                 = $socialUser->avatar;
-                $user->save();
-            } else {
-                $user = new User();
-
-                $user->name                   = $socialUser->name;
-                $user->email                  = $socialUser->email;
-                $user->facebook_id            = $socialUser->id;
-                $user->facebook_token         = $socialUser->token;
-                $user->facebook_refresh_token = $socialUser->refreshToken;
-                $user->avatar                 = $socialUser->avatar;
-                $user->save();
-            }
-        }
-        return $user;
-    }
-
-    public function forwardOtpCode($phoneNumber, $otpCode)
+    public function sendSMS($phoneNumber, $otpCode)
     {
         $SMSGateway = new SMSGateway();
         $SMSGateway->sendActivationCode($phoneNumber, $otpCode);

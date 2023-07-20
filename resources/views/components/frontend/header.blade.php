@@ -239,23 +239,6 @@
     <div class="hidden sm:hidden md:hidden lg:block">
         <div class="post-header container h-14">
             <div class="flex space-x-6 items-center h-full">
-                <div class="relative group">
-                    <button class="category-btn group-hover:rounded-b-none lg:w-[160px] xl:w-[240px] flex items-center text-primary justify-between sm:text-sm text-sm lg:text-base border rounded-md px-4 py-2">
-                        <div class="flex space-x-2">
-                            <span><i class="fa-solid fa-bars"></i></span>
-                            <span>Menu</span>
-                        </div>
-                        <span class=""><i class="fa-solid fa-caret-down"></i></span>
-                    </button>
-                    <ul class="group-hover:block dropdown-menu min-w-max w-[160px] xl:w-[240px] absolute bg-white text-base z-50 float-left list-none text-left rounded-md rounded-t-none shadow-lg hidden m-0 bg-clip-padding border-none" aria-labelledby="dropdownMenuButton1">
-                        <li class="border-b">
-                            <a class=" dropdown-item text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                href="{{ route('products.index') }}">
-                                <img class="inline-block mr-2 w-5 h-5 border shadow-sm rounded-full" src="{{ asset('images/icons/watch_icon.png') }}">All Products
-                            </a>
-                        </li>
-                    </ul>
-                </div>
                 <div class="flex-1">
                     <ul class="flex text-sm md:text-sm lg:text-base text-primary font-normal tracking-wide">
                         @foreach ($menus as $m)

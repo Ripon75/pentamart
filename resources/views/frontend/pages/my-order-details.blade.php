@@ -54,9 +54,9 @@
                                         <th width="32px" class="border-r border-black text-center">SN</th>
                                         <th width="auto" class="border-r border-black text-left pl-1">Product</th>
                                         <th width="100px" class="border-r border-black text-right pr-1">Quantity</th>
+                                        <th width="110px" class="border-r border-black text-right pr-1">Price</th>
                                         <th width="110px" class="border-r border-black text-right pr-1">MRP</th>
                                         <th width="110px" class="border-r border-black text-right pr-1">Discount</th>
-                                        <th width="110px" class="border-r border-black text-right pr-1">Price</th>
                                         <th width="120px" class="text-right pr-1">Sub Total</th>
                                     </tr>
                                 </thead>
@@ -79,13 +79,13 @@
                                                 {{ $quantity }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
+                                                {{ number_format($itemSellPrice, 2) }}
+                                            </td>
+                                            <td width="100px" class="border-black border text-right pr-1">
                                                 {{ number_format($itemMRP, 2) }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
                                                 {{ number_format($itemDiscount, 2) }}
-                                            </td>
-                                            <td width="100px" class="border-black border text-right pr-1">
-                                                {{ number_format($itemSellPrice, 2) }}
                                             </td>
                                             <td width="100px" class="border-black border text-right pr-1">
                                                 {{ number_format($itemTitalSellPrice, 2) }}
