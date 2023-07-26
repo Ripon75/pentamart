@@ -8159,9 +8159,6 @@ textarea.form-control.is-invalid{
   position: -webkit-sticky;
   position: sticky;
 }
-.top-0{
-  top: 0px;
-}
 .right-0{
   right: 0px;
 }
@@ -8173,6 +8170,9 @@ textarea.form-control.is-invalid{
 }
 .bottom-0{
   bottom: 0px;
+}
+.top-0{
+  top: 0px;
 }
 .-right-12{
   right: -3rem;
@@ -8249,17 +8249,13 @@ textarea.form-control.is-invalid{
   margin-top: 0.25rem;
   margin-bottom: 0.25rem;
 }
-.my-2{
-  margin-top: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.my-6{
-  margin-top: 1.5rem;
-  margin-bottom: 1.5rem;
-}
 .mx-2{
   margin-left: 0.5rem;
   margin-right: 0.5rem;
+}
+.my-2{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 }
 .my-16{
   margin-top: 4rem;
@@ -8269,32 +8265,14 @@ textarea.form-control.is-invalid{
   margin-top: 1rem;
   margin-bottom: 1rem;
 }
-.ml-1{
-  margin-left: 0.25rem;
-}
 .mt-2{
   margin-top: 0.5rem;
-}
-.mr-2{
-  margin-right: 0.5rem;
-}
-.ml-2{
-  margin-left: 0.5rem;
 }
 .mt-4{
   margin-top: 1rem;
 }
-.ml-4{
-  margin-left: 1rem;
-}
 .mt-8{
   margin-top: 2rem;
-}
-.ml-12{
-  margin-left: 3rem;
-}
-.-mt-px{
-  margin-top: -1px;
 }
 .mr-3{
   margin-right: 0.75rem;
@@ -8308,11 +8286,17 @@ textarea.form-control.is-invalid{
 .ml-3{
   margin-left: 0.75rem;
 }
+.ml-1{
+  margin-left: 0.25rem;
+}
 .mt-10{
   margin-top: 2.5rem;
 }
 .mt-11{
   margin-top: 2.75rem;
+}
+.ml-2{
+  margin-left: 0.5rem;
 }
 .mt-6{
   margin-top: 1.5rem;
@@ -8328,6 +8312,9 @@ textarea.form-control.is-invalid{
 }
 .mt-1{
   margin-top: 0.25rem;
+}
+.mr-2{
+  margin-right: 0.5rem;
 }
 .mt-5{
   margin-top: 1.25rem;
@@ -8386,17 +8373,11 @@ textarea.form-control.is-invalid{
 .hidden{
   display: none;
 }
-.h-5{
-  height: 1.25rem;
-}
-.h-8{
-  height: 2rem;
+.h-screen{
+  height: 100vh;
 }
 .h-16{
   height: 4rem;
-}
-.h-screen{
-  height: 100vh;
 }
 .h-full{
   height: 100%;
@@ -8437,6 +8418,9 @@ textarea.form-control.is-invalid{
 .h-\[140px\]{
   height: 140px;
 }
+.h-8{
+  height: 2rem;
+}
 .h-\[56px\]{
   height: 56px;
 }
@@ -8448,6 +8432,9 @@ textarea.form-control.is-invalid{
 }
 .h-\[28px\]{
   height: 28px;
+}
+.h-5{
+  height: 1.25rem;
 }
 .h-4{
   height: 1rem;
@@ -8470,20 +8457,8 @@ textarea.form-control.is-invalid{
 .max-h-64{
   max-height: 16rem;
 }
-.min-h-screen{
-  min-height: 100vh;
-}
 .w-\[512px\]{
   width: 512px;
-}
-.w-5{
-  width: 1.25rem;
-}
-.w-8{
-  width: 2rem;
-}
-.w-auto{
-  width: auto;
 }
 .w-full{
   width: 100%;
@@ -8518,6 +8493,9 @@ textarea.form-control.is-invalid{
 .w-32{
   width: 8rem;
 }
+.w-8{
+  width: 2rem;
+}
 .w-14{
   width: 3.5rem;
 }
@@ -8542,6 +8520,9 @@ textarea.form-control.is-invalid{
 .w-40{
   width: 10rem;
 }
+.w-5{
+  width: 1.25rem;
+}
 .w-64{
   width: 16rem;
 }
@@ -8554,17 +8535,20 @@ textarea.form-control.is-invalid{
 .w-4{
   width: 1rem;
 }
-.w-16{
-  width: 4rem;
-}
 .w-72{
   width: 18rem;
 }
 .w-48{
   width: 12rem;
 }
+.w-16{
+  width: 4rem;
+}
 .w-\[600px\]{
   width: 600px;
+}
+.w-auto{
+  width: auto;
 }
 .w-80{
   width: 20rem;
@@ -8579,9 +8563,6 @@ textarea.form-control.is-invalid{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
   min-width: max-content;
-}
-.max-w-6xl{
-  max-width: 72rem;
 }
 .max-w-xs{
   max-width: 20rem;
@@ -8878,14 +8859,14 @@ textarea.form-control.is-invalid{
 .border-0{
   border-width: 0px;
 }
-.border-t{
-  border-top-width: 1px;
-}
 .border-b{
   border-bottom-width: 1px;
 }
 .border-l-0{
   border-left-width: 0px;
+}
+.border-t{
+  border-top-width: 1px;
 }
 .border-r{
   border-right-width: 1px;
@@ -8905,10 +8886,6 @@ textarea.form-control.is-invalid{
 .border-none{
   border-style: none;
 }
-.border-gray-200{
-  --tw-border-opacity: 1;
-  border-color: rgb(229 231 235 / var(--tw-border-opacity));
-}
 .border-black{
   --tw-border-opacity: 1;
   border-color: rgb(0 0 0 / var(--tw-border-opacity));
@@ -8921,6 +8898,10 @@ textarea.form-control.is-invalid{
   --tw-border-opacity: 1;
   border-color: rgb(209 213 219 / var(--tw-border-opacity));
 }
+.border-gray-200{
+  --tw-border-opacity: 1;
+  border-color: rgb(229 231 235 / var(--tw-border-opacity));
+}
 .border-gray-500{
   --tw-border-opacity: 1;
   border-color: rgb(107 114 128 / var(--tw-border-opacity));
@@ -8932,10 +8913,6 @@ textarea.form-control.is-invalid{
 .bg-white{
   --tw-bg-opacity: 1;
   background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-}
-.bg-gray-100{
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 .bg-blue-400{
   --tw-bg-opacity: 1;
@@ -9019,9 +8996,9 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(254 242 242 / var(--tw-bg-opacity));
 }
-.bg-red-600{
+.bg-gray-100{
   --tw-bg-opacity: 1;
-  background-color: rgb(220 38 38 / var(--tw-bg-opacity));
+  background-color: rgb(243 244 246 / var(--tw-bg-opacity));
 }
 .bg-sky-400{
   --tw-bg-opacity: 1;
@@ -9073,9 +9050,6 @@ textarea.form-control.is-invalid{
 .p-8{
   padding: 2rem;
 }
-.p-6{
-  padding: 1.5rem;
-}
 .p-4{
   padding: 1rem;
 }
@@ -9101,10 +9075,6 @@ textarea.form-control.is-invalid{
   padding-top: 1rem;
   padding-bottom: 1rem;
 }
-.px-6{
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
 .py-16{
   padding-top: 4rem;
   padding-bottom: 4rem;
@@ -9124,6 +9094,10 @@ textarea.form-control.is-invalid{
 .px-1{
   padding-left: 0.25rem;
   padding-right: 0.25rem;
+}
+.px-6{
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 .py-2{
   padding-top: 0.5rem;
@@ -9160,9 +9134,6 @@ textarea.form-control.is-invalid{
 .px-8{
   padding-left: 2rem;
   padding-right: 2rem;
-}
-.pt-8{
-  padding-top: 2rem;
 }
 .pl-1{
   padding-left: 0.25rem;
@@ -9240,14 +9211,6 @@ textarea.form-control.is-invalid{
   font-size: 1.5rem;
   line-height: 2rem;
 }
-.text-sm{
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-}
-.text-lg{
-  font-size: 1.125rem;
-  line-height: 1.75rem;
-}
 .text-4xl{
   font-size: 2.25rem;
   line-height: 2.5rem;
@@ -9255,6 +9218,14 @@ textarea.form-control.is-invalid{
 .text-base{
   font-size: 1rem;
   line-height: 1.5rem;
+}
+.text-sm{
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+}
+.text-lg{
+  font-size: 1.125rem;
+  line-height: 1.75rem;
 }
 .text-xs{
   font-size: 0.75rem;
@@ -9271,14 +9242,14 @@ textarea.form-control.is-invalid{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
-.font-semibold{
-  font-weight: 600;
-}
 .font-bold{
   font-weight: 700;
 }
 .font-medium{
   font-weight: 500;
+}
+.font-semibold{
+  font-weight: 600;
 }
 .font-normal{
   font-weight: 400;
@@ -9292,9 +9263,6 @@ textarea.form-control.is-invalid{
 .italic{
   font-style: italic;
 }
-.leading-7{
-  line-height: 1.75rem;
-}
 .leading-normal{
   line-height: 1.5;
 }
@@ -9307,34 +9275,6 @@ textarea.form-control.is-invalid{
 .tracking-wide{
   letter-spacing: 0.025em;
 }
-.text-gray-200{
-  --tw-text-opacity: 1;
-  color: rgb(229 231 235 / var(--tw-text-opacity));
-}
-.text-gray-300{
-  --tw-text-opacity: 1;
-  color: rgb(209 213 219 / var(--tw-text-opacity));
-}
-.text-gray-400{
-  --tw-text-opacity: 1;
-  color: rgb(156 163 175 / var(--tw-text-opacity));
-}
-.text-gray-500{
-  --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
-}
-.text-gray-600{
-  --tw-text-opacity: 1;
-  color: rgb(75 85 99 / var(--tw-text-opacity));
-}
-.text-gray-700{
-  --tw-text-opacity: 1;
-  color: rgb(55 65 81 / var(--tw-text-opacity));
-}
-.text-gray-900{
-  --tw-text-opacity: 1;
-  color: rgb(17 24 39 / var(--tw-text-opacity));
-}
 .text-primary{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
@@ -9342,6 +9282,14 @@ textarea.form-control.is-invalid{
 .text-secondary{
   --tw-text-opacity: 1;
   color: rgb(255 196 45 / var(--tw-text-opacity));
+}
+.text-gray-700{
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+}
+.text-gray-600{
+  --tw-text-opacity: 1;
+  color: rgb(75 85 99 / var(--tw-text-opacity));
 }
 .text-white{
   --tw-text-opacity: 1;
@@ -9351,9 +9299,17 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
 }
+.text-gray-400{
+  --tw-text-opacity: 1;
+  color: rgb(156 163 175 / var(--tw-text-opacity));
+}
 .text-green-500{
   --tw-text-opacity: 1;
   color: rgb(34 197 94 / var(--tw-text-opacity));
+}
+.text-gray-500{
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
 }
 .text-red-500{
   --tw-text-opacity: 1;
@@ -9378,13 +9334,17 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(12 31 77 / var(--tw-text-opacity));
 }
-.text-green-600{
-  --tw-text-opacity: 1;
-  color: rgb(22 163 74 / var(--tw-text-opacity));
-}
 .text-blue-600{
   --tw-text-opacity: 1;
   color: rgb(37 99 235 / var(--tw-text-opacity));
+}
+.text-gray-900{
+  --tw-text-opacity: 1;
+  color: rgb(17 24 39 / var(--tw-text-opacity));
+}
+.text-green-600{
+  --tw-text-opacity: 1;
+  color: rgb(22 163 74 / var(--tw-text-opacity));
 }
 .text-red-600{
   --tw-text-opacity: 1;
@@ -9410,29 +9370,21 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity));
 }
-.underline{
-  -webkit-text-decoration-line: underline;
-          text-decoration-line: underline;
-}
 .line-through{
   -webkit-text-decoration-line: line-through;
           text-decoration-line: line-through;
 }
-.antialiased{
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
 .opacity-50{
   opacity: 0.5;
-}
-.shadow{
-  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
-  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .shadow-sm{
   --tw-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   --tw-shadow-colored: 0 1px 2px 0 var(--tw-shadow-color);
+  box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
+}
+.shadow{
+  --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --tw-shadow-colored: 0 1px 3px 0 var(--tw-shadow-color), 0 1px 2px -1px var(--tw-shadow-color);
   box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
 }
 .shadow-md{
@@ -20493,37 +20445,13 @@ readers do not read off random characters that represent icons */
 }
 
 @media (prefers-color-scheme: dark){
-  .dark\:border-gray-700{
-    --tw-border-opacity: 1;
-    border-color: rgb(55 65 81 / var(--tw-border-opacity));
-  }
   .dark\:border-gray-600{
     --tw-border-opacity: 1;
     border-color: rgb(75 85 99 / var(--tw-border-opacity));
   }
-  .dark\:bg-gray-900{
-    --tw-bg-opacity: 1;
-    background-color: rgb(17 24 39 / var(--tw-bg-opacity));
-  }
-  .dark\:bg-gray-800{
-    --tw-bg-opacity: 1;
-    background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-  }
   .dark\:bg-gray-700{
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-  }
-  .dark\:text-gray-500{
-    --tw-text-opacity: 1;
-    color: rgb(107 114 128 / var(--tw-text-opacity));
-  }
-  .dark\:text-white{
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-  }
-  .dark\:text-gray-400{
-    --tw-text-opacity: 1;
-    color: rgb(156 163 175 / var(--tw-text-opacity));
   }
   .dark\:text-gray-300{
     --tw-text-opacity: 1;
@@ -20621,9 +20549,6 @@ readers do not read off random characters that represent icons */
     margin-left: auto;
     margin-right: auto;
   }
-  .sm\:ml-0{
-    margin-left: 0px;
-  }
   .sm\:ml-2{
     margin-left: 0.5rem;
   }
@@ -20647,9 +20572,6 @@ readers do not read off random characters that represent icons */
   }
   .sm\:hidden{
     display: none;
-  }
-  .sm\:h-20{
-    height: 5rem;
   }
   .sm\:h-\[272px\]{
     height: 272px;
@@ -20696,9 +20618,6 @@ readers do not read off random characters that represent icons */
   .sm\:items-center{
     align-items: center;
   }
-  .sm\:justify-start{
-    justify-content: flex-start;
-  }
   .sm\:justify-center{
     justify-content: center;
   }
@@ -20727,9 +20646,6 @@ readers do not read off random characters that represent icons */
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
   }
-  .sm\:rounded-lg{
-    border-radius: 0.5rem;
-  }
   .sm\:p-4{
     padding: 1rem;
   }
@@ -20738,10 +20654,6 @@ readers do not read off random characters that represent icons */
   }
   .sm\:p-0{
     padding: 0px;
-  }
-  .sm\:px-6{
-    padding-left: 1.5rem;
-    padding-right: 1.5rem;
   }
   .sm\:py-1{
     padding-top: 0.25rem;
@@ -20755,9 +20667,6 @@ readers do not read off random characters that represent icons */
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
-  .sm\:pt-0{
-    padding-top: 0px;
-  }
   .sm\:pl-0{
     padding-left: 0px;
   }
@@ -20770,14 +20679,8 @@ readers do not read off random characters that represent icons */
   .sm\:pr-1{
     padding-right: 0.25rem;
   }
-  .sm\:text-left{
-    text-align: left;
-  }
   .sm\:text-center{
     text-align: center;
-  }
-  .sm\:text-right{
-    text-align: right;
   }
   .sm\:text-4xl{
     font-size: 2.25rem;
@@ -20965,14 +20868,14 @@ readers do not read off random characters that represent icons */
   .md\:w-\[250px\]{
     width: 250px;
   }
-  .md\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
   .md\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .md\:grid-cols-1{
     grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  .md\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .md\:flex-row{
     flex-direction: row;
@@ -21004,12 +20907,6 @@ readers do not read off random characters that represent icons */
     --tw-space-x-reverse: 0;
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-  }
-  .md\:border-t-0{
-    border-top-width: 0px;
-  }
-  .md\:border-l{
-    border-left-width: 1px;
   }
   .md\:p-4{
     padding: 1rem;
@@ -21228,10 +21125,6 @@ readers do not read off random characters that represent icons */
   }
   .lg\:p-4{
     padding: 1rem;
-  }
-  .lg\:px-8{
-    padding-left: 2rem;
-    padding-right: 2rem;
   }
   .lg\:px-0{
     padding-left: 0px;
@@ -21480,11 +21373,11 @@ readers do not read off random characters that represent icons */
   .\32xl\:h-56{
     height: 14rem;
   }
-  .\32xl\:w-1\/2{
-    width: 50%;
-  }
   .\32xl\:w-\[500px\]{
     width: 500px;
+  }
+  .\32xl\:w-1\/2{
+    width: 50%;
   }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
