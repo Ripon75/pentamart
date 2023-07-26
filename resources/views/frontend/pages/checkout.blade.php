@@ -79,14 +79,13 @@
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label for="" class="form-label">City<span
+                                        <label for="" class="form-label">Districs<span
                                                 class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title"
-                                            class="form-select form-input w-full">
+                                        <select name="district_id" class="form-select form-input w-full">
                                             <option value="">Select</option>
-                                            <option value="Home">Home</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Others">Others</option>
+                                            <option value="Home">Distric 1</option>
+                                            <option value="Office">Distric 2</option>
+                                            <option value="Others">Distric 3</option>
                                         </select>
                                         @error('title')
                                             <span class="form-helper error">{{ $message }}</span>
@@ -94,16 +93,10 @@
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Area<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-area" name="area_id" class="form-input">
-                                            <option value="" selected>Select</option>
-                                            @foreach ($areas as $area)
-                                                <option value="{{ $area->id }}">
-                                                    {{ $area->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <label class="form-label">Thana<span
+                                            class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <input class="form-input" type="text" placeholder="Enter your thana"
+                                            name="thana" />
                                         @error('title')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
