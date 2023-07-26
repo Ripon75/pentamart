@@ -79,21 +79,6 @@
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label for="" class="form-label">Country<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title"
-                                            class="form-select form-input w-full">
-                                            <option value="">Select</option>
-                                            <option value="Home">Home</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                        @error('title')
-                                            <span class="form-helper error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div style="width:95%" class="form-item">
                                         <label for="" class="form-label">City<span
                                                 class="ml-1 text-red-500 font-medium">*</span></label>
                                         <select id="input-address-title" name="title"
