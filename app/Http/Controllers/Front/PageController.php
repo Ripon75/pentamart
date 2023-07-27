@@ -49,6 +49,7 @@ class PageController extends Controller
             ]
         ];
 
+
         return view('frontend.pages.home', [
             'sliders'       => $sliders,
             'topCategories' => $topCategories,

@@ -23,23 +23,32 @@
                             </span>
                         </div>
                         <div class="form-item">
+                            <label class="form-label">District <span class="text-red-500 font-medium">*</span></label>
+                            <select class="form-input select-2-district" name="district_id">
+                                <option value="">Select</option>
+                                @foreach ($districts as $district)
+                                <option value="{{ $district->id }}" {{ $district->id == $data->district_id ? "selected" : '' }}>{{ $district->name }}</option>
+                                @endforeach
+                            </select>
+                            <span class="text-red-500 text-xs">
+                                @error('district_id') {{ $message }} @enderror
+                            </span>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">Thana <span class="text-red-500 font-medium">*</span></label>
+                            <input class="form-input" type="text" value="{{ $data->thana }}" name="thana"/>
+                            <span class="text-red-500 text-xs">
+                                @error('thana') {{ $message }} @enderror
+                            </span>
+                        </div>
+                        <div class="form-item">
                             <label class="form-label">Address <span class="text-red-500 font-medium">*</span></label>
-                            <input class="form-input" type="text" value="{{ $data->address }}" name="address"/>
+                            <textarea name="address" class="form-input">{{ $data->address }}</textarea>
                             <span class="text-red-500 text-xs">@error('address') {{ $message }} @enderror</span>
                         </div>
                         <div class="form-item">
                             <label class="form-label">Alternative Phone Number</label>
                             <input class="form-input" type="number" value="{{ $data->phone_number }}" name="phone_number"/>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">Area <span class="text-red-500 font-medium">*</span></label>
-                            <select class="form-input select-2-areas" name="area_id">
-                                <option value="">Select</option>
-                                @foreach ($areas as $area)
-                                <option value="{{ $area->id }}" {{ $area->id == $data->area_id ? "selected" : '' }}>{{ $area->name }}</option>
-                                @endforeach
-                            </select>
-                            <span class="text-red-500 text-xs">@error('area_id') {{ $message }} @enderror</span>
                         </div>
                         <div class="text-right">
                             <button type="submit" class="btn btn-md btn-primary">Update</button>
@@ -62,9 +71,9 @@
         }, 5000 );
 
         $(() => {
-            // Select-2 for area
-            $('.select-2-areas').select2({
-                placeholder: "Select area",
+            // Select-2 for district
+            $('.select-2-district').select2({
+                placeholder: "Select district",
             });
         });
     </script>

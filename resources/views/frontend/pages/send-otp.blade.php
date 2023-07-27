@@ -18,8 +18,8 @@
 
                             <div class="form-item">
                                 <label class="form-label">Enter your OTP <span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('otp_code') }}" name="otp_code" class="form-input rounded" />
-                                <a id="input-resend-otp" type="button"  class="text-xs mt-1">Resend</a>
+                                <input type="text" value="{{ old('otp_code') }}" name="otp_code" class="form-input rounded" autocomplete="off" />
+                                <a id="input-resend-otp" type="button"  class="text-sm mt-1">Resend</a>
                                 @error('otp_code')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
@@ -46,11 +46,23 @@
 
         $(function(){
             inputResendOtp.click(function() {
-                console.log('clic');
+                var phoneNumber = $("input[name=phone_number]").val();
+                axios.get('/resend-otp-code', {
+                    params: {
+                        phone_number: phoneNumber
+                    }
+                })
+                .then((res) => {
+                    if (res.data.success) {
+                        __showNotification('success', 'OTP send your successfully');
+                    }
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
             });
         });
     </script>
-
 @endpush
 
 

@@ -71,10 +71,10 @@ return [
             'permission' => 'orders-read',
             'sub' => [
                 [
-                    'label'      => 'Areas',
+                    'label'      => 'Districts',
                     'icon'       => 'fa-solid fa-tag',
-                    'route'      => 'admin.areas.index',
-                    'permission' => 'areas-read'
+                    'route'      => 'admin.districts.index',
+                    'permission' => 'districts-read'
                 ],
                 [
                     'label'      => 'Coupons',
