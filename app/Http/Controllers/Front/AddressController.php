@@ -2,16 +2,13 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Models\Area;
-use App\Models\Cart;
-use App\Models\User;
 use App\Models\Address;
+use App\Models\District;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Validator;
 
 class AddressController extends Controller
 {
@@ -25,28 +22,30 @@ class AddressController extends Controller
     }
 
     public function create() {
-        $areas = Area::orderBy('name', 'asc')->get();
+        $districts = District::where('status', 'active')->orderBy('name', 'asc')->get();
 
         return view('frontend.pages.my-address-create', [
-            'areas' => $areas
+            'districts' => $districts
         ]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'title'   => ['required'],
-            'address' => ['required'],
-            'area_id' => ['required']
+            'title'       => ['required'],
+            'address'     => ['required'],
+            'district_id' => ['required'],
+            'thana'       => ['required']
         ],
         [
-            'area_id.required' => 'The area is required'
+            'district_id.required' => 'The district is required'
         ]);
 
         $title           = $request->input('title', null);
         $address         = $request->input('address', null);
         $phoneNumber     = $request->input('phone_number', null);
-        $areaId          = $request->input('area_id', null);
+        $districtId      = $request->input('district_id', null);
+        $thana           = $request->input('thana', null);
         $authUser        = Auth::user();
         $userPhoneNumber = $authUser->phone_number;
 
@@ -63,7 +62,8 @@ class AddressController extends Controller
             $addressObj->address      = $address;
             $addressObj->user_id      = $authUser->id;
             $addressObj->phone_number = $phoneNumber;
-            $addressObj->area_id      = $areaId;
+            $addressObj->district_id  = $districtId;
+            $addressObj->thana        = $thana;
             $res = $addressObj->save();
 
             if ($res) {
@@ -98,24 +98,26 @@ class AddressController extends Controller
             abort(404);
         }
 
-        $areas = Area::orderBy('name', 'asc')->get();
+        $districts = District::where('status', 'active')->orderBy('name', 'asc')->get();
 
         return view('frontend.pages.my-address-edit', [
-            'data'  => $data,
-            'areas' => $areas
+            'data'      => $data,
+            'districts' => $districts
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'address' => ['required'],
-            'area_id' => ['required']
+            'address'     => ['required'],
+            'district_id' => ['required'],
+            'thana'       => ['required']
         ]);
 
         $address     = $request->input('address', null);
         $phoneNumber = $request->input('phone_number', null);
-        $areaId      = $request->input('area_id', null);
+        $districtId  = $request->input('district_id', null);
+        $thana       = $request->input('thana', null);
 
         try {
             DB::beginTransaction();
@@ -123,7 +125,8 @@ class AddressController extends Controller
 
             $userAddress->address      = $address;
             $userAddress->phone_number = $phoneNumber;
-            $userAddress->area_id      = $areaId;
+            $userAddress->district_id  = $districtId;
+            $userAddress->thana        = $thana;
             $userAddress->save();
             DB::commit();
 
@@ -132,29 +135,6 @@ class AddressController extends Controller
             info($e);
             DB::rollBack();
             return back()->with('error', 'Something went wrong');
-        }
-    }
-
-    public function getArea($name)
-    {
-        if (!$name) {
-            return $this->sendError('Area name not found');
-        }
-
-        if ($name) {
-            $area = Area::where('name', $name)->first();
-            if ($area) {
-                return $this->sendResponse($area, 'Area single view');
-            } else {
-                $slug       = Str::slug($name, '-');
-                $area       = new Area();
-                $area->slug = $slug;
-                $area->name = $name;
-                $res = $area->save();
-                if ($res) {
-                return $this->sendResponse($area, 'Area single view');
-                }
-            }
         }
     }
 }

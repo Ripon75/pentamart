@@ -55,9 +55,6 @@ Route::get('/auth/social/callback/{service}', [AuthController::class, 'socialCal
 Route::get('categories/{id}/{slug?}', [PageController::class, 'categoryPage'])->name('category.page');
 Route::get('brands/{id}/{slug?}',     [PageController::class, 'brandPage'])->name('brand.page');
 
-// Get single area
-Route::get('area/{name}', [AddressController::class, 'getArea'])->name('area.single');
-
 // Check auth
 Route::middleware(['auth'])->group(function(){
     // All Cart route

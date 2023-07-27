@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use Carbon\Carbon;
-use App\Models\Area;
 use App\Models\User;
 use App\Models\Order;
-use App\Classes\Bkash;
 use App\Models\Status;
+use App\Models\District;
 use App\Models\Address;
 use App\Classes\Utility;
 use Illuminate\Http\Request;
@@ -91,7 +90,7 @@ class OrderController extends Controller
             return Excel::download(new OrdersExport($result), 'orders.xlsx');
         }
 
-        $areas       = Area::orderBy('name', 'asc')->get();
+        $areas       = District::orderBy('name', 'asc')->get();
         $pgs         = PaymentGateway::where('status', 'active')->orderBy('name', 'asc')->get();
         $orderStatus = Status::orderBy('name', 'asc')->get();
 
@@ -105,7 +104,7 @@ class OrderController extends Controller
 
     public function manualCreate()
     {
-        $areas          = Area::orderBy('name', 'asc')->get();
+        $areas          = District::orderBy('name', 'asc')->get();
         $orderStatus    = Status::orderBy('name', 'asc')->get();
         $deliveryCharge = DeliveryGateway::select('price', 'promo_price')->where('status', 'active')->first();
         // $pgs         = PaymentGateway::where('status', 'active')->get();
@@ -264,7 +263,7 @@ class OrderController extends Controller
             abort(404);
         }
 
-        $areas             = Area::orderBy('name', 'asc')->get();
+        $areas             = District::orderBy('name', 'asc')->get();
         $pgs               = PaymentGateway::where('status', 'activated')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
         // $orderStatus       = $order->getNextStatus($order->status_id);

@@ -16,7 +16,7 @@ class Address extends Model
         'address',
         'user_id',
         'phone_number',
-        'area_id',
+        'district_id',
         'created_by',
         'updated_by'
     ];
@@ -26,7 +26,7 @@ class Address extends Model
         'address'      => 'string',
         'user_id'      => 'integer',
         'phone_number' => 'string',
-        'area_id'      => 'integer',
+        'district_id'  => 'integer',
         'created_by'   => 'integer',
         'updated_by'   => 'integer',
         'created_at'   => 'datetime:Y-m-d H:i:s',
@@ -40,9 +40,9 @@ class Address extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function area()
+    public function district()
     {
-        return $this->belongsTo(Area::class);
+        return $this->belongsTo(District::class);
     }
 
     // Relation end ==========================================

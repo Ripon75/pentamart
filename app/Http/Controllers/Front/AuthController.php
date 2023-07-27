@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use App\Events\CustomerRegistration;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -48,6 +49,7 @@ class AuthController extends Controller
         $name            = $request->input('name');
         $email           = $request->input('email', null);
         $phoneNumber     = $request->input('phone_number', null);
+        $password        = $request->input('password', null);
         $termsConditions = $request->input('terms_conditons', null);
 
         try {
@@ -69,12 +71,13 @@ class AuthController extends Controller
                 $user->email           = $email;
                 $user->phone_number    = $phoneNumber;
                 $user->otp_code        = $otpCode;
+                $user->password        = Hash::make($password);
                 $user->terms_conditons = $termsConditions;
                 $res = $user->save();
 
                 if ($res) {
                     CustomerRegistration::dispatch($user);
-                    // $this->sendSMS($phoneNumber, $otpCode);
+                    $this->sendSMS($phoneNumber, $otpCode);
 
                     DB::commit();
                     return redirect("/send-otp-code?phone_number={$phoneNumber}");
@@ -159,9 +162,11 @@ class AuthController extends Controller
 
         $user = User::where('phone_number', $phoneNumber)->first();
         if ($user && !$user->ac_status) {
-            $user->otp_code = $this->getRandomCode();
+            $otpCode = $this->getRandomCode();
+            $user->otp_code = $otpCode;
             $user->save();
-            // TODO::send user activation code
+            // send user activation code
+            $this->sendSMS($phoneNumber, $otpCode);
 
             return redirect("/send-otp-code?phone_number={$phoneNumber}");
         }
@@ -184,7 +189,7 @@ class AuthController extends Controller
     public function resendOtpCode(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'phone_number' => 'required'
+            'phone_number' => ['required']
         ]);
 
         if ($validator->stopOnFirstFailure()->fails()) {
@@ -201,7 +206,7 @@ class AuthController extends Controller
             $user->otp_code = $otpCode;
             $res = $user->save();
             if ($res) {
-                // $this->sendSMS($phoneNumber, $otpCode);
+                $this->sendSMS($phoneNumber, $otpCode);
 
                 return $this->sendResponse($user, 'OTP send successfully');
             }

@@ -3,8 +3,8 @@
 namespace App\View\Components\Frontend;
 
 use App\Models\Cart;
-use App\Models\Area;
 use App\Models\Address;
+use App\Models\District;
 use Illuminate\View\Component;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +31,7 @@ class Header extends Component
         $customerId = Auth::id();
         $carObj     = new Cart();
         $cart       = $carObj->getCurrentCustomerCart();
-        $areas       = Area::orderBy('name', 'asc')->get();
+        $areas       = District::orderBy('name', 'asc')->get();
         $userAddress = Address::where('user_id', $customerId)->orderBy('id', 'desc')->get();
         $menus       = [
             [ 'label' => 'Home', 'route' => route('home') ],

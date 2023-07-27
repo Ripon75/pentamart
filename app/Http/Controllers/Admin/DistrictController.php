@@ -2,35 +2,35 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Models\Area;
+use App\Models\District;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
-class AreaController extends Controller
+class DistrictController extends Controller
 {
     public function index(Request $request)
     {
         $paginate = config('crud.paginate.default');
         $name     = $request->input('name', null);
 
-        $areas = new Area();
+        $districts = new District();
 
         if ($name) {
-            $areas = $areas->where('name', 'like', "%$name%");
+            $districts = $districts->where('name', 'like', "%$name%");
         }
 
-        $areas = $areas->orderBy('name', 'asc')->paginate($paginate);
+        $districts = $districts->orderBy('name', 'asc')->paginate($paginate);
 
-        return view('adminend.pages.area.index', [
-            'areas' => $areas
+        return view('adminend.pages.district.index', [
+            'districts' => $districts
         ]);
     }
 
     public function create()
     {
-        return view('adminend.pages.area.create');
+        return view('adminend.pages.district.create');
     }
 
     public function store(Request $request)
@@ -45,13 +45,13 @@ class AreaController extends Controller
         try {
             DB::beginTransaction();
 
-            $area = new Area();
+            $district = new District();
 
-            $area->name = $name;
-            $area->slug = $slug;
-            $area->save();
+            $district->name = $name;
+            $district->slug = $slug;
+            $district->save();
             DB::commit();
-            return redirect()->route('admin.areas.index')->with('success', 'Area created successfully');
+            return redirect()->route('admin.districts.index')->with('success', 'District created successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
@@ -61,14 +61,14 @@ class AreaController extends Controller
 
     public function edit($id)
     {
-        $area = Area::find($id);
+        $district = District::find($id);
 
-        if (!$area) {
+        if (!$district) {
             abort(404);
         }
 
-        return view('adminend.pages.area.edit', [
-            'area' => $area
+        return view('adminend.pages.district.edit', [
+            'district' => $district
         ]);
     }
 
@@ -84,14 +84,14 @@ class AreaController extends Controller
         try {
             DB::beginTransaction();
 
-            $area = Area::find($id);
+            $districts = District::find($id);
 
-            $area->name = $name;
-            $area->slug = $slug;
-            $area->save();
+            $districts->name = $name;
+            $districts->slug = $slug;
+            $districts->save();
             DB::commit();
 
-            return redirect()->route('admin.areas.index')->with('success', 'Area created successfully');
+            return redirect()->route('admin.districtss.index')->with('success', 'District created successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
