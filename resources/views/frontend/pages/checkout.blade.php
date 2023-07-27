@@ -25,7 +25,7 @@
                                                     {{ $uAddress->title }}
                                                 </label>
                                             </div>
-                                            <a href="{{ route('my.address.edit', $uAddress->id) }}" class="btn btn-success btn-xs items-end">Edit</a>
+                                            <a href="{{ route('my.address.edit', $uAddress->id) }}" class="btn btn-primary btn-xs items-end">Edit</a>
                                         </div>
                                         <div>{{ $uAddress->address }}</div>
                                         <div>{{ $uAddress->user->name ?? '' }}</div>
