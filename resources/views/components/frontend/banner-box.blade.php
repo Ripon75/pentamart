@@ -86,7 +86,7 @@
                 </div>
             </div>
             <div class="footer">
-                <a href="{{ $postTitleLink }}" class="btn btn-primary btn-xs">
+                <a href="{{ $postTitleLink }}" class="btn btn-primary">
                     {{ $postTitle }}
                 </a>
             </div>

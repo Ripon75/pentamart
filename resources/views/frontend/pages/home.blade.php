@@ -42,60 +42,39 @@
         </div>
     </section>
 
-    {{-- ==============Brand Section=================== --}}
-    {{-- <section class="brand-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
+    {{-- ==============Service Section=================== --}}
+    <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
         <div class="container">
-            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-4 2xl:gap-4">
-                @foreach ($topBrands as $tBrand)
+            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
+                @foreach ($topBrands as $topBrand)
                     <x-frontend.banner-box
-                        type="brand"
+                        type="service"
                         :bg-color="'#fff'"
                         pre-title=""
-                        :title="$tBrand->name"
-                        :img-src="$tBrand->img_src"
-                        post-title="Buy Now"
-                        :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])"
+                        title=""
+                        :img-src="$topBrand->img_src"
+                        post-title="Shop Now"
+                        :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])"
                     />
                 @endforeach
             </div>
         </div>
-    </section> --}}
+    </section>
 
-    {{-- ==============Brand Section for mobile=================== --}}
-    {{-- <section class="brand-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
+    {{-- ==============Service Section for mobile=================== --}}
+    <section class="service-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
         <div class="container">
-            <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
-                 @foreach ($topBrands as $tBrand)
+            <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
+                @foreach ($topBrands as $topBrand)
                     <x-frontend.banner-box
-                        type="brand-card"
+                        type="service"
                         :bg-color="'#fff'"
                         pre-title=""
-                        :title="$tBrand->name"
-                        :img-src="$tBrand->img_src"
-                        post-title="Buy Now"
-                        :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])"
+                        title=""
+                        :img-src="$topBrand->img_src"
+                        post-title="Shop Now"
+                        :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])"
                     />
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
-
-    <section class="page-section bg-gray-100">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-5">Subsidarics</h1>
-            </div>
-            <div
-                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
-                @foreach ($topBrands as $tBrand)
-                    <x-frontend.banner-box
-                        type="categories-banner"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        title="Buy Now"
-                        link-title=""
-                        :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])"
-                        :img-src="$tBrand->img_src" />
                 @endforeach
             </div>
         </div>
