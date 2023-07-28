@@ -80,7 +80,6 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
         Route::put('/address/{id}',      [AddressController::class, 'update'])->name('address.update');
-        Route::get('/shipping/addrss',   [AddressController::class, 'shippingAddress'])->name('single.address');
 
         // Wishlist route
         Route::get('/wishlist',         [WishlistController::class, 'index'])->name('wishlist');
