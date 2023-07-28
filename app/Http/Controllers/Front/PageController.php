@@ -43,12 +43,11 @@ class PageController extends Controller
                 'postTitle' => ''
             ],
             [
-                'icon'      => 'fa-truck-fast',
-                'title'     => 'Free Shipping',
+                'icon'      => 'fa-solid fa-phone',
+                'title'     => 'Support 24/7',
                 'postTitle' => ''
             ]
         ];
-
 
         return view('frontend.pages.home', [
             'sliders'       => $sliders,
