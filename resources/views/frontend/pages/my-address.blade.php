@@ -23,7 +23,8 @@
                                     <th class="text-left border p-2">Title</th>
                                     <th class="text-left border p-2">Address</th>
                                     <th class="text-left border p-2">Phone</th>
-                                    <th class="text-left border p-2">Area</th>
+                                    <th class="text-left border p-2">District</th>
+                                    <th class="text-left border p-2">Thana</th>
                                     <th class="text-center border p-2">Actions</th>
                                 </tr>
                             </thead>
@@ -33,9 +34,9 @@
                                     <td class="border p-2">{{ $data->title }}</td>
                                     <td class="border p-2">{{ $data->address }}</td>
                                     <td class="border p-2">{{ $data->phone_number }}</td>
-                                    <td class="border p-2">{{ ($data->area->name) ?? null }}</td>
+                                    <td class="border p-2">{{ ($data->district->name) ?? null }}</td>
+                                    <td class="border p-2">{{ $data->thana }}</td>
                                     <td class="text-center border p-2">
-                                        <a href="{{ route('my.address.create') }}" class="text-center btn btn-success px-2 py-1">Create</a>
                                         <a href="{{ route('my.address.edit', $data->id) }}" class="text-center btn btn-primary px-2 py-1">Edit</a>
                                     </td>
                                 </tr>

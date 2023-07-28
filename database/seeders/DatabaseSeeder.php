@@ -18,7 +18,6 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ImageConveter::class,
             LaratrustSeeder::class,
-            AreaSeeder::class,
             BrandSeeder::class,
             CategorySeeder::class,
             ProductSeederNew::class,
@@ -27,7 +26,7 @@ class DatabaseSeeder extends Seeder
             SectionSeeder::class,
             SizeSeeder::class,
             ColorSeeder::class,
-            // ProductSizeSeeder::class,
+            DistrictSeeder::class,
             // ProductColorSeeder::class,
         ]);
     }

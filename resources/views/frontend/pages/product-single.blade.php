@@ -114,14 +114,14 @@
                             <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                             <span>
                                 @if ($product->offer_price > 0)
-                                    <span class="text-primary text-2xl font-medium">
+                                    <span class="text-primary text-xl font-medium">
                                         {{ number_format($product->offer_price, 2) }}
                                     </span>
-                                    <span class="line-through text-xl text-gray-500 self-end">
+                                    <span class="line-through text-lg text-gray-500 self-end">
                                         {{ $product->mrp }}
                                     </span>
                                 @else
-                                    <span class="text-primary text-2xl font-medium">
+                                    <span class="text-primary text-xl font-medium">
                                         {{ number_format($product->mrp, 2) }}
                                     </span>
                                 @endif
@@ -155,13 +155,13 @@
                                 </div>
 
                                 <div class="flex space-x-4">
-                                    <button
+                                    {{-- <button
                                         class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                         data-mc-on-previous-url="{{ url()->current() }}">
                                         <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
                                         <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
                                         Add to cart
-                                    </button>
+                                    </button> --}}
                                     @if ($isWishListed)
                                         <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
                                             <i class="text-4xl text-primary fa-solid fa-heart"></i>
@@ -182,6 +182,60 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="flex flex-col space-y-2">
+                            <div class="flex space-x-4">
+                                {{-- <div class="flex items-center border rounded border-gray-300" style="height: 32px">
+                                    <button id="btn-input-minus" class="w-8 h-8 border-r border-gray-300">
+                                        <i class="fa-solid fa-minus text-gray-500"></i>
+                                    </button>
+                                    <div>
+                                        <input id="input-quantity"
+                                            class="text-center text-gray-500 border-none focus:outline-none focus:ring-0"
+                                            style="width: 45px; height:28px" type="text" name="" value="1"
+                                            min="1">
+                                    </div>
+                                    <button id="btn-input-plush" class="w-8 h-8 border-l border-gray-300">
+                                        <i class="fa-solid fa-plus text-gray-500"></i>
+                                    </button>
+                                </div> --}}
+
+                                <div class="flex space-x-4 mt-1">
+                                    <button
+                                        class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                        data-mc-on-previous-url="{{ url()->current() }}">
+                                        <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
+                                        <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
+                                        Add to cart
+                                    </button>
+                                    <button
+                                        class="h-[36px] bg-[#ffc42d] text-sm whitespace-nowrap px-4 text-white rounded-md"
+                                        data-mc-on-previous-url="{{ url()->current() }}">
+                                        <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
+                                        {{-- <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i> --}}
+                                        <a href="#" class="hover:text-white">Buy Now</a>
+                                    </button>
+                                    {{-- @if ($isWishListed)
+                                        <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
+                                            <i class="text-4xl text-primary fa-solid fa-heart"></i>
+                                        </button>
+                                        <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
+                                            data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                            <i class="text-4xl text-primary fa-regular fa-heart"></i>
+                                        </button>
+                                    @else
+                                        <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
+                                            <i class="text-4xl text-primary fa-solid fa-heart"></i>
+                                        </button>
+                                        <button id="wish-button" type="button" class="h-[36px] bg-white"
+                                            data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                            <i class="text-4xl text-primary fa-regular fa-heart"></i>
+                                        </button>
+                                    @endif --}}
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
                 <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">

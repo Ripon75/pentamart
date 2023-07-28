@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Admin\AreaController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\OrderController;
@@ -12,6 +11,7 @@ use App\Http\Controllers\Admin\SliderController;
 use App\Http\Controllers\Admin\CouponController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SectionController;
+use App\Http\Controllers\Admin\DistrictController;
 use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
@@ -23,11 +23,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['permission:dashboards-read']);
 
     // All brand route
-    Route::get('areas',           [AreaController::class, 'index'])->name('areas.index')->middleware(['permission:areas-read']);
-    Route::get('areas/create',    [AreaController::class, 'create'])->name('areas.create')->middleware(['permission:areas-create']);
-    Route::post('areas',          [AreaController::class, 'store'])->name('areas.store')->middleware(['permission:areas-create']);
-    Route::get('areas/{id}/edit', [AreaController::class, 'edit'])->name('areas.edit')->middleware(['permission:areas-update']);
-    Route::put('areas/{id}',      [AreaController::class, 'update'])->name('areas.update')->middleware(['permission:areas-update']);
+    Route::get('areas',           [DistrictController::class, 'index'])->name('areas.index')->middleware(['permission:districts-read']);
+    Route::get('areas/create',    [DistrictController::class, 'create'])->name('areas.create')->middleware(['permission:districts-create']);
+    Route::post('areas',          [DistrictController::class, 'store'])->name('areas.store')->middleware(['permission:districts-create']);
+    Route::get('areas/{id}/edit', [DistrictController::class, 'edit'])->name('areas.edit')->middleware(['permission:districts-update']);
+    Route::put('areas/{id}',      [DistrictController::class, 'update'])->name('areas.update')->middleware(['permission:districts-update']);
 
     // All brand route
     Route::get('sliders',           [SliderController::class, 'index'])->name('sliders.index')->middleware(['permission:sliders-read']);

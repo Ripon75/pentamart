@@ -14,29 +14,24 @@
                     <div class="card border-2 p-4">
                         <div class="">
                             <div class="flex flex-col sm:flex-row md:flex-row space-x-2">
-                                <div class="border p-2 text-sm w-full">
-                                    <div class="flex items-center">
-                                        <input id="default-radio-1" type="radio" value="" name="default-radio"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="default-radio-1"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Home</label>
+                                @foreach ($userAddress as $uAddress)
+                                    <div class="border p-2 text-sm w-full">
+                                        <div class="flex items-center justify-between">
+                                            <div>
+                                                <input id="{{ $uAddress->id }}" type="radio" value="{{ $uAddress->id }}" name="address_id"
+                                                    class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                                <label for="default-radio-1"
+                                                    class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                                    {{ $uAddress->title }}
+                                                </label>
+                                            </div>
+                                            <a href="{{ route('my.address.edit', $uAddress->id) }}" class="btn btn-primary btn-xs items-end">Edit</a>
+                                        </div>
+                                        <div>{{ $uAddress->address }}</div>
+                                        <div>{{ $uAddress->user->name ?? '' }}</div>
+                                        <div>{{ $uAddress->phone_number }}</div>
                                     </div>
-                                    <div>Malibagh dhaka bangladesh</div>
-                                    <div>Ripon ahmed</div>
-                                    <div>01764997485</div>
-                                </div>
-                                <div class="border p-2 text-sm w-full">
-                                    <div class="flex items-center">
-                                        <input checked id="default-radio-2" type="radio" value=""
-                                            name="default-radio"
-                                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
-                                        <label for="default-radio-2"
-                                            class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Office</label>
-                                    </div>
-                                    <div>Malibagh dhaka bangladesh</div>
-                                    <div>Ripon ahmed</div>
-                                    <div>01764997485</div>
-                                </div>
+                                @endforeach
                             </div>
 
                             {{-- create new address --}}
@@ -57,9 +52,35 @@
                                 </div>
 
                                 <div class="grid grid-cols-2">
+                                    <div style="width:95%" class="form-item">
+                                        <label for="" class="form-label">Districs<span
+                                                class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <select id="input-address-district" name="district_id" class="form-select form-input w-full">
+                                            @foreach ($districts as $district)
+                                                <option value="{{ $district->id }}"
+                                                    {{ $district->id == 1 ? 'selected' : '' }}
+                                                    data-delivery-charge="{{ $district->delivery_charge }}">
+                                                    {{ $district->name }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('district_id')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Phone Number</label>
+                                        <label class="form-label">Thana<span
+                                            class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <input class="form-input" type="text" placeholder="Enter your thana"
+                                            name="thana" />
+                                        @error('thana')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+
+                                    <div style="width:95%" class="form-item">
+                                        <label class="form-label">Phone Number<span class="ml-1 text-red-500 font-medium">*</span></label>
                                         <input class="form-input" type="text" placeholder="Enter Your Phone Number"
                                             name="phone_number" />
                                     </div>
@@ -69,59 +90,12 @@
                                         <input class="form-input" type="text" placeholder="Enter Your Phone Number"
                                             name="phone_number" />
                                     </div>
-
-                                    <div style="width:95%" class="form-item">
-                                        <label for="" class="form-label">Country<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title"
-                                            class="form-select form-input w-full">
-                                            <option value="">Select</option>
-                                            <option value="Home">Home</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                        @error('title')
-                                            <span class="form-helper error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div style="width:95%" class="form-item">
-                                        <label for="" class="form-label">City<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title"
-                                            class="form-select form-input w-full">
-                                            <option value="">Select</option>
-                                            <option value="Home">Home</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Others">Others</option>
-                                        </select>
-                                        @error('title')
-                                            <span class="form-helper error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div style="width:95%" class="form-item">
-                                        <label class="form-label">Area<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-area" name="area_id" class="form-input">
-                                            <option value="" selected>Select</option>
-                                            @foreach ($areas as $area)
-                                                <option value="{{ $area->id }}">
-                                                    {{ $area->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                        @error('title')
-                                            <span class="form-helper error">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
                                 </div>
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label class="form-label">Address<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <label class="form-label">Address<span class="ml-1 text-red-500 font-medium">*</span>
+                                            </label>
                                         <textarea id="input-address" name="address" class="form-input" rows="2" cols="50"
                                             placeholder="Enter your address here..."></textarea>
                                         @error('address')
@@ -136,7 +110,6 @@
                                         </button>
                                     </div>
                                 </div>
-
                             </form>
                         </div>
                     </div>
@@ -201,18 +174,11 @@
                                 </span>
                             </div>
 
-                            @php
-                                $deliveryCharge = 0;
-                                if (count($deliveryGateways)) {
-                                    $deliveryCharge = $deliveryGateways[0]->price;
-                                }
-                            @endphp
-
                             <div class="flex justify-between">
                                 <span>Delivery Charge (+)</span>
                                 <span>{{ $currency }}
                                     <span id="delivery-charge-label" class="ml-1">
-                                        {{ number_format($deliveryCharge, 2) }}
+                                        {{ number_format($defaultDeliveryCharge, 2) }}
                                     </span>
                                 </span>
                             </div>
@@ -224,7 +190,7 @@
                                 <span class="text-base sm:text-base md:text-lg font-medium">
                                     <span>{{ $currency }}
                                         <span id="total-with-delivery-charge-label" class="ml-1">
-                                            {{ number_format($cart->getTotalSellPrice() + $deliveryCharge, 2) }}
+                                            {{ number_format($cart->getTotalSellPrice() + $defaultDeliveryCharge, 2) }}
                                         </span>
                                     </span>
                                 </span>
@@ -238,7 +204,7 @@
                         <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
 
                         {{-- =========Choose Delivery ======= --}}
-                        <section class="mt-4">
+                        {{-- <section class="mt-4">
                             <div class="card border-2">
                                 <div class="header">
                                     <h1 class="title">Delivery area</h1>
@@ -254,7 +220,7 @@
                                     @endfor
                                 </div>
                             </div>
-                        </section>
+                        </section> --}}
                         {{-- ===========Use coupon==================== --}}
                         <section class="mt-4">
                             <div class="card border-2">
@@ -347,23 +313,25 @@
 
 @push('scripts')
     <script>
-        var iconLoadding = $('.loadding-icon');
-        var btnDeliveryGateway = $('.btn-delivery-gateway');
-        var btnOrderSubmit = $('#btn-order-submit');
-        var formCheckOut = $('#form-checkout');
-        var btnCreateNewAddress = $('#btn-create-new-address');
-        var inputDeliveryGatewayId = $('#input-delivery-gateway-id');
-        var cartTotalSellPrice = "{{ $cart->getTotalSellPrice() }}";
-        var deliveryCharge = "{{ $deliveryCharge }}";
-        var deliveryChargeLabel = $('#delivery-charge-label');
+        var iconLoadding                 = $('.loadding-icon');
+        var btnDeliveryGateway           = $('.btn-delivery-gateway');
+        var btnOrderSubmit               = $('#btn-order-submit');
+        var formCheckOut                 = $('#form-checkout');
+        var btnCreateNewAddress          = $('#btn-create-new-address');
+        var inputDeliveryGatewayId       = $('#input-delivery-gateway-id');
+        var cartTotalSellPrice           = "{{ $cart->getTotalSellPrice() }}";
+        var deliveryCharge               = "{{ $defaultDeliveryCharge }}";
+        var deliveryChargeLabel          = $('#delivery-charge-label');
         var totalWithDeliveryChargeLabel = $('#total-with-delivery-charge-label');
 
 
         // For address create
-        var addressCreateForm = $('#address-create-form');
-        var btnAddressCreate = $('#btn-address-create');
-        var inputShippingAddress = $('#input-shipping-address');
+        var addressCreateForm      = $('#address-create-form');
+        var btnAddressCreate       = $('#btn-address-create');
+        var inputShippingAddress   = $('#input-shipping-address');
         var inputShippingAddressId = $('#input-shipping-address-id');
+        var inputAddressDistrict   = $('#input-address-district');
+
 
         // Coupon code
         var inputCouponCode = $('#input-coupon-code');
@@ -378,15 +346,15 @@
 
         $(function() {
             // On choose payment method
-            btnDeliveryGateway.click(function() {
-                btnDeliveryGateway.removeClass('active');
-                $(this).addClass('active');
+            // btnDeliveryGateway.click(function() {
+            //     btnDeliveryGateway.removeClass('active');
+            //     $(this).addClass('active');
 
-                var deliveryId = $(this).data('delivery-gateway-id');
-                deliveryCharge = $(this).data('delivery-charge');
-                inputDeliveryGatewayId.val(deliveryId);
-                totalPriceCalculation();
-            });
+            //     var deliveryId = $(this).data('delivery-gateway-id');
+            //     deliveryCharge = $(this).data('delivery-charge');
+            //     inputDeliveryGatewayId.val(deliveryId);
+            //     totalPriceCalculation();
+            // });
 
             inputShippingAddress.on('change', function() {
                 var addressId = $(this).val();
@@ -397,17 +365,28 @@
 
             // create user address
             btnAddressCreate.click(function() {
-                var inputAddressTitle = $('#input-address-title');
-                var inputAddressArea = $('#input-address-area');
-                var inputAddress = $("#input-address");
+                var inputAddressTitle    = $('#input-address-title');
+                var inputAddress         = $("#input-address");
+                var inputThana           = $("input[name=thana]");
+                var inputPhoneNumber     = $("input[name=phone_number]");
 
                 if (!inputAddressTitle.val()) {
                     inputAddressTitle.focus();
                     return false;
                 }
 
-                if (!inputAddressArea.val()) {
-                    inputAddressArea.focus();
+                if (!inputAddressDistrict.val()) {
+                    inputAddressDistrict.focus();
+                    return false;
+                }
+
+                if (!inputThana.val()) {
+                    inputThana.focus();
+                    return false;
+                }
+
+                if (!inputPhoneNumber.val()) {
+                    inputPhoneNumber.focus();
                     return false;
                 }
 
@@ -417,6 +396,14 @@
                 }
 
                 addressCreateForm.submit();
+            });
+
+            inputAddressDistrict.on('change', function() {
+                // Get the selected option
+                var selectedOption = $(this).find(":selected");
+                // Get the value of the data-delivery-charge attribute
+                deliveryCharge = selectedOption.data("delivery-charge");
+                totalPriceCalculation();
             });
 
             btnOrderSubmit.click(function() {

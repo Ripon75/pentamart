@@ -20,8 +20,9 @@ class CreateAddressesTable extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')
                   ->onUpdate('cascade')->onDelete('cascade');
             $table->string('phone_number', 20)->nullable();
-            $table->foreignId('area_id')->nullable()->constrained('areas')
+            $table->foreignId('district_id')->nullable()->constrained('districts')
                   ->onUpdate('cascade')->onDelete('cascade')->nullable();
+            $table->string('thana')->nullable();
             $table->unsignedBigInteger('created_by')->nullable();
             $table->unsignedBigInteger('updated_by')->nullable();
             $table->timestamps();

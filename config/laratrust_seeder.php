@@ -15,7 +15,7 @@ return [
         'superadministrator' => [
             'roles'          => 'c,r,u,d',
             'permissions'    => 'c,r,u,d',
-            'areas'          => 'c,r,u,d',
+            'districts'      => 'c,r,u,d',
             'brands'         => 'c,r,u,d',
             'categories'     => 'c,r,u,d',
             'coupon-codes'   => 'c,r,u,d',
