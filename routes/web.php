@@ -66,7 +66,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/cart/items/empty',   [CartController::class, 'emptyCart']);
     Route::post('/cart/meta/add',     [CartController::class, 'addMetaData']);
     Route::post('/check/coupon',      [CouponController::class, 'checkCouponCode'])->name('coupon.check');
-    Route::post('/cart/shipping/add', [CartController::class, 'addShippingAdress']);
 
     Route::prefix('my')->name('my.')->group(function () {
         // User profile update route
@@ -80,7 +79,6 @@ Route::middleware(['auth'])->group(function(){
         Route::post('/address',          [AddressController::class, 'store'])->name('address.store');
         Route::get('/address/{id}/edit', [AddressController::class, 'edit'])->name('address.edit');
         Route::put('/address/{id}',      [AddressController::class, 'update'])->name('address.update');
-        Route::get('/shipping/addrss',   [AddressController::class, 'shippingAddress'])->name('single.address');
 
         // Wishlist route
         Route::get('/wishlist',         [WishlistController::class, 'index'])->name('wishlist');

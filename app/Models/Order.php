@@ -110,19 +110,13 @@ class Order extends Model implements Auditable
         if ($this->coupon_id) {
             $coupon = Coupon::find($this->coupon_id);
             if ($coupon) {
-                // Check coupon code applied on delivery charge
-                if ($coupon->applicable_on === 'delivery_fee') {
-                    $couponAmount = 0;
-                }
                 // Check coupon code applied on cart
-                if ($coupon->applicable_on === 'cart') {
-                    if ($coupon->discount_type == 'fixed') {
-                        $couponAmount = $coupon->discount_amount;
-                    } else {
-                        $itemsSubtotalAmount = $this->getTotalPrice();
-                        $couponPercent       = $coupon->discount_amount;
-                        $couponAmount        = ($couponPercent * $itemsSubtotalAmount)/100;
-                    }
+                if ($coupon->discount_type == 'fixed') {
+                    $couponAmount = $coupon->discount_amount;
+                } else {
+                    $itemsSubtotalAmount = $this->getTotalSellPrice();
+                    $couponPercent       = $coupon->discount_amount;
+                    $couponAmount        = ($couponPercent * $itemsSubtotalAmount)/100;
                 }
             }
         }
@@ -232,22 +226,52 @@ class Order extends Model implements Auditable
         $orderObj->save();
     }
 
-    public function updateItemStock($order, $action)
+    public function removedItemStock($order)
     {
         foreach ($order->items as $item) {
             $id  = $item->id;
             $qty = $item->pivot->quantity;
+
             $product = Product::find($id);
+
             if ($product) {
                 $currentStock = $product->current_stock;
-                if ($action === 'plush') {
-                    $currentStock = $currentStock + $qty;
-                    $product->current_stock = $currentStock;
-                    $product->save();
-                } else {
-                    $currentStock = $currentStock - $qty;
-                    $product->current_stock = $currentStock;
-                    $product->save();
+                $currentStock = $currentStock - $qty;
+                $product->current_stock = $currentStock;
+                $product->save();
+            }
+        }
+    }
+
+    public function updateItemStock($previousItems, $currentItems, $statusId)
+    {
+        foreach ($previousItems as $pItem) {
+            $productId   = $pItem->id;
+            $previousQty = $pItem->pivot->quantity;
+
+            $product = Product::find($productId);
+            if ($product) {
+                $currentStock = $product->current_stock;
+                $currentStock = $currentStock + $previousQty;
+                $product->current_stock = $currentStock;
+                $product->save();
+            }
+        }
+
+        if ($statusId != 3 && $statusId != 7) {
+            if (count($currentItems)) {
+                foreach ($currentItems as $cItem) {
+                    $productId  = $cItem['product_id'];
+                    $currentQty = $cItem['quantity'];
+
+
+                    $product = Product::find($productId);
+                    if ($product) {
+                        $currentStock = $product->current_stock;
+                        $currentStock = $currentStock - $currentQty;
+                        $product->current_stock = $currentStock;
+                        $product->save();
+                    }
                 }
             }
         }

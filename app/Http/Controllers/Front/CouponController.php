@@ -23,6 +23,8 @@ class CouponController extends Controller
         $cart    = $cartObj->getCurrentCustomerCart();
 
         $couponObj = new Coupon();
-        return $couponObj->isValidForCart($cart, $couponCode);
+        $res = $couponObj->isValidForCart($cart, $couponCode);
+
+        return $this->sendResponse($res, 'Coupon information');
     }
 }

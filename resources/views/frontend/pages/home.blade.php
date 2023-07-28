@@ -88,8 +88,14 @@
             <div
                 class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3 2xl:grid-cols-3 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
                 @foreach ($topBrands as $tBrand)
-                    <x-frontend.banner-box type="categories-banner" :bg-color="'#fff'" pre-title="" title="Buy Now"
-                        link-title="" :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])" :img-src="$tBrand->img_src" />
+                    <x-frontend.banner-box
+                        type="categories-banner"
+                        :bg-color="'#fff'"
+                        pre-title=""
+                        title="Buy Now"
+                        link-title=""
+                        :post-title-link="route('brand.page', [$tBrand->id, $tBrand->slug])"
+                        :img-src="$tBrand->img_src" />
                 @endforeach
             </div>
         </div>

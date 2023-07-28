@@ -22,7 +22,6 @@ class CreateCouponsTable extends Migration
             $table->decimal('discount_amount', 20, 2)->nullable();
             $table->decimal('min_cart_amount', 20, 2)
                   ->comment('The coupon code will be applied if cart minimum amount is this value');
-            $table->string('applicable_on')->nullable()->comment('Ex: Cart, Delivery fee');
             $table->string('description')->nullable();
             $table->timestamp('started_at')->nullable();
             $table->timestamp('ended_at')->nullable();

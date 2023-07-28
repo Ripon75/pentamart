@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use App\Classes\Utility;
 use Wildside\Userstamps\Userstamps;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -69,23 +70,14 @@ class Coupon extends Model
         $coupon = $this->isActive($code);
 
         if (!$coupon) {
-            return [
-                'error'   => true,
-                'code'    => 400,
-                'message' => 'Coupon code is not valid',
-                'result'  => null
-            ];
+            return Utility::sendError('Coupon code is not valid');
         }
 
         $minCartValue    = $coupon->min_cart_amount;
-        $cartTotalAmount = $cart->_getSubTotalAmount();
+        $cartTotalAmount = $cart->getTotalSellPrice();
         if ($cartTotalAmount < $minCartValue) {
-            return [
-                'error'   => true,
-                'code'    => 400,
-                'message' => "Minimum cart amount without delivery charge {$minCartValue} is required",
-                'result'  => null
-            ];
+            $msg = "Minimum cart amount without delivery charge {$minCartValue} is required";
+            return Utility::sendError($msg);
         }
 
         return $coupon;

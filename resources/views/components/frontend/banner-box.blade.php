@@ -52,7 +52,7 @@
         <a href="{{ $postTitleLink }}" class="">
             <div class="flex flex-col items-center justify-center space-y-6 border border-gray-200 rounded-md shadow hover:shadow-md">
                 <div class="pt-4">
-                    <img class="h-24 w-full bg-contain" src={{ $imgSrc }}>
+                    <img class="h-48 w-full bg-contain" src={{ $imgSrc }}>
                 </div>
                 <div class="text-center w-full bg-gray-200 py-2">
                     <span class="text-primary font-medium text-lg">{{ $title }}</span>

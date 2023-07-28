@@ -153,7 +153,7 @@
                                             </td>
 
                                             <td class="text-xs sm:text-xs md:text-sm lg:text-text-base xl:text-base 2xl:text-base border text-center">
-                                                <button class="delete-cart-item-btn btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"
+                                                <button class="btn-delete-cart-item btn btn-sm btn-icon-only bg-red-500 hover:bg-red-700 text-white"
                                                     data-item-id="{{ $product->id }}"
                                                     data-color-id="{{ $product->pivot->color_id }}"
                                                     data-size-id="{{ $product->pivot->size_id }}">
@@ -239,7 +239,7 @@
 @push('scripts')
     <script>
         var cartAddItemEndPoint = '/cart/items/add';
-        var deleteCartItemBtn   = $('.delete-cart-item-btn');
+        var btnDeleteCartItem   = $('.btn-delete-cart-item');
         var iconLoadding        = $('.loadding-icon');
         var iconTrash           = $('.trash-icon');
         var inputCartEmpty      = $('#input-cart-empty');
@@ -252,7 +252,7 @@
 
         $(function() {
             // Delete item
-            deleteCartItemBtn.click(function() {
+            btnDeleteCartItem.click(function() {
                 var itemId = $(this).data('item-id');
                 var colorId = $(this).data('color-id');
                 var sizeId = $(this).data('size-id');
