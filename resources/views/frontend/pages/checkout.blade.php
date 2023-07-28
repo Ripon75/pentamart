@@ -310,11 +310,9 @@
 @push('scripts')
     <script>
         var iconLoadding                 = $('.loadding-icon');
-        var btnDeliveryGateway           = $('.btn-delivery-gateway');
         var btnOrderSubmit               = $('#btn-order-submit');
         var formCheckOut                 = $('#form-checkout');
         var btnCreateNewAddress          = $('#btn-create-new-address');
-        var inputDeliveryGatewayId       = $('#input-delivery-gateway-id');
         var cartTotalSellPrice           = "{{ $cart->getTotalSellPrice() }}";
         var deliveryCharge               = "{{ $defaultDeliveryCharge }}";
         var deliveryChargeLabel          = $('#delivery-charge-label');

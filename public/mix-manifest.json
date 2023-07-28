@@ -1,6 +1,6 @@
 {
-    "/js/frontend.js": "/js/frontend.js",
-    "/js/adminend.js": "/js/adminend.js",
-    "/css/frontend.css": "/css/frontend.css",
-    "/css/adminend.css": "/css/adminend.css"
+    "/js/frontend.js": "/js/frontend.js?id=713754fc5f68882476b6eb767f3900f0",
+    "/js/adminend.js": "/js/adminend.js?id=51d7a008df984d0ecc1dcb8835e95a64",
+    "/css/frontend.css": "/css/frontend.css?id=9ae4771b96b86acc5a9203e1f428d0cb",
+    "/css/adminend.css": "/css/adminend.css?id=6345f7b146f4685767039fa8903142e2"
 }

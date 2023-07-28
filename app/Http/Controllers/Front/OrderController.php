@@ -4,12 +4,10 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Coupon;
 use App\Models\Address;
 use App\Events\OrderCreate;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use App\Models\PaymentTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;

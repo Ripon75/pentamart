@@ -16,7 +16,6 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\PermissionController;
 use App\Http\Controllers\Admin\PaymentGatewayController;
-use App\Http\Controllers\Admin\DeliveryGatewayController;
 
 Route::middleware(['auth'])->group(function() {
     // Dashboard route
@@ -83,13 +82,6 @@ Route::middleware(['auth'])->group(function() {
     Route::post('gateways/payment',          [PaymentGatewayController::class, 'store'])->name('payments.store')->middleware(['permission:payment-types-create']);
     Route::get('gateways/payment/{id}/edit', [PaymentGatewayController::class, 'edit'])->name('payments.edit')->middleware(['permission:payment-types-update']);
     Route::put('gateways/payment/{id}',      [PaymentGatewayController::class, 'update'])->name('payments.update')->middleware(['permission:payment-types-update']);
-
-    // All delivery gateway route
-    Route::get('gateways/delivery',           [DeliveryGatewayController::class, 'index'])->name('deliveries.index')->middleware(['permission:delivery-types-read']);
-    Route::get('gateways/delivery/create',    [DeliveryGatewayController::class, 'create'])->name('deliveries.create')->middleware(['permission:delivery-types-create']);
-    Route::post('gateways/delivery',          [DeliveryGatewayController::class, 'store'])->name('deliveries.store')->middleware(['permission:delivery-types-create']);
-    Route::get('gateways/delivery/{id}/edit', [DeliveryGatewayController::class, 'edit'])->name('deliveries.edit')->middleware(['permission:delivery-types-update']);
-    Route::put('gateways/delivery/{id}',      [DeliveryGatewayController::class, 'update'])->name('deliveries.update')->middleware(['permission:delivery-types-update']);
 
     // All coupon code route
     Route::get('coupons',           [CouponController::class, 'index'])->name('coupons.index')->middleware(['permission:coupons-read']);
