@@ -66,7 +66,6 @@ Route::middleware(['auth'])->group(function(){
     Route::get('/cart/items/empty',   [CartController::class, 'emptyCart']);
     Route::post('/cart/meta/add',     [CartController::class, 'addMetaData']);
     Route::post('/check/coupon',      [CouponController::class, 'checkCouponCode'])->name('coupon.check');
-    Route::post('/cart/shipping/add', [CartController::class, 'addShippingAdress']);
 
     Route::prefix('my')->name('my.')->group(function () {
         // User profile update route

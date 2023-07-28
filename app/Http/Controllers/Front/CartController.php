@@ -7,10 +7,8 @@ use App\Models\District;
 use App\Models\Address;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-
 class CartController extends Controller
 {
     public $cartObj;
@@ -76,7 +74,6 @@ class CartController extends Controller
 
         $districts             = District::where('status', 'active')->orderBy('name', 'asc')->get();
         $userAddress           = Address::where('user_id', Auth::id())->orderBy('id', 'desc')->get();
-          // $deliveryGateways = DeliveryGateway::where('status', 'active')->get();
         $paymentGateways       = PaymentGateway::where('status', 'active')->get();
         $defaultDeliveryCharge = District::where('id', 1)->value('delivery_charge');;
         $currency              = 'tk';
@@ -86,7 +83,6 @@ class CartController extends Controller
             'districts'             => $districts,
             'products'              => $products,
             'userAddress'           => $userAddress,
-            // 'deliveryGateways'   => $deliveryGateways,
             'defaultDeliveryCharge' => $defaultDeliveryCharge,
             'paymentGateways'       => $paymentGateways,
             'currency'              => $currency
@@ -129,22 +125,5 @@ class CartController extends Controller
         }
 
         return $cartCount;
-    }
-
-    public function addShippingAdress(Request $request)
-    {
-        $request->validate([
-            'address_id' => ['required', 'integer']
-        ]);
-
-        $addressId = $request->input('address_id', null);
-
-        $cart = $this->cartObj->getCurrentCustomerCart();
-        if ($addressId) {
-            $cart->address_id = $addressId;
-            $cart->save();
-
-            return $this->sendResponse(null, 'Shipping address updated successfully');
-        }
     }
 }

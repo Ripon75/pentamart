@@ -1,11 +1,6 @@
 @extends('frontend.layouts.default')
 @section('title', 'Checkout')
 @section('content')
-
-    {{-- @if (Session::has('success'))
-        <div class="alert mb-8 success">{{ Session::get('success') }}</div>
-    @endif --}}
-
     @if (count($products))
         <section class="container page-section page-top-gap">
             <div
