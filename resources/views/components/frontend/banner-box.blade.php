@@ -85,7 +85,7 @@
                     <img class="img" src="{{ $imgSrc }}">
                 </div>
             </div>
-            <div class="footer">
+            <div class="footer mt-2">
                 <a href="{{ $postTitleLink }}" class="btn btn-primary">
                     {{ $postTitle }}
                 </a>
