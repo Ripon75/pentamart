@@ -30,7 +30,7 @@ class SMSGateway
         $now         = Carbon::now();
         $deliveryday = $now->addDays(2);
         $deliveryday = $deliveryday->format('l');
-        $message = "Thank you for your order! Your pentamart order is submitted. Estimated delivery by {$deliveryday}.";
+        $message = "Your pentamart order is submitted. Estimated delivery by {$deliveryday}.";
         return $this->send($phoneNumber, $message);
     }
 

@@ -17,26 +17,6 @@ return [
             'sub'         => []
         ],
         [
-            'label'      => 'Gateways',
-            'icon'       => 'fa-solid fa-truck',
-            'route'      => '#',
-            'permission' => 'payment-types-read',
-            'sub' => [
-                // [
-                //     'label'      => 'Payment Type',
-                //     'icon'       => 'fa-solid fa-credit-card',
-                //     'route'      => 'admin.payments.index',
-                //     'permission' => 'payment-types-read'
-                // ],
-                [
-                    'label'      => 'Delivery Gateway',
-                    'icon'       => 'fa-solid fa-credit-card',
-                    'route'      => 'admin.deliveries.index',
-                    'permission' => 'delivery-types-read'
-                ],
-            ]
-        ],
-        [
             'label'      => 'Sections',
             'icon'       => 'fa-solid fa-people-roof',
             'route'      => '#',

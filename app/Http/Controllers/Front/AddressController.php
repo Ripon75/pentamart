@@ -77,20 +77,6 @@ class AddressController extends Controller
         }
     }
 
-    public function shippingAddress(Request $request)
-    {
-        $id = $request->input('address_id', null);
-        $shippingAddress = Address::find($id);
-        if ($shippingAddress) {
-            $res = [
-                'status' => 'success',
-                'result' => $shippingAddress
-            ];
-
-            return $res;
-        }
-    }
-
     public function edit($id)
     {
         $data  = Address::find($id);

@@ -19,8 +19,6 @@
         <th>Coupon Discount</th>
         <th>Coupon Code</th>
         <th>Offer Name</th>
-        <th>Trade Price</th>
-        <th>Prescription</th>
       </tr>
     </thead>
     <tbody>
@@ -67,14 +65,6 @@
             <td>{{ $order->coupon_value }}</td>
             <td>{{ $order->coupon->code ?? null }}</td>
             <td>{{ $order->coupon->name ?? null }}</td>
-            <td>Trade price</td>
-            <td>
-                @if (count($order->prescriptions))
-                    YES
-                @else
-                    NO
-                @endif
-            </td>
         </tr>
         @endforeach
     </tbody>

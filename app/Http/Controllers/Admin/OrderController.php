@@ -15,7 +15,6 @@ use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
-use App\Models\DeliveryGateway;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 class OrderController extends Controller
@@ -106,14 +105,12 @@ class OrderController extends Controller
     {
         $areas          = District::orderBy('name', 'asc')->get();
         $orderStatus    = Status::orderBy('name', 'asc')->get();
-        $deliveryCharge = DeliveryGateway::select('price', 'promo_price')->where('status', 'active')->first();
         // $pgs         = PaymentGateway::where('status', 'active')->get();
 
         return view('adminend.pages.order.create', [
-              // 'pgs'         => $pgs,
-            'areas'          => $areas,
-            'orderStatus'    => $orderStatus,
-            'deliveryCharge' => $deliveryCharge
+            // 'pgs'      => $pgs,
+            'areas'       => $areas,
+            'orderStatus' => $orderStatus,
         ]);
     }
 

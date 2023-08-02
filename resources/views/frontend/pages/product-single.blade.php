@@ -155,13 +155,6 @@
                                 </div>
 
                                 <div class="flex space-x-4">
-                                    {{-- <button
-                                        class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
-                                        data-mc-on-previous-url="{{ url()->current() }}">
-                                        <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
-                                        <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
-                                        Add to cart
-                                    </button> --}}
                                     @if ($isWishListed)
                                         <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
                                             <i class="text-4xl text-primary fa-solid fa-heart"></i>
@@ -185,21 +178,6 @@
 
                         <div class="flex flex-col space-y-2">
                             <div class="flex space-x-4">
-                                {{-- <div class="flex items-center border rounded border-gray-300" style="height: 32px">
-                                    <button id="btn-input-minus" class="w-8 h-8 border-r border-gray-300">
-                                        <i class="fa-solid fa-minus text-gray-500"></i>
-                                    </button>
-                                    <div>
-                                        <input id="input-quantity"
-                                            class="text-center text-gray-500 border-none focus:outline-none focus:ring-0"
-                                            style="width: 45px; height:28px" type="text" name="" value="1"
-                                            min="1">
-                                    </div>
-                                    <button id="btn-input-plush" class="w-8 h-8 border-l border-gray-300">
-                                        <i class="fa-solid fa-plus text-gray-500"></i>
-                                    </button>
-                                </div> --}}
-
                                 <div class="flex space-x-4 mt-1">
                                     <button
                                         class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
@@ -209,29 +187,12 @@
                                         Add to cart
                                     </button>
                                     <button
+                                        id="btn-buy-now"
                                         class="h-[36px] bg-[#ffc42d] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                         data-mc-on-previous-url="{{ url()->current() }}">
                                         <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
-                                        {{-- <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i> --}}
-                                        <a href="#" class="hover:text-white">Buy Now</a>
+                                        Buy Now
                                     </button>
-                                    {{-- @if ($isWishListed)
-                                        <button id="undo-wish-button" type="button" class="h-[36px] bg-white">
-                                            <i class="text-4xl text-primary fa-solid fa-heart"></i>
-                                        </button>
-                                        <button id="wish-button" type="button" class="h-[36px] bg-white hidden"
-                                            data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
-                                            <i class="text-4xl text-primary fa-regular fa-heart"></i>
-                                        </button>
-                                    @else
-                                        <button id="undo-wish-button" type="button" class="h-[36px] bg-white hidden">
-                                            <i class="text-4xl text-primary fa-solid fa-heart"></i>
-                                        </button>
-                                        <button id="wish-button" type="button" class="h-[36px] bg-white"
-                                            data-mc-on-previous-url="{{ route('products.show', [$product->id, $product->slug]) }}">
-                                            <i class="text-4xl text-primary fa-regular fa-heart"></i>
-                                        </button>
-                                    @endif --}}
                                 </div>
                             </div>
                         </div>
@@ -418,8 +379,7 @@
 
 @push('scripts')
     {{-- jquery image zoom plugin --}}
-    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js">
-    </script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
 
     <script>
         // jquery image zoom plugin id
@@ -435,16 +395,17 @@
         });
 
         var cartAddItemEndPoint = '/cart/items/add';
-        var btnAddToCart = $('.btn-add-to-car');
-        var productId = $('#product-id').val();
-        var inputQuantity = $('#input-quantity');
-        var iconLoadding = $('.loadding-icon');
-        var iconAddToCart = $('#add-to-cart-icon');
-        var wishButton = $('#wish-button');
-        var undoWishButton = $('#undo-wish-button');
-        var authUserId = "{{ Auth::id() }}";
-        var productColorsCount = {{ count($productColors) }};
-        var productSizesCount = {{ count($productSizes) }};
+        var btnAddToCart        = $('.btn-add-to-car');
+        var btnBuyNow           = $('#btn-buy-now');
+        var productId           = $('#product-id').val();
+        var inputQuantity       = $('#input-quantity');
+        var iconLoadding        = $('.loadding-icon').hide();
+        var iconAddToCart       = $('#add-to-cart-icon');
+        var wishButton          = $('#wish-button');
+        var undoWishButton      = $('#undo-wish-button');
+        var authUserId          = "{{ Auth::id() }}";
+        var productColorsCount  = {{ count($productColors) }};
+        var productSizesCount   = {{ count($productSizes) }};
         var productCurrentStock = "{{ $product->current_stock }}";
 
         if (productCurrentStock == 0) {
@@ -454,25 +415,23 @@
         }
 
         @auth
-        // Automatically product added to wishcart if local storage have wish_product_id
-        var wishStorageProductID = localStorage.getItem('wish_product_id');
-        if (wishStorageProductID) {
-            addWishlist(wishStorageProductID);
-            localStorage.removeItem('wish_product_id');
-        }
+            // Automatically product added to wishcart if local storage have wish_product_id
+            var wishStorageProductID = localStorage.getItem('wish_product_id');
+            if (wishStorageProductID) {
+                addWishlist(wishStorageProductID);
+                localStorage.removeItem('wish_product_id');
+            }
         @endauth
-        @guest
-        authUserId = null;
-        @endguest
 
-        // initially hide loading icon
-        iconLoadding.hide();
+        @guest
+            authUserId = null;
+        @endguest
 
         $(function() {
             // Add product to cart
             btnAddToCart.click(function() {
-
                 if (!authUserId) {
+                    __showNotification('error', 'Please login to continue');
                     return false;
                 }
 
@@ -495,6 +454,34 @@
                 }
             });
 
+            $('#btn-buy-now').click(function() {
+                if (!authUserId) {
+                    __showNotification('error', 'Please login to continue');
+                    return false;
+                }
+
+                var quantity = inputQuantity.val();
+                var colorId = $('input[name="color_id"]:checked').val();
+                var sizeId = $('input[name="size_id"]:checked').val();
+
+                if (productColorsCount > 0 && !colorId) {
+                    __showNotification('error', 'Please select color');
+                    return false;
+                }
+
+                if (productSizesCount > 0 && !sizeId) {
+                    __showNotification('error', 'Please select size');
+                    return false;
+                }
+
+                if (productId != 0 && quantity != 0) {
+                    addCartItem(productId, quantity, colorId, sizeId, $(this));
+                }
+
+                // Redirect checkout page
+                window.location.href = "/checkout";
+            });
+
             // Add event with wishlist button
             wishButton.click(function() {
                 if (!authUserId) {
@@ -515,40 +502,45 @@
             if (btn) {
                 btn.prop("disabled", true);
             }
-            iconLoadding.show();
-            iconAddToCart.hide();
+            // iconLoadding.show();
+            // iconAddToCart.hide();
+
+            btn.find(iconLoadding).show();
+            btn.find(iconAddToCart).hide();
 
             axios.post(cartAddItemEndPoint, {
-                    item_id: productId,
-                    quantity: productQty,
-                    color_id: colorId,
-                    size_id: sizeId,
-                })
-                .then((response) => {
-                    if (response.data.success) {
-                        // __totalPriceCalculation();
-                    } else {
-                        __showNotification('error', response.data.msg);
-                        iconLoadding.hide();
-                        iconAddToCart.show();
-                        if (btn) {
-                            btn.prop("disabled", false);
-                        }
-                        return false;
-                    }
-                    iconLoadding.hide();
+                item_id: productId,
+                quantity: productQty,
+                color_id: colorId,
+                size_id: sizeId,
+            })
+            .then((response) => {
+                if (response.data.success) {
+                    btn.find(iconLoadding).hide();
                     if (btn) {
                         btn.prop("disabled", false);
                     }
                     __cartItemCount();
-                })
-                .catch((error) => {
+                } else {
+                    __showNotification('error', response.data.msg);
+                    // iconLoadding.hide();
+                    // iconAddToCart.show();
+                    btn.find(iconLoadding).hide();
+                    btn.find(iconAddToCart).show();
                     if (btn) {
                         btn.prop("disabled", false);
                     }
-                    iconLoadding.hide();
-                    console.log(error);
-                });
+                    return false;
+                }
+            })
+            .catch((error) => {
+                if (btn) {
+                    btn.prop("disabled", false);
+                }
+                // iconLoadding.hide();
+                btn.find(iconLoadding).hide();
+                console.log(error);
+            });
         }
 
         function addWishlist(productId) {

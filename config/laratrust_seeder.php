@@ -12,14 +12,13 @@ return [
     'truncate_tables' => true,
 
     'roles_structure' => [
-        'superadministrator' => [
+        'superadmin' => [
             'roles'          => 'c,r,u,d',
             'permissions'    => 'c,r,u,d',
             'districts'      => 'c,r,u,d',
             'brands'         => 'c,r,u,d',
             'categories'     => 'c,r,u,d',
-            'coupon-codes'   => 'c,r,u,d',
-            'delivery-types' => 'c,r,u,d',
+            'coupons'        => 'c,r,u,d',
             'orders'         => 'c,r,u,d',
             'status'         => 'c,r,u,d',
             'payment-types'  => 'c,r,u,d',
@@ -30,9 +29,7 @@ return [
             'product-bulk'   => 'c',
             'dashboards'     => 'r',
         ],
-        'administrator' => [],
-        'editor' => [],
-        'customer' => []
+        'admin' => [],
     ],
 
     'permissions_map' => [

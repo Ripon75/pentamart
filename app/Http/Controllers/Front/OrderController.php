@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Front;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\Coupon;
 use App\Models\Address;
 use App\Events\OrderCreate;
 use Illuminate\Http\Request;
 use App\Models\PaymentGateway;
-use App\Models\DeliveryGateway;
 use App\Models\PaymentTransaction;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use App\Models\District;
+
 class OrderController extends Controller
 {
     public function dashboard()
@@ -45,16 +45,17 @@ class OrderController extends Controller
             'address_id' => ['required']
         ]);
 
-        $addressId      = $request->input('address_id', null);
-        $note           = $request->input('note', null);
-        $couponId       = $request->input('coupon_id', null);
-        $address        = Address::where('id', $addressId)->value('address');
-        $deliveryCharge = DeliveryGateway::where('status', 'active')->value('price');
+        $addressId = $request->input('address_id', null);
+        $note      = $request->input('note', null);
+        $couponId  = $request->input('coupon_id', null);
+
+        $addressObj     = Address::find($addressId);
+        $address        = $addressObj->address;
+        $deliveryCharge = District::where('id', $addressObj->district_id)->value('delivery_charge');
 
         try {
             DB::beginTransaction();
 
-            $user     = Auth::user();
             $orderObj = new Order();
             $cartObj  = new Cart();
 
@@ -64,7 +65,7 @@ class OrderController extends Controller
                 return false;
             }
 
-            $orderObj->user_id         = $user->id;
+            $orderObj->user_id         = Auth::id();
             $orderObj->pg_id           = 1;
             $orderObj->status_id       = 1;
             $orderObj->address_id      = $addressId;
@@ -96,7 +97,7 @@ class OrderController extends Controller
                 $orderObj->updateOrderValue($orderObj);
 
                 // update items stock
-                $orderObj->updateItemStock($orderObj, 'minus');
+                $orderObj->removedItemStock($orderObj);
 
                 // Dispatch order create event
                 OrderCreate::dispatch($orderObj);
