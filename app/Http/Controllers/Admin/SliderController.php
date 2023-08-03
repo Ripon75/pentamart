@@ -31,11 +31,13 @@ class SliderController extends Controller
     {
         $request->validate(
             [
-                'name'    => ['required'],
-                'img_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
+                'name'           => ['required'],
+                'web_img_src'    => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
+                'mobile_img_src' => ['required', 'image', 'mimes:jpeg,png,jpg,gif,webp,svg'],
             ],
             [
-                'img_src.required' => 'Image field is required',
+                'web_img_src.required' => 'Image field is required',
+                'mobile_img_src.required' => 'Image field is required',
             ]
         );
 
@@ -53,10 +55,13 @@ class SliderController extends Controller
             $brand->status = $status;
             $res = $brand->save();
             if ($res) {
-                if ($request->hasFile('img_src') ) {
-                    $imgSrc         = $request->file('img_src');
-                    $imgPath        = Storage::put('images/sliders', $imgSrc);
-                    $brand->img_src = $imgPath;
+                if ($request->hasFile('web_img_src') && $request->hasFile('mobile_img_src') ) {
+                    $webImgSrc             = $request->file('web_img_src');
+                    $mobileImgSrc          = $request->file('mobile_img_src');
+                    $webImgPath            = Storage::put('images/sliders', $webImgSrc);
+                    $mobileImgPath         = Storage::put('images/sliders', $mobileImgSrc);
+                    $brand->web_img_src    = $webImgPath;
+                    $brand->mobile_img_src = $mobileImgPath;
                     $brand->save();
                 }
             }
@@ -102,14 +107,27 @@ class SliderController extends Controller
             $slider->status = $status;
             $res = $slider->save();
             if ($res) {
-                if ($request->hasFile('img_src')) {
-                    $imgSRC = $request->file('img_src');
-                    $oldPath = $slider->getOldPath($slider->img_src);
-                    if ($oldPath) {
-                        Storage::delete($oldPath);
+                // Update web image
+                if ($request->hasFile('web_img_src')) {
+                    $webImgSRC = $request->file('web_img_src');
+                    $oldImgPath = $slider->getOldPath($slider->web_img_src);
+                    if ($oldImgPath) {
+                        Storage::delete($oldImgPath);
                     }
-                    $imgPath = Storage::put('images/sliders', $imgSRC);
-                    $slider->img_src = $imgPath;
+                    $webImgPath = Storage::put('images/sliders', $webImgSRC);
+                    $slider->web_img_src = $webImgPath;
+                    $slider->save();
+                }
+
+                // Update mobile image
+                if ($request->hasFile('mobile_img_src')) {
+                    $mobileImgSRC = $request->file('mobile_img_src');
+                    $oldImgPath = $slider->getOldPath($slider->mobile_img_src);
+                    if ($oldImgPath) {
+                        Storage::delete($oldImgPath);
+                    }
+                    $mobileImgPath = Storage::put('images/sliders', $mobileImgSRC);
+                    $slider->mobile_img_src = $mobileImgPath;
                     $slider->save();
                 }
             }

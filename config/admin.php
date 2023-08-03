@@ -50,12 +50,12 @@ return [
             'route'      => '#',
             'permission' => 'orders-read',
             'sub' => [
-                [
-                    'label'      => 'Districts',
-                    'icon'       => 'fa-solid fa-tag',
-                    'route'      => 'admin.districts.index',
-                    'permission' => 'districts-read'
-                ],
+                // [
+                //     'label'      => 'Districts',
+                //     'icon'       => 'fa-solid fa-tag',
+                //     'route'      => 'admin.districts.index',
+                //     'permission' => 'districts-read'
+                // ],
                 [
                     'label'      => 'Coupons',
                     'icon'       => 'fa-solid fa-tag',
