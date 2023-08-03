@@ -21,7 +21,6 @@ return [
             'coupons'        => 'c,r,u,d',
             'orders'         => 'c,r,u,d',
             'status'         => 'c,r,u,d',
-            'payment-types'  => 'c,r,u,d',
             'products'       => 'c,r,u,d',
             'sliders'        => 'c,r,u,d',
             'sections'       => 'c,r,u,d',

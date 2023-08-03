@@ -3,7 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
-use Laravel\Scout\Searchable;
+// use Laravel\Scout\Searchable;
 use Wildside\Userstamps\Userstamps;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Model;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Product extends Model implements Auditable
 {
-    use HasFactory, Searchable, Userstamps, SoftDeletes;
+    use HasFactory, Userstamps, SoftDeletes;
     use \OwenIt\Auditing\Auditable;
 
     protected $fillable = [
@@ -60,33 +60,33 @@ class Product extends Model implements Auditable
         'category:id,slug,name',
     ];
 
-    public function searchableAs()
-    {
-        return 'pentamart_products_index';
-    }
+    // public function searchableAs()
+    // {
+    //     return 'pentamart_products_index';
+    // }
 
-    public function toSearchableArray()
-    {
-        return [
-            'id'            => (int) $this->id,
-            'name'          => $this->name,
-            'mrp'           => (float) $this->mrp,
-            'offer_price'   => (float) $this->offer_price,
-            'brand'         => $this->brand->name ?? null,
-            'category'      => $this->category->name ?? null,
-            'created_at'    => $this->created_at
-        ];
-    }
+    // public function toSearchableArray()
+    // {
+    //     return [
+    //         'id'            => (int) $this->id,
+    //         'name'          => $this->name,
+    //         'mrp'           => (float) $this->mrp,
+    //         'offer_price'   => (float) $this->offer_price,
+    //         'brand'         => $this->brand->name ?? null,
+    //         'category'      => $this->category->name ?? null,
+    //         'created_at'    => $this->created_at
+    //     ];
+    // }
 
-    public function shouldBeSearchable()
-    {
-        return $this->status === 'active' ? true : false;
-    }
+    // public function shouldBeSearchable()
+    // {
+    //     return $this->status === 'active' ? true : false;
+    // }
 
-    protected function makeAllSearchableUsing($query)
-    {
-        return $query->with($this->_defaultWith);
-    }
+    // protected function makeAllSearchableUsing($query)
+    // {
+    //     return $query->with($this->_defaultWith);
+    // }
 
     // Relation start ======================================================================
     public function brand()

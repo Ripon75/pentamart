@@ -50,7 +50,7 @@ class StatusController extends Controller
             $statusObj->save();
             DB::commit();
 
-            return redirect()->route('admin.order.statuses.index')->with('success', 'Status created successfully');
+            return redirect()->route('admin.statuses.index')->with('success', 'Status created successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();
@@ -95,7 +95,7 @@ class StatusController extends Controller
             $statusObj->save();
             DB::commit();
 
-            return redirect()->route('admin.order.statuses.index')->with('success', 'Status updated successfully');
+            return redirect()->route('admin.statuses.index')->with('success', 'Status updated successfully');
         } catch (\Exception $e) {
             info($e);
             DB::rollback();

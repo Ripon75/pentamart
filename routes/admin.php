@@ -22,11 +22,11 @@ Route::middleware(['auth'])->group(function() {
     Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard')->middleware(['permission:dashboards-read']);
 
     // All brand route
-    Route::get('areas',           [DistrictController::class, 'index'])->name('areas.index')->middleware(['permission:districts-read']);
-    Route::get('areas/create',    [DistrictController::class, 'create'])->name('areas.create')->middleware(['permission:districts-create']);
-    Route::post('areas',          [DistrictController::class, 'store'])->name('areas.store')->middleware(['permission:districts-create']);
-    Route::get('areas/{id}/edit', [DistrictController::class, 'edit'])->name('areas.edit')->middleware(['permission:districts-update']);
-    Route::put('areas/{id}',      [DistrictController::class, 'update'])->name('areas.update')->middleware(['permission:districts-update']);
+    Route::get('districts',           [DistrictController::class, 'index'])->name('districts.index')->middleware(['permission:districts-read']);
+    Route::get('districts/create',    [DistrictController::class, 'create'])->name('districts.create')->middleware(['permission:districts-create']);
+    Route::post('districts',          [DistrictController::class, 'store'])->name('districts.store')->middleware(['permission:districts-create']);
+    Route::get('districts/{id}/edit', [DistrictController::class, 'edit'])->name('districts.edit')->middleware(['permission:districts-update']);
+    Route::put('districts/{id}',      [DistrictController::class, 'update'])->name('districts.update')->middleware(['permission:districts-update']);
 
     // All brand route
     Route::get('sliders',           [SliderController::class, 'index'])->name('sliders.index')->middleware(['permission:sliders-read']);
@@ -92,11 +92,11 @@ Route::middleware(['auth'])->group(function() {
     Route::put('coupons/{id}',      [CouponController::class, 'update'])->name('coupons.update')->middleware(['permission:coupons-update']);
 
     // All order status route
-    Route::get('order/statuses',           [StatusController::class, 'index'])->name('order.statuses.index')->middleware(['permission:order-status-read']);
-    Route::get('order/statuses/create',    [StatusController::class, 'create'])->name('order.statuses.create')->middleware(['permission:order-status-create']);
-    Route::post('order/statuses',          [StatusController::class, 'store'])->name('order.statuses.store')->middleware(['permission:order-status-create']);
-    Route::get('order/statuses/{id}/edit', [StatusController::class, 'edit'])->name('order.statuses.edit')->middleware(['permission:order-status-update']);
-    Route::put('order/statuses/{id}',      [StatusController::class, 'update'])->name('order.statuses.update')->middleware(['permission:order-status-update']);
+    Route::get('statuses',           [StatusController::class, 'index'])->name('statuses.index')->middleware(['permission:status-read']);
+    Route::get('statuses/create',    [StatusController::class, 'create'])->name('statuses.create')->middleware(['permission:status-create']);
+    Route::post('statuses',          [StatusController::class, 'store'])->name('statuses.store')->middleware(['permission:status-create']);
+    Route::get('statuses/{id}/edit', [StatusController::class, 'edit'])->name('statuses.edit')->middleware(['permission:status-update']);
+    Route::put('statuses/{id}',      [StatusController::class, 'update'])->name('statuses.update')->middleware(['permission:status-update']);
 
     // All role route
     Route::get('roles',           [RoleController::class, 'index'])->name('roles')->middleware(['permission:roles-read']);

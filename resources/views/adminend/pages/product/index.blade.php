@@ -58,6 +58,7 @@
                         <th>MRP</th>
                         <th>Discount</th>
                         <th>Offer Price</th>
+                        <th>Stock</th>
                         <th>Status</th>
                         <th>Created At</th>
                         <th>Action</th>
@@ -75,6 +76,7 @@
                         <td class="text-right">{{ $product->mrp }}</td>
                         <td class="text-right">{{ $product->discount }}</td>
                         <td class="text-right">{{ $product->offer_price }}</td>
+                        <td class="text-right">{{ $product->current_stock }}</td>
                         <td class="text-center">
                             @if ($product->status === 'active')
                                 <button class="border px-2 py-1 rounded text-white bg-green-400 text-sm">

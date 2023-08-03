@@ -6,7 +6,7 @@
     <div class="page-toolbar">
         <h6 class="title">Create Status</h6>
         <div class="actions">
-            <a href="{{ route('admin.order.statuses.index') }}" class="action btn btn-primary">Order Status</a>
+            <a href="{{ route('admin.statuses.index') }}" class="action btn btn-primary">Order Status</a>
         </div>
     </div>
     <div class="page-content">
@@ -20,7 +20,7 @@
 
                 <div class="card shadow">
                     <div class="body p-4">
-                        <form action="{{ route('admin.order.statuses.store') }}" method="POST">
+                        <form action="{{ route('admin.statuses.store') }}" method="POST">
                             @csrf
 
                             <div class="form-item">

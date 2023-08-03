@@ -18,14 +18,21 @@ class SearchController extends Controller
         $seachLimit = (int) $seachLimit;
 
         if ($seachQuery) {
-            $products = Product::search($seachQuery)
-            ->query(fn ($query) => $query->with([
-                    'brand:id,slug,name',
-                    'category:id,name,slug',
-                    'colors:id,name',
-                    'sizes:id,name'
-                ])->where('status', 'active')
-            );
+            // $products = Product::where('name', $seachQuery)
+            // ->query(fn ($query) => $query->with([
+            //         'brand:id,slug,name',
+            //         'category:id,name,slug',
+            //         'colors:id,name',
+            //         'sizes:id,name'
+            //     ])->where('status', 'active')
+            // );
+
+            $products = Product::with([
+                'brand:id,slug,name',
+                'category:id,name,slug',
+                'colors:id,name',
+                'sizes:id,name'
+            ])->where('name', 'like', "%{$seachQuery}%")->where('status', 'active');
         }
 
         if ($seachLimit) {
@@ -34,9 +41,6 @@ class SearchController extends Controller
         }
 
         $products = $products->get();
-        $resultCount = count($products);
-
-        ProductSearch::dispatch($seachQuery, $resultCount);
 
         return $this->sendResponse($products, 'Search result');
     }

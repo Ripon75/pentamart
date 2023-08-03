@@ -19,30 +19,9 @@ return [
         [
             'label'      => 'Sections',
             'icon'       => 'fa-solid fa-people-roof',
-            'route'      => '#',
+            'route'      => 'admin.sections.index',
             'permission' => 'sections-read',
-            'sub' => [
-                [
-                    'label'      => 'Sections',
-                    'icon'       => 'fa-solid fa-section',
-                    'route'      => 'admin.sections.index',
-                    'permission' => 'sections-read'
-                ]
-            ]
-        ],
-        [
-            'label'      => 'Logs',
-            'icon'       => 'fa-solid fa-people-roof',
-            'route'      => '#',
-            'permission' => 'price-log-read',
-            'sub' => [
-                [
-                    'label'      => 'Product Price Logs',
-                    'icon'       => 'fa-solid fa-people-roof',
-                    'route'      => 'admin.logs.index',
-                    'permission' => 'price-log-read'
-                ],
-            ]
+            'sub' => []
         ],
         [
             'label'      => 'Orders Management',
@@ -71,8 +50,8 @@ return [
                 [
                     'label'      => 'Status',
                     'icon'       => 'fa-solid fa-truck-arrow-right',
-                    'route'      => 'admin.order.statuses.index',
-                    'permission' => 'order-status-read'
+                    'route'      => 'admin.statuses.index',
+                    'permission' => 'status-read'
                 ]
             ]
         ],
@@ -100,12 +79,12 @@ return [
                     'route'      => 'admin.products.index',
                     'permission' => 'products-read'
                 ],
-                [
-                    'label'      => 'Product Bulk',
-                    'icon'       => 'fa-solid fa-upload',
-                    'route'      => 'admin.products.bulk',
-                    'permission' => 'product-bulk-create'
-                ],
+                // [
+                //     'label'      => 'Product Bulk',
+                //     'icon'       => 'fa-solid fa-upload',
+                //     'route'      => 'admin.products.bulk',
+                //     'permission' => 'product-bulk-create'
+                // ],
             ]
         ],
         [
