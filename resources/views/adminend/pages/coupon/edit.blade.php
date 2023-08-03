@@ -78,23 +78,6 @@
                             </div>
                             <div class="flex space-x-2">
                                 <div class="form-item w-full">
-                                    <label for="" class="form-label">Applicable ON</label>
-                                    <select class="form-select form-input" name="applicable_on">
-                                        <option value="">Select</option>
-                                        <option value="cart" {{ $coupon->applicable_on === 'cart' ? 'selected' : '' }}>Cart</option>
-                                        <option value="delivery_fee" {{ $coupon->applicable_on === 'delivery_fee' ? 'selected' : '' }}>Delivery Fee</option>
-                                    </select>
-                                    @error('applicable_on')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Description</label>
-                                    <input type="text" value="{{ $coupon->description }}" name="description" class="form-input">
-                                </div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <div class="form-item w-full">
                                     <label for="" class="form-label">Started at</label>
                                     <input type="datetime-local" value="{{ date('Y-m-d\TH:i:s', strtotime($coupon->started_at)) }}" name="started_at" class="form-input">
                                     @error('started_at')

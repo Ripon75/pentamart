@@ -77,23 +77,6 @@
                             </div>
                             <div class="flex space-x-2">
                                 <div class="form-item w-full">
-                                    <label for="" class="form-label">Applicable ON</label>
-                                    <select class="form-select w-full rounded-md border-gray-300" name="applicable_on">
-                                        <option value="">Select</option>
-                                        <option value="cart">Cart</option>
-                                        <option value="delivery_fee">Delivery Fee</option>
-                                    </select>
-                                    @error('applicable_on')
-                                        <span class="form-helper error">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="form-item w-full">
-                                    <label for="" class="form-label">Description</label>
-                                    <input type="text" name="description" value="{{ old('description') }}" class="form-input">
-                                </div>
-                            </div>
-                            <div class="flex space-x-2">
-                                <div class="form-item w-full">
                                     <label for="" class="form-label">Ended at</label>
                                     <input type="date" name="ended_at" class="form-input">
                                     @error('ended_at')

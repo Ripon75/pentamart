@@ -6,7 +6,7 @@
     <div class="page-toolbar">
         <h6 class="title">All Status</h6>
         <div class="actions">
-            <a href="{{ route('admin.order.statuses.create') }}" class="action btn btn-primary">Create</a>
+            <a href="{{ route('admin.statuses.create') }}" class="action btn btn-primary">Create</a>
         </div>
     </div>
     <div class="page-content">
@@ -28,9 +28,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($statuses as $status)
+                    @foreach ($statuses as $key => $status)
                     <tr>
-                        <td class="text-center">{{ $status->id }}</td>
+                        <td class="text-center">{{ ++$key }}</td>
                         <td>{{ $status->name }}</td>
                         @if ($status->status === 'active')
                             <td class="text-center">
@@ -43,7 +43,7 @@
                         <td class="text-center">{{ $status->bg_color }}</td>
                         <td class="text-center">{{ $status->text_color }}</td>
                         <td class="text-center">
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.order.statuses.edit', $status->id) }}">Edit</a>
+                            <a class="btn btn-primary btn-sm" href="{{ route('admin.statuses.edit', $status->id) }}">Edit</a>
                         </td>
                     </tr>
                     @endforeach

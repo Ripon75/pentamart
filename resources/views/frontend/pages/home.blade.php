@@ -3,7 +3,7 @@
 
 @section('content')
     {{-- ==============Banner Slider========================= --}}
-    <section class="mt-[140px] sm:mt-[140px] md:mt-[140px] lg:mt-44">
+    <section class="mt-[120px] sm:mt-[120px] md:mt-[120px] lg:mt44">
         <div id="carouselExampleIndicators" class="carousel slide relative" data-bs-ride="carousel">
             <div class="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-0 md:mb-4">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
@@ -18,11 +18,14 @@
             @if (count($sliders) > 0)
                 <div class="carousel-inner relative w-full overflow-hidden">
                     <div class="carousel-item active float-left w-full">
-                        <img src="{{ $sliders[0]->img_src }}" class="w-full" alt="" />
+                        <img src="{{ $sliders[0]->web_img_src }}" class="hidden sm:hidden md:block w-full" alt=""/>
+                        <img src="{{ $sliders[0]->mobile_img_src }}" class="w-full block sm:block md:hidden" alt=""/>
                     </div>
+
                     @for ($i = 1; $i < count($sliders); $i++)
                         <div class="carousel-item float-left w-full">
-                            <img src="{{ $sliders[$i]->img_src }}" class="w-full" alt="" />
+                            <img src="{{ $sliders[$i]->web_img_src }}" class="hidden sm:hidden md:block w-full" alt=""/>
+                            <img src="{{ $sliders[$i]->mobile_img_src }}" class="block sm:block md:hidden w-full" alt=""/>
                         </div>
                     @endfor
                 </div>
@@ -62,7 +65,7 @@
     </section>
 
     {{-- ==============Service Section for mobile=================== --}}
-    <section class="service-section pt-4 pb-4 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
+    <section class="service-section pt-2 pb-2 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
         <div class="container">
             <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
                 @foreach ($topBrands as $topBrand)
@@ -85,7 +88,7 @@
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-5">{{ $topProduct->title }}</h1>
+                    <h1 class="section-title mb-2">{{ $topProduct->title }}</h1>
                 </div>
                 <div
                     class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">

@@ -36,14 +36,14 @@
                                 <label for="" class="form-label">Web Image</label>
                                 <input type="file" name="web_img_src" class="w-full">
                                 @if ($slider->web_img_src)
-                                    <img class="w-auto h-16 mt-2" src="{{ $slider->web_img_src }}" alt="{{ $slider->name }}">
+                                    <img class="w-56 h-16 mt-2" src="{{ $slider->web_img_src }}" alt="{{ $slider->name }}">
                                 @endif
                             </div>
                             <div class="form-item">
                                 <label for="" class="form-label">Mobile Image</label>
                                 <input type="file" name="mobile_img_src" class="w-full">
                                 @if ($slider->mobile_img_src)
-                                    <img class="w-auto h-16 mt-2" src="{{ $slider->mobile_img_src }}" alt="{{ $slider->name }}">
+                                    <img class="w-44 h-16 mt-2" src="{{ $slider->mobile_img_src }}" alt="{{ $slider->name }}">
                                 @endif
                             </div>
                             <div class="flex justify-end">

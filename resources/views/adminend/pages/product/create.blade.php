@@ -11,7 +11,6 @@
     </div>
     <div class="page-content">
         <div class="w-[800px] lg:w-[800px] xl:w-[800px] mx-auto">
-
             {{-- Show flash message --}}
             @if(Session::has('error'))
                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
@@ -71,18 +70,32 @@
                                 </select>
                             </div>
                             <div class="form-item w-full">
-                                <label for="" class="form-label">Current Stock</label>
-                                <input type="number" name="currnet_stock" value="{{ old('currnet_stock') }}" class="w-full form-input">
+                                <label for="" class="form-label">Current Stock <span class="text-red-500 font-medium">*</span></label>
+                                <input type="number" name="current_stock" value="{{ old('current_stock') }}" class="w-full form-input">
+                                @error('current_stock')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
                             </div>
                         </div>
                         <div class="flex space-x-2">
+                             <div class="form-item w-full">
+                                <label for="" class="form-label">Buy Price<span class="text-red-500 font-medium">*</span></label>
+                                <input type="number" step="any" name="buy_price" value="{{ old('buy_price') }}" class="w-full form-input">
+                                @error('buy_price')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
+                            </div>
                             <div class="form-item w-full">
-                               <label for="" class="form-label">Price <span class="text-red-500 font-medium">*</span> </label>
-                               <input id="input-price" type="number" step="any" name="price" value="{{ old('price') }}" class="w-full form-input">
-                               @error('price')
-                                   <span class="form-helper error">{{ $message }}</span>
-                               @enderror
-                           </div>
+                                <div class="form-item w-full">
+                                    <label for="" class="form-label">MRP <span class="text-red-500 font-medium">*</span> </label>
+                                    <input id="input-mrp" type="number" step="any" name="mrp" value="{{ old('mrp') }}" class="w-full form-input">
+                                    @error('mrp')
+                                        <span class="form-helper error">{{ $message }}</span>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex space-x-2">
                            <div class="form-item w-full">
                                <label for="" class="form-label">Offer Price</label>
                                <input id="input-offer-price" type="number" step="any" name="offer_price" value="{{ old('offer_price') }}" class="w-full form-input">
@@ -94,26 +107,20 @@
                         </div>
                         <div class="flex space-x-2">
                             <div class="form-item w-full">
-                                <label for="" class="form-label">Colors <span class="text-red-500 font-medium">*</span> </label>
+                                <label for="" class="form-label">Colors</label>
                                 <select class="form-select w-full select-2 form-input" name="color_ids[]" multiple>
                                     @foreach ($colors as $color)
                                         <option value="{{ $color->id }}">{{ $color->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('color_ids')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
                             </div>
                            <div class="form-item w-full">
-                                <label for="" class="form-label">Sizes <span class="text-red-500 font-medium">*</span></label>
+                                <label for="" class="form-label">Sizes</label>
                                 <select class="form-select w-full select-2 form-input" name="size_ids[]" multiple>
                                     @foreach ($sizes as $size)
                                         <option value="{{ $size->id }}">{{ $size->name }}</option>
                                     @endforeach
                                 </select>
-                                @error('size_ids')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
                             </div>
                         </div>
                         <div class="form-item">
@@ -145,7 +152,7 @@
         });
     </script>
     <script>
-        var inputPrice        = $('#input-price');
+        var inputMRP        = $('#input-mrp');
         var inputOfferPrice   = $('#input-offer-price');
         var inputOfferPercent = $('#input-offer-percent');
 
@@ -155,7 +162,7 @@
             });
 
             inputOfferPrice.keyup(function (e) {
-                var price = inputPrice.val();
+                var price = inputMRP.val();
                 var offerPrice = $(this).val();
                 if (offerPrice > 0 && price > 0) {
                     var discount = price - offerPrice;
@@ -169,7 +176,7 @@
             });
 
             inputOfferPercent.keyup(function (e) {
-                var price = inputPrice.val();
+                var price = inputMRP.val();
                 var percent = inputOfferPercent.val();
                 if (percent > 0 && price > 0) {
                     var discount = (percent * price) / 100;

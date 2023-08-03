@@ -1,32 +1,4 @@
 <div class="header-wrapper">
-    {{-- ============Top header==================== --}}
-    {{-- <div class="top-header-bar">
-        <div class="bg-[#ffc42d] h-8 sm:h-8 md:h-10">
-            <div class="container flex flex-row space-x-4 items-center justify-between sm:justify-between text-black h-full">
-                <div class="address flex-1 hidden sm:hidden md:block">
-                    <span class="text-xs font-normal">DELIVER TO : </span>
-                    <span id="show-address-top-nav" class="text-xs font-normal"></span>
-                    <span class="ml-2 sm:ml-2 lg:ml-4">
-                        <button id="btn-address-change" type="button" class="border border-black py-1 px-2 sm:px-2 lg:px-3 rounded text-xxs font-normal hover:text-[#00798c] hover:border-[#00798c]"
-                            data-mc-on-previous-url="{{ url()->current() }}"
-                            @auth data-bs-toggle="modal" data-bs-target="#address-modal" @endauth
-                            @guest data-bs-toggle="modal" data-bs-target="#loginModalCenter" @endguest>
-                           Change
-                       </button>
-                    </span>
-                </div>
-                <div class="top-links">
-                    <div class="flex space-x-0 sm:space-x-0 lg:space-x-4">
-                        <div class="social-icons flex">
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-facebook"></i></a>
-                            <a href="" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-instagram"></i></a>
-                            <a href="#" class="p-2"><i class="text-sm sm:text-sm lg:text-base hover:text-[#00798c] fa-brands fa-youtube"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div> --}}
     <div class="border-b bg-[#00798c]">
         <header class="page-header container hidden sm:hidden md:hidden lg:block xl:block">
             <div class="grid grid-cols-8 h-full gap-2">
@@ -309,33 +281,6 @@
     </div>
 </section>
 
-{{-- ========Login modal=========== --}}
-@php
-    $currentRouteName = Request::route() ? Request::route()->getName() : '';
-@endphp
-@if($currentRouteName != 'login')
-    <div class="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto z-50"
-        id="loginModalCenter" tabindex="-1" aria-labelledby="loginModalCenterTitle" aria-modal="true" role="dialog"
-        style="background-color: rgba(0,0,0,0.7);">
-        <div class="modal-dialog modal-lg modal-dialog-centered relative w-full pointer-events-none">
-            <div class="w-3/4 mx-auto modal-contentx border-none shadow-lg relative flex flex-col
-                pointer-events-auto bg-white bg-clip-padding rounded-md outline-none text-current">
-                <div class="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
-                    <h5 class="text-lg font-medium leading-normal text-gray-800" id="loginModalScrollableLabel">
-                        Login
-                    </h5>
-                    <button type="button"
-                        class="btn-close box-content w-4 h-4 p-1 text-black border-none rounded-none opacity-50 focus:shadow-none focus:outline-none focus:opacity-100 hover:text-black hover:opacity-75 hover:no-underline"
-                        data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body relative py-4">
-                    <x-frontend.auth-login/>
-                </div>
-            </div>
-        </div>
-    </div>
-@endif
-
 @push('scripts')
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -351,15 +296,15 @@
     var profileList     = $('.profile-list');
 
     //==========Mobile Navigation menu==========
-        function toggleMenu() {
-            var menuBox = document.getElementById('menu-box');
-            if(menuBox.style.display == "none") {
-                menuBox.style.display = "block";
-            }
-            else { // if is menuBox hidden, display it
-                menuBox.style.display = "none";
-            }
+    function toggleMenu() {
+        var menuBox = document.getElementById('menu-box');
+        if(menuBox.style.display == "none") {
+            menuBox.style.display = "block";
         }
+        else { // if is menuBox hidden, display it
+            menuBox.style.display = "none";
+        }
+    }
     //==========./Mobile Navigation menu==========
 
     // =================dropdown category=====================

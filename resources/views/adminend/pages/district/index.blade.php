@@ -6,7 +6,7 @@
     <div class="page-toolbar">
         <h6 class="title">Areas</h6>
         <div class="actions">
-            <a href="{{ route('admin.areas.create') }}" class="action btn btn-primary">Create</a>
+            <a href="{{ route('admin.districts.create') }}" class="action btn btn-primary">Create</a>
         </div>
     </div>
     <div class="page-content">
@@ -15,7 +15,7 @@
             <div class="alert mb-8 success">{{ Session::get('success') }}</div>
         @endif
 
-        <form action="{{ route('admin.areas.index') }}" method="GET">
+        <form action="{{ route('admin.districts.index') }}" method="GET">
             @csrf
             <div class="action-bar mb-4 flex items-end space-x-2">
                 <div class="flex flex-col">
@@ -24,7 +24,7 @@
                         value="{{ request()->input('name') }}">
                 </div>
                 <button class="btn btn-outline-success" type="submit">Search</button>
-                <a href="{{ route('admin.areas.index') }}" class="btn border h-10 bg-red-500 text-white ml-1">Clear</a>
+                <a href="{{ route('admin.districts.index') }}" class="btn border h-10 bg-red-500 text-white ml-1">Clear</a>
             </div>
         </form>
         <div>
@@ -33,27 +33,37 @@
                 <tr class="">
                     <th>ID</th>
                     <th>Name</th>
-                    <th>Slug</th>
+                    <th>Delivery Charge</th>
+                    <th>Status</th>
                     <th>Action</th>
                 </tr>
                 </thead>
                 <tbody>
-                    @foreach ($areas as $data)
+                    @foreach ($districts as $key => $data)
                     <tr>
-                        <td class="text-center">{{ $data->id }}</td>
+                        <td class="text-center">{{ ++$key }}</td>
                         <td>{{ $data->name }}</td>
-                        <td>{{ $data->slug }}</td>
-                        <td>
-                            <a class="btn btn-success btn-sm" href="{{ route('admin.areas.edit', $data->id) }}">Edit</a>
+                        <td>{{ $data->delivery_charge }}</td>
+                        @if ($data->status === 'active')
+                            <td class="text-center">
+                                <button class="btn btn-success btn-sm">{{ $data->status }}</button>
+                            </td>
+                        @else
+                            <td class="text-center">
+                                <button class="btn btn-danger btn-sm">{{ $data->status }}</button>
+                            </td>
+                        @endif
+                        <td class="text-center">
+                            <a class="btn btn-primary btn-sm" href="{{ route('admin.districts.edit', $data->id) }}">Edit</a>
                         </td>
                     </tr>
                     @endforeach
                 </tbody>
             </table>
             {{-- ========Pagination============ --}}
-            @if ($areas->hasPages())
+            @if ($districts->hasPages())
                 <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
-                    {{ $areas->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
+                    {{ $districts->links('vendor.pagination.tailwind', ['order' => request()->get('order')]) }}
                 </div>
             @endif
         </div>

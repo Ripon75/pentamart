@@ -5,9 +5,9 @@
 <div class="page">
     <div class="page-toolbar">
         <h6 class="title">All Users</h6>
-        <div class="actions">
+        {{-- <div class="actions">
             <a href="{{ route('admin.users.create') }}" class="action btn btn-primary">Create</a>
-        </div>
+        </div> --}}
     </div>
     <div class="page-content">
 
