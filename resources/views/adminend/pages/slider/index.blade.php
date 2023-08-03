@@ -39,7 +39,7 @@
                     <tr class="">
                         <td class="text-center">{{ $slider->id }}</td>
                         <td class="text-center w-16">
-                            <img class="h-8 w-16" src="{{ $slider->img_src }}" alt="{{ $slider->name }}">
+                            <img class="h-8 w-16" src="{{ $slider->web_img_src }}" alt="{{ $slider->name }}">
                         </td>
                         <td>{{ $slider->name }}</td>
                         <td class="text-center">

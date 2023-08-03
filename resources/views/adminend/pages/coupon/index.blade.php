@@ -54,7 +54,6 @@
                     <th>Discount</th>
                     <th>Min Amount</th>
                     <th>Stataus</th>
-                    <th>Applicable ON</th>
                     <th>Started At</th>
                     <th>Ended At</th>
                     <th>Action</th>
@@ -78,7 +77,6 @@
                                 <button class="btn btn-danger btn-sm">{{ $data->status }}</button>
                             </td>
                         @endif
-                        <td>{{ $data->applicable_on }}</td>
                         <td>{{ $data->started_at->format('Y-m-d') ?? null }}</td>
                         <td>{{ $data->ended_at->format('Y-m-d') ?? null }}</td>
                         <td>

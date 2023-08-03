@@ -80,8 +80,8 @@ class ProductController extends Controller
             'name'          => ['required', "unique:products,name"],
             'brand_id'      => ['required', 'integer'],
             'category_id'   => ['required', 'integer'],
-            'color_ids'     => ['nullable', 'array'],
-            'size_ids'      => ['nullable', 'array'],
+            // 'color_ids'     => ['nullable', 'array'],
+            // 'size_ids'      => ['nullable', 'array'],
             'current_stock' => ['required', 'integer'],
             'buy_price'     => ['required'],
             'mrp'           => ['required']

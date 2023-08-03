@@ -38,11 +38,6 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::middleware('web')
-                ->prefix('callback')
-                ->name('callback.')
-                ->group(base_path('routes/callback.php'));
-
             Route::prefix('api')
                 ->middleware('api')
                 ->group(base_path('routes/api.php'));
@@ -50,7 +45,7 @@ class RouteServiceProvider extends ServiceProvider
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
 
-            Route::middleware(['web', 'role:superadministrator|administrator'])
+            Route::middleware(['web', 'role:superadmin|admin'])
                 ->prefix('admin')
                 ->name('admin.')
                 ->group(base_path('routes/admin.php'));
