@@ -31,19 +31,31 @@ class PageController extends Controller
         // Medical device products
         $otherProduct = Section::with(['products'])->where('slug', 'second-section')->first();
 
+        $offers = [
+            [
+                'img_src' => 'images/sample/offer.jpg'
+            ],
+            [
+                'img_src' => 'images/sample/offer.jpg'
+            ],
+            [
+                'img_src' => 'images/sample/offer.jpg'
+            ]
+        ];
+
         $features = [
             [
-                'imageSrc'  => 'delivery.png',
+                'imgSrc'    => 'images/sample/delivery.png',
                 'title'     => 'Cash on delivery',
                 'postTitle' => ''
             ],
             [
-                'imageSrc'  => 'quality.png',
+                'imgSrc'    => 'images/sample/quality.png',
                 'title'     => 'Qualityful Product',
                 'postTitle' => ''
             ],
             [
-                'imageSrc'  => 'customer-service.png',
+                'imgSrc'    => 'images/sample/customer-service.png',
                 'title'     => 'Support 24/7',
                 'postTitle' => ''
             ]
@@ -55,12 +67,12 @@ class PageController extends Controller
             'topBrands'     => $topBrands,
             'topProduct'    => $topProduct,
             'otherProduct'  => $otherProduct,
-            // 'hotSales'   => $hotSales,
+            'offers'        => $offers,
             'features'      => $features,
         ]);
     }
 
-    public function index(Request $request, $thumbOnly = false)
+    public function index(Request $request)
     {
         $filterCategoryIds   = $request->input('filter_category_ids', []);
         $filterBrandIds    = $request->input('filter_brand_ids', []);

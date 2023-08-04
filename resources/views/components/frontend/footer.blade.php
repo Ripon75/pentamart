@@ -86,15 +86,15 @@
                         <div
                             class="social-nav justify-center sm:justify-center md:justify-center lg:justify-start xl:justify-start">
                             <a href="#" class="item">
-                                <img src="{{ asset('images/facebook.png') }}" alt="facebook"
+                                <img src="{{ asset('images/sample/facebook.png') }}" alt="facebook"
                                     style="width:20px;height:20px;">
                             </a>
                             <a href="#" class="item">
-                                <img src="{{ asset('images/instagram.png') }}" alt="instagram"
+                                <img src="{{ asset('images/sample/instagram.png') }}" alt="instagram"
                                     style="width:20px;height:20px;">
                             </a>
                             <a href="#" class="item">
-                                <img src="{{ asset('images/linkedin.png') }}" alt="linkedin"
+                                <img src="{{ asset('images/sample/linkedin.png') }}" alt="linkedin"
                                     style="width:20px;height:20px;">
                             </a>
                         </div>

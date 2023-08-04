@@ -95,28 +95,6 @@
         </section>
     @endif
 
-    {{-- Top Category section --}}
-    {{-- <section class="page-section bg-gray-100">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-5">Top Category</h1>
-            </div>
-            <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
-                @foreach ($topCategories as $tCategory)
-                    <x-frontend.banner-box
-                        type="categories-banner"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        :title="$tCategory->name"
-                        link-title=""
-                        :post-title-link="route('category.page', [$tCategory->id, $tCategory->slug])"
-                        :img-src="$tCategory->img_src"
-                    />
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
-
     <section class="symptoms-section page-section bg-gray-100">
         <div class="container">
             <div class="headline text-center">
@@ -132,27 +110,6 @@
             </div>
         </div>
     </section>
-
-    {{-- <section class="page-section bg-gray-100">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-5">Top Categories</h1>
-            </div>
-            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-6 2xl:grid-cols-6 gap-2 sm:gap-2 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4">
-                @foreach ($topCategories as $tCategory)
-                    <x-frontend.banner-box
-                        type="categories-banner"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        :title="$tCategory->name"
-                        link-title=""
-                        :post-title-link="route('category.page', [$tCategory->id, $tCategory->slug])"
-                        :img-src="$tCategory->img_src"
-                    />
-                @endforeach
-            </div>
-        </div>
-    </section> --}}
 
     {{-- ==================Medical Devices================== --}}
     @if (count($otherProduct->products))
@@ -176,29 +133,26 @@
         </section>
     @endif
 
-    {{-- ==================Hot Sale=============== --}}
-    {{-- <section class="page-section bg-gray-100">
+    {{-- Offers --}}
+    <section class="page-section">
         <div class="container">
-            <div class="headline text-center">
-                <h1 class="section-title">Offers</h1>
+            <div class="text-center">
+                <h1 class="section-title mb-5">Offers</h1>
             </div>
-            <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-4 lg:gap-4 xl:gap-4 2xl:gap-8 mt-10">
-                @foreach ($hotSales as $hotSale)
-                <div class="">
+            <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
+                @foreach ($offers as $offer)
                     <x-frontend.banner-box
-                        type="default"
-                        :bg-color="$hotSale->bg_color"
+                        type="brands-banner"
+                        :bg-color="'#fff'"
                         pre-title=""
-                        :title="$hotSale->title"
-                        :link-title="$hotSale->post_title"
-                        :link="$hotSale->box_link"
-                        :img-src="$hotSale->img_src"
+                        post-title-link=""
+                        :img-src="$offer['img_src']"
+                        title=""
                     />
-                </div>
                 @endforeach
             </div>
         </div>
-    </section> --}}
+    </section>
 
     {{-- ==================Features================== --}}
     <section class="page-section bg-gray-100">
@@ -208,7 +162,7 @@
                     <div
                         class="flex items-center justify-center shadow-xl ring-2 ring-gray-400 ring-opacity-50 p-6 rounded">
                         <div class="flex flex-col items-center">
-                            <img style="width: 20%;" src="{{ asset('images/' . $feature['imageSrc']) }}" alt="Image">
+                            <img style="width: 20%;" src="{{ asset($feature['imgSrc']) }}" alt="Image">
                             <h1
                                 class="mt-4 text-lg sm:text-lg md:text-lg lg:text-lg xl:text-lg 2xl:text-lg font-medium text-gray-900">
                                 {{ $feature['title'] }}
