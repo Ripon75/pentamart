@@ -168,7 +168,7 @@
                                 @endif
                                 <tr class="text-sm text-right">
                                     <td class="" colspan="4"></td>
-                                    <td class="border border-black pr-1 font-medium">Grand Total</td>
+                                    <td class="border border-black pr-1 font-medium">Total</td>
                                     <td class="border pr-1 border-black">{{ number_format($order->net_price, 2) }} tk.</td>
                                 </tr>
                                 <tr class="text-sm text-right">
