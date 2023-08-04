@@ -91,8 +91,8 @@
                     <th class="text-left">Created Date</th>
                     <th class="text-left" >Customer</th>
                     <th class="text-left">Phone Number</th>
-                    <th class="text-left">Payment Type</th>
-                    <th class="text-left">Delivery Area</th>
+                    <th class="text-left">District</th>
+                    <th class="text-left">Amount</th>
                     <th class="w-14">Paid</th>
                     <th class="w-24">Status</th>
                     <th class="w-14">Coupon</th>
@@ -111,8 +111,8 @@
 
                         <td>{{ ($data->user->name) ?? null }}</td>
                         <td>{{ ($data->user->phone_number) ?? null }}</td>
-                        <td>{{ ($data->paymentGateway->name) ?? null }}</td>
-                        <td>{{ ($data->shippingAddress->area->name) ?? null }}</td>
+                        <td>{{ ($data->shippingAddress->district->name) ?? null }}</td>
+                        <td>{{ $data->payable_price }}</td>
                         <td class="text-center">
                             @if ($data->is_paid)
                             <span class="block w-full rounded border px-2 py-1 text-sm text-white bg-green-500">Yes</span>
@@ -152,7 +152,7 @@
                                         aria-labelledby="dropdownMenu-{{ $data->id }}">
                                         <li>
                                             <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"
-                                                href="{{ route('admin.orders.show', $data->id) }}" target="_blank">View</a>
+                                                href="{{ route('admin.orders.show', $data->id) }}">View</a>
                                         </li>
                                         <li>
                                             <a class="dropdown-item block text-sm py-2 px-4 font-normalblock w-full whitespace-nowrap bg-transparent text-gray-700 hover:bg-gray-100"

@@ -8211,6 +8211,12 @@ textarea.form-control.is-invalid{
 .col-span-9{
   grid-column: span 9 / span 9;
 }
+.col-span-5{
+  grid-column: span 5 / span 5;
+}
+.col-span-10{
+  grid-column: span 10 / span 10;
+}
 .col-start-5{
   grid-column-start: 5;
 }
@@ -8317,6 +8323,9 @@ textarea.form-control.is-invalid{
 .mb-4{
   margin-bottom: 1rem;
 }
+.mt-\[120px\]{
+  margin-top: 120px;
+}
 .mb-5{
   margin-bottom: 1.25rem;
 }
@@ -8331,9 +8340,6 @@ textarea.form-control.is-invalid{
 }
 .-ml-px{
   margin-left: -1px;
-}
-.mt-\[120px\]{
-  margin-top: 120px;
 }
 .block{
   display: block;
@@ -8539,11 +8545,11 @@ textarea.form-control.is-invalid{
 .w-\[800px\]{
   width: 800px;
 }
-.w-44{
-  width: 11rem;
-}
 .w-56{
   width: 14rem;
+}
+.w-44{
+  width: 11rem;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -8612,6 +8618,9 @@ textarea.form-control.is-invalid{
 }
 .grid-cols-6{
   grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.grid-cols-5{
+  grid-template-columns: repeat(5, minmax(0, 1fr));
 }
 .flex-row{
   flex-direction: row;
@@ -20740,14 +20749,14 @@ readers do not read off random characters that represent icons */
   .md\:mt-2{
     margin-top: 0.5rem;
   }
+  .md\:mt-\[120px\]{
+    margin-top: 120px;
+  }
   .md\:mb-4{
     margin-bottom: 1rem;
   }
   .md\:mt-0{
     margin-top: 0px;
-  }
-  .md\:mt-\[120px\]{
-    margin-top: 120px;
   }
   .md\:block{
     display: block;

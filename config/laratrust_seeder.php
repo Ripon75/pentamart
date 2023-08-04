@@ -27,6 +27,7 @@ return [
             'users'          => 'r,u',
             'product-bulk'   => 'c',
             'dashboards'     => 'r',
+            'sell-reports'   => 'r',
         ],
         'admin' => [],
     ],

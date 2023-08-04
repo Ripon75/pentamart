@@ -42,16 +42,16 @@ return [
                     'permission' => 'coupons-read'
                 ],
                 [
-                    'label'      => 'Orders',
-                    'icon'       => 'fa-solid fa-cart-shopping',
-                    'route'      => 'admin.orders.index',
-                    'permission' => 'orders-read'
-                ],
-                [
                     'label'      => 'Status',
                     'icon'       => 'fa-solid fa-truck-arrow-right',
                     'route'      => 'admin.statuses.index',
                     'permission' => 'status-read'
+                ],
+                [
+                    'label'      => 'Orders',
+                    'icon'       => 'fa-solid fa-cart-shopping',
+                    'route'      => 'admin.orders.index',
+                    'permission' => 'orders-read'
                 ]
             ]
         ],
