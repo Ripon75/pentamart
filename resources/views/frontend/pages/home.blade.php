@@ -137,14 +137,26 @@
     <section class="page-section">
         <div class="container">
             <div class="text-center">
-                <h1 class="section-title mb-5">Offers</h1>
+                <h1 class="section-title mb-5">Special Offers</h1>
             </div>
-            <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
+
+            <div
+                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-4 lg:gap-4 xl:gap-4 2xl:gap-8 mt-10">
+                @foreach ($offers as $offer)
+                    <div class="">
+                        <x-frontend.banner-box type="default" bg-color="#ff0000" pre-title="Smart Watch Sale"
+                            title="Save Upto 16%" post-title-link="#" post-title="Buy now"
+                            img-src="images/sample/offer.jpg" />
+                    </div>
+                @endforeach
+            </div>
+
+            {{-- <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
                 @foreach ($offers as $offer)
                     <x-frontend.banner-box type="brands-banner" :bg-color="'#fff'" pre-title="" post-title-link="#"
                         :img-src="$offer['img_src']" title="" />
                 @endforeach
-            </div>
+            </div> --}}
         </div>
     </section>
 
