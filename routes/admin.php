@@ -60,6 +60,9 @@ Route::middleware(['auth'])->group(function() {
     Route::put('products/{id}',      [ProductController::class, 'update'])->name('products.update')->middleware(['permission:products-update']);
     Route::delete('products/{id}',   [ProductController::class, 'delete'])->name('products.delete')->middleware(['permission:products-delete']);
 
+    // Order report
+    Route::get('orders/report', [ReportController::class, 'orderReport'])->name('orders.report')->middleware(['permission:sell-reports-read']);
+
     // Order route
     Route::get('orders',               [OrderController::class, 'index'])->name('orders.index')->middleware(['permission:orders-read']);
     Route::get('orders/manual/create', [OrderController::class, 'manualCreate'])->name('orders.manual.create')->middleware(['permission:orders-create']);
@@ -72,9 +75,6 @@ Route::middleware(['auth'])->group(function() {
     Route::put('orders/{id}',          [OrderController::class, 'update'])->name('orders.update')->middleware(['permission:orders-update']);
     Route::post('order/items/remove',  [OrderController::class, 'orderItemRemove'])->name('orders.item.remove')->middleware(['permission:orders-update']);
     Route::post('orders/make/paid',    [Ordercontroller::class, 'makePaid'])->name('make.paid')->middleware(['permission:orders-update']);
-
-    // Order report
-    Route::get('orders/report', [ReportController::class, 'orderReport'])->name('orders.report')->middleware(['permission:sell-reports-read']);
 
     // All payment gateway route
     Route::get('gateways/payment',           [PaymentGatewayController::class, 'index'])->name('payments.index')->middleware(['permission:payment-types-read']);

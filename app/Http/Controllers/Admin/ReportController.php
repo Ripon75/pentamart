@@ -13,7 +13,6 @@ class ReportController extends Controller
 {
     public function orderReport(Request $request)
     {
-        $deliveredStatusId = config('crud.delivered_status_id');
         $startDate = $request->input('start_date', null);
         $endDate   = $request->input('end_date', null);
         $action    = $request->input('action', null);
@@ -25,10 +24,9 @@ class ReportController extends Controller
         if ($startDate && $endDate) {
             $startDate = $startDate.' 00:00:00';
             $endDate   = $endDate.' 23:59:59';
-            $orderObj  = $orderObj->whereBetween('ordered_at', [$startDate, $endDate]);
-            $orderObj  = $orderObj->where('current_status_id', $deliveredStatusId);
-            $data = $orderObj->orderBy('ref_code', 'asc')
-            ->orderBy('ordered_at', 'desc')->get();
+            $orderObj  = $orderObj->whereBetween('created_at', [$startDate, $endDate]);
+            $orderObj  = $orderObj->where('is_paid', 1);
+            $data = $orderObj->orderBy('created_at', 'desc')->get();
         }
 
         if ($action === 'export') {
