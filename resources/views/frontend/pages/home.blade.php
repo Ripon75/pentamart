@@ -145,7 +145,7 @@
                         type="brands-banner"
                         :bg-color="'#fff'"
                         pre-title=""
-                        post-title-link=""
+                        post-title-link="#"
                         :img-src="$offer['img_src']"
                         title=""
                     />
