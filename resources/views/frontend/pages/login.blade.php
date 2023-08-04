@@ -22,21 +22,23 @@
                         <form action="{{ route('login') }}" method="POST">
                             @csrf
 
-                            @if(Session::has('error'))
+                            @if (Session::has('error'))
                                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
                             <div class="form-item">
-                                <label class="form-label">Phone Number <span class="text-red-500 font-medium">*</span></label>
+                                <label class="form-label">Phone Number <span
+                                        class="text-red-500 font-medium">*</span></label>
                                 <input type="text" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                    name="phone_number" class="form-input rounded" placeholder="1*********" />
+                                    name="phone_number" class="form-input rounded" placeholder="Your phone number" />
                                 @error('phone_number')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-item ">
                                 <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
-                                <input type="password" name="password" value="{{ old('password') }}" autocomplete="off" placeholder="Your name" class="form-input" />
+                                <input type="password" name="password" value="{{ old('password') }}" autocomplete="off"
+                                    placeholder="Your password" class="form-input" />
                                 @error('password')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
@@ -57,4 +59,3 @@
         </div>
     </section>
 @endsection
-
