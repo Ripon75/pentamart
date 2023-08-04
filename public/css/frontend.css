@@ -9057,6 +9057,12 @@ textarea.form-control.is-invalid{
 .p-10{
   padding: 2.5rem;
 }
+.p-3{
+  padding: 0.75rem;
+}
+.p-6{
+  padding: 1.5rem;
+}
 .py-4{
   padding-top: 1rem;
   padding-bottom: 1rem;
@@ -9385,9 +9391,21 @@ textarea.form-control.is-invalid{
 .outline{
   outline-style: solid;
 }
+.ring-2{
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color);
+  box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
+}
 .ring-gray-300{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(209 213 219 / var(--tw-ring-opacity));
+}
+.ring-gray-400{
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(156 163 175 / var(--tw-ring-opacity));
+}
+.ring-opacity-50{
+  --tw-ring-opacity: 0.5;
 }
 .blur{
   --tw-blur: blur(8px);
@@ -20549,6 +20567,9 @@ readers do not read off random characters that represent icons */
   .sm\:w-full{
     width: 100%;
   }
+  .sm\:w-2{
+    width: 0.5rem;
+  }
   .sm\:flex-1{
     flex: 1 1 0%;
   }
@@ -21109,6 +21130,10 @@ readers do not read off random characters that represent icons */
   .lg\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+  .lg\:text-lg{
+    font-size: 1.125rem;
+    line-height: 1.75rem;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;

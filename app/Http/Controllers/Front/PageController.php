@@ -33,17 +33,17 @@ class PageController extends Controller
 
         $features = [
             [
-                'icon'      => 'fa-truck-fast',
-                'title'     => 'Free Shipping',
+                'imageSrc'  => 'delivery.png',
+                'title'     => 'Cash on delivery',
                 'postTitle' => ''
             ],
             [
-                'icon'      => 'fa-truck-fast',
-                'title'     => 'Free Shipping',
+                'imageSrc'  => 'quality.png',
+                'title'     => 'Qualityful Product',
                 'postTitle' => ''
             ],
             [
-                'icon'      => 'fa-solid fa-phone',
+                'imageSrc'  => 'customer-service.png',
                 'title'     => 'Support 24/7',
                 'postTitle' => ''
             ]
