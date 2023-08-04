@@ -8990,6 +8990,10 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
 }
+.bg-blue-600{
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
+}
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
 }
@@ -20423,6 +20427,282 @@ readers do not read off random characters that represent icons */
       padding-left: 6rem;
     }
   }
+  .sm\:btn-check[disabled] + .btn{
+    pointer-events: none;
+    filter: none;
+    opacity: 0.65;
+  }
+  .sm\:btn-check:disabled + .btn{
+    pointer-events: none;
+    filter: none;
+    opacity: 0.65;
+  }
+  .input-group .sm\:btn{
+    position: relative;
+    z-index: 2;
+  }
+  .input-group .sm\:btn:focus{
+    z-index: 3;
+  }
+  .sm\:btn-check:focus + .btn{
+    outline: 0;
+    box-shadow: none;
+  }
+  .sm\:btn:focus{
+    outline: 0;
+    box-shadow: none;
+  }
+  .sm\:btn-check:checked + .btn{
+    box-shadow: none;
+  }
+  .sm\:btn-check:active + .btn{
+    box-shadow: none;
+  }
+  .sm\:btn:active{
+    box-shadow: none;
+  }
+  .sm\:btn.active{
+    box-shadow: none;
+  }
+  .sm\:btn-check:checked + .btn:focus{
+    box-shadow: none;
+  }
+  .sm\:btn-check:active + .btn:focus{
+    box-shadow: none;
+  }
+  .sm\:btn:active:focus{
+    box-shadow: none;
+  }
+  .sm\:btn.active:focus{
+    box-shadow: none;
+  }
+  .sm\:btn .ripple-wave{
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.2) 0, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.4) 50%, rgba(255, 255, 255, 0.5) 60%, rgba(255, 255, 255, 0) 70%);
+  }
+  .sm\:btn{
+    border-radius: 0.25rem;
+  }
+  .sm\:btn{
+    --tw-bg-opacity: 1;
+    background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+  }
+  .sm\:btn{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .sm\:btn{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .sm\:btn:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+  }
+  .sm\:btn{
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .sm\:btn{
+    transition-duration: 200ms;
+  }
+  .sm\:btn{
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sm\:btn.btn-ghost{
+    border-width: 1px;
+  }
+  .sm\:btn.btn-ghost{
+    border-style: dashed;
+  }
+  .sm\:btn.btn-ghost{
+    background-color: transparent;
+  }
+  .sm\:btn.btn-ghost{
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-ghost:hover{
+    --tw-text-opacity: 1;
+    color: rgb(55 65 81 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-primary{
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 121 140 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-primary{
+    background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  }
+  .sm\:btn.btn-primary{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-primary{
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .sm\:btn.btn-primary{
+    transition-duration: 300ms;
+  }
+  .sm\:btn.btn-primary{
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sm\:btn.btn-primary:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(19 78 74 / var(--tw-bg-opacity));
+  }
+  .btn.sm\:btn-primary{
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 121 140 / var(--tw-bg-opacity));
+  }
+  .btn.sm\:btn-primary{
+    background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  }
+  .btn.sm\:btn-primary{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .btn.sm\:btn-primary{
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .btn.sm\:btn-primary{
+    transition-duration: 300ms;
+  }
+  .btn.sm\:btn-primary{
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .btn.sm\:btn-primary:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(19 78 74 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-secondary{
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 196 45 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-secondary{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-secondary{
+    transition-property: color, background-color, border-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-text-decoration-color, -webkit-backdrop-filter;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-duration: 150ms;
+  }
+  .sm\:btn.btn-secondary{
+    transition-duration: 300ms;
+  }
+  .sm\:btn.btn-secondary{
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .sm\:btn.btn-secondary:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(199 119 0 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-success{
+    --tw-bg-opacity: 1;
+    background-color: rgb(52 211 153 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-success{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-success:hover{
+    --tw-bg-opacity: 1;
+    background-color: rgb(5 150 105 / var(--tw-bg-opacity));
+  }
+  .sm\:btn.btn-danger{
+    background-image: linear-gradient(to top, var(--tw-gradient-stops));
+  }
+  .sm\:btn.btn-danger{
+    --tw-gradient-from: #dc2626;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(220 38 38 / 0));
+  }
+  .sm\:btn.btn-danger{
+    --tw-gradient-to: #ef4444;
+  }
+  .sm\:btn.btn-danger{
+    --tw-text-opacity: 1;
+    color: rgb(255 255 255 / var(--tw-text-opacity));
+  }
+  .sm\:btn.btn-danger:hover{
+    --tw-gradient-from: #b91c1c;
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgb(185 28 28 / 0));
+  }
+  .sm\:btn.btn-danger:hover{
+    --tw-gradient-to: #b91c1c;
+  }
+  .sm\:btn.btn-xxs{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+  .sm\:btn.btn-xxs{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  .sm\:btn.btn-xxs{
+    font-size: .70rem;
+  }
+  .sm\:btn.btn-xxs{
+    text-transform: none;
+  }
+  .sm\:btn.btn-xxs.btn-icon-only{
+    width: 1.75rem;
+  }
+  .sm\:btn.btn-xxs.btn-icon-only{
+    padding: 0.25rem;
+  }
+  .sm\:btn.btn-xxs.btn-icon-only {
+    font-size: 10px;
+  }
+  .sm\:btn.btn-xs{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .sm\:btn.btn-xs{
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+  .sm\:btn.btn-xs{
+    font-size: .70rem;
+  }
+  .sm\:btn.btn-xs{
+    text-transform: none;
+  }
+  .sm\:btn.btn-xs.btn-icon-only{
+    width: 1.75rem;
+  }
+  .sm\:btn.btn-xs.btn-icon-only{
+    padding: 0.25rem;
+  }
+  .sm\:btn.btn-xs.btn-icon-only {
+    font-size: 12px;
+  }
+  .sm\:btn.btn-sm{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .sm\:btn.btn-sm{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .sm\:btn.btn-sm{
+    font-size: 0.75rem;
+    line-height: 1rem;
+  }
+  .sm\:btn.btn-sm{
+    text-transform: none;
+  }
   .btn.sm\:btn-sm{
     padding-left: 1rem;
     padding-right: 1rem;
@@ -20437,6 +20717,22 @@ readers do not read off random characters that represent icons */
   }
   .btn.sm\:btn-sm{
     text-transform: none;
+  }
+  .sm\:btn.btn-sm.btn-icon-only{
+    width: 1.5rem;
+  }
+  .sm\:btn.btn-sm.btn-icon-only{
+    padding: 0.25rem;
+  }
+  @media (min-width: 640px){
+    .sm\:btn.btn-sm.btn-icon-only{
+      width: 1.5rem;
+    }
+  }
+  @media (min-width: 768px){
+    .sm\:btn.btn-sm.btn-icon-only{
+      width: 2rem;
+    }
   }
   .btn.sm\:btn-sm.btn-icon-only{
     width: 1.5rem;
@@ -20454,8 +20750,92 @@ readers do not read off random characters that represent icons */
       width: 2rem;
     }
   }
+  .sm\:btn.btn-sm.btn-icon-only {
+    font-size: 12px;
+  }
   .btn.sm\:btn-sm.btn-icon-only {
     font-size: 12px;
+  }
+  .sm\:btn.btn-md{
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .sm\:btn.btn-md{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  .sm\:btn.btn-md{
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  .sm\:btn.btn-md.btn-icon-only{
+    width: 1.75rem;
+  }
+  .sm\:btn.btn-md.btn-icon-only{
+    padding: 0.25rem;
+  }
+  .sm\:btn.btn-md.btn-icon-only {
+    font-size: 12px;
+  }
+  .sm\:btn.btn-lg{
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .sm\:btn.btn-lg{
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+  }
+  .sm\:btn.btn-lg{
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+  }
+  .sm\:btn.btn-lg.btn-icon-only{
+    width: 52px;
+  }
+  .sm\:btn.btn-lg.btn-icon-only{
+    padding: 0.75rem;
+  }
+  .sm\:btn.btn-xl{
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  .sm\:btn.btn-xl{
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  .sm\:btn.btn-xl{
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  .sm\:btn.btn-xl.btn-icon-only{
+    width: 60px;
+  }
+  .sm\:btn.btn-xl.btn-icon-only{
+    padding: 1rem;
+  }
+  .sm\:btn.btn-rounded{
+    border-radius: 9999px;
+  }
+  .sm\:btn.btn-rounded-none{
+    border-radius: 0px;
+  }
+  .sm\:btn.btn-block{
+    display: block;
+  }
+  .sm\:btn.btn-block{
+    width: 100%;
+  }
+  .sm\:btn.btn-block{
+    text-align: center;
+  }
+  .sm\:btn.btn-icon-only{
+    width: 2.5rem;
+  }
+  .sm\:btn.btn-icon-only{
+    padding: 0.5rem;
+  }
+  .sm\:btn.btn-icon .icon{
+    margin-right: 0.5rem;
   }
   .sm\:col-span-4{
     grid-column: span 4 / span 4;
@@ -20555,6 +20935,14 @@ readers do not read off random characters that represent icons */
     --tw-space-x-reverse: 0;
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+  .sm\:bg-white{
+    --tw-bg-opacity: 1;
+    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
+  }
+  .sm\:bg-primary{
+    --tw-bg-opacity: 1;
+    background-color: rgb(0 121 140 / var(--tw-bg-opacity));
   }
   .sm\:p-4{
     padding: 1rem;

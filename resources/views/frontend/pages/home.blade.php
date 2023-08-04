@@ -141,14 +141,8 @@
             </div>
             <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
                 @foreach ($offers as $offer)
-                    <x-frontend.banner-box
-                        type="brands-banner"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        post-title-link="#"
-                        :img-src="$offer['img_src']"
-                        title=""
-                    />
+                    <x-frontend.banner-box type="brands-banner" :bg-color="'#fff'" pre-title="" post-title-link="#"
+                        :img-src="$offer['img_src']" title="" />
                 @endforeach
             </div>
         </div>
