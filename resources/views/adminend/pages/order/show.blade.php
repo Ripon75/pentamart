@@ -12,8 +12,8 @@
     <div class="page-content">
         <section class="container">
             <div class="page-section">
-                <div class="grid grid-cols-4 gap-4">
-                    <div class="col-span-3 mt-5">
+                <div class="grid grid-cols-6 gap-4">
+                    <div class="col-span-6 mt-2">
                         <div class="mb-4">
                            <x-frontend.header-title
                                 type="else"
@@ -22,24 +22,17 @@
                                 bg-Color="#00798c"
                            />
                         </div>
-                        <div class="card p-4">
+                        <div class="card p-1">
                             <div class="">
-                                <div class="text-right mb-4">
-                                    @if (count($order->prescriptions) > 0)
-                                        <a class="btn btn-success" href="{{ route('admin.prescription.show', $order->id) }}" target="_blank">Show prescriptions</a>
-                                    @else
-                                        <button class="btn-show-prescription btn btn-sm text-gray-600 disabled:opacity-80">Show prescriptions</button>
-                                    @endif
-                                </div>
                                 <table class="table-auto w-full">
                                     <thead class="">
                                         <tr class="bg-gray-100 mt-2">
                                             <th class="text-left border p-2 w-20">Order ID</th>
                                             <th class="text-left border p-2">Created At</th>
-                                            <th class="text-left border p-2">Delivery Type</th>
-                                            <th class="text-left border p-2">Payment Type</th>
-                                            <th class="text-left border p-2">Shipping Address</th>
-                                            <th class="text-left border p-2">Coupon Code</th>
+                                            <th class="text-left border p-2">Customer</th>
+                                            <th class="text-left border p-2">Address</th>
+                                            <th class="text-left border p-2">Status</th>
+                                            <th class="text-left border p-2">Coupon</th>
                                             <th class="text-left border p-2">note</th>
                                         </tr>
                                     </thead>
@@ -47,9 +40,9 @@
                                         <tr>
                                             <td class="border p-2">{{ $order->id }}</td>
                                             <td class="border p-2">{{ $order->created_at }}</td>
-                                            <td class="border p-2">{{ ($order->deliveryGateway->name) ?? null }}</td>
-                                            <td class="border p-2">{{ ($order->paymentGateway->name) ?? null }}</td>
-                                            <td class="border p-2">{{ ($order->shippingAddress->title) ?? null }}</td>
+                                            <td class="border p-2">{{ ($order->user->name) ?? null }}</td>
+                                            <td class="border p-2">{{ ($order->address) ?? null }}</td>
+                                            <td class="border p-2">{{ ($order->currentStatus->name) ?? null }}</td>
                                             <td class="border p-2">{{ $order->coupon->code ?? null }}</td>
                                             <td class="border p-2">{{ $order->note }}</td>
                                         </tr>
@@ -58,8 +51,8 @@
                             </div>
                         </div>
                     {{-- Order details part --}}
-                        <div class="col-span-3">
-                            <div class="mb-4">
+                        <div class="col-span-6">
+                            <div class="mb-1">
                                <x-frontend.header-title
                                     type="else"
                                     title="Order Details"
@@ -74,40 +67,32 @@
                                             <tr class="bg-gray-100">
                                                 <th class="text-left border p-2">Product</th>
                                                 <th class="text-left border p-2">Quantity</th>
-                                                <th class="text-left border p-2">Unit MRP ({{ $currency }})</th>
-                                                <th class="text-left border p-2">Discount ({{ $currency }})</th>
-                                                <th class="text-left border p-2">Sub Total ({{ $currency }})</th>
+                                                <th class="text-left border p-2">Buy price</th>
+                                                <th class="text-left border p-2">MRP</th>
+                                                <th class="text-left border p-2">Sell price</th>
+                                                <th class="text-left border p-2">Discount</th>
+                                                <th class="text-left border p-2">Sub Total</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($order->items as $item)
                                             @php
-                                                $itemQuantity      = $item->pivot->quantity;
-                                                $itemMRP           = $item->pivot->item_mrp;
-                                                $itemPrice         = $item->pivot->price;
-                                                $itemTotalPrice    = $itemPrice * $itemQuantity;
-                                                $itemTotalDiscount = ($itemMRP - $itemPrice) * $itemQuantity;
+                                                $itemQuantity       = $item->pivot->quantity;
+                                                $itemBuyPrice       = $item->pivot->item_buy_price;
+                                                $itemMRP            = $item->pivot->item_mrp;
+                                                $itemSellPrice      = $item->pivot->item_sell_price;
+                                                $itemDiscount       = $item->pivot->item_discount;
+                                                $itemTotalSellPrice = $itemSellPrice * $itemQuantity;
+                                                $itemTotalDiscount  = $itemDiscount * $itemQuantity;
                                             @endphp
                                             <tr>
                                                 <td class="border p-2">{{ $item->name }}</td>
-                                                <td class="border p-2">
-                                                    {{ $itemQuantity }}
-                                                </td>
-                                                <td class="border p-2">
-                                                    <span class="ml-2">
-                                                        {{ number_format($itemMRP, 2) ?? null }}
-                                                    </span>
-                                                </td>
-                                                <td class="border p-2">
-                                                    <span class="ml-2">
-                                                        {{ number_format($itemTotalDiscount, 2) ?? null }}
-                                                    </span>
-                                                </td>
-                                                <td class="border p-2">
-                                                    <span class="totalprice ml-2">
-                                                        {{ number_format($itemTotalPrice, 2); }}
-                                                    </span>
-                                                </td>
+                                                <td class="border p-2">{{ $itemQuantity }}</td>
+                                                <td class="border p-2">{{ number_format($itemBuyPrice, 2) }}</td>
+                                                <td class="border p-2">{{ number_format($itemMRP, 2) }}</td>
+                                                <td class="border p-2">{{ number_format($itemSellPrice, 2) }}</td>
+                                                <td class="border p-2">{{ number_format($itemDiscount, 2) }}</td>
+                                                <td class="border p-2">{{ number_format($itemTotalSellPrice, 2); }}</td>
                                             </tr>
                                             @endforeach
                                         </tbody>
@@ -122,7 +107,35 @@
                                                     <span>
                                                         <span>{{ $currency }}</span>
                                                         <span class="text-lg font-medium ml-1">
-                                                            {{ number_format($order->order_items_mrp, 2) }}
+                                                            {{ number_format($order->mrp, 2) }}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- Show discount amount --}}
+                                        <div class="flex justify-end">
+                                            <div class="bg-gray-300 p-2 rounded-b w-64 mt-3">
+                                                <div class="flex justify-between text-gray-700">
+                                                    <span>Items Discount</span>
+                                                    <span>
+                                                        <span class="text-lg font-medium ml-1">
+                                                            <span>{{ $currency }}</span>
+                                                            - {{ number_format($order->discount, 2) }}
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {{-- Show sell price --}}
+                                        <div class="flex justify-end">
+                                            <div class="bg-gray-300 p-2 rounded-b w-64 mt-3">
+                                                <div class="flex justify-between text-gray-700">
+                                                    <span>Total - (Discount)</span>
+                                                    <span>
+                                                        <span class="text-lg font-medium ml-1">
+                                                            <span>{{ $currency }}</span>
+                                                             {{ number_format($order->sell_price, 2) }}
                                                         </span>
                                                     </span>
                                                 </div>
@@ -142,29 +155,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        {{-- Show discount amount --}}
-                                        <div class="flex justify-end">
-                                            <div class="bg-gray-300 p-2 rounded-b w-64 mt-3">
-                                                <div class="flex justify-between text-gray-700">
-                                                    <span>Items Discount</span>
-                                                    <span>
-                                                        <span>{{ $currency }}</span>
-                                                        @if ($order->coupon && $order->coupon->applicable_on === 'products')
-                                                            <span class="text-lg font-medium ml-1 line-through">
-                                                                - {{ number_format($order->total_items_discount, 2) ?? 0 }}
-                                                            </span>
-                                                        @else
-                                                            <span class="text-lg font-medium ml-1">
-                                                                - {{ number_format($order->total_items_discount, 2) ?? 0 }}
-                                                            </span>
-                                                        @endif
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {{-- Show coupon discount amount --}}
                                         @if ($order->coupon)
                                             <div class="flex justify-end">
-                                                {{-- Show discount amount --}}
                                                 <div class="bg-gray-300 p-2 rounded-b w-64 mt-3">
                                                     <div class="flex justify-between text-gray-700">
                                                         <span>Coupon Discount</span>
@@ -172,22 +165,6 @@
                                                             <span>{{ $currency }}</span>
                                                             <span class="text-lg font-medium ml-1">
                                                                 - {{ number_format($order->coupon_value, 2) }}
-                                                            </span>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endif
-                                        {{-- Show discount amount --}}
-                                        @if($order->total_special_discount > 0)
-                                            <div class="flex justify-end">
-                                                <div class="bg-gray-300 p-2 rounded-b w-64 mt-3">
-                                                    <div class="flex justify-between text-gray-700">
-                                                        <span>Special Discount</span>
-                                                        <span>
-                                                            <span>{{ $currency }}</span>
-                                                            <span class="text-lg font-medium ml-1">
-                                                                - {{ number_format($order->total_special_discount, 2) }}
                                                             </span>
                                                         </span>
                                                     </div>
@@ -202,7 +179,7 @@
                                                     <span>
                                                         <span>{{ $currency }}</span>
                                                         <span class="text-lg font-medium ml-1">
-                                                            {{ number_format(round($order->payable_order_value), 2) }}
+                                                            {{ number_format(round($order->payable_price), 2) }}
                                                         </span>
                                                     </span>
                                                 </div>
