@@ -18,14 +18,17 @@
             @if (count($sliders) > 0)
                 <div class="carousel-inner relative w-full overflow-hidden">
                     <div class="carousel-item active float-left w-full">
-                        <img src="{{ $sliders[0]->web_img_src }}" class="hidden sm:hidden md:block w-full" alt=""/>
-                        <img src="{{ $sliders[0]->mobile_img_src }}" class="w-full block sm:block md:hidden" alt=""/>
+                        <img src="{{ $sliders[0]->web_img_src }}" class="hidden sm:hidden md:block w-full" alt="" />
+                        <img src="{{ $sliders[0]->mobile_img_src }}" class="w-full block sm:block md:hidden"
+                            alt="" />
                     </div>
 
                     @for ($i = 1; $i < count($sliders); $i++)
                         <div class="carousel-item float-left w-full">
-                            <img src="{{ $sliders[$i]->web_img_src }}" class="hidden sm:hidden md:block w-full" alt=""/>
-                            <img src="{{ $sliders[$i]->mobile_img_src }}" class="block sm:block md:hidden w-full" alt=""/>
+                            <img src="{{ $sliders[$i]->web_img_src }}" class="hidden sm:hidden md:block w-full"
+                                alt="" />
+                            <img src="{{ $sliders[$i]->mobile_img_src }}" class="block sm:block md:hidden w-full"
+                                alt="" />
                         </div>
                     @endfor
                 </div>
@@ -48,17 +51,11 @@
     {{-- ==============Service Section=================== --}}
     <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
         <div class="container">
-            <div class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
                 @foreach ($topBrands as $topBrand)
-                    <x-frontend.banner-box
-                        type="service"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        title=""
-                        :img-src="$topBrand->img_src"
-                        post-title="Shop Now"
-                        :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])"
-                    />
+                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title="" :img-src="$topBrand->img_src"
+                        post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
                 @endforeach
             </div>
         </div>
@@ -69,15 +66,8 @@
         <div class="container">
             <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
                 @foreach ($topBrands as $topBrand)
-                    <x-frontend.banner-box
-                        type="service"
-                        :bg-color="'#fff'"
-                        pre-title=""
-                        title=""
-                        :img-src="$topBrand->img_src"
-                        post-title="Shop Now"
-                        :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])"
-                    />
+                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title="" :img-src="$topBrand->img_src"
+                        post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
                 @endforeach
             </div>
         </div>
@@ -215,24 +205,23 @@
         <div class="container">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                 @foreach ($features as $feature)
-                    <div class="">
-                        <div class="flex space-x-4 items-center justify-center">
-                            <div class="">
-                                <i
-                                    class="text-3xl sm:text-3xl md:text-5xl lg:text-5xl xl:text-5xl 2xl:text-5xl text-primary-dark fa-solid {{ $feature['icon'] }}"></i>
-                            </div>
-                            <div class="self-center">
-                                <h1
-                                    class="text-lg sm:tex-lg md:text-xl lg:text-xl xl:text-xl 2xl:text-xl font-medium text-gray-900">
-                                    {{ $feature['title'] }}</h1>
-                                <div class="text-gray-800">{{ $feature['postTitle'] }}</div>
-                            </div>
+                    <div
+                        class="flex items-center justify-center shadow-xl ring-2 ring-gray-400 ring-opacity-50 p-6 rounded">
+                        <div class="flex flex-col items-center">
+                            <img style="width: 20%;" src="{{ asset('images/' . $feature['imageSrc']) }}" alt="Image">
+                            <h1
+                                class="mt-4 text-lg sm:text-lg md:text-lg lg:text-lg xl:text-lg 2xl:text-lg font-medium text-gray-900">
+                                {{ $feature['title'] }}
+                            </h1>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
     </section>
+
+
+
 
 @endsection
 @push('scripts')
