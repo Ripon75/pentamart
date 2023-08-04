@@ -10197,6 +10197,9 @@ textarea.form-control.is-invalid{
 .col-span-5{
   grid-column: span 5 / span 5;
 }
+.col-span-10{
+  grid-column: span 10 / span 10;
+}
 .col-start-5{
   grid-column-start: 5;
 }

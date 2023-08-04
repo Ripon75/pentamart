@@ -15,8 +15,8 @@ use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentTransaction;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Validator;
 class OrderController extends Controller
 {
     protected $util;
@@ -103,13 +103,11 @@ class OrderController extends Controller
 
     public function manualCreate()
     {
-        $areas          = District::orderBy('name', 'asc')->get();
-        $orderStatus    = Status::orderBy('name', 'asc')->get();
-        // $pgs         = PaymentGateway::where('status', 'active')->get();
+        $districts   = District::orderBy('name', 'asc')->get();
+        $orderStatus = Status::orderBy('name', 'asc')->get();
 
         return view('adminend.pages.order.create', [
-            // 'pgs'      => $pgs,
-            'areas'       => $areas,
+            'districts'   => $districts,
             'orderStatus' => $orderStatus,
         ]);
     }
@@ -120,10 +118,9 @@ class OrderController extends Controller
             [
                 'items'               => ['required'],
                 'address_id'          => ['required'],
-                'pg_id'               => ['required'],
                 'address_title'       => ['required_if:address_id,0'],
                 'address_line'        => ['required_if:address_id,0'],
-                'area_id'             => ['required_if:address_id,0'],
+                'district_id'         => ['required_if:address_id,0'],
                 'customer_name'       => ['required_if:user_id,0'],
                 'search_phone_number' => ['required']
             ],
@@ -260,95 +257,98 @@ class OrderController extends Controller
             abort(404);
         }
 
-        $areas             = District::orderBy('name', 'asc')->get();
-        $pgs               = PaymentGateway::where('status', 'activated')->get();
+        $districts         = District::orderBy('name', 'asc')->get();
         $shippingAddresses = Address::where('user_id', $order->user_id)->get();
-        // $orderStatus       = $order->getNextStatus($order->status_id);
+        $orderStatus       = Status::orderBy('name', 'asc')->get();
 
         return view('adminend.pages.order.edit', [
             'order'             => $order,
-            'areas'             => $areas,
-            'pgs'   => $pgs,
+            'districts'         => $districts,
             'shippingAddresses' => $shippingAddresses,
-            'orderStatus'       => [],
-            'currency'          => 'Tk'
+            'orderStatus'       => $orderStatus,
+            'currency'          => 'tk'
         ]);
     }
 
-
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'pg_id'      => ['required', 'integer'],
-            'address_id' => ['required', 'integer'],
-            'area_id'    => ['required', 'integer'],
-            'address'    => ['required'],
-        ],
-        [
-            'address_id.required' => 'Please select shipping address'
-        ]);
+        $request->validate(
+            [
+                'items'       => ['required'],
+                'status_id'   => ['required', 'integer'],
+                'shipping_id' => ['required', 'integer'],
+                'district_id' => ['required', 'integer'],
+                'address'     => ['required'],
+            ]
+        );
 
-        $paymentMethodId = $request->input('pg_id');
-        $addressId       = $request->input('address_id');
+        $shippingId      = $request->input('shipping_id');
         $statusId        = $request->input('status_id', null);
         $deliveryCharge  = $request->input('delivery_charge', 0);
-        $items           = $request->input('items');
+        $currentItems    = $request->input('items');
         $address         = $request->input('address');
         $phoneNumber     = $request->input('phone_number');
-        $areaID          = $request->input('area_id');
+        $districtId      = $request->input('district_id');
         $isPaid          = $request->input('is_paid');
 
-        try {
-            DB::beginTransaction();
+        // format items array
+        $currentItems = collect($currentItems);
+        $currentItems = $currentItems->flatten(2);
 
+        $order = Order::find($id);
+        $previousItems = $order->items;
+
+        try {
             $order = Order::find($id);
 
             // Update shipping address
-            if ($addressId) {
-                $shippingAddress               = Address::find($addressId);
-                $shippingAddress->address      = $address;
+            if ($shippingId) {
+                $shippingAddress               = Address::find($shippingId);
+                $shippingAddress->district_id  = $districtId;
                 $shippingAddress->phone_number = $phoneNumber;
-                $shippingAddress->area_id      = $areaID;
                 $shippingAddress->save();
             }
 
-            $order->pg_id           = $paymentMethodId;
-            $order->address_id      = $addressId;
-            $order->created_by      = Auth::id();
+            $order->pg_id           = 1;
+            $order->address         = $address;
+            $order->status_id       = $statusId;
             $order->delivery_charge = $deliveryCharge;
             $order->is_paid         = $isPaid;
             $res = $order->save();
             if ($res) {
-                if ($items) {
-                    $itemIds = [];
-                    foreach ($items as $item) {
-                        $itemIds[$item['product_id']] = [
-                            'quantity'          => $item['quantity'],
-                            'item_mrp'          => $item['item_mrp'],
-                            'price'             => $item['price'],
-                            'discount'          => $item['discount'],
-                            'pack_size'         => $item['pack_size']
-                        ];
-                    }
-                    $res = $order->items()->sync($itemIds);
+                $itemIds = [];
+                foreach ($currentItems as $item) {
+                    $itemIds[] = [
+                        'order_id'        => $order->id,
+                        'item_id'         => $item['product_id'],
+                        'color_id'        => $item['color_id'],
+                        'size_id'         => $item['size_id'],
+                        'quantity'        => $item['quantity'],
+                        'item_buy_price'  => $item['buy_price'],
+                        'item_mrp'        => $item['mrp'],
+                        'item_sell_price' => $item['sell_price'],
+                        'item_discount'   => $item['discount']
+                    ];
                 }
 
-                // Update order total_items_discount, order_net_value and coupon_value
+                // Update items  stock
+                $order->updateItemStock($previousItems, $currentItems, $statusId);
+
+                // ditach and  attach order items
+                $order->items()->detach();
+                $order->items()->sync($itemIds);
+
+                // attach order status
+                $order->status()->syncWithoutDetaching([$statusId]);
+
+                // Update order value
                 $order->updateOrderValue($order);
 
-                // Update payment transaction
-                $paymentTransaction = PaymentTransaction::where('order_id', $id)->first();
-                if ($paymentTransaction) {
-                    $paymentTransaction->amount = round($order->payable_order_value);
-                    $paymentTransaction->save();
-                }
-                DB::commit();
+                return back()->with('success', 'Order updated successfully');
             }
-
-            return redirect()->route('admin.orders.index')->with('success', 'Order updated successfully');
         } catch (\Exception $e) {
             info($e);
-            DB::rollBack();
+
             return back()->with('error', 'Something went wrong');
         }
     }
@@ -406,23 +406,44 @@ class OrderController extends Controller
     // Remome order item
     public function orderItemRemove(Request $request)
     {
-        $request->validate([
-            'order_id'      => ['required'],
-            'order_item_id' => ['required']
+        $validator = Validator::make($request->all(), [
+            'order_id' => ['required', 'integer'],
+            'item_id'  => ['required', 'integer'],
+            'color_id' => ['required', 'integer'],
+            'size_id'  => ['required', 'integer']
         ]);
 
-        $orderRequstId      = $request->input('order_id', null);
-        $orderItemRequestId = $request->input('order_item_id', null);
-
-        $order = Order::find($orderRequstId);
-
-        if (!$order) {
-            abort(404);
+        if ($validator->fails()) {
+            return $this->sendError($validator->errors());
         }
 
-        $order->items()->detach($orderItemRequestId);
+        $orderId = $request->input('order_id', null);
+        $itemId  = $request->input('item_id', null);
+        $colorId = $request->input('color_id', null);
+        $sizeId  = $request->input('size_id', null);
 
-        return back();
+        $order = Order::find($orderId);
+
+        if (!$order) {
+            return $this->sendError('Order not found');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $order->items()->wherePivot('item_id', $itemId)
+                ->wherePivot('color_id', $colorId)
+                ->wherePivot('size_id', $sizeId)
+                ->detach();
+
+            DB::commit();
+            return $this->sendResponse(true, 'Item removed successfully');
+        } catch (\Exception $e) {
+            info($e);
+            DB::rollBack();
+
+            return $this->sendError('Something went wrong');
+        }
     }
 
     public function makePaid(Request $request)

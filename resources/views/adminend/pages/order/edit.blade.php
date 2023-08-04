@@ -8,411 +8,339 @@
             <a href="{{ route('admin.orders.index') }}" class="action btn btn-primary">Orders</a>
         </div>
     </div>
+
     <div class="page-content">
-        <form class="card grid grid-cols-12 gap-4" action="{{ route('admin.orders.update', $order->id) }}" method="POST">
+        {{-- Show success or error message --}}
+        <div class="col-span-12 mb-5">
+            @if(Session::has('success'))
+                <div class="alert success">{{ Session::get('success') }}</div>
+            @endif
+            @if(Session::has('error'))
+                <div class="alert error">{{ Session::get('error') }}</div>
+            @endif
+        </div>
+
+        <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
             @csrf
             @method('PUT')
 
-            {{-- Show success or error message --}}
-            <div class="col-span-12">
-                @if(Session::has('success'))
-                    <div class="alert success">{{ Session::get('success') }}</div>
-                @endif
-                @if(Session::has('error'))
-                    <div class="alert success">{{ Session::get('error') }}</div>
-                @endif
-            </div>
-
-            {{-- =========Order edit titile========== --}}
-            <div class="col-span-12">
-                <x-frontend.header-title
-                    type="else"
-                    title="Order Update"
-                    bgImageSrc=""
-                    bgColor="#00798c"
-                />
-            </div>
-            <div class="col-span-4 px-4 bg-gray-200">
-                 {{-- Payment status --}}
-                 <div class="form-item">
-                    <label class="form-label">Payment Status <span class="text-red-500 font-medium">*</span> </label>
-                    <select class="form-select form-input w-full" name="is_paid">
-                        <option value="1" {{ $order->is_paid === 1 ? 'selected' : '' }}>Paid</option>
-                        <option value="0" {{ $order->is_paid === 0 ? 'selected' : '' }}>Unpaid</option>
-                    </select>
-                </div>
-
-                {{-- Attach status --}}
-                <div class="form-item w-full mt-4">
-                    <input id="input-order-id" type="hidden" value="{{ $order->id }}">
-                    <label for="" class="form-label">Order Status(<strong>{{ $order->currentStatus->name ?? null }}</strong>)</label>
-                    <select id="input-order-status" class="form-select form-input w-full" name="status_id">
-                        <option value="">Select Status</option>
-                        @foreach ($orderStatus as $status)
-                            <option value="{{ $status['id']}}">
-                                {{ $status['label'] }}</option>
-                        @endforeach
-                    </select>
-                    @error('status_id')
-                        <span class="form-helper error">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="flex space-x-2">
-                    {{-- Order date --}}
-                    <div class="form-item w-full">
-                        <label for="" class="form-label">Order Date <span class="text-red-500 font-medium">*</span> </label>
-                        <input class="form-input" type="datetime-local" step="any" name="ordered_at" value="{{ date('Y-m-d\TH:i:s', strtotime($order->ordered_at)) }}">
+            <div class="grid grid-cols-12 gap-1">
+                <div class="card shadow body p-2 col-span-2">
+                     <div class="form-item">
+                        <label class="form-label">
+                            Payment Status <span class="text-red-500 font-medium">*</span>
+                        </label>
+                        <select class="form-select form-input w-full" name="is_paid">
+                            <option value="1" {{ $order->is_paid == 1 ? 'selected' : '' }}>Paid</option>
+                            <option value="0" {{ $order->is_paid == 0 ? 'selected' : '' }}>Unpaid</option>
+                        </select>
                     </div>
-                    {{-- Shipping address --}}
-                    <div class="form-item w-full">
-                        <label for="" class="form-label">Address Title</label>
-                        <select id="area-shipping-address-id" class="form-select form-input w-full" name="address_id">
-                            <option value="">Select Title</option>
-                            @foreach ($shippingAddresses as $shippingAddress)
-                            <option value="{{ $shippingAddress->id }}"
-                                {{ $order->address_id == $shippingAddress->id ? "selected" : '' }}>
-                                {{ $shippingAddress->title }}
-                            </option>
+
+                    <div class="form-item w-full mt-4">
+                        {{-- Hidden input --}}
+                        <input id="input-order-id" type="hidden" value="{{ $order->id }}">
+                        <input type="hidden" name="shipping_id" value="{{ $order->shippingAddress->id ?? null }}">
+
+                        <label for="" class="form-label">
+                            Order Status <span class="text-red-500 font-medium">*</span>
+                        </label>
+                        <select id="input-order-status" class="form-select form-input w-full" name="status_id">
+                            <option value="">Select Status</option>
+                            @foreach ($orderStatus as $status)
+                                <option value="{{ $status->id }}" {{ $order->status_id == $status->id ? 'selected' : '' }}>
+                                    {{ $status->name }}
+                                </option>
                             @endforeach
                         </select>
-                        @error('address_id')
+                        @error('status_id')
                             <span class="form-helper error">{{ $message }}</span>
                         @enderror
                     </div>
-                </div>
-                <div class="form-item">
-                    <label class="form-label">Address</label>
-                    <textarea id="area-shipping-address-line" class="form-input" type="text" name="address">{{ $order->shippingAddress->address ?? null }}</textarea>
-                </div>
-                <div class="form-item w-full">
-                       <label class="form-label">Alternative Phone Number</label>
-                       <input id="area-alternative-phone-number" class="form-input" type="number" name="phone_number"
-                           value="{{ $order->shippingAddress->phone_number ?? null }}"/>
-               </div>
-                <div class="form-item w-full">
-                   <label class="form-label">Area</label>
-                   <select id="input-area-id" class="form-input select-2-areas" name="area_id">
-                       <option value="">Select area</option>
-                       @foreach ($areas as $area)
-                           <option
-                               value="{{ $area->id }}"
-                               @if ($order->shippingAddress)
-                               {{ $order->shippingAddress->area_id == $area->id ? "selected" : '' }}
-                               @endif
-                               >
-                               {{ $area->name }}
-                           </option>
-                       @endforeach
-                       <span class="text-red-300">@error('area_id') {{ $message }} @enderror</span>
-                   </select>
-               </div>
-            </div>
-            <div class="col-span-8 p-2">
-                {{-- Search and select product --}}
-                <div class="flex space-x-2 mb-4">
-                    <div class="flex-1">
-                        <x-adminend.product-search/>
-                    </div>
-                    <div class="w-40">
-                        <select id="product-quantity">
 
-                        </select>
+                    <div class="form-item">
+                        <label class="form-label">
+                            Address <span class="text-red-500 font-medium">*</span>
+                        </label>
+                        <textarea id="input-shipping-address" class="form-input" type="text" name="address">{{ $order->shippingAddress->address ?? null }}</textarea>
+                        @error('address')
+                            <span class="form-helper error">{{ $message }}</span>
+                        @enderror
                     </div>
-                    <button id="btn-add-product"
-                        type="button"
-                        data-mdb-ripple="true"
-                        data-mdb-ripple-color="light"
-                        class="btn btn-success w-32">Add
-                    </button>
-                </div>
-                <div class="">
-                    {{-- Product render table --}}
-                    <table class="table-auto w-full">
-                        <thead class="">
-                            <tr class="bg-gray-100">
-                                <th class="text-left border p-2">Image</th>
-                                <th class="text-left border p-2">Product</th>
-                                <th class="text-center border p-2 w-24">Quantity</th>
-                                <th class="text-right border p-2 w-28">MRP ({{ $currency }})</th>
-                                <th class="text-center border p-2 w-32">Unit Price ({{ $currency }})</th>
-                                <th class="text-right border p-2 w-32">Discount ({{ $currency }})</th>
-                                <th class="text-right border p-2 w-36">Sub Total ({{ $currency }})</th>
-                                <th class="text-left border p-2">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody class="items-table-body">
-                            @php
-                                $total = 0;
-                            @endphp
-                            @foreach ($order->items as $key => $item)
-                                <tr class="hover:bg-gray-50 transition duration-300 ease-in-out">
-                                    <input type="hidden" name="items[{{ $item->id }}][product_id]" value="{{ $item->pivot->item_id }}">
-                                    <input type="hidden" name="items[{{ $item->id }}][price]" value="{{ $item->pivot->price }}">
-                                    <input type="hidden" name="items[{{ $item->id }}][pack_size]" value="{{ $item->pivot->pack_size }}">
-                                    <input type="hidden" name="items[{{ $item->id }}][item_mrp]" value="{{ $item->pivot->item_mrp }}">
-                                    <input type="hidden" name="items[{{ $item->id }}][discount]"
-                                        value="{{ $item->pivot->item_mrp - $item->pivot->price }}">
-                                    @php
-                                        $discount  = 0;
-                                        $itemMRP   = $item->pivot->item_mrp;
-                                        $itemPrice = $item->pivot->price;
-                                        $quantity  = $item->pivot->quantity;
-                                        $discount = ($itemMRP - $itemPrice) * $quantity;
-                                    @endphp
-                                    <input id="eo-item-discount-{{ $item->id }}" type="hidden" value="{{ $discount }}">
 
-                                    <td class="text-center border p-2" style="width: 70px; height:40px">
-                                        <img src="{{ $item->image_src }}" alt="Product Image">
-                                    </td>
-                                    <td class="border p-2 text-sm">{{ $item->name }}</td>
-                                    @php
-                                        $itemPrice = $item->pivot->price;
-                                    @endphp
-                                    <td class="border p-2 text-right">
-                                        <select
-                                            data-index="{{ $key }}"
-                                            data-unit-price="{{ $itemPrice }}"
-                                            data-total-item-price-label="total-price-{{ $item->pivot->item_id }}"
-                                            data-item-pack-size="{{ $item->pivot->pack_size }}"
-                                            name="items[{{ $item->id }}][quantity]"
-                                            value="{{ $item->pivot->quantity }}"
-                                            class="input-item-qty border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
-                                            @if ($item->is_single_sell_allow)
-                                                    @for ($i = 1; $i <= $item->num_of_pack; $i++)
-                                                        <option value="{{ $i }}"
-                                                            {{ $i == $item->pivot->quantity ? 'selected' : '' }}>
-                                                            {{ $i }} {{ $item->uom }}
-                                                        </option>
-                                                    @endfor
-                                                @else
-                                                    @for ($i = 1; $i <= $item->num_of_pack; $i++)
-                                                        <option value="{{ $item->pack_size * $i }}"
-                                                            {{ ($item->pack_size * $i) == $item->pivot->quantity ? 'selected' : '' }}>
-                                                            {{ $item->pack_size * $i }} {{ $item->uom }}
-                                                        </option>
-                                                    @endfor
-                                                @endif
-                                        </select>
-                                    </td>
-                                    @php
-                                        $itemMRP = $item->pivot->item_mrp;
-                                    @endphp
-                                    <td class="border p-2 text-right">
-                                        <span class="ml-1">{{ ($itemMRP) ?? null }}</span>
-                                    </td>
-                                    <td class="border p-2 text-right">
-                                        <input
-                                            step="any"
-                                            type="number"
-                                            name="items[{{ $item->id }}][price]"
-                                            data-index="{{ $key }}"
-                                            data-total-item-price-label="total-price-{{ $item->id }}"
-                                            value="{{ $itemPrice }}"
-                                            class="product-unit-price w-full border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
-                                    </td>
-                                    <td class="border p-2 text-right">
-                                        <span id="eo-item-discount-label-{{ $item->id }}" class="ml-1">
-                                            {{ number_format($discount, 2)}}
-                                        </span>
-                                    </td>
-                                    <td class="border p-2 text-right font-medium">
-                                        @php
-                                            $subTotal = $item->pivot->price * $item->pivot->quantity;
-                                        @endphp
-                                        <span id="total-price-{{ $item->pivot->item_id }}" class="totalprice ml-1">
-                                            {{ number_format($subTotal, 2);  }}
-                                        </span>
-                                    </td>
-                                    <td class="text-center border w-16">
-                                        <button class="delete-order-item-btn bg-red-500 hover:bg-red-700 w-8 h-8 rounded transition duration-300 ease-in-out"
-                                            type="button"
-                                            data-index="{{ $key }}"
-                                            data-order-item-id="{{ $item->pivot->item_id }}">
-                                            <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
-                                            <i class="trash-icon text-base text-white fa-regular fa-trash-can"></i>
-                                        </button>
-                                    </td>
+                    <div class="form-item w-full">
+                        <label class="form-label">Alternative Phone Number</label>
+                        <input id="input-alternative-phone-number" class="form-input" type="number"
+                            name="phone_number"
+                            value="{{ $order->shippingAddress->phone_number ?? null }}" autocomplete="off"/>
+                   </div>
+
+                    <div class="form-item w-full">
+                       <label class="form-label">
+                            District <span class="text-red-500 font-medium">*</span>
+                        </label>
+                       <select id="input-area-id" class="form-input select-2-districts" name="district_id">
+                           <option value="">Select district</option>
+                           @foreach ($districts as $district)
+                               <option
+                                   value="{{ $district->id }}"
+                                   @if ($order->shippingAddress)
+                                        {{ $order->shippingAddress->district_id == $district->id ? "selected" : '' }}
+                                   @endif
+                                   >
+                                   {{ $district->name }}
+                               </option>
+                           @endforeach
+                           @error('district_id')
+                                <span class="form-helper error">{{ $message }}</span>
+                            @enderror
+                       </select>
+                   </div>
+                </div>
+
+                 <!-- Product add section -->
+                <div class="card shadow body p-2 col-span-10">
+                    {{-- Search and select product --}}
+                    <div class="flex space-x-2 mb-4">
+                        <div class="flex-1">
+                            <x-adminend.product-search/>
+                        </div>
+                        <div class="w-30">
+                            <select id="input-product-color-id" class="rounded-md">
+
+                            </select>
+                        </div>
+                        <div class="w-30">
+                            <select id="input-product-size-id" class="rounded-md">
+
+                            </select>
+                        </div>
+                        <div class="w-30">
+                            <select id="input-product-qty" class="rounded-md">
+                                @for ($i = 1; $i<=10; $i++)
+                                    <option value="{{ $i }}" >{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
+                        <button id="btn-add-product"
+                            type="button"
+                            data-mdb-ripple="true"
+                            data-mdb-ripple-color="light"
+                            class="btn btn-success w-32">Add
+                        </button>
+                    </div>
+                    <div class="">
+                        {{-- Product render table --}}
+                        <table class="table-auto w-full">
+                            <thead class="">
+                                <tr class="bg-gray-100">
+                                    <th class="text-left border p-2 w-20">Image</th>
+                                    <th class="text-left border p-2">Name</th>
+                                    <th class="text-right border p-2 w-20">Color</th>
+                                    <th class="text-right border p-2 w-20">Size</th>
+                                    <th class="text-right border p-2 w-20">Qty</th>
+                                    <th class="text-right border p-2 w-20">MRP</th>
+                                    <th class="text-right border p-2 w-20">Price</th>
+                                    <th class="text-right border p-2 w-20">Dis.</th>
+                                    <th class="text-right border p-2 w-28">Total</th>
+                                    <th class="text-center border p-2 w-20">Action</th>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    <tfoot>
-                        <div class="flex flex-col">
-                            {{-- Show item discount amount --}}
-                            <div class="flex justify-end">
-                                <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
-                                    <div class="flex justify-between text-gray-700">
-                                        <span>Items Discount</span>
-                                        <span>
-                                            <span class="font-medium">{{ $currency }}</span> -
-                                            <span id="eo-items-discount-label" class="text-lg font-medium ml-1">
-                                                {{ number_format($order->total_items_discount, 2) }}
+                            </thead>
+                            <tbody class="items-table-body">
+                                @foreach ($order->items as $key => $item)
+                                    <tr class="hover:bg-gray-50 transition duration-300 ease-in-out">
+                                        <input type="hidden" name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][product_id]" value="{{ $item->pivot->item_id }}">
+                                        <input type="hidden" name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][buy_price]" value="{{ $item->pivot->item_buy_price }}">
+                                        <input type="hidden" name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][mrp]" value="{{ $item->pivot->item_mrp }}">
+                                        <input type="hidden" name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][sell_price]" value="{{ $item->pivot->item_sell_price }}">
+                                        <input type="hidden" name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][discount]"value="{{ $item->pivot->item_discount }}">
+                                        @php
+                                            $itemQty       = $item->pivot->quantity;
+                                            $itemMrpPrice  = $item->pivot->item_mrp;
+                                            $itemSellPrice = $item->pivot->item_sell_price;
+                                            $itemDiscount  = $item->pivot->item_discount;
+                                        @endphp
+                                        <input id="eo-item-discount-{{ $item->id }}" type="hidden" value="{{ $itemDiscount }}">
+
+                                        <td class="text-center border p-2" style="width: 70px; height:40px">
+                                            <img src="{{ $item->img_src }}" alt="Product Image">
+                                        </td>
+                                        <td class="border p-2 text-sm">{{ $item->name }}</td>
+                                        <td class="border p-2 text-sm">
+                                            <select
+                                                name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][color_id]"
+                                                class="border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                                                <option value="1">Select</option>
+                                                @foreach ($item->colors as $color)
+                                                    <option value="{{ $color->id }}" {{ $color->id == $item->pivot->color_id ? 'selected' : '' }}>
+                                                        {{ $color->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="border p-2 text-sm">
+                                            <select
+                                                name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][size_id]"
+                                                class="border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                                                <option value="1">Select</option>
+                                                @foreach ($item->sizes as $size)
+                                                    <option value="{{ $size->id }}" {{ $size->id == $item->pivot->size_id ? 'selected' : '' }}>
+                                                        {{ $size->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </td>
+                                        <td class="border p-2 text-right">
+                                            <select
+                                                data-index="{{ $key }}"
+                                                data-item-id="{{ $item->id }}"
+                                                data-color-id="{{ $item->pivot->color_id }}"
+                                                data-size-id="{{ $item->pivot->size_id }}"
+                                                data-sell-price="{{ $itemSellPrice }}"
+                                                name="items[{{ $item->id }}][{{ $item->pivot->color_id }}][{{ $item->pivot->size_id }}][quantity]"
+                                                value="{{ $item->pivot->quantity }}"
+                                                class="input-item-qty border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                                                @for ($i = 1; $i <= 10; $i++)
+                                                    <option value="{{ $i }}"
+                                                        {{ $i == $item->pivot->quantity ? 'selected' : '' }}>
+                                                        {{ $i }}
+                                                    </option>
+                                                @endfor
+                                            </select>
+                                        </td>
+                                        <td class="border p-2 text-right">
+                                            <span class="ml-1">{{ ($itemMrpPrice) }}</span>
+                                        </td>
+                                        <td class="border p-2 text-right">
+                                            <span class="ml-1">{{ ($itemSellPrice) }}</span>
+                                        </td>
+                                        <td class="border p-2 text-right">
+                                            <span
+                                                id="item-discount-label-{{ $item->id }}-{{ $item->pivot->color_id }}-{{ $item->pivot->size_id }}"
+                                                class="ml-1">
+                                                {{ number_format($itemDiscount * $itemQty, 2)}}
                                             </span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Show subtotal price --}}
-                            <div class="flex justify-end">
-                                <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
-                                    <div class="flex justify-between text-gray-700">
-                                        <span>Subtotal</span>
-                                        <span>
-                                            <span class="font-medium">{{ $currency }}</span>
-                                            <span id="total-price-label" class="text-lg font-medium ml-1"></span>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Show delivery charge --}}
-                            <div class="flex justify-end">
-                                <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
-                                    <div class="flex items-center justify-between text-gray-700">
-                                        <span>Delivery Charge</span>
-                                        <span>
-                                            <span class="font-medium">{{ $currency }}</span>
-                                            <input id="delivery-charge-label" name="delivery_charge" value="" type="number"
-                                                class="text-lg font-medium w-24 h-8 rounded ml-1" readonly>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Show discount amount --}}
-                            @if ($order->coupon)
+                                        </td>
+                                        <td class="border p-2 text-right font-medium">
+                                            @php
+                                                $subTotal = $itemSellPrice * $itemQty;
+                                            @endphp
+                                            <span
+                                                id="item-sell-price-label-{{ $item->pivot->item_id }}-{{ $item->pivot->color_id }}-{{ $item->pivot->size_id }}"
+                                                class="total-sell-price ml-1">
+                                                {{ number_format($subTotal, 2);  }}
+                                            </span>
+                                        </td>
+                                        <td class="text-center border w-16">
+                                            <button class="btn-delete-item bg-red-500 hover:bg-red-700 w-8 h-8 rounded transition duration-300 ease-in-out"
+                                                type="button"
+                                                data-index="{{ $key }}"
+                                                data-item-id="{{ $item->pivot->item_id }}"
+                                                data-color-id="{{ $item->pivot->color_id }}"
+                                                data-size-id="{{ $item->pivot->size_id }}">
+                                                <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
+                                                <i class="trash-icon text-base text-white fa-regular fa-trash-can"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                        <tfoot>
+                            <div class="flex flex-col">
+                                {{-- Show item discount amount --}}
                                 <div class="flex justify-end">
                                     <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
-                                        <div class="flex items-center justify-between text-gray-700">
-                                            <span>Coupon Discount</span>
+                                        <div class="flex justify-between text-gray-700">
+                                            <span>Items Discount</span>
                                             <span>
                                                 <span class="font-medium">{{ $currency }}</span>
-                                                <span class="text-lg font-medium ml-1">
-                                                    - {{ number_format($order->coupon_value, 2) }}
+                                                <span id="total-discount-label" class="text-lg font-medium ml-1">
+                                                    {{ number_format($order->discount, 2) }}
                                                 </span>
                                             </span>
                                         </div>
                                     </div>
                                 </div>
-                            @endif
-                            {{-- Show special discount --}}
-                            <div class="flex justify-end">
-                                <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
-                                    <div class="flex items-center justify-between text-gray-700">
-                                        <span>Special Discout</span>
-                                        <span>
-                                            <span class="font-medium">{{ $currency }}</span>
-                                            <input id="special-discount-id" name="total_special_discount" value="{{ $order->total_special_discount }}"
-                                                type="number"
-                                                class="text-lg font-medium w-24 h-8 rounded ml-1" step="any">
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Show total price --}}
-                            <div class="flex justify-end">
-                                <div class="bg-primary p-2 rounded-b w-72 mt-3">
-                                    <div class="flex items-center justify-between text-white">
-                                        <span class="text-lg">Total</span>
-                                        <span>
-                                            <span class="font-medium">{{ $currency }}</span>
-                                            <span id="total-price-label-with-delivery-charge" class="text-lg font-medium ml-1">
-                                                @php
-                                                    $paybleTotal = round($order->payable_order_value);
-                                                @endphp
-                                                {{ number_format($paybleTotal, 2) }}
+
+                                {{-- Show subtotal price --}}
+                                <div class="flex justify-end">
+                                    <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
+                                        <div class="flex justify-between text-gray-700">
+                                            <span>Subtotal</span>
+                                            <span>
+                                                <span class="font-medium">{{ $currency }}</span>
+                                                <span id="total-sell-price-label" class="text-lg font-medium ml-1">
+                                                    {{ $order->sell_price }}
+                                                </span>
                                             </span>
-                                        </span>
+                                        </div>
                                     </div>
                                 </div>
+
+                                {{-- Show delivery charge --}}
+                                <div class="flex justify-end">
+                                    <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
+                                        <div class="flex items-center justify-between text-gray-700">
+                                            <span>Delivery Charge</span>
+                                            <span>
+                                                <span class="font-medium">{{ $currency }}</span>
+                                                <input id="delivery-charge-label" name="delivery_charge"
+                                                    value="{{ $order->delivery_charge }}" type="number"
+                                                    class="text-lg font-medium w-24 h-8 rounded ml-1">
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {{-- Show discount amount --}}
+                                @if ($order->coupon)
+                                    <div class="flex justify-end">
+                                        <div class="bg-gray-300 p-2 rounded-b w-72 mt-3">
+                                            <div class="flex items-center justify-between text-gray-700">
+                                                <span>Coupon Discount</span>
+                                                <span>
+                                                    <span class="font-medium">{{ $currency }}</span>
+                                                    <span class="text-lg font-medium ml-1">
+                                                        - {{ number_format($order->coupon_value, 2) }}
+                                                    </span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+
+                                {{-- Show total price --}}
+                                <div class="flex justify-end">
+                                    <div class="bg-primary p-2 rounded-b w-72 mt-3">
+                                        <div class="flex items-center justify-between text-white">
+                                            <span class="text-lg">Total</span>
+                                            <span>
+                                                <span class="font-medium">{{ $currency }}</span>
+                                                <span id="total-with-delivery-label" class="text-lg font-medium ml-1">
+                                                    {{ number_format($order->payable_price, 2) }}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
+                        </tfoot>
+                        <div class="text-right mt-2">
+                            <button
+                                id="btn-order-update"
+                                type="submit"
+                                data-mdb-ripple="true"
+                                data-mdb-ripple-color="light"
+                                class="btn btn-md btn-success w-72 text-lg font-medium"
+                                >Update
+                                <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
+                            </button>
                         </div>
-                    </tfoot>
-                    <div class="text-right mt-2">
-                        <button
-                            id="btn-admin-order-update"
-                            type="submit"
-                            data-mdb-ripple="true"
-                            data-mdb-ripple-color="light"
-                            class="btn btn-md btn-success w-72 text-lg font-medium"
-                            >Update
-                        </button>
                     </div>
                 </div>
             </div>
         </form>
-        <div class="grid grid-cols-12 gap-4 mt-4">
-            <div class="card p-4 col-span-6">
-                {{-- Header title component --}}
-                <x-frontend.header-title
-                type="else"
-                title="Create New Address"
-                bgImageSrc=""
-                bgColor="#00798c"
-                />
-                {{-- =========create new address=========== --}}
-                <form action="{{ route('my.address.other.store') }}" method="POST">
-                    @csrf
-                    <input type="hidden" name="user_id" value="{{ $order->user_id }}"/>
-                    <div class="form-item mt-4">
-                        <label class="form-label">Address Title <span class="text-red-500 font-medium">*</span> </label>
-                        <select id="edit-page-address-title" class="form-select form-input w-full" name="title">
-                            <option value="">Select</option>
-                            <option value="Home" {{ old('title') === 'Home' ? 'selected' : '' }}>Home</option>
-                            <option value="Office" {{ old('title') === 'Office' ? 'selected' : '' }}>Office</option>
-                            <option value="Others" {{ old('title') === 'Others' ? 'selected' : '' }}>Others</option>
-                        </select>
-                        @error('title')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                        @if(Session::has('title_exist'))
-                            <span class="form-helper error">{{ Session::get('title_exist') }}</span>
-                        @endif
-                    </div>
-                    <div id="edit-page-others-title-div" class="form-item mr-1">
-                        <label for="">Your address title<span class="text-red-500 font-medium">*</span></label>
-                        <input id="header-others-title" class="form-input" type="text" name="others_title"
-                            placeholder="Enter Your address title" value="{{ old('others_title') }}"/>
-                        @error('others_title')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-item">
-                        <label class="form-label">Address <span class="text-red-500 font-medium">*</span> </label>
-                        <textarea class="form-input" type="text" name="address"
-                            placeholder="Ex: Write your address here.." >{{ old('address') }}</textarea>
-                        @error('address')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="form-item w-full">
-                        <label class="form-label">Alternative Phone Number</label>
-                        <input class="form-input" type="text" name="phone_number"
-                            placeholder="Enter Your Phone Number" value="{{ old('phone_number') }}"/>
-                    </div>
-                    <div class="form-item w-full">
-                        <label class="form-label">Area <span class="text-red-500 font-medium">*</span> </label>
-                        <select class="form-input select-2-areas" name="area_id">
-                            <option value="">Select area</option>
-                            @foreach ($areas as $area)
-                            <option value="{{ $area->id }}">
-                                {{ $area->name }}
-                            </option>
-                            @endforeach
-                            <span class="text-red-300">@error('area_id') {{ $message }} @enderror</span>
-                        </select>
-                        @error('area_id')
-                            <span class="form-helper error">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="text-right">
-                        <button type="submit" class="btn btn-md btn-success w-32"
-                            data-mdb-ripple="true"
-                            data-mdb-ripple-color="light">
-                            Create
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
 </section>
 @endsection
@@ -422,94 +350,40 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>
         var items = [];
-        var itemsIndex                        = {{ count($order->items) - 1 }};
-        var aleartTime                        = '{{ config('crud.alear_time') }}';
-        var baseURL                           = '{{ config('app.url') }}';
-        var posBaseURL                        = '{{ config('app.pos_api_base_url') }}';
-        var inputQuantity                     = $('.input-item-qty');
-        var totalPriceLabel                   = $('#total-price-label');
-        var totalPriceWithDeliveryChargeLabel = $('#total-price-label-with-delivery-charge');
-        var iconLoadding                      = $('.loadding-icon');
-        var iconTrash                         = $('.trash-icon');
-        var deleteBtn                         = $('.delete-order-item-btn');
-        var btnAddProduct                     = $('#btn-add-product');
-        var deliveryCharge                    = {{ $order->delivery_charge }};
-        var specialDiscount                   = {{ $order->total_special_discount ?? 0 }};
-        var currencySymbol                    = '{{ $currency }}';
-        var posToken                          = localStorage.getItem('pos_token');
-        var deliveryChargeLabel               = $('#delivery-charge-label');
-        var inputDeliveryGateway              = $('#input-delivery-gateway');
-        var inputProductQuantity              = $('#product-quantity');
-        var couponForProduct                  = false;
+        var itemIndex              = {{ count($order->items) - 1 }};
+        var totalSellPriceLabel    = $('#total-sell-price-label');
+        var totalDiscountLabel     = $('#total-discount-label');
+        var totalWithDeliveryLabel = $('#total-with-delivery-label');
+        var iconLoadding           = $('.loadding-icon');
+        var iconTrash              = $('.trash-icon');
+        var btnOrderUpdate         = $('#btn-order-update');
+        var btnAddProduct          = $('#btn-add-product');
+        var deliveryCharge         = {{ $order->delivery_charge }};
+        var deliveryChargeLabel    = $('#delivery-charge-label');
+        var inputSpecialDiscount   = $('#input-special-discount');
+        var inputProductQuantity   = $('#product-quantity');
+        var inputProductColorId    = $('#input-product-color-id');
+        var inputProductSizeId     = $('#input-product-size-id');
+        var selelctedProductColors = [];
+        var selelctedProductSizes  = [];
 
         // Make array object of product
         items = [
             @foreach ($order->items as $key => $item)
             {
-                'img_src': '{{ $item->image_src }}',
+                'img_src': '{{ $item->img_src }}',
                 'id': {{ $item->id }},
+                'color_id': {{ $item->pivot->color_id }},
+                'size_id': {{ $item->pivot->size_id }},
                 'name': '{{ $item->name }}',
-                'quantity': {{ $item->pivot->quantity }},
-                'item_mrp': {{ $item->pivot->item_mrp }},
-                'unit_price': {{ $item->pivot->price }},
-                'discount': {{ $item->pivot->discount }},
-                'pack_size': {{ $item->pivot->pack_size }},
+                'quantity': {{ $item->pivot->quantity ?? 1 }},
+                'buy_price': {{ $item->pivot->item_buy_price}},
+                'mrp': {{ $item->pivot->item_mrp }},
+                'sell_price': {{ $item->pivot->item_sell_price }},
+                'discount': {{ $item->pivot->item_discount }}
             },
             @endforeach
         ];
-
-        // Create customer address
-        var editPageAddressTitle  = $('#edit-page-address-title');
-        var editPageOtherTitleDiv = $('#edit-page-others-title-div').hide();
-        var oldTitle = "{{ old('title') }}";
-        if (oldTitle === "Others") {
-            editPageOtherTitleDiv.show();
-        }
-
-        // calculate coupon discount
-        var couponApplicableOn = "{{ $order->coupon->applicable_on ?? null }}";
-        var couponDiscountType = "{{ $order->coupon->discount_type ?? 'fixed' }}";
-        var couponDiscount = {{ $order->coupon->discount_amount ?? 0 }};
-        var totalAmount    = {{ $order->order_items_value }};
-
-        // Check coupon code applied on delivery charge
-        if (couponApplicableOn === 'delivery_fee') {
-            couponDiscount = 0;
-        }
-
-        // Check coupon code applied on cart
-        if (couponApplicableOn === 'cart') {
-            if (couponDiscountType == 'percentage') {
-                couponDiscount = (totalAmount * couponDiscount)/100;
-            }
-        }
-
-        // Check coupon code applied on products
-        if (couponApplicableOn === 'products') {
-            if (couponDiscountType === 'percentage') {
-                var calculateCouponDiscount = 0;
-                items.forEach(item => {
-                    var productQuantity = item.quantity;
-                    var productMRP = item.item_mrp;
-                    var productDiscount = item.discount;
-                    var productDiscountPercent = (productDiscount * 100) / productMRP;
-                    var couponDiscountPercent = couponDiscount;
-                    if(productDiscountPercent < couponDiscountPercent){
-                        var productDiscount = (productMRP * couponDiscountPercent) /100;
-                        productDiscount = productDiscount * productQuantity;
-                        calculateCouponDiscount += productDiscount;
-                    } else {
-                        var productDiscount = (productMRP * productDiscountPercent) /100;
-                        productDiscount = productDiscount * productQuantity;
-                        calculateCouponDiscount += productDiscount;
-                    }
-                });
-                couponDiscount = calculateCouponDiscount;
-            }
-            couponForProduct = true;
-        }
-
-        __totalPriceCalculation(couponForProduct);
 
         iconTrash.show()
         iconLoadding.hide();
@@ -521,72 +395,48 @@
             }, 5000 );
 
             // Select-2 for area
-            $('.select-2-areas').select2({
+            $('.select-2-districts').select2({
                 placeholder: "Select area",
             });
 
             // Action with input quantity change
             $('.items-table-body').on('change', '.input-item-qty', function() {
-                var itemQuantity     = $(this).val();
+                var itemQty          = $(this).val();
+                var itemId           = $(this).data('item-id');
+                var colorId          = $(this).data('color-id');
+                var sizeid           = $(this).data('size-id');
                 var currentItemIndex = $(this).data('index');
-                items[currentItemIndex]['quantity'] = itemQuantity;
+
+                // update item quantity
+                items[currentItemIndex]['quantity'] = itemQty;
 
                 // item sub total price calculaton
-                var itemUnitPrice     = items[currentItemIndex]['unit_price'];
-                var itemSubTotalPrice = itemUnitPrice * itemQuantity;
-                itemSubTotalPrice = itemSubTotalPrice.toFixed(2);
+                var itemSellPrice      = items[currentItemIndex]['sell_price'];
+                var itemTotalSellPrice = (parseFloat(itemSellPrice * itemQty)).toFixed(2);
 
                 // Show item subtotal price
-                var itemPriceLabel    = $(this).data('total-item-price-label');
-                $(`#${itemPriceLabel}`).text(itemSubTotalPrice);
+                $(`#item-sell-price-label-${itemId}-${colorId}-${sizeid}`).text(itemTotalSellPrice);
 
                 // discount calculation
                 var discount  = 0;
-                var productID = items[currentItemIndex]['id'];
                 discount = items[currentItemIndex]['discount'];
-                discount = discount * itemQuantity;
+                discount = (parseFloat(discount * itemQty)).toFixed(2);
 
                 // Show discount
-                $(`#eo-item-discount-label-${productID}`).text(discount.toFixed(2));
+                $(`#item-discount-label-${itemId}-${colorId}-${sizeid}`).text(discount);
 
-                __totalPriceCalculation();
-            });
-
-            // Action with product unit price change
-            $('.items-table-body').on('change keyup', '.product-unit-price', function() {
-                var itemUnitPrice    = $(this).val() ?? 0;
-                var currentItemIndex = $(this).data('index');
-                items[currentItemIndex]['unit_price'] = itemUnitPrice;
-
-                // item price calculaton
-                var itemQuantity      = items[currentItemIndex]['quantity'];
-                var itemSubTotalPrice = itemUnitPrice * itemQuantity;
-                itemSubTotalPrice     = itemSubTotalPrice.toFixed(2);
-
-                // Show item sub total price
-                var itemPriceLabel    = $(this).data('total-item-price-label');
-                $(`#${itemPriceLabel}`).text(itemSubTotalPrice);
-
-                // Discount calculation
-                var discount  = 0;
-                var itemMRP   = items[currentItemIndex]['item_mrp'];
-                var productID = items[currentItemIndex]['id'];
-                discount      = (itemMRP - itemUnitPrice);
-                items[currentItemIndex]['discount'] = discount;
-                discount = discount * itemQuantity;
-
-                // Show discount
-                $(`#eo-item-discount-label-${productID}`).text(discount.toFixed(2));
-
-                __totalPriceCalculation();
+                totalPriceCalculation();
             });
 
             // Remove order item
-            $('.items-table-body').on('click', '.delete-order-item-btn', function() {
-                var orderId     = $('#input-order-id').val();
-                var orderItemId = $(this).data('order-item-id');
+            $('.items-table-body').on('click', '.btn-delete-item', function() {
+                var orderId = $('#input-order-id').val();
+                var itemId  = $(this).data('item-id') ?? 1;
+                var colorId = $(this).data('color-id') ?? 1;
+                var sizeId  = $(this).data('size-id') ?? 1;
+                orderId     = +orderId;
 
-                orderItemRemove(orderId, orderItemId, $(this));
+                orderItemRemove(orderId, itemId, colorId, sizeId, $(this));
             });
 
             // Render selected product
@@ -594,234 +444,221 @@
                 var searchText  = $('#input-product-search').val();
                 var productName = $('#input-product-name').val();
                 if (!productName || !searchText) {
-                    __showNotification('error', 'Please select product', aleartTime);
+                    __showNotification('error', 'Please select product');
                     return false;
                 } else {
                     renderSelectedProduct();
                     iconTrash.show()
                     iconLoadding.hide();
-                    __totalPriceCalculation();
-                    searchInput.val('');
+                    totalPriceCalculation();
                 }
-            });
-
-            // get selected delivery charge
-            inputDeliveryGateway.change(function() {
-                deliveryCharge = $("#input-delivery-gateway option:selected").data('delivery-charge');
-                var value = $(this).val();
-                if (value === '-1') {
-                    deliveryChargeLabel.removeAttr('readonly');
-                } else {
-                    deliveryChargeLabel.attr('readonly','readonly');
-                }
-                __totalPriceCalculation();
             });
 
             // get delivery charge when delivery charge change manually
             deliveryChargeLabel.keyup(function() {
                 deliveryCharge = $(this).val();
-                __totalPriceCalculation();
-            });
-
-            // update shipping address change
-            $('#area-shipping-address-id').change(function() {
-                var shippingAddressID = $('#area-shipping-address-id :selected').val();
-                axios.get(`${baseURL}/my/shipping/addrss`, {
-                    params: {
-                        address_id: shippingAddressID
-                    }
-                })
-                .then(res => {
-                    if (res.data.status) {
-                        var address      = res.data.result.address ?? null;
-                        var phoneNumber  = res.data.result.phone_number ?? null;
-                        var areaID       = res.data.result.area_id ?? null;
-                        // admin edit address shipping address line
-                        $('#area-shipping-address-line').val(address);
-                        $('#area-alternative-phone-number').val(phoneNumber);
-                        $('#input-area-id').val(areaID);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                });
-            });
-
-            // Update special discount
-            $('#special-discount-id').keyup(function() {
-                specialDiscount = $(this).val();
-                __totalPriceCalculation();
-            });
-
-            // Check address title is others
-            editPageAddressTitle.change(function(){
-                var addressTitle = $(this).val();
-                if (addressTitle === 'Others') {
-                    editPageOtherTitleDiv.show();
-                } else {
-                    editPageOtherTitleDiv.hide();
-                }
+                totalPriceCalculation();
             });
 
             inputProductQuantity.change(function() {
                 var selectedProductQty = $(this).val();
-            })
+            });
+
+            btnOrderUpdate.click(function() {
+                $(this).find(iconLoadding).show();
+            });
         });
 
         // Calculate total price
-        function __totalPriceCalculation(couponForProduct = false) {
-            var totalPrice = 0;
-            var totalWithDeliveryCharge = 0;
+        function totalPriceCalculation() {
+            var totalSellPrice = 0;
             var totalDiscount = 0;
+            var totalWithDeliveryCharge = 0;
+
             // Get all item subtotal
             items.forEach(item => {
-                var quantity = item.quantity;
-                var itemsubtotal = item.quantity * item.unit_price;
-                totalPrice = totalPrice + itemsubtotal;
-                var itemDiscount = item.discount * quantity;
-                totalDiscount += itemDiscount;
+                var itemQty       = parseFloat(item.quantity);
+                var itemSellPrice = parseFloat(item.sell_price);
+                var itemDiscount  = parseFloat(item.discount);
+
+                var itemTotalSellPrice = itemSellPrice * itemQty;
+                var itemTotalDiscount = itemDiscount * itemQty;
+
+                totalSellPrice = totalSellPrice + itemTotalSellPrice ;
+                totalDiscount  = totalDiscount + itemTotalDiscount;
             });
-
-            // Check coupon applied for product
-            if (couponForProduct) {
-                totalPrice = totalPrice + totalDiscount;
-                totalPriceLabel.text(totalPrice.toFixed(2));
-                $('#eo-items-discount-label').text(0);
-
-            } else {
-                totalDiscount = totalDiscount.toFixed(2);
-                totalPrice    = totalPrice.toFixed(2);
-                totalPriceLabel.text(totalPrice);
-                $('#eo-items-discount-label').text(totalDiscount);
-            }
 
             // Set delivery charge
             deliveryCharge = +deliveryCharge;
-            totalPrice     = +totalPrice;
+            totalSellPrice = +totalSellPrice;
             deliveryChargeLabel.val(deliveryCharge);
-            // Calculate total with delivery charge
-            totalWithDeliveryCharge = totalPrice + deliveryCharge;
-            totalWithDeliveryCharge = (totalWithDeliveryCharge - specialDiscount) - couponDiscount;
 
-            totalPriceWithDeliveryChargeLabel.text(totalWithDeliveryCharge.toFixed(2));
+            // Calculate total with delivery charge
+            totalWithDeliveryCharge = (totalSellPrice + deliveryCharge);
+
+            // show price
+            totalSellPriceLabel.text(totalSellPrice.toFixed(2));
+            totalDiscountLabel.text(totalDiscount.toFixed(2));
+
+            totalWithDeliveryLabel.text(totalWithDeliveryCharge.toFixed(2));
         }
 
         // Order item remove
-        function orderItemRemove(orderId, orderItemId, btn) {
+        function orderItemRemove(orderId, itemId, colorId, sizeId, btn) {
             btn.find(iconLoadding).show();
             btn.find(iconTrash).hide();
 
             axios.post('/admin/order/items/remove', {
                 order_id: orderId,
-                order_item_id: orderItemId
+                item_id: itemId,
+                color_id: colorId,
+                size_id: sizeId
             })
             .then(function (response) {
                 btn.parent().parent().remove();
                 var currentItemIndex = btn.data('index');
                 items.splice(currentItemIndex, 1);
-                __totalPriceCalculation();
+
+                // calculate total price and reseat delete button index
+                totalPriceCalculation();
+                resetDeleteIndex();
             })
             .catch(function (error) {
                 console.log(error);
             });
         }
 
+        // reset index delete button
+        function resetDeleteIndex(){
+            $('.btn-delete-item').each(function(index, item) {
+                $(item).attr('data-index', index);
+            });
+        }
+
         // Render selected product
         function renderSelectedProduct() {
-            var productId        = $('#input-product-id').val();
-            var productName      = $('#input-product-name').val();
-            var productImgSRC    = $('#input-product-image-src').val();
-            var productMRP       = $('#input-product-mrp').val();
-            var productSalePrice = $('#input-product-selling-price').val();
-            var productPackSize  = $('#input-product-pack-size').val();
-            var productPackName  = $('#input-product-pack-name').val();
-            var productQty       = $('#product-quantity').val();
-            var productUOM       = $('#input-product-uom').val();
-            var productNumOfPack = $('#input-product-num-of-pack').val();
+            var productId       = $('#input-product-id').val();
+            var productName     = $('#input-product-name').val();
+            var productImgSRC   = $('#input-product-img-src').val();
+            var buyPrice        = $('#input-product-buy-price').val();
+            var mrp             = $('#input-product-mrp').val();
+            var offerPrice      = $('#input-product-offer-price').val();
 
-            // Make dropdown option
-            var qtyHTML = makeQtyDropdown(productPackSize, productNumOfPack, productUOM, productQty);
+            console.log(buyPrice);
 
-            // Check item already exist
-            var existItems = items.filter((item) => {
-                return item.id == productId;
-            });
+            // selected color id and name
+            var selectedQty     = $('#input-product-qty').val();
+            var selectedColorId = $('#input-product-color-id').find(":selected").val() ?? 1;
+            var selectedSizeId  = $('#input-product-size-id').find(":selected").val() ?? 1;
 
-            if (existItems.length > 0) {
-                __showNotification('error', 'This product already exist' , aleartTime);
-                return false
-            }
+            // make dropdown
+            var qtyHTML    = makeQtyDropdown(selectedQty);
+            var colorsHTML = makeColorsDropdown(selelctedProductColors, selectedColorId);
+            var sizesHTML  = makeSizesDropdown(selelctedProductSizes, selectedSizeId);
 
-            var productPrice = productSalePrice > 0 ? productSalePrice : productMRP;
-            var subTotal = productPrice * productQty;
-            subTotal = subTotal.toFixed(2);
+            var sellPrice = offerPrice > 0 ? offerPrice : mrp;
+            var itemTotal = (sellPrice * selectedQty).toFixed(2);
 
             // Calculate discount
             var discount = 0;
-            if (productSalePrice > 0) {
-                discount = productMRP - productSalePrice;
+            if (offerPrice > 0) {
+                discount = (parseFloat(mrp - offerPrice)).toFixed(2);
             }
 
-            itemsIndex++;
+            // Check item already exist
+            var existItems = items.filter((item) => {
+                return (item.id == productId && item.color_id ==selectedColorId && item.size_id == selectedSizeId);
+            });
+
+            if (existItems.length > 0) {
+                __showNotification('error', 'This product already exist');
+                return false
+            }
+
+            // reset product name, colors and sizes dropdown
+            searchInput.val('');
+            inputProductColorId.html('');
+            inputProductSizeId.html('');
+
+            itemIndex++;
             var singleItem = {
                 'img_src': productImgSRC,
                 'id': productId,
                 'name': productName,
-                'quantity': productQty,
-                'item_mrp': productMRP,
-                'unit_price': productPrice,
+                'color_id': selectedColorId,
+                'size_id': selectedSizeId,
+                'quantity': selectedQty,
+                'buy_price': buyPrice,
+                'mrp': mrp,
+                'sell_price': sellPrice,
                 'discount': discount
             }
             items.push(singleItem);
 
             var itemHTML = `
             <tr>
-                <input type="hidden" name="items[${ productId }][product_id]" value="${productId}">
-                <input type="hidden" name="items[${ productId }][price]" value="${productPrice}">
-                <input type="hidden" name="items[${ productId }][pack_size]" value="${productPackSize}">
-                <input type="hidden" name="items[${ productId }][item_mrp]" value="${productMRP}">
-                <input id="eo-item-discount-${productId}" type="hidden" name="items[${ productId }][discount]" value="${discount}">
+                <input type="hidden" name="items[${ productId }][${selectedColorId}][${selectedSizeId}][product_id]" value="${productId}">
+                <input type="hidden" name="items[${ productId }][${selectedColorId}][${selectedSizeId}][buy_price]" value="${buyPrice}">
+                <input type="hidden" name="items[${ productId }][${selectedColorId}][${selectedSizeId}][mrp]" value="${mrp}">
+                <input type="hidden" name="items[${ productId }][${selectedColorId}][${selectedSizeId}][sell_price]" value="${sellPrice}">
+                <input type="hidden" name="items[${ productId }][${selectedColorId}][${selectedSizeId}][discount]" value="${discount}">
+
                 <td class="text-center border p-2" style="width: 70px; height:40px">
-                    <img src="${productImgSRC}" alt="Product Image">
+                    <img src="${productImgSRC}" alt="Img">
                 </td>
                 <td class="border p-2"> ${productName} </td>
+                <td class="border p-2 w-30">
+                    <select
+                        name="items[${productId}][${selectedColorId}][${selectedSizeId}][color_id]"
+                        class="w-30 border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                        ${colorsHTML}
+                    </select>
+                </td>
                 <td class="border p-2">
                     <select
-                        data-index="${itemsIndex}"
-                        data-unit-price="${productPrice}"
-                        data-total-item-price-label="total-price-${productId}"
-                        data-item-pack-size="${productPackSize}"
-                        name="items[${productId}][quantity]"
-                        class="input-item-qty w-full border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                        name="items[${productId}][${selectedColorId}][${selectedSizeId}][size_id]"
+                        class="w-30 border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                        ${sizesHTML}
+                    </select>
+                </td>
+                <td class="border p-2">
+                    <select
+                        data-index="${itemIndex}"
+                        data-item-id="${productId}"
+                        data-color-id="${selectedColorId}"
+                        data-size-id="${selectedSizeId}"
+                        data-sell-price="${sellPrice}"
+                        name="items[${productId}][${selectedColorId}][${selectedSizeId}][quantity]"
+                        class="input-item-qty w-30 border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
                         ${qtyHTML}
                     </select>
                 </td>
                 <td class="border p-2 text-right">
-                    <span>${productMRP}</span>
+                    <span>${mrp}</span>
                 </td>
                 <td class="border p-2 text-right">
-                    <input
-                        step="any"
-                        type="number"
-                        name="items[${ productId }][price]"
-                        data-index="${itemsIndex}"
-                        data-total-item-price-label="total-price-${productId}"
-                        value="${productPrice}"
-                        class="product-unit-price w-full border-gray-300 focus:ring-0 focus:outline-none text-center rounded">
+                    <span>${sellPrice}</span>
                 </td>
                 <td class="border p-2 text-right">
-                    <span id="eo-item-discount-label-${productId}">${(discount * productQty).toFixed(2)}</span>
+                    <span
+                        id="item-discount-label-${productId}-${selectedColorId}-${selectedSizeId}">
+                        ${(discount * selectedQty).toFixed(2)}
+                    </span>
                 </td>
                 <td class="border p-2 text-right">
-                    <span id="total-price-${ productId }" class="totalprice ml-1">
-                        ${subTotal}
+                    <span
+                        id="item-sell-price-label-${productId}-${selectedColorId}-${selectedSizeId}"
+                        class="total-sell-price ml-1">
+                        ${itemTotal}
                     </span>
                 </td>
                 <td class="text-center border w-16">
-                    <button class="delete-order-item-btn bg-red-500 hover:bg-red-700 w-8 h-8 rounded transition duration-300 ease-in-out"
+                    <button class="btn-delete-item bg-red-500 hover:bg-red-700 w-8 h-8 rounded transition duration-300 ease-in-out"
                         type="button"
-                        data-index="${itemsIndex}"
-                        data-order-item-id="${productId}">
+                        data-index="${itemIndex}"
+                        data-item-id="${productId}"
+                        data-color-id="${selectedColorId}"
+                        data-size-id="${selectedSizeId}">
                         <i class="trash-icon text-base text-white fa-regular fa-trash-can"></i>
                     </button>
                 </td>
@@ -830,64 +667,62 @@
             $('.items-table-body').append(itemHTML);
         }
 
-        // Make dropdown option
-        function onSearchProductSelect(productPackSize, productNumOfPack, productUOM) {
-            var qtyHTML = makeQtyDropdown(productPackSize, productNumOfPack, productUOM);
+        function onSearchColorsSelect(productColors) {
+            selelctedProductColors = productColors;
+            var colorsHTML = makeColorsDropdown(productColors);
 
-            inputProductQuantity.html('');
-            inputProductQuantity.append(qtyHTML);
+            inputProductColorId.html('');
+            inputProductColorId.append(colorsHTML);
         }
 
-        // Make option
-        function makeQtyDropdown(productPackSize, productNumOfPack, productUOM, selectedProdutQty = null) {
-            var qtyHTML = '';
-            if (!productUOM) {
-                productUOM = '';
+        function onSearchSizesSelect(productSizes) {
+            selelctedProductSizes = productSizes;
+            var sizesHTML = makeSizesDropdown(productSizes);
+
+            inputProductSizeId.html('');
+            inputProductSizeId.append(sizesHTML);
+        }
+
+        // Make colors dropdown
+        function makeColorsDropdown(productColors, selelctedColorId = null) {
+            var colorsHTML = '';
+            colorsHTML = `<option value="1">Select</option>`
+            if (productColors.length > 0) {
+                var productColors = JSON.parse(productColors);
+
+                productColors.forEach(function(color, index) {
+                    colorsHTML = `${colorsHTML}<option value="${color.id}"${selelctedColorId==color.id?'selected':''}>${color.name}</option>`
+                });
             }
 
-            for(i = 1; i<=productNumOfPack; i++) {
-                qtyHTML = `${qtyHTML}<option value="${i*productPackSize}" ${selectedProdutQty==i*productPackSize?'selected':''}>${i*productPackSize} ${productUOM}</option>`
+            return colorsHTML;
+        }
+
+        // Make sizes dropdown
+        function makeSizesDropdown(productSizes, selelctedSizeId = null) {
+            var sizesHTML = '';
+            sizesHTML = `<option value="1">Select</option>`
+
+            if (productSizes.length > 0) {
+                var productSizes = JSON.parse(productSizes);
+
+                productSizes.forEach(function(size, index) {
+                    sizesHTML = `${sizesHTML}<option value="${size.id}"${selelctedSizeId==size.id?'selected':''}>${size.name}</option>`
+                });
+            }
+
+            return sizesHTML;
+        }
+
+        // Make quantity dropdown
+        function makeQtyDropdown(selectedQty = null) {
+            var qtyHTML = '';
+
+            for(i = 1; i<=10; i++) {;
+                qtyHTML = `${qtyHTML}<option value="${i}"${selectedQty==i?'selected':''}>${i}</option>`
             }
 
             return qtyHTML;
-        }
-    </script>
-    {{-- Send status update information to medipos --}}
-    <script>
-        $(function() {
-            $('#btn-admin-order-update').click(function () {
-                var orderId          = $('#input-order-id').val();
-                var areaId           = $('#input-area-id').val();
-                var inputOrderStatus = $('#input-order-status').val();
-
-                if (inputOrderStatus == 4 || inputOrderStatus == 7) {
-                    var status;
-                    if (inputOrderStatus == 4) {
-                        status = 'picked-up';
-                    } else {
-                        status = 'delivered';
-                    }
-                    sendStatusUpdateInfo(orderId, status, areaId);
-                }
-
-            })
-        });
-
-        function sendStatusUpdateInfo(orderId, status, areaId) {
-            var token    = localStorage.getItem('pos_token');
-            var endPoint = '/admin/orders/status/update';
-            axios.post(endPoint, {
-                order_id: orderId,
-                token: token,
-                status: status,
-                area_id: areaId
-            })
-            .then(function (response) {
-                // console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
         }
     </script>
 @endpush
