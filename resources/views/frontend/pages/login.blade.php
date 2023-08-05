@@ -29,7 +29,7 @@
                             <div class="form-item">
                                 <label class="form-label">Phone Number <span
                                         class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
+                                <input type="number" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
                                     name="phone_number" class="form-input rounded" placeholder="Your phone number" />
                                 @error('phone_number')
                                     <span class="form-helper error">{{ $message }}</span>
