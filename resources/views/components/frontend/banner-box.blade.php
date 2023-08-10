@@ -1,19 +1,19 @@
 <div>
     @if ($type === 'default')
-        <div class="relative h-[272px] sm:h-[50px] md:h-[440px] lg:h-[440px] xl:h-[440px] 2xl:h-[440px] rounded-md p-4 hover:scale-105 transition duration-300 ease-in-out"
+        <div class="relative h-[272px] sm:h-[220x] md:h-[440px] lg:h-[440px] xl:h-[440px] 2xl:h-[440px] rounded-md p-4 hover:scale-105 transition duration-300 ease-in-out"
             style="background-color:{{ $bgColor }}">
             <a href="{{ $postTitleLink }}" class="block overflow-auto">
                 <h4 class="uppercase text-xs md:text-sm text-blue-500">{{ $preTitle }}</h4>
-                {{-- <h2 class="text-sm md:text-2xl xl:text-3xl font-bold my-1 text-blue-900">{{ $title }}</h2> --}}
+                <h2 class="text-sm md:text-2xl xl:text-3xl font-bold my-1 text-blue-900">{{ $title }}</h2>
 
-                {{-- <div class="font-medium text-xs md:text-sm">
+                <div class="font-medium text-xs md:text-sm">
                     <span class="">{{ $postTitle }}</span>
                     <span class="ml-2"><i class="fa-regular fa-circle-right"></i></span>
-                </div> --}}
+                </div>
 
 
                 <div class="absolute bottom-0 right-0 p-2 md:p-4">
-                    <div class="w-32 h-32 sm:w-32 sm:h-32 md:w-60 md:h-60 z-10 bg-white rounded-lg skew-y-3">
+                    <div class="w-32 h-32 sm:w-32 sm:h-32 md:w-60 md:h-60 z-10 bg-white rounded-full">
                     </div>
                 </div>
 

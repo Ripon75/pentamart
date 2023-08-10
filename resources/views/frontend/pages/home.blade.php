@@ -1,4 +1,79 @@
 @extends('frontend.layouts.default')
+
+<style>
+    /* Styling the slider container */
+    .slider-container {
+        margin: 0 auto;
+        /* Center the slider container */
+        /* max-width: 800px; */
+        width: 100%;
+        /* Set a maximum width for the slider */
+        height: 250px;
+        margin: 5px 5px 5px 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Styling each slide */
+    .slider-item {
+        padding: 20px;
+        background-color: #f0f0f0;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+    }
+
+    .slick-slide {
+        margin: 10px;
+        padding: 0%;
+    }
+
+    .slick-list {
+        height: 240px;
+    }
+
+    /* Styling the navigation buttons */
+    .prev-button1 {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        position: absolute;
+        left: 5%;
+        top: 50%;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .next-button1 {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        position: absolute;
+        right: 5%;
+        top: 50%;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .prev-button1:hover,
+    .next-button1:hover {
+        background-color: #555;
+    }
+
+    .prev-button1 {
+        float: left;
+        margin-right: 10px;
+    }
+
+    .next-button1 {
+        float: right;
+        margin-left: 10px;
+    }
+</style>
+
 @section('title', 'Home')
 
 @section('content')
@@ -133,32 +208,246 @@
         </section>
     @endif
 
+
+
+    <section class="page-section">
+        <div style="position: relative;" class="container">
+            <div class="text-center">
+                <h1 class="section-title mb-5">New Arrivals</h1>
+            </div>
+
+            <div class="slider-container">
+                <div class="slider-item">
+                    <div class="slide-content">
+                        <img style="width:100%;height:150px;" class="" src="{{ asset('images/ss.jpg') }}"
+                            alt="no images">
+                    </div>
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;" class="" src="{{ asset('images/images.jpeg') }}"
+                        alt="no images">
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;" src="{{ asset('images/Untitled.jpeg') }}" alt="no images">
+
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;"
+                        class="
+                        src="{{ asset('images/ss.jpg') }}" alt="no images">
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;" class="" src="{{ asset('images/images.png') }}"
+                        alt="no images">
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;" class="" src="{{ asset('images/images.png') }}"
+                        alt="no images">
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <div class="slider-item">
+                    <img style="width:100%;height:150px;" class="" src="{{ asset('images/ss.jpg') }}"
+                        alt="no images">
+                    <div class="p-2">
+                        <p style="text-align: left;">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-sm">
+                            Smart Watch
+                        </p>
+
+                        <p style="text-align: left;" class="text-orange-500">
+                            Tk : 1969
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Add more slides as needed -->
+            </div>
+
+            <button class="prev-button1"><i class="fa-solid fa-arrow-left"></i></button>
+            <button class="next-button1"><i class="fa-solid fa-arrow-right-long"></i></button>
+        </div>
+    </section>
+
+
+
+
     {{-- Offers --}}
     <section class="page-section">
         <div class="container">
             <div class="text-center">
                 <h1 class="section-title mb-5">Special Offers</h1>
             </div>
+            <div class="flex justify-center items-center flex-wrap sm:flex-wrap md:flex-wrap lg:flex-wrap 2xl:flex-wrap">
+                <div style="background-color: #00798C"
+                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
 
-            <div
-                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-4 lg:gap-4 xl:gap-4 2xl:gap-8 mt-10">
-                @foreach ($offers as $offer)
                     <div class="">
-                        <x-frontend.banner-box type="default" bg-color="#ff0000" pre-title="Smart Watch Sale"
-                            title="Save Upto 16%" post-title-link="#" post-title="Buy now"
-                            img-src="images/sample/offer.jpg" />
+                        <img class="w-full h-28 md:h-56 lg:h-56 2xl:h-56" src="{{ asset('images/ss.jpg') }}"
+                            alt="no images">
                     </div>
-                @endforeach
-            </div>
 
-            {{-- <div class="flex flex-row items-center justify-center flex-wrap gap-2 sm:gap-2 md:gap-4">
-                @foreach ($offers as $offer)
-                    <x-frontend.banner-box type="brands-banner" :bg-color="'#fff'" pre-title="" post-title-link="#"
-                        :img-src="$offer['img_src']" title="" />
-                @endforeach
-            </div> --}}
+                    <div class="m-1">
+                        <p class="text-sm text-center text-primaryError-light md:text-lg lg:text-lg 2xl:text-lg">
+                            METER SYSTEM HOT SALE
+                        </p>
+                        <h2
+                            class="text-sm text-white font-mono mt-1 mb-1 font-semibold md:text-2xl m-1 p-1 lg:text-2xl 2xl:text-2xl">
+                            Save Upto 16%
+                        </h2>
+                        <a class="text-sm md:text-lg lg:text-lg 2xl:text-lg" href="">Buy Now <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div style="background-color: #00798C"
+                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+
+                    <div class="">
+                        <img class="w-full h-28 md:h-56 lg:h-56 2xl:h-56" src="{{ asset('images/images.jpeg') }}"
+                            alt="no images">
+                    </div>
+
+                    <div class="m-1">
+                        <p class="text-sm text-center text-primaryError-light md:text-lg lg:text-lg 2xl:text-lg">SMART
+                            WATCH SALE</p>
+                        <h2
+                            class="text-sm text-white font-mono mt-1 mb-1 font-semibold md:text-2xl m-1 p-1 lg:text-2xl 2xl:text-2xl">
+                            Save Upto 16%
+                        </h2>
+                        <a class="text-sm md:text-lg lg:text-lg 2xl:text-lg" href="">Buy Now <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div style="background-color: #00798C"
+                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+
+                    <div class="">
+                        <img class="w-full h-28 md:h-56 lg:h-56 2xl:h-56" src="{{ asset('images/Untitled.jpeg') }}"
+                            alt="no images">
+                    </div>
+
+                    <div class="m-1">
+                        <p class="text-sm text-center text-primaryError-light md:text-lg lg:text-lg 2xl:text-lg">METER
+                            SYSTEM HOT SALE</p>
+                        <h2
+                            class="text-sm text-white font-mono mt-1 mb-1 font-semibold md:text-2xl m-1 p-1 lg:text-2xl 2xl:text-2xl">
+                            Save Upto 16%
+                        </h2>
+                        <a class="text-sm md:text-lg lg:text-lg 2xl:text-lg" href="">Buy Now <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+
+                <div style="background-color: #00798C"
+                    class="w-32 h-auto m-1 w- md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+
+                    <div class="">
+                        <img class="w-full h-28 md:h-56 lg:h-56 2xl:h-56" src="{{ asset('images/images.png') }}"
+                            alt="no images">
+                    </div>
+
+                    <div class="m-1">
+                        <p class="text-sm text-center text-primaryError-light md:text-lg lg:text-lg 2xl:text-lg">METER
+                            SYSTEM HOT SALE</p>
+                        <h2
+                            class="text-sm text-white font-mono mt-1 mb-1 font-semibold md:text-2xl m-1 p-1 lg:text-2xl 2xl:text-2xl">
+                            Save Upto 16%
+                        </h2>
+                        <a class="text-sm md:text-lg lg:text-lg 2xl:text-lg" href="">Buy Now <i
+                                class="fa-solid fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
+
+    {{-- Offers END --}}
 
     {{-- ==================Features================== --}}
     <section class="page-section bg-gray-100">
@@ -184,7 +473,35 @@
 
 
 @endsection
+
 @push('scripts')
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+
+    <!-- Include Slick Slider Theme CSS (optional) -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+    <!-- Include jQuery (required for Slick Slider) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- Include Slick Slider JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.slider-container').slick({
+                slidesToShow: 3, // Display three slides at a time
+                slidesToScroll: 1, // Change one slide at a time
+                prevArrow: $('.prev-button1'), // Use prev button for navigation
+                nextArrow: $('.next-button1'), // Use next button for navigation
+                // Other Slick options can be added here
+            });
+        });
+    </script>
+
+
+
+
     <script>
         AOS.init();
         // Category Menu for Medicine Corner
