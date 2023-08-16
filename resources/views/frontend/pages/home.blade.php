@@ -43,46 +43,10 @@
         height: 240px;
     }
 
-    /* Styling the navigation buttons */
-    .prev-button1 {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        padding: 7px 15px;
-        position: absolute;
-        left: 5%;
-        top: 55%;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    .next-button1 {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        padding: 7px 15px;
-        position: absolute;
-        right: 5%;
-        top: 55%;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
 
     .prev-button1:hover,
     .next-button1:hover {
         background-color: #555;
-    }
-
-    .prev-button1 {
-        float: left;
-        margin-right: 10px;
-    }
-
-    .next-button1 {
-        float: right;
-        margin-left: 10px;
     }
 </style>
 
@@ -240,7 +204,7 @@
                             <span style="font-size: 13px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
-                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            class="text-[12px] font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
                             Premium Roles Watch
                         </p>
 
@@ -249,11 +213,12 @@
                         </p>
 
                         <div class="flex mt-1">
-                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 19.69
+                            <p
+                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 194.69
                             </p>
-                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>75.00</span>
+                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>754.00</span>
                             </p>
                         </div>
                     </div>
@@ -393,8 +358,16 @@
                 <!-- Add more slides as needed -->
             </div>
 
-            <button class="prev-button1"><i class="fa-solid fa-arrow-left"></i></button>
-            <button class="next-button1"><i class="fa-solid fa-arrow-right-long"></i></button>
+            <button
+                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                class="absolute left-2 border-0 rounded cursor-pointer md:left-16 lg:left-16 prev-button1">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button
+                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                class="absolute right-0 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button1">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
         </div>
     </section>
 
@@ -545,7 +518,7 @@
                 prevArrow: $('.prev-button1'), // Use prev button for navigation
                 nextArrow: $('.next-button1'), // Use next button for navigation
                 responsive: [{
-                        breakpoint: 400, // Adjust the breakpoint as needed
+                        breakpoint: 320, // Adjust the breakpoint as needed
                         settings: {
                             slidesToShow: 2, // Display four slides at a time for larger screens
                             slidesToScroll: 1,
