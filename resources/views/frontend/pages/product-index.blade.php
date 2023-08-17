@@ -20,19 +20,16 @@
                         @if (count($brands))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Brand</span>
+                                    <span class="box-title">Subsidaries</span>
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($brands as $brand)
-                                    <label class="item">
-                                        <input
-                                            type="checkbox"
-                                            name="brands[]"
-                                            value="{{ $brand['id'] }}"
-                                            class="focus:ring-0 input-checkbox"
-                                            {{ in_array($brand['id'], $filterBrandIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $brand['name'] }}</span>
-                                    </label>
+                                        <label class="item">
+                                            <input type="checkbox" name="brands[]" value="{{ $brand['id'] }}"
+                                                class="focus:ring-0 input-checkbox"
+                                                {{ in_array($brand['id'], $filterBrandIds) ? 'checked' : '' }} />
+                                            <span class="ml-3 text-sm">{{ $brand['name'] }}</span>
+                                        </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -41,17 +38,14 @@
                         @if (count($categories))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Categories</span>
+                                    <span class="box-title">Categories</span>
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($categories as $category)
                                         <label class="item">
-                                            <input
-                                                type="checkbox"
-                                                name="categories[]"
-                                                value="{{ $category['id'] }}"
+                                            <input type="checkbox" name="categories[]" value="{{ $category['id'] }}"
                                                 class="focus:ring-0 input-checkbox"
-                                                {{ in_array($category['id'], $filterCategoryIds) ? 'checked' : '' }}/>
+                                                {{ in_array($category['id'], $filterCategoryIds) ? 'checked' : '' }} />
                                             <span class="ml-3 text-sm">{{ $category['name'] }}</span>
                                         </label>
                                     @endforeach
@@ -66,11 +60,12 @@
                     <div class="">
                         {{-- =====product thumb========== --}}
                         <div class="">
-                            <div class="product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-2 lg:gap-2 xl:gap-2 2xl:gap-2">
+                            <div
+                                class="product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-2 lg:gap-2 xl:gap-2 2xl:gap-2">
                                 @foreach ($products as $product)
-                                <div class="">
-                                    <x-frontend.product-thumb type="default" :product="$product" />
-                                </div>
+                                    <div class="">
+                                        <x-frontend.product-thumb type="default" :product="$product" />
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -93,81 +88,80 @@
 
 @once
     @push('scripts')
-    <script>
-        // Toggle filter for Mobile menu
-        function toggleFilter() {
-            var filterCategory = document.getElementById('filter-category');
-            if(filterCategory.style.display == "block") { // if is menuBox displayed, hide it
-                filterCategory.style.display = "none";
+        <script>
+            // Toggle filter for Mobile menu
+            function toggleFilter() {
+                var filterCategory = document.getElementById('filter-category');
+                if (filterCategory.style.display == "block") { // if is menuBox displayed, hide it
+                    filterCategory.style.display = "none";
+                } else { // if is menuBox hidden, display it
+                    filterCategory.style.display = "block";
+                }
+            };
+
+            var searchKey = '{{ request()->get('search_key') ?? '' }}';
+            var route = "{{ route('products.index') }}?page={{ $products->currentPage() }}";
+
+            if (searchKey) {
+                route = `${route}&search_key=${searchKey}`;
             }
-            else { // if is menuBox hidden, display it
-                filterCategory.style.display = "block";
-            }
-        };
 
-        var searchKey = '{{ request()->get('search_key') ?? '' }}';
-        var route     = "{{ route('products.index') }}?page={{ $products->currentPage() }}";
+            const filterInputOrder = $("#input-short-order");
+            const filterInputBrands = $('input[name="brands[]"]');
+            const filterInputCategories = $('input[name="categories[]"]');
 
-        if (searchKey) {
-            route = `${route}&search_key=${searchKey}`;
-        }
+            $(function() {
+                filterInputOrder.on("change", (event) => {
+                    filterProducts(route);
+                });
 
-        const filterInputOrder      = $("#input-short-order");
-        const filterInputBrands     = $('input[name="brands[]"]');
-        const filterInputCategories = $('input[name="categories[]"]');
+                filterInputCategories.on("click", (event) => {
+                    filterProducts(route);
+                });
 
-        $(function() {
-            filterInputOrder.on("change", (event) => {
-                filterProducts(route);
+                filterInputBrands.on("click", (event) => {
+                    filterProducts(route);
+                });
             });
 
-            filterInputCategories.on("click", (event) => {
-                filterProducts(route);
-            });
+            function filterProducts(route) {
+                var selectedFilterCategoryIds = getFilterCategoryIds();
+                var selectedFilterBrandIds = getFilterBrandIds();
+                var order = filterInputOrder.val();
 
-            filterInputBrands.on("click", (event) => {
-                filterProducts(route);
-            });
-        });
-
-        function filterProducts(route) {
-            var selectedFilterCategoryIds = getFilterCategoryIds();
-            var selectedFilterBrandIds    = getFilterBrandIds();
-            var order                     = filterInputOrder.val();
-
-            if (order) {
-                route = `${route}&order=${order}`;
+                if (order) {
+                    route = `${route}&order=${order}`;
+                }
+                if (selectedFilterCategoryIds) {
+                    route = `${route}&filter_category_ids=${selectedFilterCategoryIds}`;
+                }
+                if (selectedFilterBrandIds) {
+                    route = `${route}&filter_brand_ids=${selectedFilterBrandIds}`;
+                }
+                window.location.href = route;
             }
-            if (selectedFilterCategoryIds) {
-                route = `${route}&filter_category_ids=${selectedFilterCategoryIds}`;
+
+            function getFilterCategoryIds() {
+                var selectedCategoryIds = null;
+                $.each($('input[name="categories[]"]:checked'), function() {
+                    const id = $(this).val();
+                    selectedCategoryIds = selectedCategoryIds ? `${selectedCategoryIds},${id}` : id;
+                });
+                return selectedCategoryIds;
             }
-            if (selectedFilterBrandIds) {
-                route = `${route}&filter_brand_ids=${selectedFilterBrandIds}`;
+
+            function getFilterBrandIds() {
+                var selectedBrandIds = null;
+                $.each($('input[name="brands[]"]:checked'), function() {
+                    const id = $(this).val();
+                    selectedBrandIds = selectedBrandIds ? `${selectedBrandIds},${id}` : id;
+                });
+                return selectedBrandIds;
             }
-            window.location.href = route;
-        }
+        </script>
 
-        function getFilterCategoryIds() {
-            var selectedCategoryIds = null;
-            $.each($('input[name="categories[]"]:checked'), function() {
-                const id = $(this).val();
-                selectedCategoryIds = selectedCategoryIds ? `${selectedCategoryIds},${id}` : id ;
-            });
-            return selectedCategoryIds;
-        }
-
-        function getFilterBrandIds() {
-            var selectedBrandIds = null;
-            $.each($('input[name="brands[]"]:checked'), function() {
-                const id = $(this).val();
-                selectedBrandIds = selectedBrandIds ? `${selectedBrandIds},${id}` : id ;
-            });
-            return selectedBrandIds;
-        }
-    </script>
-
-    {{-- On scroll product load --}}
-    {{-- <script>
+        {{-- On scroll product load --}}
+        {{-- <script>
         var onScrollProductRoute = "{{ route('products.index', ['true']) }}";
         var order = "{{ request()->query('order') }}";
         var currentPage = {{ $products->currentPage() }};
