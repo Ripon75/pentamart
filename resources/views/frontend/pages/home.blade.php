@@ -13,6 +13,17 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .slider-container1 {
+        margin: 0 auto;
+        /* Center the slider container */
+        /* max-width: 800px; */
+        width: 100%;
+        /* Set a maximum width for the slider */
+        height: 250px;
+        margin: 5px 5px 5px 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
     /* Styling each slide */
     .slider-item {
         padding: 20px;
@@ -99,90 +110,192 @@
         </div>
     </section>
 
-    {{-- ==============Service Section=================== --}}
-    <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
-        <div class="container">
-            <div
-                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
-                @foreach ($topBrands as $topBrand)
-                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title="" :img-src="$topBrand->img_src"
-                        post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
-                @endforeach
+    {{-- Subsidaries --}}
+    <section class="page-section">
+        <div style="position: relative;" class="container">
+            <div class="text-center">
+                <h1 class="section-title mb-5">Our Subsidaries</h1>
             </div>
-        </div>
-    </section>
 
-    {{-- ==============Service Section for mobile=================== --}}
-    <section class="service-section pt-2 pb-2 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
-        <div class="container">
-            <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
-                @foreach ($topBrands as $topBrand)
-                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title="" :img-src="$topBrand->img_src"
-                        post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
-                @endforeach
-            </div>
-        </div>
-    </section>
+            <div class="slider-container1">
 
-    {{-- ==================Top Products================== --}}
-    @if ($topProduct)
-        <section class="page-section">
-            <div class="container">
-                <div class="text-center">
-                    <h1 class="section-title mb-2">{{ $topProduct->title }}</h1>
-                </div>
-                <div
-                    class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
-                    @foreach ($topProduct->products as $product)
-                        <div data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-                            <x-frontend.product-thumb type="default" :product="$product" />
+                <div class="relative slider-item w-full sm:w-full md:w-40">
+                    <div class="slide-content">
+                        <img class="w-full h-[133px]"
+                            src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8d29tZW5zJTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            alt="no images">
+                    </div>
+                    <div class="p-2" style="background-color: #F9FAFB;">
+                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
+                            <span style="font-size: 13px;">In Stock</span>
                         </div>
-                    @endforeach
-                </div>
-                <div class="text-center mt-8">
-                    <a href="{{ route('products.index') }}" class="btn btn-md btn-primary">Browse All Products</a>
-                </div>
-            </div>
-        </section>
-    @endif
+                        <p style="color:#00798C;"
+                            class="text-[12px] font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            Premium Roles Watch
+                        </p>
 
-    <section class="symptoms-section page-section bg-gray-100">
-        <div class="container">
-            <div class="headline text-center">
-                <h1 class="section-title">Top Categories</h1>
+                        <p style="font-size:13px;" class="text-left">
+                            Category-1
+                        </p>
+
+                        <div class="flex mt-1">
+                            <p
+                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 194.69
+                            </p>
+                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>754.00</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="ofText">
+                        -10 %
+                    </p>
+                </div>
+
+                <div class="relative slider-item w-full sm:w-full md:w-40">
+                    <div class="slide-content">
+                        <img class="w-full h-[133px]"
+                            src="https://images.unsplash.com/photo-1584208123923-cc027813cbcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d29tZW5zJTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                            alt="no images">
+                    </div>
+                    <div class="p-2" style="background-color: #F9FAFB;">
+                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
+                            <span style="font-size: 13px;">In Stock</span>
+                        </div>
+                        <p style="color:#00798C;"
+                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="font-size:13px;" class="text-left">
+                            Category-1
+                        </p>
+
+                        <div class="flex mt-1">
+                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 19.69
+                            </p>
+                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>75.00</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="ofText">
+                        -10 %
+                    </p>
+                </div>
+
+                <div class="relative slider-item w-full sm:w-full md:w-40">
+                    <div class="slide-content">
+                        <img class="w-full h-[133px]"
+                            src="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBwgHBgkIBwgKCgkLDRYPDQwMDRsUFRAWIB0iIiAdHx8kKDQsJCYxJx8fLT0tMTU3Ojo6Iys/RD84QzQ5OjcBCgoKDQwNGg8PGjclHyU3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3Nzc3N//AABEIAH4AfgMBIgACEQEDEQH/xAAcAAACAwEBAQEAAAAAAAAAAAADBAIFBgEHAAj/xAA3EAACAQMDAgUCBAUDBQEAAAABAgMABBEFEiExQQYTIlFhMnEUQoGhByMzkdEVUrGCosHh8HL/xAAZAQADAQEBAAAAAAAAAAAAAAACAwQBAAX/xAAfEQACAgMAAwEBAAAAAAAAAAAAAQIRAyExEjJBFBP/2gAMAwEAAhEDEQA/APW/MB713cPevP5PF01tJtmtywz1V6ds/GllKBvcxHp6xj9+lTeRY8MkbJmoJOarYNYt51DRyKwPcNmjrdKx6iusHxaDS4Ixiqi+0y3uZN7QKZFHEg4YfYjmrB5h719BOgnG8jbkVySb2am47RUCzvbTBikLjr5c4wT9mH+P1pldQjUgThreU/Tv7/GehrQreWkzCNXVmx0xQb7TIriMgBRnqCAR+opzxVxi/wBF+yKz/Vkh/qSqvthuDR3vVmUBR07+9Ub6KtncFjbKg253Rjgf4qytYwABS25LoVQluJMjIpOcbasynFI3S8UK6bJWgKGnLbgVVCVg2MVb2qlgq0+RPAt4ADEo+KmagMIgA7CgvKc8UxAGH1XwdKxJt5f0fms7ceD9XiiZVWKQ5JyrYr1+THtQ9oI6VG4noRzyrZ4va6fqmn3sUklrOgB9W0Zz/at3prmdV2yEH2zWlmt0f8opVrUDpGpPyKKMGzXk8hJ0uEHTcPihF1PEgI+9dvJr21b+TEpA/Lkgf3otveidF/EwCMv05yD9jTHikldGNNCxgPLQXOxj78ihpqGq2H0TiRR2z/mrP8HE/Kr/AGr4aen+2hU5IBxg+o+i1We6SQSwBd427s5/WjwLiuxWoXoKZSPFDKTl0GMVHhzHFJXacVYMvFKXC8VhpUooM2Md6vtPQYLnt0qmjGJm+KuoPRAo9xmnx2ydrxQWSTNQjXcTnpUTyaIrBBTRZXHVIyeHGfbNEj1GNh9X71QzwR5JQ8n3pGSJlPpY/oalcJIqUoM1pu1Y8NQ/MlRmaJ8qx3MhxgnAGf2rHPJcJ+dx7c03pk88lwqSSMQ3GDWJtDUkXl1fJ0mt26fUD0+cEVXgieTy7dZdu8MWIwOP05q4jsUYAvz96OYkhQnICgZJJwAKa80qoL+kUuAoWEEQMpwOBRI7uIyMmcEHHwfse9YjxR42aBTDotk94cZ/EF1EYPuBnLfsPvWGj8XazJKJru+igCjCwwooCjJ65yep96WosXr6e9KykcHNTBHvXill431lZkEOoxup/JPCCp+xGD+9bPTvHlrmKLVttq8jbRMD/LLdgc8rn54469K5xaBNw1LTgYNIyatEkiI0irvOAWBxwCf+AaUutcijQ5ZXx0MZJD84BHHI6f8AvrQBeLGAv8/A6txVop7Vk11N5ZBJESg6DocVqbZt8CP13KDT8QjMuBgKHI3NTY4FDxupwozTc0Irk1bGyIrhtQOTXWAhQwLJCMgUskBjmV16qQaPeuVbapIGKBC88rJDEjsXYLvVQxQHvjvSZx+lGOfw1cLqYg2R0rzb+Juq3VyslnDJ5OmQEee2ebls/R/+Rz9yPYZq/wDEerz+HbS885WKRWfnW7uMFmGQVPyDt/Q/evMPFuoXWonTdKnaKKW3toxP58qxiSVVAbJPfsB9+OaCMW2NtJNlVfXd3qMEcgbybRy0a7CCA4GQrY9XIHGQP2qE9xp58OpbSW7LqEchbzdgRiMk7snBxhvpx2/WgwhrRJbWcSwb0Jm2ja8eOenAK5/KfcYI7gureS3aN5GH4aYF454sbHGfytgcgD6cg544NWxSWiVts7ut/wADMqhDcu6mNgv9NQDnBxkHIXk9ck++TxyXP4OVZVeSzUqrPKMBSegGeT0P+MAmkEmnVS6GQFnDREqd24ZwysAMEccZ7jjin4obm9nFiJD/AC2ZkhlDED05ztQbgSPYZ6e1FKKa2ZGTT0en+GtDuZNGsLmy1CC701iIws+UeHI2mNuuepAPyOMVcatpdzBpdqtyIjIimElCSDnOOvyf+BWH8DHV7bUZ/DkIkdLiNJVWaJoSxRfMRgGwRnZjPfOe3G81Txbp11Zf6b5F7+PkEYbFq+yGQhW5cjAHOP8AFefOFSLFkdJFVp0m8E56gHj9z/8Af2AxW10mTzLFM/lyKwlk+y6kRSSu/IHZVb1f+QT+56Ctr4fDiybcpClsqT3pkPYXk9aLE80SNOKgBk0VacIFmHxS844NHLE0OQZFBZhR3kZLZqFleTWMhMKoTIVU7+g9Q5qzktxI3IpeewR43jYcOpXPtmte1R0dSVlNB4n0nxb4qisb62MdvZlijyNgGQSINpHsSB19qwn8RbOeX+JOpRWtus8rYZUOOMxrkjJAzyOffHFPy6ckutXsFrp1zi8eRJZ0T0x7/qJbdyVJBwAOgpPx9HqKHS9eXfFdNapHcSo3r80KQ275I4/6aXjkkyrJDWjOaTaONVu7C6gWOaS3kTbIPVFJjcMcHnjt79ulW/gq7SM3dnqUcH4CNHurhZI/pYAKoDZ49RTPHQ98CqKxeazNrqbpHIiz5RJWK+Y3ftnjJORnqPtXwuWigfzLcobyQSyk/wBN1BYhR8byc/Yc1XKNkqdDGtS6be3s91bT+X50mVF1D39JzkEkD7qR6jzzwrbWl1GYvLt1m2ZeN7dBMqN2OOfbOP2pKMBX9C7ge8OBkjBB4zznd2ploJreASsiwJK5KSK+SoXrHxx1OevQZ7iuqlRl2ar+Gl/Cnjq2vLi73ITJ5k8jcf02BJJ6HOO5rQwX9j4h8TT6v5EvkTXMaRow3ekphZAByM7c9+cVXfw78PyavZ6lrGrSPJiCS3geVyxMhQjdnvtBAH39xWu0rRhYSxy2bPCyoEDRnHpBBA/7RUOeSbLcMUlbFLTTzJdi4Zj5Zj2+UU6nOQxOeODjBHYHit3p7BrKPPUDB/SqVYdo7nHucmrXSWzE6H8rV2J7Mz7VjqrUhXBXxOKpJAJUChuMCi54oMpBpZwIHmuMM9aiMZ56V8zDtRGAtllEJRc2gmaXiNEUbpGwSR254zz7VkL2O4mtb+yvITPCsrxvHxvjHDLgjjgEft1rVXUYmTa65FFt7dPKRFHApGSNbRVhnqmeD6t4e1KwWO5CGe0UZjdPWqjJPTtyTweOf0qslntltYQI2E4d5H4I5wAo9vy5yP8Af8c/ouXSIWRvKCxuxyeOCe5wMVmJfAtm1889zp9pOrc4V5I8fIUHH96OOdrTOeKMuaPKxNpX+luNqR3rI6nyUcndkbSCfoP1AjuGzVn4R8Hav4kRXkmez0gkNJNJna+0k+hSfVgZ54AycfPoGqeDbWaDyNOs7G13D1TtB5jr8KMgZ+ST9qv9NsLqC3ENxfXN2cYLzMo47DCgAD9K2WbWjFiSZQeFtOu4bdElkkWyi3LaWxG3ahJO9wOsjZyc/TnA71q0hA7UeO2CgYFSYYqZuxopKuKnprbZ2X/ctfS0KE+XcIx6ZwaKDpnSVxaLnOKgx5qO7mou1WERXPe44ANCF0XOPmlWGTU4U9QNZRllkBkCu7K+TmiqMUAQAx1OAbTipnFQUjfQS4HDo6tdKg9qjGeKKKUOBeSD2rvlgdBRai3SsNQM8UGTrR2oL1hqFXpdxjmmZKBJ0rAvhYRHdGHz1FcPJoVjJmEqfy0woBq2LtEclTooKJF9Qru0VJBzRMCh5DjrRGcAUi9xt4xQZbpugGKXTCsdeSgrKPMAzzVe87HuaHHM3nKfmukqVmwe9GmhbIo4PFI27+kH4o8U4kzgHjiprKaGc18agDmpVxwNhQmo5oTCsCFpBS8nQ0zJS8g4rAkChnWCT+YdqOQpYnAHsT8U9FJnPIyOvPeqfUEje2lSZFkjZSHRlBBHtg8UzaP5FvGgJbCgZbqeOp+afhk7oTmiqs//2Q=="
+                            alt="no images">
+                    </div>
+                    <div class="p-2" style="background-color: #F9FAFB;">
+                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
+                            <span style="font-size: 13px;">In Stock</span>
+                        </div>
+                        <p style="color:#00798C;"
+                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="font-size:13px;" class="text-left">
+                            Category-1
+                        </p>
+
+                        <div class="flex mt-1">
+                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 19.69
+                            </p>
+                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>75.00</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="ofText">
+                        -10 %
+                    </p>
+                </div>
+
+                <div class="relative slider-item w-full sm:w-full md:w-40">
+                    <div class="slide-content">
+                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                    </div>
+                    <div class="p-2" style="background-color: #F9FAFB;">
+                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
+                            <span style="font-size: 13px;">In Stock</span>
+                        </div>
+                        <p style="color:#00798C;"
+                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="font-size:13px;" class="text-left">
+                            Category-1
+                        </p>
+
+                        <div class="flex mt-1">
+                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 19.69
+                            </p>
+                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>75.00</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="ofText">
+                        -10 %
+                    </p>
+                </div>
+
+                <div class="relative slider-item w-full sm:w-full md:w-40">
+                    <div class="slide-content">
+                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                    </div>
+                    <div class="p-2" style="background-color: #F9FAFB;">
+                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
+                            <span style="font-size: 13px;">In Stock</span>
+                        </div>
+                        <p style="color:#00798C;"
+                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
+                            Premium Roles Watch
+                        </p>
+
+                        <p style="font-size:13px;" class="text-left">
+                            Category-1
+                        </p>
+
+                        <div class="flex mt-1">
+                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : 19.69
+                            </p>
+                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
+                                Tk : <span>75.00</span>
+                            </p>
+                        </div>
+                    </div>
+                    <p class="ofText">
+                        -10 %
+                    </p>
+                </div>
+
+                <!-- Add more slides as needed -->
             </div>
-            <div
-                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
-                @foreach ($topCategories as $tCategory)
-                    <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
-                        <img class="img" src="{{ $tCategory->img_src }}">
-                    </a>
-                @endforeach
-            </div>
+
+            <button
+                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                class="absolute left-2 border-0 rounded cursor-pointer md:left-16 lg:left-16 prev-button2">
+                <i class="fa-solid fa-arrow-left"></i>
+            </button>
+            <button
+                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                class="absolute right-0 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button2">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
         </div>
     </section>
-
-    {{-- ==================Medical Devices================== --}}
-    @if (count($otherProduct->products))
-        <section class="page-section">
-            <div class="container">
-                <div class="text-center">
-                    <h1 class="section-title mb-5">{{ $otherProduct->title }}</h1>
-                </div>
-                <div
-                    class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6">
-                    @foreach ($otherProduct->products as $product)
-                        <div data-aos="fade-up" data-aos-anchor-placement="top-bottom">
-                            <x-frontend.product-thumb type="default" :product="$product" />
-                        </div>
-                    @endforeach
-                </div>
-                <div class="text-center mt-8">
-                    <a href="{{ route('products.index') }}" class="btn btn-md btn-primary">Browse All Products</a>
-                </div>
-            </div>
-        </section>
-    @endif
 
     {{-- New Arrivals --}}
     <section class="page-section">
@@ -371,7 +484,92 @@
         </div>
     </section>
 
+    {{-- ==============Service Section=================== --}}
+    <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
+        <div class="container">
+            <div
+                class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
+                @foreach ($topBrands as $topBrand)
+                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title=""
+                        :img-src="$topBrand->img_src" post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
+                @endforeach
+            </div>
+        </div>
+    </section>
 
+    {{-- ==============Service Section for mobile=================== --}}
+    <section class="service-section pt-2 pb-2 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
+        <div class="container">
+            <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
+                @foreach ($topBrands as $topBrand)
+                    <x-frontend.banner-box type="service" :bg-color="'#fff'" pre-title="" title=""
+                        :img-src="$topBrand->img_src" post-title="Shop Now" :post-title-link="route('brand.page', [$topBrand->id, $topBrand->slug])" />
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ================Top Categories============== --}}
+    <section class="symptoms-section page-section bg-gray-100">
+        <div class="container">
+            <div class="headline text-center">
+                <h1 class="section-title">Top Categories</h1>
+            </div>
+            <div
+                class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
+                @foreach ($topCategories as $tCategory)
+                    <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
+                        <img class="img" src="{{ $tCategory->img_src }}">
+                    </a>
+                @endforeach
+            </div>
+        </div>
+    </section>
+
+    {{-- ==================Top Products================== --}}
+    @if ($topProduct)
+        <section class="page-section">
+            <div class="container">
+                <div class="text-center">
+                    <h1 class="section-title mb-2">{{ $topProduct->title }}</h1>
+                </div>
+                <div
+                    class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
+                    @foreach ($topProduct->products as $product)
+                        <div data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+                            <x-frontend.product-thumb type="default" :product="$product" />
+                        </div>
+                    @endforeach
+                </div>
+                <div class="text-center mt-8">
+                    <a href="{{ route('products.index') }}" class="btn btn-md btn-primary">Browse All Products</a>
+                </div>
+            </div>
+        </section>
+    @endif
+
+
+    {{-- ==================Medical Devices================== --}}
+    @if (count($otherProduct->products))
+        <section class="page-section">
+            <div class="container">
+                <div class="text-center">
+                    <h1 class="section-title mb-5">{{ $otherProduct->title }}</h1>
+                </div>
+                <div
+                    class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-6">
+                    @foreach ($otherProduct->products as $product)
+                        <div data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+                            <x-frontend.product-thumb type="default" :product="$product" />
+                        </div>
+                    @endforeach
+                </div>
+                <div class="text-center mt-8">
+                    <a href="{{ route('products.index') }}" class="btn btn-md btn-primary">Browse All Products</a>
+                </div>
+            </div>
+        </section>
+    @endif
 
 
     {{-- Offers --}}
@@ -512,6 +710,33 @@
 
     <script>
         $(document).ready(function() {
+            $('.slider-container1').slick({
+                slidesToShow: 4, // Display three slides at a time
+                slidesToScroll: 1, // Change one slide at a time
+                prevArrow: $('.prev-button2'), // Use prev button for navigation
+                nextArrow: $('.next-button2'), // Use next button for navigation
+                responsive: [{
+                        breakpoint: 320, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 2, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 480, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 2, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+
+                ]
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
             $('.slider-container').slick({
                 slidesToShow: 4, // Display three slides at a time
                 slidesToScroll: 1, // Change one slide at a time
@@ -536,8 +761,6 @@
             });
         });
     </script>
-
-
 
 
     <script>

@@ -10152,15 +10152,6 @@ textarea.form-control.is-invalid{
 .-right-3{
   right: -0.75rem;
 }
-.left-auto{
-  left: auto;
-}
-.top-11{
-  top: 2.75rem;
-}
-.right-16{
-  right: 4rem;
-}
 .left-2{
   left: 0.5rem;
 }
@@ -10446,15 +10437,6 @@ textarea.form-control.is-invalid{
 }
 .h-20{
   height: 5rem;
-}
-.h-\[123px\]{
-  height: 123px;
-}
-.h-\[130px\]{
-  height: 130px;
-}
-.h-\[129px\]{
-  height: 129px;
 }
 .max-h-64{
   max-height: 16rem;
@@ -11248,14 +11230,8 @@ textarea.form-control.is-invalid{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
-.text-\[10px\]{
-  font-size: 10px;
-}
 .text-\[12px\]{
   font-size: 12px;
-}
-.text-\[11px\]{
-  font-size: 11px;
 }
 .font-bold{
   font-weight: 700;
@@ -13746,11 +13722,11 @@ fieldset legend{
       padding-left: 6rem;
     }
   }
-  .md\:right-16{
-    right: 4rem;
-  }
   .md\:left-16{
     left: 4rem;
+  }
+  .md\:right-16{
+    right: 4rem;
   }
   .md\:order-first{
     order: -9999;
@@ -13993,11 +13969,11 @@ fieldset legend{
   .lg\:-right-2{
     right: -0.5rem;
   }
-  .lg\:right-16{
-    right: 4rem;
-  }
   .lg\:left-16{
     left: 4rem;
+  }
+  .lg\:right-16{
+    right: 4rem;
   }
   .lg\:col-span-1{
     grid-column: span 1 / span 1;
