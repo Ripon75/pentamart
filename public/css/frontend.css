@@ -21365,6 +21365,12 @@ readers do not read off random characters that represent icons */
   .lg\:mt-14{
     margin-top: 3.5rem;
   }
+  .lg\:mt-44{
+    margin-top: 11rem;
+  }
+  .lg\:mt-40{
+    margin-top: 10rem;
+  }
   .lg\:block{
     display: block;
   }
