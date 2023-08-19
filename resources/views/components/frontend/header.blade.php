@@ -230,10 +230,9 @@
     {{-- ==========New post header======================= --}}
     <div class="hidden sm:hidden md:hidden lg:block">
         <div class="post-header container h-14">
-            <div class="flex space-x-6 items-center h-full">
-                <div class="flex-1">
-                    <ul
-                        class="flex text-sm md:text-sm lg:text-base text-primary font-normal tracking-wide">
+            <div class="flex items-center justify-around h-full">
+                <div class="">
+                    <ul class="flex text-sm md:text-sm lg:text-base text-primary font-normal tracking-wide">
                         @foreach ($menus as $m)
                             <a href="{{ $m['route'] }}" class="p-2 lg:p-2 xl:p-4">{{ $m['label'] }}</a>
                         @endforeach

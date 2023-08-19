@@ -10152,6 +10152,12 @@ textarea.form-control.is-invalid{
 .-right-3{
   right: -0.75rem;
 }
+.bottom-5{
+  bottom: 1.25rem;
+}
+.left-11{
+  left: 2.75rem;
+}
 .left-2{
   left: 0.5rem;
 }
@@ -10708,15 +10714,15 @@ textarea.form-control.is-invalid{
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
-.space-x-6 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .space-x-3 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
   margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-6 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-y-1 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
@@ -11409,6 +11415,10 @@ textarea.form-control.is-invalid{
 }
 .blur{
   --tw-blur: blur(8px);
+  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
+}
+.drop-shadow-xl{
+  --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter{
@@ -13722,6 +13732,9 @@ fieldset legend{
       padding-left: 6rem;
     }
   }
+  .md\:left-24{
+    left: 6rem;
+  }
   .md\:left-16{
     left: 4rem;
   }
@@ -13968,6 +13981,9 @@ fieldset legend{
   }
   .lg\:-right-2{
     right: -0.5rem;
+  }
+  .lg\:left-24{
+    left: 6rem;
   }
   .lg\:left-16{
     left: 4rem;

@@ -119,178 +119,77 @@
 
             <div class="slider-container1">
 
-                <div class="relative slider-item w-full sm:w-full md:w-40">
+                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]"
-                            src="https://images.unsplash.com/photo-1524592094714-0f0654e20314?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NXx8d29tZW5zJTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/dx.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 13px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
-                            Premium Roles Watch
-                        </p>
 
-                        <p style="font-size:13px;" class="text-left">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
+                    <div class="">
+                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
+                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
                 </div>
 
-                <div class="relative slider-item w-full sm:w-full md:w-40">
+
+                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]"
-                            src="https://images.unsplash.com/photo-1584208123923-cc027813cbcb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8d29tZW5zJTIwd2F0Y2h8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
+                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/wa.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 13px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
-                            Premium Roles Watch
-                        </p>
-
-                        <p style="font-size:13px;" class="text-left">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 19.69
-                            </p>
-                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>75.00</span>
-                            </p>
+                    <div class="">
+                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
+                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
                 </div>
 
-                <div class="relative slider-item w-full sm:w-full md:w-40">
+                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]"
-                            src="data:image/jpeg;base64,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"
+                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/med.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 13px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
-                            Premium Roles Watch
-                        </p>
-
-                        <p style="font-size:13px;" class="text-left">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 19.69
-                            </p>
-                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>75.00</span>
-                            </p>
+                    <div class="">
+                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
+                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
                 </div>
 
-                <div class="relative slider-item w-full sm:w-full md:w-40">
+                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/imadges.jpeg') }}"
+                            alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 13px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
-                            Premium Roles Watch
-                        </p>
-
-                        <p style="font-size:13px;" class="text-left">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 19.69
-                            </p>
-                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>75.00</span>
-                            </p>
+                    <div class="">
+                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
+                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
                 </div>
 
-                <div class="relative slider-item w-full sm:w-full md:w-40">
+                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/Untitled.png') }}"
+                            alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-16" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 13px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-xs font-semibold mt-1 text-left md:text-sm lg:text-sm 2xl:text-lg">
-                            Premium Roles Watch
-                        </p>
-
-                        <p style="font-size:13px;" class="text-left">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p class="text-orange-500 text-xs text-left sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 19.69
-                            </p>
-                            <p class="ml-4 line-through text-xs sm:text-sm md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>75.00</span>
-                            </p>
+                    <div class="">
+                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
+                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
                 </div>
+
 
                 <!-- Add more slides as needed -->
             </div>
 
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                 class="absolute left-2 border-0 rounded cursor-pointer md:left-16 lg:left-16 prev-button2">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                 class="absolute right-0 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button2">
                 <i class="fa-solid fa-arrow-right-long"></i>
             </button>
@@ -485,7 +384,7 @@
     </section>
 
     {{-- ==============Service Section=================== --}}
-    <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
+    {{-- <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
         <div class="container">
             <div
                 class="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-4 sm:gap-4 md:gap-4 lg:gap-4 xl:gap-8 2xl:gap-8">
@@ -495,10 +394,10 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ==============Service Section for mobile=================== --}}
-    <section class="service-section pt-2 pb-2 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
+    {{-- <section class="service-section pt-2 pb-2 block sm:block md:block lg:hidden xl:hidden 2xl:hidden">
         <div class="container">
             <div class="grid grid-cols-3 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-8 2xl:gap-8 ">
                 @foreach ($topBrands as $topBrand)
@@ -507,7 +406,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
+    </section> --}}
 
     {{-- ================Top Categories============== --}}
     <section class="symptoms-section page-section bg-gray-100">
@@ -522,6 +421,15 @@
                         <img class="img" src="{{ $tCategory->img_src }}">
                     </a>
                 @endforeach
+                <a href="" class="img-wrapper">
+                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
+                </a>
+                <a href="" class="img-wrapper">
+                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
+                </a>
+                <a href="" class="img-wrapper">
+                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
+                </a>
             </div>
         </div>
     </section>
@@ -531,7 +439,7 @@
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
-                    <h1 class="section-title mb-2">{{ $topProduct->title }}</h1>
+                    <h1 class="section-title mb-2">Best Selling Products</h1>
                 </div>
                 <div
                     class="product-grid grid gap-2 grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-5 2xl:grid-cols-6">
@@ -548,9 +456,9 @@
         </section>
     @endif
 
-
+    {{-- ===========Watch===================== --}}
     {{-- ==================Medical Devices================== --}}
-    @if (count($otherProduct->products))
+    {{-- @if (count($otherProduct->products))
         <section class="page-section">
             <div class="container">
                 <div class="text-center">
@@ -569,7 +477,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endif --}}
 
 
     {{-- Offers --}}

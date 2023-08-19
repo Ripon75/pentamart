@@ -28,7 +28,7 @@
                                             <input type="checkbox" name="brands[]" value="{{ $brand['id'] }}"
                                                 class="focus:ring-0 input-checkbox"
                                                 {{ in_array($brand['id'], $filterBrandIds) ? 'checked' : '' }} />
-                                            <span class="ml-3 text-sm">{{ $brand['name'] }}</span>
+                                            <span class="ml-3 text-sm">Digital Genix</span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -46,7 +46,7 @@
                                             <input type="checkbox" name="categories[]" value="{{ $category['id'] }}"
                                                 class="focus:ring-0 input-checkbox"
                                                 {{ in_array($category['id'], $filterCategoryIds) ? 'checked' : '' }} />
-                                            <span class="ml-3 text-sm">{{ $category['name'] }}</span>
+                                            <span class="ml-3 text-sm">Wrist Watch</span>
                                         </label>
                                     @endforeach
                                 </div>
