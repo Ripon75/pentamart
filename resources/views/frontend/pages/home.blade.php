@@ -417,19 +417,52 @@
             <div
                 class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
                 @foreach ($topCategories as $tCategory)
-                    <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
-                        <img class="img" src="{{ $tCategory->img_src }}">
-                    </a>
+                    <div class="">
+                        <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
+                            <img class="img" src="{{ $tCategory->img_src }}">
+                            <div style="background-color: #E5E7EB;" class="">
+                                <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
+                            </div>
+                        </a>
+                    </div>
                 @endforeach
-                <a href="" class="img-wrapper">
-                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
-                </a>
-                <a href="" class="img-wrapper">
-                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
-                </a>
-                <a href="" class="img-wrapper">
-                    <img class="img" src="{{ asset('images/images.png') }}" alt="no images">
-                </a>
+
+                <div>
+                    <a href="" class="img-wrapper">
+                        <img class="img" src="{{ asset('images/wrist-watch.png') }}" alt="no images">
+                        <div style="background-color: #E5E7EB;" class="">
+                            <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
+                        </div>
+                    </a>
+
+                </div>
+
+                <div>
+                    <a href="" class="img-wrapper">
+                        <img class="img" src="{{ asset('images/book.jpg') }}" alt="no images">
+                        <div style="background-color: #E5E7EB;" class="">
+                            <p style="color:#102967;" class="text-center p-3 font-semibold">Medical books</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div>
+                    <a href="" class="img-wrapper">
+                        <img class="img" src="{{ asset('images/facebook.png') }}" alt="no images">
+                        <div style="background-color: #E5E7EB;" class="">
+                            <p style="color:#102967;" class="text-center p-3 font-semibold">Facebook Boosting</p>
+                        </div>
+                    </a>
+                </div>
+
+                <div>
+                    <a href="" class="img-wrapper">
+                        <img class="img" src="{{ asset('images/equipment.jpg') }}" alt="no images">
+                        <div style="background-color: #E5E7EB;" class="">
+                            <p style="color:#102967;" class="text-center p-3 font-semibold">Medical Equipment</p>
+                        </div>
+                    </a>
+                </div>
             </div>
         </div>
     </section>

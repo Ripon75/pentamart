@@ -289,6 +289,34 @@
                         Address
                     </a>
 
+                    <a href=""
+                        class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        <i class="pr-3 fa-solid fa-cart-shopping"></i>
+                        My Order
+                    </a>
+
+                    <a href=""
+                        class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        <i class="pr-3 fa-solid fa-layer-group"></i>
+                        Category
+                    </a>
+
+                    <a href=""
+                        class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        <i class="pr-3 fa-regular fa-address-card"></i>
+                        About
+                    </a>
+
+                    <a href=""
+                        class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
+                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        <i class="pr-3 fa-regular fa-address-book"></i>
+                        Contact
+                    </a>
+
                     @auth
                         <a href="{{ route('logout') }}"
                             class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out">
