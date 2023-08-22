@@ -8473,6 +8473,12 @@ textarea.form-control.is-invalid{
 .h-\[195px\]{
   height: 195px;
 }
+.h-\[150px\]{
+  height: 150px;
+}
+.h-\[136px\]{
+  height: 136px;
+}
 .max-h-64{
   max-height: 16rem;
 }
@@ -8583,6 +8589,24 @@ textarea.form-control.is-invalid{
 }
 .w-\[90px\]{
   width: 90px;
+}
+.w-\[100\%\]{
+  width: 100%;
+}
+.w-\[100px\]{
+  width: 100px;
+}
+.w-\[250px\]{
+  width: 250px;
+}
+.w-\[230px\]{
+  width: 230px;
+}
+.w-\[530px\]{
+  width: 530px;
+}
+.w-\[175px\]{
+  width: 175px;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -21114,6 +21138,18 @@ readers do not read off random characters that represent icons */
   .md\:right-16{
     right: 4rem;
   }
+  .md\:left-10{
+    left: 2.5rem;
+  }
+  .md\:right-10{
+    right: 2.5rem;
+  }
+  .md\:left-12{
+    left: 3rem;
+  }
+  .md\:right-12{
+    right: 3rem;
+  }
   .md\:order-first{
     order: -9999;
   }
@@ -21204,6 +21240,9 @@ readers do not read off random characters that represent icons */
   }
   .md\:w-40{
     width: 10rem;
+  }
+  .md\:w-\[230px\]{
+    width: 230px;
   }
   .md\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -21424,6 +21463,9 @@ readers do not read off random characters that represent icons */
   }
   .lg\:w-\[800px\]{
     width: 800px;
+  }
+  .lg\:w-\[230px\]{
+    width: 230px;
   }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));

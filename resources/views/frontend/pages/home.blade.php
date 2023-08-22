@@ -203,7 +203,7 @@
 
                 <div class="relative slider-item ">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
+                        <img class="w-full h-[136px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
                             alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
@@ -212,7 +212,7 @@
                         </div>
                         <p style="color:#00798C;"
                             class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Tufnil Tablet 200mg (200pcs)
+                            Tufnil Tablet 200mg
                         </p>
 
                         <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
@@ -236,7 +236,7 @@
 
                 <div class="relative slider-item ">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
+                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
                             alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
@@ -269,7 +269,7 @@
 
                 <div class="relative slider-item ">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/uq87amj22pyydt12tfuo.webp') }}"
+                        <img class="w-full h-[136px]" src="{{ asset('images/uq87amj22pyydt12tfuo.webp') }}"
                             alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
@@ -302,7 +302,7 @@
 
                 <div class="relative slider-item w-full sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/omeprazole.jpg') }}" alt="no images">
+                        <img class="w-full h-[136px]" src="{{ asset('images/omeprazole.jpg') }}" alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
                         <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
@@ -334,7 +334,7 @@
 
                 <div class="relative slider-item w-full sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/istockphoto-1300036753-612x612.jpg') }}"
+                        <img class="w-full h-[136px]" src="{{ asset('images/istockphoto-1300036753-612x612.jpg') }}"
                             alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
@@ -367,7 +367,7 @@
 
                 <div class="relative slider-item w-full sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                        <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
                         <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
@@ -399,7 +399,7 @@
 
                 <div class="relative slider-item w-full sm:w-full md:w-40">
                     <div class="slide-content">
-                        <img class="w-full h-[133px]" src="{{ asset('images/images.png') }}" alt="no images">
+                        <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
                     </div>
                     <div class="p-2" style="background-color: #F9FAFB;">
                         <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
@@ -434,12 +434,12 @@
 
             <button
                 style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute left-2 border-0 rounded cursor-pointer md:left-16 lg:left-16 prev-button1">
+                class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button1">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
             <button
                 style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute right-0 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button1">
+                class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
                 <i class="fa-solid fa-arrow-right-long"></i>
             </button>
         </div>
@@ -471,7 +471,7 @@
     </section> --}}
 
     {{-- ================Top Categories============== --}}
-    <section class="symptoms-section page-section bg-gray-100">
+    <section class="symptoms-section page-section">
         <div class="container">
             <div class="headline text-center">
                 <h1 class="section-title">Top Categories</h1>
@@ -479,48 +479,50 @@
             <div
                 class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
                 @foreach ($topCategories as $tCategory)
-                    <div class="">
+                    <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
                         <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
-                            <img class="img" src="{{ $tCategory->img_src }}">
-                            <div style="background-color: #E5E7EB;" class="">
+                            <img class="h-[150px] w-[100%] rounded" src="{{ $tCategory->img_src }}">
+                            <div style="background-color: #fff;" class="">
                                 <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
                             </div>
                         </a>
                     </div>
                 @endforeach
 
-                <div>
+                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
                     <a href="" class="img-wrapper">
-                        <img class="img" src="{{ asset('images/wrist-watch.png') }}" alt="no images">
-                        <div style="background-color: #E5E7EB;" class="">
+                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/wrist-watch.png') }}"
+                            alt="no images">
+                        <div style="background-color: #fff;" class="">
                             <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
                         </div>
                     </a>
-
                 </div>
 
-                <div>
+                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
                     <a href="" class="img-wrapper">
-                        <img class="img" src="{{ asset('images/book.jpg') }}" alt="no images">
-                        <div style="background-color: #E5E7EB;" class="">
+                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/book.jpg') }}" alt="no images">
+                        <div style="background-color: #fff;" class="">
                             <p style="color:#102967;" class="text-center p-3 font-semibold">Medical books</p>
                         </div>
                     </a>
                 </div>
 
-                <div>
+                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
                     <a href="" class="img-wrapper">
-                        <img class="img" src="{{ asset('images/facebook.png') }}" alt="no images">
-                        <div style="background-color: #E5E7EB;" class="">
+                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/facebook.png') }}"
+                            alt="no images">
+                        <div style="background-color: #fff;" class="">
                             <p style="color:#102967;" class="text-center p-3 font-semibold">Facebook Boosting</p>
                         </div>
                     </a>
                 </div>
 
-                <div>
+                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
                     <a href="" class="img-wrapper">
-                        <img class="img" src="{{ asset('images/equipment.jpg') }}" alt="no images">
-                        <div style="background-color: #E5E7EB;" class="">
+                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/equipment.jpg') }}"
+                            alt="no images">
+                        <div style="background-color: #fff;" class="">
                             <p style="color:#102967;" class="text-center p-3 font-semibold">Medical Equipment</p>
                         </div>
                     </a>
@@ -674,7 +676,7 @@
     {{-- Offers END --}}
 
     {{-- ==================Features================== --}}
-    <section class="page-section bg-gray-100">
+    <section class="page-section">
         <div class="container">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                 @foreach ($features as $feature)
@@ -732,7 +734,20 @@
                             slidesToScroll: 1,
                         }
                     },
-
+                    {
+                        breakpoint: 768, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 1024, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
                 ]
             });
         });
@@ -759,7 +774,20 @@
                             slidesToScroll: 1,
                         }
                     },
-
+                    {
+                        breakpoint: 768, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 1024, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
                 ]
             });
         });
