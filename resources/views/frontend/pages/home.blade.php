@@ -124,68 +124,59 @@
 
             <div class="slider-container1">
 
-                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/dx.jpg') }}"
-                            alt="no images">
-                    </div>
-
-                    <div class="">
-                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
-                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                        </div>
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/wa.jpg') }}" alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                     </div>
                 </div>
 
-
-                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/wa.jpg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="">
-                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
-                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                        </div>
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/dx.jpg') }}" alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                     </div>
                 </div>
 
-                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/med.jpg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="">
-                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
-                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                        </div>
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/FastracK.webp') }}"
+                        alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                     </div>
                 </div>
 
-                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/imadges.jpeg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="">
-                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
-                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                        </div>
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/Untitlesddd.png') }}"
+                        alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                     </div>
                 </div>
 
-                <div class="relative slider-item w-full border-0 sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-full drop-shadow-xl rounded" src="{{ asset('images/Untitled.png') }}"
-                            alt="no images">
-                    </div>
-                    <div class="">
-                        <div class="absolute bottom-5 left-11 md:left-24 lg:left-24">
-                            <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                        </div>
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/med.jpg') }}"
+                        alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                     </div>
                 </div>
 
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/imadges.jpeg') }}"
+                        alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
+                    </div>
+                </div>
+
+                <div>
+                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/Untitled.png') }}"
+                        alt="no images">
+                    <div class="mt-2.5 w-[90px] mx-auto">
+                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
+                    </div>
+                </div>
 
                 <!-- Add more slides as needed -->
             </div>
