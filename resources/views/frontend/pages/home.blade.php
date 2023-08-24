@@ -196,15 +196,15 @@
     <section class="page-section">
         <div style="position: relative;" class="container">
             <div class="text-center">
-                <h1 class="section-title mb-5">{{ $featureProduct->title }}</h1>
+                <h1 class="section-title mb-5">{{ $newArrival->title }}</h1>
             </div>
 
             <div class="slider-container">
 
-                @foreach ($featureProduct->products as $product)
+                @foreach ($newArrival->products as $product)
                     <div class="relative slider-item ">
                         <div class="slide-content">
-                            <img class="w-full h-[136px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
+                            <img class="w-full h-[136px]" src="{{ $product->img_src }}"
                                 alt="no images">
                         </div>
                         <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
@@ -218,22 +218,30 @@
                             </p>
 
                             <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                Category-1
+                                {{ $product->category->name ?? '' }}
                             </p>
 
                             <div class="flex mt-1">
-                                <p
-                                    class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                    Tk : 194.69
-                                </p>
-                                <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                    Tk : <span>754.00</span>
-                                </p>
+                                @if ($product->offer_price > 0)
+                                    <p
+                                        class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        {{ $product->offer_price }}
+                                    </p>
+                                    <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        tk : <span>{{ $product->mrp }}</span>
+                                    </p>
+                                @else
+                                    <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        tk : <span>{{ $product->mrp }}</span>
+                                    </p>
+                                @endif
                             </div>
                         </div>
-                        <p class="ofText">
-                            -10 %
-                        </p>
+                        @if ($product->offer_price > 0)
+                            <p class="ofText">
+                                {{ $product->offer_percent }}
+                            </p>
+                        @endif
                     </div>
                 @endforeach
 

@@ -8229,11 +8229,11 @@ textarea.form-control.is-invalid{
 .m-0{
   margin: 0px;
 }
-.m-1{
-  margin: 0.25rem;
-}
 .m-5{
   margin: 1.25rem;
+}
+.m-1{
+  margin: 0.25rem;
 }
 .mx-auto{
   margin-left: auto;
@@ -8335,12 +8335,6 @@ textarea.form-control.is-invalid{
 .mb-5{
   margin-bottom: 1.25rem;
 }
-.mt-2\.5{
-  margin-top: 0.625rem;
-}
-.ml-4{
-  margin-left: 1rem;
-}
 .mb-8{
   margin-bottom: 2rem;
 }
@@ -8352,6 +8346,12 @@ textarea.form-control.is-invalid{
 }
 .-ml-px{
   margin-left: -1px;
+}
+.mt-2\.5{
+  margin-top: 0.625rem;
+}
+.ml-4{
+  margin-left: 1rem;
 }
 .block{
   display: block;
@@ -8443,6 +8443,18 @@ textarea.form-control.is-invalid{
 .h-auto{
   height: auto;
 }
+.h-\[46px\]{
+  height: 46px;
+}
+.h-\[36px\]{
+  height: 36px;
+}
+.h-\[384px\]{
+  height: 384px;
+}
+.h-20{
+  height: 5rem;
+}
 .h-\[195px\]{
   height: 195px;
 }
@@ -8457,18 +8469,6 @@ textarea.form-control.is-invalid{
 }
 .h-40{
   height: 10rem;
-}
-.h-\[46px\]{
-  height: 46px;
-}
-.h-\[36px\]{
-  height: 36px;
-}
-.h-\[384px\]{
-  height: 384px;
-}
-.h-20{
-  height: 5rem;
 }
 .max-h-64{
   max-height: 16rem;
@@ -8548,18 +8548,6 @@ textarea.form-control.is-invalid{
 .w-4{
   width: 1rem;
 }
-.w-\[85\%\]{
-  width: 85%;
-}
-.w-\[90px\]{
-  width: 90px;
-}
-.w-\[175px\]{
-  width: 175px;
-}
-.w-\[100\%\]{
-  width: 100%;
-}
 .w-72{
   width: 18rem;
 }
@@ -8586,6 +8574,18 @@ textarea.form-control.is-invalid{
 }
 .w-44{
   width: 11rem;
+}
+.w-\[85\%\]{
+  width: 85%;
+}
+.w-\[90px\]{
+  width: 90px;
+}
+.w-\[175px\]{
+  width: 175px;
+}
+.w-\[100\%\]{
+  width: 100%;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -8752,15 +8752,15 @@ textarea.form-control.is-invalid{
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
-.space-x-3 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
-  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .space-x-6 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(1.5rem * var(--tw-space-x-reverse));
   margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-3 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(0.75rem * var(--tw-space-x-reverse));
+  margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-y-1 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
@@ -9378,14 +9378,6 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
 }
-.text-orange-500{
-  --tw-text-opacity: 1;
-  color: rgb(249 115 22 / var(--tw-text-opacity));
-}
-.text-gray-800{
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity));
-}
 .text-slate-500{
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
@@ -9398,6 +9390,10 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
 }
+.text-gray-800{
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
 .text-red-300{
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity));
@@ -9405,6 +9401,10 @@ textarea.form-control.is-invalid{
 .text-red-400{
   --tw-text-opacity: 1;
   color: rgb(248 113 113 / var(--tw-text-opacity));
+}
+.text-orange-500{
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity));
 }
 .line-through{
   -webkit-text-decoration-line: line-through;
@@ -20259,14 +20259,14 @@ readers do not read off random characters that represent icons */
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-blue-600:hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-gray-50:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-blue-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 
 .hover\:text-blue-600:hover{
@@ -20900,14 +20900,11 @@ readers do not read off random characters that represent icons */
   .sm\:hidden{
     display: none;
   }
-  .sm\:h-\[220x\]{
-    height: 220x;
+  .sm\:h-\[272px\]{
+    height: 272px;
   }
   .sm\:h-32{
     height: 8rem;
-  }
-  .sm\:h-16{
-    height: 4rem;
   }
   .sm\:h-\[140px\]{
     height: 140px;
@@ -20917,6 +20914,12 @@ readers do not read off random characters that represent icons */
   }
   .sm\:h-28{
     height: 7rem;
+  }
+  .sm\:h-\[220x\]{
+    height: 220x;
+  }
+  .sm\:h-16{
+    height: 4rem;
   }
   .sm\:w-32{
     width: 8rem;
@@ -21207,9 +21210,6 @@ readers do not read off random characters that represent icons */
   .md\:w-\[250px\]{
     width: 250px;
   }
-  .md\:w-40{
-    width: 10rem;
-  }
   .md\:w-\[230px\]{
     width: 230px;
   }
@@ -21418,12 +21418,6 @@ readers do not read off random characters that represent icons */
   .lg\:w-\[160px\]{
     width: 160px;
   }
-  .lg\:w-\[230px\]{
-    width: 230px;
-  }
-  .lg\:w-64{
-    width: 16rem;
-  }
   .lg\:w-1\/2{
     width: 50%;
   }
@@ -21435,6 +21429,12 @@ readers do not read off random characters that represent icons */
   }
   .lg\:w-\[800px\]{
     width: 800px;
+  }
+  .lg\:w-\[230px\]{
+    width: 230px;
+  }
+  .lg\:w-64{
+    width: 16rem;
   }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -21526,9 +21526,6 @@ readers do not read off random characters that represent icons */
     font-size: 2.25rem;
     line-height: 2.5rem;
   }
-  .lg\:text-\[12px\]{
-    font-size: 12px;
-  }
   .lg\:text-lg{
     font-size: 1.125rem;
     line-height: 1.75rem;
@@ -21536,6 +21533,9 @@ readers do not read off random characters that represent icons */
   .lg\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+  .lg\:text-\[12px\]{
+    font-size: 12px;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
@@ -21718,14 +21718,14 @@ readers do not read off random characters that represent icons */
   .\32xl\:h-56{
     height: 14rem;
   }
-  .\32xl\:w-64{
-    width: 16rem;
-  }
   .\32xl\:w-\[500px\]{
     width: 500px;
   }
   .\32xl\:w-1\/2{
     width: 50%;
+  }
+  .\32xl\:w-64{
+    width: 16rem;
   }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));

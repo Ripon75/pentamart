@@ -31,8 +31,8 @@ class PageController extends Controller
         // Medical device products
         $otherProduct = Section::with(['products'])->where('slug', 'second-section')->first();
 
-        //Feature Product Section
-        $featureProduct = Section::with(['products'])->where('slug', 'feature-section')->first();
+        //New arrival Product Section
+        $newArrival = Section::with(['products'])->where('slug', 'new-arrival')->first();
 
         $offers = [
             [
@@ -65,14 +65,14 @@ class PageController extends Controller
         ];
 
         return view('frontend.pages.home', [
-            'sliders'        => $sliders,
-            'topCategories'  => $topCategories,
-            'topBrands'      => $topBrands,
-            'topProduct'     => $topProduct,
-            'otherProduct'   => $otherProduct,
-            'offers'         => $offers,
-            'features'       => $features,
-            'featureProduct' => $featureProduct,
+            'sliders'       => $sliders,
+            'topCategories' => $topCategories,
+            'topBrands'     => $topBrands,
+            'topProduct'    => $topProduct,
+            'otherProduct'  => $otherProduct,
+            'offers'        => $offers,
+            'features'      => $features,
+            'newArrival'    => $newArrival
         ]);
     }
 
