@@ -10152,6 +10152,12 @@ textarea.form-control.is-invalid{
 .-right-3{
   right: -0.75rem;
 }
+.left-2{
+  left: 0.5rem;
+}
+.top-\[54\%\]{
+  top: 54%;
+}
 .z-30{
   z-index: 30;
 }
@@ -10205,6 +10211,9 @@ textarea.form-control.is-invalid{
 }
 .m-0{
   margin: 0px;
+}
+.m-1{
+  margin: 0.25rem;
 }
 .m-5{
   margin: 1.25rem;
@@ -10288,8 +10297,8 @@ textarea.form-control.is-invalid{
 .mr-2{
   margin-right: 0.5rem;
 }
-.mb-4{
-  margin-bottom: 1rem;
+.mt-5{
+  margin-top: 1.25rem;
 }
 .mr-1{
   margin-right: 0.25rem;
@@ -10300,11 +10309,20 @@ textarea.form-control.is-invalid{
 .mb-3{
   margin-bottom: 0.75rem;
 }
+.mb-4{
+  margin-bottom: 1rem;
+}
 .mt-\[120px\]{
   margin-top: 120px;
 }
 .mb-5{
   margin-bottom: 1.25rem;
+}
+.mt-2\.5{
+  margin-top: 0.625rem;
+}
+.ml-4{
+  margin-left: 1rem;
 }
 .mb-8{
   margin-bottom: 2rem;
@@ -10314,9 +10332,6 @@ textarea.form-control.is-invalid{
 }
 .mb-1{
   margin-bottom: 0.25rem;
-}
-.mt-5{
-  margin-top: 1.25rem;
 }
 .-ml-px{
   margin-left: -1px;
@@ -10390,6 +10405,9 @@ textarea.form-control.is-invalid{
 .h-8{
   height: 2rem;
 }
+.h-\[56px\]{
+  height: 56px;
+}
 .h-28{
   height: 7rem;
 }
@@ -10408,6 +10426,21 @@ textarea.form-control.is-invalid{
 .h-auto{
   height: auto;
 }
+.h-\[195px\]{
+  height: 195px;
+}
+.h-\[136px\]{
+  height: 136px;
+}
+.h-\[120px\]{
+  height: 120px;
+}
+.h-\[150px\]{
+  height: 150px;
+}
+.h-40{
+  height: 10rem;
+}
 .h-\[46px\]{
   height: 46px;
 }
@@ -10419,9 +10452,6 @@ textarea.form-control.is-invalid{
 }
 .h-20{
   height: 5rem;
-}
-.h-\[56px\]{
-  height: 56px;
 }
 .max-h-64{
   max-height: 16rem;
@@ -10480,6 +10510,9 @@ textarea.form-control.is-invalid{
 .w-\[140px\]{
   width: 140px;
 }
+.w-\[200px\]{
+  width: 200px;
+}
 .w-6{
   width: 1.5rem;
 }
@@ -10498,6 +10531,18 @@ textarea.form-control.is-invalid{
 .w-4{
   width: 1rem;
 }
+.w-\[85\%\]{
+  width: 85%;
+}
+.w-\[90px\]{
+  width: 90px;
+}
+.w-\[175px\]{
+  width: 175px;
+}
+.w-\[100\%\]{
+  width: 100%;
+}
 .w-72{
   width: 18rem;
 }
@@ -10513,9 +10558,6 @@ textarea.form-control.is-invalid{
 .w-auto{
   width: auto;
 }
-.w-80{
-  width: 20rem;
-}
 .w-1\/3{
   width: 33.333333%;
 }
@@ -10528,9 +10570,6 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
-.w-\[200px\]{
-  width: 200px;
-}
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
@@ -10541,6 +10580,9 @@ textarea.form-control.is-invalid{
 }
 .max-w-full{
   max-width: 100%;
+}
+.max-w-md{
+  max-width: 28rem;
 }
 .flex-1{
   flex: 1 1 0%;
@@ -10641,9 +10683,6 @@ textarea.form-control.is-invalid{
 .gap-4{
   gap: 1rem;
 }
-.gap-6{
-  gap: 1.5rem;
-}
 .gap-2{
   gap: 0.5rem;
 }
@@ -10655,9 +10694,6 @@ textarea.form-control.is-invalid{
 }
 .gap-0{
   gap: 0px;
-}
-.gap-3{
-  gap: 0.75rem;
 }
 .space-x-2 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
@@ -10699,15 +10735,15 @@ textarea.form-control.is-invalid{
   margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
   margin-bottom: calc(1.5rem * var(--tw-space-y-reverse));
 }
-.space-x-6 > :not([hidden]) ~ :not([hidden]){
-  --tw-space-x-reverse: 0;
-  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
-  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
-}
 .space-x-3 > :not([hidden]) ~ :not([hidden]){
   --tw-space-x-reverse: 0;
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
   margin-left: calc(0.75rem * calc(1 - var(--tw-space-x-reverse)));
+}
+.space-x-6 > :not([hidden]) ~ :not([hidden]){
+  --tw-space-x-reverse: 0;
+  margin-right: calc(1.5rem * var(--tw-space-x-reverse));
+  margin-left: calc(1.5rem * calc(1 - var(--tw-space-x-reverse)));
 }
 .space-y-1 > :not([hidden]) ~ :not([hidden]){
   --tw-space-y-reverse: 0;
@@ -10735,9 +10771,6 @@ textarea.form-control.is-invalid{
 }
 .self-end{
   align-self: flex-end;
-}
-.self-center{
-  align-self: center;
 }
 .overflow-auto{
   overflow: auto;
@@ -10931,10 +10964,6 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
 }
-.bg-gray-800{
-  --tw-bg-opacity: 1;
-  background-color: rgb(31 41 55 / var(--tw-bg-opacity));
-}
 .bg-\[\#00798c\]{
   --tw-bg-opacity: 1;
   background-color: rgb(0 121 140 / var(--tw-bg-opacity));
@@ -10989,10 +11018,6 @@ textarea.form-control.is-invalid{
   --tw-bg-opacity: 1;
   background-color: rgb(74 222 128 / var(--tw-bg-opacity));
 }
-.bg-blue-600{
-  --tw-bg-opacity: 1;
-  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
-}
 .bg-opacity-10{
   --tw-bg-opacity: 0.1;
 }
@@ -11004,6 +11029,10 @@ textarea.form-control.is-invalid{
 }
 .bg-clip-padding{
   background-clip: padding-box;
+}
+.bg-clip-text{
+  -webkit-background-clip: text;
+          background-clip: text;
 }
 .bg-no-repeat{
   background-repeat: no-repeat;
@@ -11036,6 +11065,9 @@ textarea.form-control.is-invalid{
 .p-12{
   padding: 3rem;
 }
+.p-3{
+  padding: 0.75rem;
+}
 .p-1{
   padding: 0.25rem;
 }
@@ -11050,9 +11082,6 @@ textarea.form-control.is-invalid{
 }
 .p-10{
   padding: 2.5rem;
-}
-.p-3{
-  padding: 0.75rem;
 }
 .py-4{
   padding-top: 1rem;
@@ -11094,10 +11123,6 @@ textarea.form-control.is-invalid{
   padding-left: 0px;
   padding-right: 0px;
 }
-.py-8{
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
 .px-3{
   padding-left: 0.75rem;
   padding-right: 0.75rem;
@@ -11113,6 +11138,10 @@ textarea.form-control.is-invalid{
 .py-0{
   padding-top: 0px;
   padding-bottom: 0px;
+}
+.py-8{
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 .px-8{
   padding-left: 2rem;
@@ -11228,6 +11257,12 @@ textarea.form-control.is-invalid{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
+.text-\[12px\]{
+  font-size: 12px;
+}
+.text-\[11px\]{
+  font-size: 11px;
+}
 .font-bold{
   font-weight: 700;
 }
@@ -11326,6 +11361,14 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(220 38 38 / var(--tw-text-opacity));
 }
+.text-orange-500{
+  --tw-text-opacity: 1;
+  color: rgb(249 115 22 / var(--tw-text-opacity));
+}
+.text-gray-800{
+  --tw-text-opacity: 1;
+  color: rgb(31 41 55 / var(--tw-text-opacity));
+}
 .text-slate-500{
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
@@ -11337,10 +11380,6 @@ textarea.form-control.is-invalid{
 .text-red-700{
   --tw-text-opacity: 1;
   color: rgb(185 28 28 / var(--tw-text-opacity));
-}
-.text-gray-800{
-  --tw-text-opacity: 1;
-  color: rgb(31 41 55 / var(--tw-text-opacity));
 }
 .text-red-300{
   --tw-text-opacity: 1;
@@ -12911,12 +12950,6 @@ fieldset legend{
 .file\:rounded::file-selector-button{
   border-radius: 0.25rem;
 }
-.file\:rounded-full::-webkit-file-upload-button{
-  border-radius: 9999px;
-}
-.file\:rounded-full::file-selector-button{
-  border-radius: 9999px;
-}
 .file\:border::-webkit-file-upload-button{
   border-width: 1px;
 }
@@ -12930,12 +12963,6 @@ fieldset legend{
 .file\:border-primary::file-selector-button{
   --tw-border-opacity: 1;
   border-color: rgb(0 121 140 / var(--tw-border-opacity));
-}
-.file\:border-secondary\/50::-webkit-file-upload-button{
-  border-color: rgb(255 196 45 / 0.5);
-}
-.file\:border-secondary\/50::file-selector-button{
-  border-color: rgb(255 196 45 / 0.5);
 }
 .file\:bg-violet-50::-webkit-file-upload-button{
   --tw-bg-opacity: 1;
@@ -12961,14 +12988,6 @@ fieldset legend{
   padding-left: 2rem;
   padding-right: 2rem;
 }
-.file\:px-4::-webkit-file-upload-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-.file\:px-4::file-selector-button{
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
 .file\:text-sm::-webkit-file-upload-button{
   font-size: 0.875rem;
   line-height: 1.25rem;
@@ -12990,14 +13009,6 @@ fieldset legend{
 .file\:text-primary::file-selector-button{
   --tw-text-opacity: 1;
   color: rgb(0 121 140 / var(--tw-text-opacity));
-}
-.file\:text-secondary::-webkit-file-upload-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
-}
-.file\:text-secondary::file-selector-button{
-  --tw-text-opacity: 1;
-  color: rgb(255 196 45 / var(--tw-text-opacity));
 }
 .placeholder\:text-xs::-moz-placeholder{
   font-size: 0.75rem;
@@ -13078,6 +13089,10 @@ fieldset legend{
 .hover\:bg-red-700:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(185 28 28 / var(--tw-bg-opacity));
+}
+.hover\:bg-blue-600:hover{
+  --tw-bg-opacity: 1;
+  background-color: rgb(37 99 235 / var(--tw-bg-opacity));
 }
 .hover\:bg-gray-50:hover{
   --tw-bg-opacity: 1;
@@ -13189,9 +13204,6 @@ fieldset legend{
 }
 .disabled\:opacity-50:disabled{
   opacity: 0.5;
-}
-.disabled\:opacity-80:disabled{
-  opacity: 0.8;
 }
 .group:hover .group-hover\:block{
   display: block;
@@ -13389,18 +13401,6 @@ fieldset legend{
     --tw-bg-opacity: 1;
     background-color: rgb(8 20 51 / var(--tw-bg-opacity));
   }
-  .btn.sm\:btn-primary{
-    --tw-bg-opacity: 1;
-    background-color: rgb(0 121 140 / var(--tw-bg-opacity));
-  }
-  .btn.sm\:btn-primary{
-    --tw-text-opacity: 1;
-    color: rgb(255 255 255 / var(--tw-text-opacity));
-  }
-  .btn.sm\:btn-primary:hover{
-    --tw-bg-opacity: 1;
-    background-color: rgb(8 20 51 / var(--tw-bg-opacity));
-  }
   .sm\:btn.btn-secondary{
     --tw-bg-opacity: 1;
     background-color: rgb(255 196 45 / var(--tw-bg-opacity));
@@ -13570,20 +13570,23 @@ fieldset legend{
   .sm\:hidden{
     display: none;
   }
-  .sm\:h-\[272px\]{
-    height: 272px;
+  .sm\:h-\[220x\]{
+    height: 220x;
   }
   .sm\:h-32{
     height: 8rem;
   }
+  .sm\:h-16{
+    height: 4rem;
+  }
   .sm\:h-\[140px\]{
     height: 140px;
   }
-  .sm\:h-28{
-    height: 7rem;
-  }
   .sm\:h-\[56px\]{
     height: 56px;
+  }
+  .sm\:h-28{
+    height: 7rem;
   }
   .sm\:w-32{
     width: 8rem;
@@ -13591,26 +13594,29 @@ fieldset legend{
   .sm\:w-\[140px\]{
     width: 140px;
   }
-  .sm\:w-full{
-    width: 100%;
-  }
   .sm\:w-\[200px\]{
     width: 200px;
   }
   .sm\:w-2{
     width: 0.5rem;
   }
+  .sm\:w-full{
+    width: 100%;
+  }
   .sm\:flex-1{
     flex: 1 1 0%;
-  }
-  .sm\:grid-cols-2{
-    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .sm\:grid-cols-1{
     grid-template-columns: repeat(1, minmax(0, 1fr));
   }
+  .sm\:grid-cols-2{
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
   .sm\:flex-row{
     flex-direction: row;
+  }
+  .sm\:flex-wrap{
+    flex-wrap: wrap;
   }
   .sm\:items-center{
     align-items: center;
@@ -13637,18 +13643,6 @@ fieldset legend{
     --tw-space-x-reverse: 0;
     margin-right: calc(0.5rem * var(--tw-space-x-reverse));
     margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-  }
-  .sm\:bg-slate-600{
-    --tw-bg-opacity: 1;
-    background-color: rgb(71 85 105 / var(--tw-bg-opacity));
-  }
-  .sm\:bg-white{
-    --tw-bg-opacity: 1;
-    background-color: rgb(255 255 255 / var(--tw-bg-opacity));
-  }
-  .sm\:bg-primary{
-    --tw-bg-opacity: 1;
-    background-color: rgb(0 121 140 / var(--tw-bg-opacity));
   }
   .sm\:p-4{
     padding: 1rem;
@@ -13710,9 +13704,8 @@ fieldset legend{
     font-size: 1.5rem;
     line-height: 2rem;
   }
-  .sm\:text-3xl{
-    font-size: 1.875rem;
-    line-height: 2.25rem;
+  .sm\:text-\[10px\]{
+    font-size: 10px;
   }
   .sm\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -13759,6 +13752,21 @@ fieldset legend{
       padding-left: 6rem;
     }
   }
+  .md\:static{
+    position: static;
+  }
+  .md\:left-16{
+    left: 4rem;
+  }
+  .md\:right-16{
+    right: 4rem;
+  }
+  .md\:left-12{
+    left: 3rem;
+  }
+  .md\:right-12{
+    right: 3rem;
+  }
   .md\:order-first{
     order: -9999;
   }
@@ -13777,9 +13785,6 @@ fieldset legend{
   .md\:mx-auto{
     margin-left: auto;
     margin-right: auto;
-  }
-  .md\:mr-8{
-    margin-right: 2rem;
   }
   .md\:mt-8{
     margin-top: 2rem;
@@ -13823,14 +13828,14 @@ fieldset legend{
   .md\:h-\[254px\]{
     height: 254px;
   }
+  .md\:h-\[64px\]{
+    height: 64px;
+  }
   .md\:h-36{
     height: 9rem;
   }
   .md\:h-\[32px\]{
     height: 32px;
-  }
-  .md\:h-\[64px\]{
-    height: 64px;
   }
   .md\:w-full{
     width: 100%;
@@ -13850,8 +13855,11 @@ fieldset legend{
   .md\:w-\[250px\]{
     width: 250px;
   }
-  .md\:grid-cols-4{
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+  .md\:w-40{
+    width: 10rem;
+  }
+  .md\:w-\[230px\]{
+    width: 230px;
   }
   .md\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -13865,8 +13873,8 @@ fieldset legend{
   .md\:flex-row{
     flex-direction: row;
   }
-  .md\:items-center{
-    align-items: center;
+  .md\:flex-wrap{
+    flex-wrap: wrap;
   }
   .md\:justify-center{
     justify-content: center;
@@ -13874,11 +13882,11 @@ fieldset legend{
   .md\:justify-between{
     justify-content: space-between;
   }
-  .md\:gap-2{
-    gap: 0.5rem;
-  }
   .md\:gap-4{
     gap: 1rem;
+  }
+  .md\:gap-2{
+    gap: 0.5rem;
   }
   .md\:gap-0{
     gap: 0px;
@@ -13912,6 +13920,10 @@ fieldset legend{
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
   }
+  .md\:py-8{
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
   .md\:px-8{
     padding-left: 2rem;
     padding-right: 2rem;
@@ -13923,10 +13935,6 @@ fieldset legend{
   .md\:px-2{
     padding-left: 0.5rem;
     padding-right: 0.5rem;
-  }
-  .md\:py-8{
-    padding-top: 2rem;
-    padding-bottom: 2rem;
   }
   .md\:pb-2{
     padding-bottom: 0.5rem;
@@ -13978,9 +13986,8 @@ fieldset legend{
     font-size: 1.875rem;
     line-height: 2.25rem;
   }
-  .md\:text-5xl{
-    font-size: 3rem;
-    line-height: 1;
+  .md\:text-\[12px\]{
+    font-size: 12px;
   }
   .md\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -13999,19 +14006,22 @@ fieldset legend{
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
-  @media (min-width: 640px){
-    .md\:sm\:bg-slate-600{
-      --tw-bg-opacity: 1;
-      background-color: rgb(71 85 105 / var(--tw-bg-opacity));
-    }
-  }
 }
 @media (min-width: 1024px){
+  .lg\:static{
+    position: static;
+  }
   .lg\:-top-2{
     top: -0.5rem;
   }
   .lg\:-right-2{
     right: -0.5rem;
+  }
+  .lg\:left-16{
+    left: 4rem;
+  }
+  .lg\:right-16{
+    right: 4rem;
   }
   .lg\:col-span-1{
     grid-column: span 1 / span 1;
@@ -14025,14 +14035,14 @@ fieldset legend{
   .lg\:col-span-6{
     grid-column: span 6 / span 6;
   }
-  .lg\:mt-14{
-    margin-top: 3.5rem;
-  }
   .lg\:mr-auto{
     margin-right: auto;
   }
   .lg\:ml-0{
     margin-left: 0px;
+  }
+  .lg\:mt-14{
+    margin-top: 3.5rem;
   }
   .lg\:block{
     display: block;
@@ -14055,6 +14065,12 @@ fieldset legend{
   .lg\:w-\[160px\]{
     width: 160px;
   }
+  .lg\:w-\[230px\]{
+    width: 230px;
+  }
+  .lg\:w-64{
+    width: 16rem;
+  }
   .lg\:w-1\/2{
     width: 50%;
   }
@@ -14067,17 +14083,17 @@ fieldset legend{
   .lg\:w-\[800px\]{
     width: 800px;
   }
-  .lg\:grid-cols-4{
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-  }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .lg\:grid-cols-4{
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
   .lg\:grid-cols-5{
     grid-template-columns: repeat(5, minmax(0, 1fr));
   }
-  .lg\:grid-cols-6{
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+  .lg\:flex-wrap{
+    flex-wrap: wrap;
   }
   .lg\:justify-start{
     justify-content: flex-start;
@@ -14085,11 +14101,11 @@ fieldset legend{
   .lg\:justify-end{
     justify-content: flex-end;
   }
-  .lg\:gap-2{
-    gap: 0.5rem;
-  }
   .lg\:gap-4{
     gap: 1rem;
+  }
+  .lg\:gap-2{
+    gap: 0.5rem;
   }
   .lg\:space-x-0 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
@@ -14157,28 +14173,21 @@ fieldset legend{
     font-size: 2.25rem;
     line-height: 2.5rem;
   }
-  .lg\:text-2xl{
-    font-size: 1.5rem;
-    line-height: 2rem;
+  .lg\:text-\[12px\]{
+    font-size: 12px;
   }
   .lg\:text-lg{
     font-size: 1.125rem;
     line-height: 1.75rem;
   }
-  .lg\:text-5xl{
-    font-size: 3rem;
-    line-height: 1;
+  .lg\:text-2xl{
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
     --tw-shadow-colored: 0 0 #0000;
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
-  }
-  @media (min-width: 640px){
-    .lg\:sm\:bg-slate-600{
-      --tw-bg-opacity: 1;
-      background-color: rgb(71 85 105 / var(--tw-bg-opacity));
-    }
   }
 }
 @media (min-width: 1280px){
@@ -14197,14 +14206,14 @@ fieldset legend{
   .xl\:col-span-4{
     grid-column: span 4 / span 4;
   }
-  .xl\:mt-14{
-    margin-top: 3.5rem;
-  }
   .xl\:mr-auto{
     margin-right: auto;
   }
   .xl\:ml-0{
     margin-left: 0px;
+  }
+  .xl\:mt-14{
+    margin-top: 3.5rem;
   }
   .xl\:block{
     display: block;
@@ -14254,14 +14263,14 @@ fieldset legend{
   .xl\:justify-end{
     justify-content: flex-end;
   }
+  .xl\:gap-4{
+    gap: 1rem;
+  }
   .xl\:gap-2{
     gap: 0.5rem;
   }
   .xl\:gap-8{
     gap: 2rem;
-  }
-  .xl\:gap-4{
-    gap: 1rem;
   }
   .xl\:space-x-4 > :not([hidden]) ~ :not([hidden]){
     --tw-space-x-reverse: 0;
@@ -14326,18 +14335,6 @@ fieldset legend{
     font-size: 1rem;
     line-height: 1.5rem;
   }
-  .xl\:text-sm{
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  .xl\:text-5xl{
-    font-size: 3rem;
-    line-height: 1;
-  }
-  .xl\:text-xl{
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-  }
   .xl\:shadow-none{
     --tw-shadow: 0 0 #0000;
     --tw-shadow-colored: 0 0 #0000;
@@ -14366,6 +14363,9 @@ fieldset legend{
   .\32xl\:h-56{
     height: 14rem;
   }
+  .\32xl\:w-64{
+    width: 16rem;
+  }
   .\32xl\:w-\[500px\]{
     width: 500px;
   }
@@ -14383,6 +14383,9 @@ fieldset legend{
   }
   .\32xl\:grid-cols-4{
     grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .\32xl\:flex-wrap{
+    flex-wrap: wrap;
   }
   .\32xl\:justify-end{
     justify-content: flex-end;
@@ -14425,18 +14428,6 @@ fieldset legend{
   .\32xl\:text-base{
     font-size: 1rem;
     line-height: 1.5rem;
-  }
-  .\32xl\:text-sm{
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-  }
-  .\32xl\:text-5xl{
-    font-size: 3rem;
-    line-height: 1;
-  }
-  .\32xl\:text-xl{
-    font-size: 1.25rem;
-    line-height: 1.75rem;
   }
   .\32xl\:shadow-none{
     --tw-shadow: 0 0 #0000;

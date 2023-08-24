@@ -10,20 +10,22 @@
                         <form action="{{ route('registration.store') }}" method="POST">
                             @csrf
 
-                            @if(Session::has('error'))
+                            @if (Session::has('error'))
                                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
                             <div class="form-item ">
                                 <label class="form-label">Name <span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('name') }}" name="name" placeholder="Your name" class="form-input" />
+                                <input type="text" value="{{ old('name') }}" name="name" placeholder="Your name"
+                                    class="form-input" />
                                 @error('name')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
                             <div class="form-item">
-                                <label class="form-label">Phone Number <span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
+                                <label class="form-label">Phone Number <span
+                                        class="text-red-500 font-medium">*</span></label>
+                                <input type="number" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
                                     name="phone_number" class="form-input rounded" placeholder="1*********" />
                                 @error('phone_number')
                                     <span class="form-helper error">{{ $message }}</span>
@@ -31,7 +33,8 @@
                             </div>
                             <div class="form-item">
                                 <label class="form-label">Email (Optional)</label>
-                                <input type="email" value="{{ old('email') }}" name="email" placeholder="example@gmail.com" class="form-input" />
+                                <input type="email" value="{{ old('email') }}" name="email"
+                                    placeholder="example@gmail.com" class="form-input" />
                                 @error('email')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
@@ -39,10 +42,8 @@
                             <div class="form-item">
                                 <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
                                 <div class="relative flex items-center justify-end">
-                                    <input id="password-one" class="form-input flex-1"
-                                        type="password"
-                                        placeholder="Please enter your password"
-                                        name="password" autocomplete="off"/>
+                                    <input id="password-one" class="form-input flex-1" type="password"
+                                        placeholder="Please enter your password" name="password" autocomplete="off" />
                                     <div class="absolute mr-4">
                                         <i id="eye-open-one" class="fa-regular fa-eye"></i>
                                         <i id="eye-close-one" class="fa-regular fa-eye-slash"></i>
@@ -53,11 +54,12 @@
                                 @enderror
                             </div>
                             <div class="form-item">
-                                <label class="form-label">Confirm Password <span class="text-red-500 font-medium">*</span></label>
+                                <label class="form-label">Confirm Password <span
+                                        class="text-red-500 font-medium">*</span></label>
                                 <div class="relative flex items-center justify-end">
                                     <input id="password-two" class="form-input flex-1"
-                                        placeholder="Please confirm your password"
-                                        type="password" name="password_confirmation" autocomplete="off"/>
+                                        placeholder="Please confirm your password" type="password"
+                                        name="password_confirmation" autocomplete="off" />
                                     <div class="absolute mr-4">
                                         <i id="eye-open-two" class="fa-regular fa-eye"></i>
                                         <i id="eye-close-two" class="fa-regular fa-eye-slash"></i>
@@ -71,7 +73,8 @@
                                 <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
-                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and Conditions</a>
+                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
+                                        Conditions</a>
                                 </span>
                             </div>
                             @error('terms_conditons')
@@ -101,12 +104,12 @@
 
 @push('scripts')
     <script>
-        var   openIconOne     = $('#eye-open-one').hide();
-        var   closeIconOne    = $('#eye-close-one');
-        var   openIconTwo     = $('#eye-open-two').hide();
-        var   closeIconTwo    = $('#eye-close-two');
-        const passwordOne     = document.querySelector("#password-one");
-        const passwordTwo     = document.querySelector("#password-two");
+        var openIconOne = $('#eye-open-one').hide();
+        var closeIconOne = $('#eye-close-one');
+        var openIconTwo = $('#eye-open-two').hide();
+        var closeIconTwo = $('#eye-close-two');
+        const passwordOne = document.querySelector("#password-one");
+        const passwordTwo = document.querySelector("#password-two");
         $(function() {
             // For password
             closeIconOne.click(function() {
