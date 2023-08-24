@@ -196,245 +196,46 @@
     <section class="page-section">
         <div style="position: relative;" class="container">
             <div class="text-center">
-                <h1 class="section-title mb-5">New Arrivals</h1>
+                <h1 class="section-title mb-5">{{ $featureProduct->title }}</h1>
             </div>
 
             <div class="slider-container">
 
-                <div class="relative slider-item ">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
+                @foreach ($featureProduct->products as $product)
+                    <div class="relative slider-item ">
+                        <div class="slide-content">
+                            <img class="w-full h-[136px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
+                                alt="no images">
                         </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Tufnil Tablet 200mg (200pcs)
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
+                        <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                            <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                                style="background-color: #DCFCE7;color:#58C55E">
+                                <span style="font-size: 10px;">In Stock</span>
+                            </div>
+                            <p style="color:#00798C;"
+                                class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                {{ $product->name }}
                             </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
+
+                            <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                Category-1
                             </p>
+
+                            <div class="flex mt-1">
+                                <p
+                                    class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                    Tk : 194.69
+                                </p>
+                                <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                    Tk : <span>754.00</span>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item ">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Smart Apple Watch (V-15)
+                        <p class="ofText">
+                            -10 %
                         </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
                     </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item ">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/uq87amj22pyydt12tfuo.webp') }}"
-                            alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Sun Protector (RAY-BAN) Pro
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item w-full sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/omeprazole.jpg') }}" alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Omiprazole Tablet 20mg (100pcs)
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item w-full sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/istockphoto-1300036753-612x612.jpg') }}"
-                            alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Vitamin E Capsules (Authentic)
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item w-full sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Tufnil Tablet 200mg (200pcs)
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
-
-                <div class="relative slider-item w-full sm:w-full md:w-40">
-                    <div class="slide-content">
-                        <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
-                    </div>
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                            style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Tufnil Tablet 200mg (200pcs)
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : 194.69
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                Tk : <span>754.00</span>
-                            </p>
-                        </div>
-                    </div>
-                    <p class="ofText">
-                        -10 %
-                    </p>
-                </div>
+                @endforeach
 
                 <!-- Add more slides as needed -->
             </div>
