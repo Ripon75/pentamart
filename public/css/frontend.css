@@ -8169,14 +8169,14 @@ textarea.form-control.is-invalid{
 .-right-3{
   right: -0.75rem;
 }
-.bottom-5{
-  bottom: 1.25rem;
-}
-.left-11{
-  left: 2.75rem;
-}
 .left-2{
   left: 0.5rem;
+}
+.top-10{
+  top: 2.5rem;
+}
+.top-\[54\%\]{
+  top: 54%;
 }
 .z-30{
   z-index: 30;
@@ -8338,6 +8338,9 @@ textarea.form-control.is-invalid{
 .mb-5{
   margin-bottom: 1.25rem;
 }
+.mt-2\.5{
+  margin-top: 0.625rem;
+}
 .ml-4{
   margin-left: 1rem;
 }
@@ -8352,9 +8355,6 @@ textarea.form-control.is-invalid{
 }
 .-ml-px{
   margin-left: -1px;
-}
-.mt-2\.5{
-  margin-top: 0.625rem;
 }
 .block{
   display: block;
@@ -8446,8 +8446,14 @@ textarea.form-control.is-invalid{
 .h-auto{
   height: auto;
 }
-.h-\[133px\]{
-  height: 133px;
+.h-\[195px\]{
+  height: 195px;
+}
+.h-\[136px\]{
+  height: 136px;
+}
+.h-\[150px\]{
+  height: 150px;
 }
 .h-40{
   height: 10rem;
@@ -8464,20 +8470,8 @@ textarea.form-control.is-invalid{
 .h-20{
   height: 5rem;
 }
-.h-\[100px\]{
-  height: 100px;
-}
-.h-\[200px\]{
-  height: 200px;
-}
-.h-\[195px\]{
-  height: 195px;
-}
-.h-\[150px\]{
-  height: 150px;
-}
-.h-\[136px\]{
-  height: 136px;
+.h-\[120px\]{
+  height: 120px;
 }
 .max-h-64{
   max-height: 16rem;
@@ -8557,6 +8551,18 @@ textarea.form-control.is-invalid{
 .w-4{
   width: 1rem;
 }
+.w-\[85\%\]{
+  width: 85%;
+}
+.w-\[90px\]{
+  width: 90px;
+}
+.w-\[175px\]{
+  width: 175px;
+}
+.w-\[100\%\]{
+  width: 100%;
+}
 .w-72{
   width: 18rem;
 }
@@ -8583,30 +8589,6 @@ textarea.form-control.is-invalid{
 }
 .w-44{
   width: 11rem;
-}
-.w-\[85\%\]{
-  width: 85%;
-}
-.w-\[90px\]{
-  width: 90px;
-}
-.w-\[100\%\]{
-  width: 100%;
-}
-.w-\[100px\]{
-  width: 100px;
-}
-.w-\[250px\]{
-  width: 250px;
-}
-.w-\[230px\]{
-  width: 230px;
-}
-.w-\[530px\]{
-  width: 530px;
-}
-.w-\[175px\]{
-  width: 175px;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -9301,6 +9283,9 @@ textarea.form-control.is-invalid{
 .text-\[11px\]{
   font-size: 11px;
 }
+.text-\[10px\]{
+  font-size: 10px;
+}
 .font-bold{
   font-weight: 700;
 }
@@ -9477,10 +9462,6 @@ textarea.form-control.is-invalid{
 }
 .blur{
   --tw-blur: blur(8px);
-  filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
-}
-.drop-shadow-xl{
-  --tw-drop-shadow: drop-shadow(0 20px 13px rgb(0 0 0 / 0.03)) drop-shadow(0 8px 5px rgb(0 0 0 / 0.08));
   filter: var(--tw-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia) var(--tw-drop-shadow);
 }
 .filter{
@@ -21129,20 +21110,14 @@ readers do not read off random characters that represent icons */
   .btn.md\:btn-md.btn-icon-only {
     font-size: 12px;
   }
-  .md\:left-24{
-    left: 6rem;
+  .md\:static{
+    position: static;
   }
   .md\:left-16{
     left: 4rem;
   }
   .md\:right-16{
     right: 4rem;
-  }
-  .md\:left-10{
-    left: 2.5rem;
-  }
-  .md\:right-10{
-    right: 2.5rem;
   }
   .md\:left-12{
     left: 3rem;
@@ -21392,14 +21367,14 @@ readers do not read off random characters that represent icons */
 }
 
 @media (min-width: 1024px){
+  .lg\:static{
+    position: static;
+  }
   .lg\:-top-2{
     top: -0.5rem;
   }
   .lg\:-right-2{
     right: -0.5rem;
-  }
-  .lg\:left-24{
-    left: 6rem;
   }
   .lg\:left-16{
     left: 4rem;
@@ -21449,6 +21424,9 @@ readers do not read off random characters that represent icons */
   .lg\:w-\[160px\]{
     width: 160px;
   }
+  .lg\:w-\[230px\]{
+    width: 230px;
+  }
   .lg\:w-64{
     width: 16rem;
   }
@@ -21463,9 +21441,6 @@ readers do not read off random characters that represent icons */
   }
   .lg\:w-\[800px\]{
     width: 800px;
-  }
-  .lg\:w-\[230px\]{
-    width: 230px;
   }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));

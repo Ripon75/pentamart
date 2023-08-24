@@ -206,13 +206,14 @@
                         <img class="w-full h-[136px]" src="{{ asset('images/63ce6301150fa.20230123.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
                             class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Tufnil Tablet 200mg
+                            Tufnil Tablet 200mg (200pcs)
                         </p>
 
                         <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
@@ -239,8 +240,9 @@
                         <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
@@ -272,8 +274,9 @@
                         <img class="w-full h-[136px]" src="{{ asset('images/uq87amj22pyydt12tfuo.webp') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
@@ -304,8 +307,9 @@
                     <div class="slide-content">
                         <img class="w-full h-[136px]" src="{{ asset('images/omeprazole.jpg') }}" alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
@@ -337,8 +341,9 @@
                         <img class="w-full h-[136px]" src="{{ asset('images/istockphoto-1300036753-612x612.jpg') }}"
                             alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
@@ -369,8 +374,9 @@
                     <div class="slide-content">
                         <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
@@ -401,8 +407,9 @@
                     <div class="slide-content">
                         <img class="w-full h-[136px]" src="{{ asset('images/images.png') }}" alt="no images">
                     </div>
-                    <div class="p-2" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                        <div class="w-12 rounded absolute top-[54%] md:static lg:static"
+                            style="background-color: #DCFCE7;color:#58C55E">
                             <span style="font-size: 10px;">In Stock</span>
                         </div>
                         <p style="color:#00798C;"
