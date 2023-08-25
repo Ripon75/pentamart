@@ -186,8 +186,7 @@
                                         <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
                                         Add to cart
                                     </button>
-                                    <button
-                                        id="btn-buy-now"
+                                    <button id="btn-buy-now"
                                         class="h-[36px] bg-[#ffc42d] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                         data-mc-on-previous-url="{{ url()->current() }}">
                                         <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
@@ -224,8 +223,8 @@
                                     <h1 class="text-base text-white pl-4">Description</h1>
                                 </div>
                             @endif
-                            <div class="bg-white mb-4 p-4 product-description">
-                                <p class="text-sm">
+                            <div class="bg-white mb-4 pt-2 product-description">
+                                <p class="text-sm text-justify">
                                     {!! html_entity_decode($product->description) !!}
                                 </p>
                                 {{-- Rating form --}}
@@ -275,7 +274,7 @@
                                             file:bg-violet-50 file:text-primary
                                             hover:file:bg-violet-100"
                                                 accept="image/png, image/jpg, image/jpeg" />
-                                            <div class="mt-3 w-full">
+                                            <div class="mt-3 w-[20%]">
                                                 <button id="btn-rating-submit" type="button"
                                                     class="btn btn-block btn-primary">
                                                     Submit
@@ -379,7 +378,8 @@
 
 @push('scripts')
     {{-- jquery image zoom plugin --}}
-    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js"></script>
+    <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js">
+    </script>
 
     <script>
         // jquery image zoom plugin id
@@ -395,17 +395,17 @@
         });
 
         var cartAddItemEndPoint = '/cart/items/add';
-        var btnAddToCart        = $('.btn-add-to-car');
-        var btnBuyNow           = $('#btn-buy-now');
-        var productId           = $('#product-id').val();
-        var inputQuantity       = $('#input-quantity');
-        var iconLoadding        = $('.loadding-icon').hide();
-        var iconAddToCart       = $('#add-to-cart-icon');
-        var wishButton          = $('#wish-button');
-        var undoWishButton      = $('#undo-wish-button');
-        var authUserId          = "{{ Auth::id() }}";
-        var productColorsCount  = {{ count($productColors) }};
-        var productSizesCount   = {{ count($productSizes) }};
+        var btnAddToCart = $('.btn-add-to-car');
+        var btnBuyNow = $('#btn-buy-now');
+        var productId = $('#product-id').val();
+        var inputQuantity = $('#input-quantity');
+        var iconLoadding = $('.loadding-icon').hide();
+        var iconAddToCart = $('#add-to-cart-icon');
+        var wishButton = $('#wish-button');
+        var undoWishButton = $('#undo-wish-button');
+        var authUserId = "{{ Auth::id() }}";
+        var productColorsCount = {{ count($productColors) }};
+        var productSizesCount = {{ count($productSizes) }};
         var productCurrentStock = "{{ $product->current_stock }}";
 
         if (productCurrentStock == 0) {
@@ -415,16 +415,16 @@
         }
 
         @auth
-            // Automatically product added to wishcart if local storage have wish_product_id
-            var wishStorageProductID = localStorage.getItem('wish_product_id');
-            if (wishStorageProductID) {
-                addWishlist(wishStorageProductID);
-                localStorage.removeItem('wish_product_id');
-            }
+        // Automatically product added to wishcart if local storage have wish_product_id
+        var wishStorageProductID = localStorage.getItem('wish_product_id');
+        if (wishStorageProductID) {
+            addWishlist(wishStorageProductID);
+            localStorage.removeItem('wish_product_id');
+        }
         @endauth
 
         @guest
-            authUserId = null;
+        authUserId = null;
         @endguest
 
         $(function() {
@@ -509,38 +509,38 @@
             btn.find(iconAddToCart).hide();
 
             axios.post(cartAddItemEndPoint, {
-                item_id: productId,
-                quantity: productQty,
-                color_id: colorId,
-                size_id: sizeId,
-            })
-            .then((response) => {
-                if (response.data.success) {
-                    btn.find(iconLoadding).hide();
+                    item_id: productId,
+                    quantity: productQty,
+                    color_id: colorId,
+                    size_id: sizeId,
+                })
+                .then((response) => {
+                    if (response.data.success) {
+                        btn.find(iconLoadding).hide();
+                        if (btn) {
+                            btn.prop("disabled", false);
+                        }
+                        __cartItemCount();
+                    } else {
+                        __showNotification('error', response.data.msg);
+                        // iconLoadding.hide();
+                        // iconAddToCart.show();
+                        btn.find(iconLoadding).hide();
+                        btn.find(iconAddToCart).show();
+                        if (btn) {
+                            btn.prop("disabled", false);
+                        }
+                        return false;
+                    }
+                })
+                .catch((error) => {
                     if (btn) {
                         btn.prop("disabled", false);
                     }
-                    __cartItemCount();
-                } else {
-                    __showNotification('error', response.data.msg);
                     // iconLoadding.hide();
-                    // iconAddToCart.show();
                     btn.find(iconLoadding).hide();
-                    btn.find(iconAddToCart).show();
-                    if (btn) {
-                        btn.prop("disabled", false);
-                    }
-                    return false;
-                }
-            })
-            .catch((error) => {
-                if (btn) {
-                    btn.prop("disabled", false);
-                }
-                // iconLoadding.hide();
-                btn.find(iconLoadding).hide();
-                console.log(error);
-            });
+                    console.log(error);
+                });
         }
 
         function addWishlist(productId) {

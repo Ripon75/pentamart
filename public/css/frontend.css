@@ -8617,6 +8617,9 @@ textarea.form-control.is-invalid{
 .w-\[45px\]{
   width: 45px;
 }
+.w-\[20\%\]{
+  width: 20%;
+}
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
