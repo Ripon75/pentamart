@@ -204,8 +204,7 @@
                 @foreach ($newArrival->products as $product)
                     <div class="relative slider-item ">
                         <div class="slide-content">
-                            <img class="w-full h-[136px]" src="{{ $product->img_src }}"
-                                alt="no images">
+                            <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
                         </div>
                         <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
                             <div class="w-12 rounded absolute top-[54%] md:static lg:static"
@@ -225,14 +224,15 @@
                                 @if ($product->offer_price > 0)
                                     <p
                                         class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        {{ $product->offer_price }}
+                                        TK : {{ $product->offer_price }}
                                     </p>
-                                    <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        tk : <span>{{ $product->mrp }}</span>
+                                    <p
+                                        class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        TK : <span>{{ $product->mrp }}</span>
                                     </p>
                                 @else
-                                    <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        tk : <span>{{ $product->mrp }}</span>
+                                    <p class="ml-4 text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        TK : <span>{{ $product->mrp }}</span>
                                     </p>
                                 @endif
                             </div>
