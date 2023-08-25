@@ -44,7 +44,7 @@
                             </div>
 
                             <div class="w-[102%] text-center" style="color: darkblue; padding:10px 12px 10px;">
-                                <button style="font-weight: bold;" id="loginBtn">LOGIN</button>
+                                <button style="font-weight: bold;">LOGIN</button>
                                 <span style="font-weight: bold;" style="font-size: 25px;">|</span>
                                 <button style="font-weight: bold;"><a href="{{ route('registration') }}" class="">
                                         SIGNUP
@@ -84,8 +84,7 @@
                                 </div>
 
                                 <div class="w-[50%] block mx-auto mt-8">
-                                    {{-- <button id="nextfrmBtn" type="button" class="btn btn-primary btn-block">Next</button> --}}
-                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Login</button>
+                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Next</button>
                                 </div>
                             </div>
 
@@ -159,76 +158,50 @@
             $("#emailBtn").removeClass('phoneBtn');
         });
 
-        $("#loginBtn").click(function() {
-            $("#loginForm").show();
-            $("#such").show();
-            $("#signupForm").hide();
-        });
-
         $('#logForm').click(function() {
             $('#bodyP').show();
         });
 
-        $('#nextfrmBtn').click(function() {
-            var number = $('#number').val();
-            var email = $('#email').val();
-
-            if (number == '') {
-                $('.error').text('Please fill first *');
-                $('.error').css({
-                    'color': 'darkred',
-                    'font-size': '14px',
-                    'margin-left': '5px'
-                });
-            } else {
-                $('.error').text('Looks good!');
-                $('#passwordBox').show();
-                $('#nextfrmBtn').hide();
-            }
-        });
-
         btnLoginSubmit.click(function() {
-            var loginBy     = $("input[name=login_by]").val();
+            var loginBy = $("input[name=login_by]").val();
             var phoneNumber = $("input[name=phone_number]").val();
-            var email       = $("input[name=email]").val();
-            var password    = $("input[name=password]").val();
+            var email = $("input[name=email]").val();
+            var password = $("input[name=password]").val();
 
             axios.post('/login', {
-                login_by: loginBy,
-                phone_number: phoneNumber,
-                email: email,
-                password: password
-            })
-            .then((res) => {
-                if (res.data.success) {
-                    if (loginBy === 'phone_number') {
-                        window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
+                    login_by: loginBy,
+                    phone_number: phoneNumber,
+                    email: email,
+                    password: password
+                })
+                .then((res) => {
+                    if (res.data.success) {
+                        if (loginBy === 'phone_number') {
+                            window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
+                        } else {
+                            window.location.href = "/";
+                        }
                     } else {
-                        window.location.href = "/";
+                        if (res.data.msg.phone_number) {
+                            $("input[name=phone_number]").focus();
+                            $('#show-phone-number-error-msg').text(res.data.msg.phone_number[0]);
+                            return false;
+                        } else if (res.data.msg.email) {
+                            $("input[name=email]").focus();
+                            $('#show-email-error-msg').text(res.data.msg.email[0]);
+                            return false;
+                        } else if (res.data.msg.password) {
+                            $("input[name=password]").focus();
+                            $('#show-password-error-msg').text(res.data.msg.password[0]);
+                            return false;
+                        } else {
+                            __showNotification('error', res.data.msg, 5000);
+                        }
                     }
-                } else {
-                    if (res.data.msg.phone_number) {
-                        $("input[name=phone_number]").focus();
-                        $('#show-phone-number-error-msg').text(res.data.msg.phone_number[0]);
-                        return false;
-                    }
-                    else if (res.data.msg.email) {
-                        $("input[name=email]").focus();
-                        $('#show-email-error-msg').text(res.data.msg.email[0]);
-                        return false;
-                    }
-                    else if (res.data.msg.password) {
-                        $("input[name=password]").focus();
-                        $('#show-password-error-msg').text(res.data.msg.password[0]);
-                        return false;
-                    } else {
-                        __showNotification('error', res.data.msg, 5000);
-                    }
-                }
-            })
-            .catch((err) => {
-                console.log(err);
-            });
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
         });
     });
 </script>
