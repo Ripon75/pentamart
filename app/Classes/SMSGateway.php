@@ -48,6 +48,8 @@ class SMSGateway
             'message'   => $message,
         ];
 
+        info($data);
+
         $response = Http::withHeaders($headers)->post($this->endPoint, $data);
 
         return $response;
