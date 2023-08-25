@@ -10161,6 +10161,9 @@ textarea.form-control.is-invalid{
 .left-\[19\%\]{
   left: 19%;
 }
+.left-\[23\%\]{
+  left: 23%;
+}
 .z-30{
   z-index: 30;
 }
@@ -10344,6 +10347,9 @@ textarea.form-control.is-invalid{
 }
 .mt-7{
   margin-top: 1.75rem;
+}
+.mt-\[16px\]{
+  margin-top: 16px;
 }
 .block{
   display: block;
@@ -10590,6 +10596,9 @@ textarea.form-control.is-invalid{
 }
 .w-44{
   width: 11rem;
+}
+.w-\[45px\]{
+  width: 45px;
 }
 .min-w-max{
   min-width: -webkit-max-content;

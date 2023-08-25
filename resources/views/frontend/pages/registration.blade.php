@@ -10,8 +10,8 @@
                         <div>
                             <div style="background-color: #00798c;" class="w-20 h-20 block mx-auto rounded-full">
                                 <div class="relative">
-                                    <div class="absolute left-[19%]">
-                                        <img class="w-[50px] mt-[22px]" src="{{ asset('images/user2.png') }}"
+                                    <div class="absolute left-[23%]">
+                                        <img class="w-[45px] mt-[16px]" src="{{ asset('images/user2.png') }}"
                                             alt="">
                                     </div>
                                 </div>
