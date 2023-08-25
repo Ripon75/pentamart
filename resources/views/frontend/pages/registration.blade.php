@@ -5,8 +5,22 @@
     <section class="">
         <div class="container page-section page-top-gap">
             <div class="sm:[w-500px] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] mx-auto">
-                <div class="card shadow">
+                <div class="card shadow" style="background-color: #d3e6e9;">
                     <div class="body p-4">
+                        <div>
+                            <div style="background-color: #00798c;" class="w-20 h-20 block mx-auto rounded-full">
+                                <div class="relative">
+                                    <div class="absolute left-[23%]">
+                                        <img class="w-[45px] mt-[16px]" src="{{ asset('images/user2.png') }}"
+                                            alt="">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="w-[100%] text-center" style="color: darkblue; padding:10px 12px 10px;">
+                                <p class="text-2xl font-semibold">SIGN UP</p>
+                            </div>
+                        </div>
                         <form action="{{ route('registration.store') }}" method="POST">
                             @csrf
 
@@ -14,33 +28,26 @@
                                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
-                            <div class="form-item ">
-                                <label class="form-label">Name <span class="text-red-500 font-medium">*</span></label>
-                                <input type="text" value="{{ old('name') }}" name="name" placeholder="Your name"
-                                    class="form-input" />
+                            <div class="w-[80%] block mx-auto form-item ">
+                                {{-- <label class="form-label">Name <span class="text-red-500 font-medium">*</span></label> --}}
+                                <input type="text" value="{{ old('name') }}" name="name"
+                                    placeholder="Your full name" class="form-input" />
                                 @error('name')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-item">
-                                <label class="form-label">Phone Number <span
-                                        class="text-red-500 font-medium">*</span></label>
-                                <input type="number" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                    name="phone_number" class="form-input rounded" placeholder="1*********" />
-                                @error('phone_number')
-                                    <span class="form-helper error">{{ $message }}</span>
-                                @enderror
-                            </div>
-                            <div class="form-item">
-                                <label class="form-label">Email (Optional)</label>
-                                <input type="email" value="{{ old('email') }}" name="email"
-                                    placeholder="example@gmail.com" class="form-input" />
+
+                            <div class="w-[80%] block mx-auto form-item">
+                                {{-- <label class="form-label">Email (Optional)</label> --}}
+                                <input type="email" value="{{ old('email') }}" name="email" placeholder="Email Address"
+                                    class="form-input" />
                                 @error('email')
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-item">
-                                <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label>
+
+                            <div class="w-[80%] block mx-auto form-item">
+                                {{-- <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label> --}}
                                 <div class="relative flex items-center justify-end">
                                     <input id="password-one" class="form-input flex-1" type="password"
                                         placeholder="Please enter your password" name="password" autocomplete="off" />
@@ -53,13 +60,13 @@
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="form-item">
-                                <label class="form-label">Confirm Password <span
-                                        class="text-red-500 font-medium">*</span></label>
+
+                            <div class="w-[80%] block mx-auto form-item">
+                                {{-- <label class="form-label">Confirm Password <span
+                                        class="text-red-500 font-medium">*</span></label> --}}
                                 <div class="relative flex items-center justify-end">
-                                    <input id="password-two" class="form-input flex-1"
-                                        placeholder="Please confirm your password" type="password"
-                                        name="password_confirmation" autocomplete="off" />
+                                    <input id="password-two" class="form-input flex-1" placeholder="Confirm password"
+                                        type="password" name="password_confirmation" autocomplete="off" />
                                     <div class="absolute mr-4">
                                         <i id="eye-open-two" class="fa-regular fa-eye"></i>
                                         <i id="eye-close-two" class="fa-regular fa-eye-slash"></i>
@@ -69,7 +76,8 @@
                                     <span class="form-helper error">{{ $message }}</span>
                                 @enderror
                             </div>
-                            <div class="flex space-x-2 items-center mt-2">
+
+                            {{-- <div class="flex space-x-2 items-center mt-2">
                                 <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
@@ -77,23 +85,30 @@
                                         Conditions</a>
                                 </span>
                             </div>
+
                             @error('terms_conditons')
                                 <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
-                            @enderror
-                            <div class="mt-8">
-                                <button type="submit" class="btn btn-primary btn-block">Register</button>
+                            @enderror --}}
+
+                            <div class="w-[50%] block mx-auto mt-8">
+                                <button style="background-color: #22bc1b;color:#fff;" type="submit"
+                                    class="btn btn-primary btn-block">Register</button>
                             </div>
-                            <div class="">
-                                <div class="text-center mt-4 text-gray-500 text-sm">Already have an account?</div>
-                                <a href="{{ route('login') }}" class="btn btn-block mt-2">
+
+                            <div class="mt-7 mb-4">
+                                <div class="text-center mt-4 text-gray-500 text-sm">Already have an account? <a
+                                        href="{{ route('login') }}" style="color: #00798c;">Login</a></div>
+                                {{-- <a href="{{ route('login') }}" class="btn btn-block mt-2">
                                     Login
-                                </a>
+                                </a> --}}
                             </div>
+
                             {{-- <div class="text-center mt-4 text-gray-500 text-sm">Or, signup with</div>
                             <div class="flex space-x-6 justify-center mt-4">
                                 <button type="button" class="bg-socials-facebook w-full py-2 px-6 text-white rounded "><i class="mr-3 fa-brands fa-facebook-f"></i>Facebook</button>
                                 <button type="button" class="bg-socials-google w-full py-2 px-6 text-white rounded "><i class="mr-3 fa-brands fa-google"></i></i>Google</button>
                             </div> --}}
+
                         </form>
                     </div>
                 </div>
