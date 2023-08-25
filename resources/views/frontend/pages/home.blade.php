@@ -1,16 +1,12 @@
 @extends('frontend.layouts.default')
 
 <style>
-    /* Styling the slider container */
     .slider-container {
-        margin: 0 auto;
-        /* Center the slider container */
-        /* max-width: 800px; */
-        width: 100%;
-        /* Set a maximum width for the slider */
-        height: 250px;
-        margin: 5px 5px 5px 5px;
+        background-color: #fff;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px 12px 10px;
+        border-radius: 4px;
+        height: 285px;
     }
 
 
@@ -26,16 +22,7 @@
     }
 
     .slick-slide {
-        width: 200px;
-    }
-
-    /* Styling each slide */
-    .slider-item {
-        padding: 20px;
-        background-color: #f0f0f0;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        text-align: center;
+        position: relative;
     }
 
     .ofText {
@@ -49,16 +36,6 @@
         color: #fff;
         font-size: 13px;
     }
-
-    .slick-slide {
-        margin: 10px;
-        padding: 0%;
-    }
-
-    .slick-list {
-        height: 240px;
-    }
-
 
     .prev-button1:hover,
     .next-button1:hover {
@@ -128,7 +105,8 @@
                     <div>
                         <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ $brand->img_src }}" alt="no images">
                         <div class="mt-2.5 w-[90px] mx-auto">
-                            <a href="{{ route('brand.page', [$brand->id, $brand->slug]) }}" class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
+                            <a href="{{ route('brand.page', [$brand->id, $brand->slug]) }}"
+                                class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
                         </div>
                     </div>
                 @endforeach
@@ -156,40 +134,37 @@
             <div class="slider-container">
 
                 @foreach ($newArrival->products as $product)
-                    <div class="relative slider-item ">
-                        <div class="slide-content">
-                            <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
-                                <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
-                            </a>
-                        </div>
+                    <div style="margin: 5px 5px 5px;">
+                        <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
+                            <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
+                        </a>
                         <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                            <div class="w-12 rounded absolute top-[54%] md:static lg:static"
-                                style="background-color: #DCFCE7;color:#58C55E">
-                                <span style="font-size: 10px;">In Stock</span>
+                            <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                <span style="font-size: 11px;">In Stock</span>
                             </div>
+
                             <p style="color:#00798C;"
-                                class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                class="text-[14px] font-semibold mt-1 text-left md:text-[14px] lg:text-[14px] 2xl:text-2xl">
                                 <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
                                     {{ $product->name }}
                                 </a>
                             </p>
 
-                            <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                            <p class="text-left text-[12px] capitalize md:text-[12px] lg:text-[12px] 2xl:text-lg">
                                 {{ $product->category->name ?? '' }}
                             </p>
 
-                            <div class="flex mt-1">
+                            <div class="flex mt-1 justify-between">
                                 @if ($product->offer_price > 0)
                                     <p
                                         class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
                                         TK : {{ $product->offer_price }}
                                     </p>
-                                    <p
-                                        class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                    <p class="line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
                                         TK : <span>{{ $product->mrp }}</span>
                                     </p>
                                 @else
-                                    <p class="ml-4 text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                    <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
                                         TK : <span>{{ $product->mrp }}</span>
                                     </p>
                                 @endif
@@ -202,17 +177,14 @@
                         @endif
                     </div>
                 @endforeach
-
                 <!-- Add more slides as needed -->
             </div>
 
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                 class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button1">
                 <i class="fa-solid fa-arrow-left"></i>
             </button>
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                 class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
                 <i class="fa-solid fa-arrow-right-long"></i>
             </button>

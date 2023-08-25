@@ -11299,6 +11299,9 @@ textarea.form-control.is-invalid{
 .text-\[11px\]{
   font-size: 11px;
 }
+.text-\[14px\]{
+  font-size: 14px;
+}
 .font-bold{
   font-weight: 700;
 }
@@ -14025,6 +14028,9 @@ fieldset legend{
   .md\:text-\[12px\]{
     font-size: 12px;
   }
+  .md\:text-\[14px\]{
+    font-size: 14px;
+  }
   .md\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
     --tw-shadow-colored: 0 10px 15px -3px var(--tw-shadow-color), 0 4px 6px -4px var(--tw-shadow-color);
@@ -14222,6 +14228,9 @@ fieldset legend{
   .lg\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
+  }
+  .lg\:text-\[14px\]{
+    font-size: 14px;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
@@ -14467,6 +14476,10 @@ fieldset legend{
   .\32xl\:text-base{
     font-size: 1rem;
     line-height: 1.5rem;
+  }
+  .\32xl\:text-2xl{
+    font-size: 1.5rem;
+    line-height: 2rem;
   }
   .\32xl\:shadow-none{
     --tw-shadow: 0 0 #0000;

@@ -24,6 +24,16 @@
     .slick-slide {
         position: relative;
     }
+
+    .read-more-link {
+        color: darkblue;
+        font-weight: bold;
+    }
+
+    .read-less-link {
+        color: darkblue;
+        font-weight: bold;
+    }
 </style>
 
 @section('title', $product->name)
@@ -225,7 +235,9 @@
 
                     </div>
                 </div>
-                <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
+
+
+                {{-- <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
                     <h1 class="text-primary-dark text-lg font-medium p-4">Related Product</h1>
                     <hr>
                     <div class="overflow-auto h-[384px] p-2">
@@ -237,7 +249,9 @@
                             @endforeach
                         </div>
                     </div>
-                </div>
+                </div> --}}
+
+
             </div>
 
             <div class="grid grid-cols-6 gap-4 mt-10">
