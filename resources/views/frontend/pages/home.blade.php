@@ -124,60 +124,14 @@
 
             <div class="slider-container1">
 
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/wa.jpg') }}" alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
+                @foreach ($topBrands as $brand)
+                    <div>
+                        <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ $brand->img_src }}" alt="no images">
+                        <div class="mt-2.5 w-[90px] mx-auto">
+                            <a href="{{ route('brand.page', [$brand->id, $brand->slug]) }}" class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
+                        </div>
                     </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/dx.jpg') }}" alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/FastracK.webp') }}"
-                        alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/Untitlesddd.png') }}"
-                        alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/med.jpg') }}"
-                        alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/imadges.jpeg') }}"
-                        alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
-                <div>
-                    <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ asset('images/Untitled.png') }}"
-                        alt="no images">
-                    <div class="mt-2.5 w-[90px] mx-auto">
-                        <a class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
-                    </div>
-                </div>
-
+                @endforeach
                 <!-- Add more slides as needed -->
             </div>
 
@@ -204,7 +158,9 @@
                 @foreach ($newArrival->products as $product)
                     <div class="relative slider-item ">
                         <div class="slide-content">
-                            <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
+                            <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
+                            </a>
                         </div>
                         <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
                             <div class="w-12 rounded absolute top-[54%] md:static lg:static"
@@ -213,7 +169,9 @@
                             </div>
                             <p style="color:#00798C;"
                                 class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                {{ $product->name }}
+                                <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                    {{ $product->name }}
+                                </a>
                             </p>
 
                             <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
