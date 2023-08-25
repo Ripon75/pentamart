@@ -69,6 +69,9 @@
                                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
+                            {{-- hidden input field --}}
+                            <input id="input-login-by-id" type="hidden" name="login_by" value="phone_number">
+
                             <div id="phoneInput">
                                 <div class="w-[80%] block mx-auto form-item">
                                     <label class="form-label">Phone Number <span
@@ -77,32 +80,33 @@
                                         value="{{ old('phone_number') ?? Request::get('phone_number') }}"
                                         name="phone_number" class="form-input rounded" placeholder="Your phone number" />
 
-                                    <span class="error"></span>
+                                    <span id="show-phone-number-error-msg" class="text-red-400 text-sm"></span>
                                 </div>
 
                                 <div class="w-[50%] block mx-auto mt-8">
-                                    <button id="nextfrmBtn" type="button" class="btn btn-primary btn-block">Next</button>
+                                    {{-- <button id="nextfrmBtn" type="button" class="btn btn-primary btn-block">Next</button> --}}
+                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Login</button>
                                 </div>
                             </div>
 
                             <div id="emailInput" style="display: none;">
                                 <div class="w-[80%] block mx-auto form-item">
                                     <label class="form-label">Email <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="email" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                        name="email" id="email" class="form-input rounded"
+                                    <input type="email" name="email" id="email" class="form-input rounded"
                                         placeholder="Your phone number" />
+                                    <span id="show-email-error-msg" class="text-red-400 text-sm"></span>
                                 </div>
 
                                 <div class="w-[80%] block mx-auto form-item">
                                     <label class="form-label">Password <span
                                             class="text-red-500 font-medium">*</span></label>
-                                    <input type="password" value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                        name="password" id="password" class="form-input rounded"
+                                    <input type="password" name="password" id="password" class="form-input rounded"
                                         placeholder="Your password" />
+                                    <span id="show-password-error-msg" class="text-red-400 text-sm"></span>
                                 </div>
 
                                 <div class="w-[50%] block mx-auto mt-8">
-                                    <button type="submit" class="btn btn-primary btn-block">Login</button>
+                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Login</button>
                                 </div>
                                 <p class="text-center text-[12px] mt-2" style="color:#00798c;">
                                     <a href="#">Forget Password ?</a>
@@ -137,7 +141,10 @@
 
 <script>
     $(document).ready(function() {
+        var btnLoginSubmit = $('.btn-login-submit');
+
         $("#emailBtn").click(function() {
+            $('#input-login-by-id').val('email');
             $(this).addClass('phoneBtn');
             $("#emailInput").show();
             $("#phoneInput").hide();
@@ -145,6 +152,7 @@
         });
 
         $("#phoneBtn").click(function() {
+            $('#input-login-by-id').val('phone_number');
             $(this).addClass('phoneBtn');
             $("#phoneInput").show();
             $("#emailInput").hide();
@@ -177,6 +185,50 @@
                 $('#passwordBox').show();
                 $('#nextfrmBtn').hide();
             }
+        });
+
+        btnLoginSubmit.click(function() {
+            var loginBy     = $("input[name=login_by]").val();
+            var phoneNumber = $("input[name=phone_number]").val();
+            var email       = $("input[name=email]").val();
+            var password    = $("input[name=password]").val();
+
+            axios.post('/login', {
+                login_by: loginBy,
+                phone_number: phoneNumber,
+                email: email,
+                password: password
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    if (loginBy === 'phone_number') {
+                        window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
+                    } else {
+                        window.location.href = "/";
+                    }
+                } else {
+                    if (res.data.msg.phone_number) {
+                        $("input[name=phone_number]").focus();
+                        $('#show-phone-number-error-msg').text(res.data.msg.phone_number[0]);
+                        return false;
+                    }
+                    else if (res.data.msg.email) {
+                        $("input[name=email]").focus();
+                        $('#show-email-error-msg').text(res.data.msg.email[0]);
+                        return false;
+                    }
+                    else if (res.data.msg.password) {
+                        $("input[name=password]").focus();
+                        $('#show-password-error-msg').text(res.data.msg.password[0]);
+                        return false;
+                    } else {
+                        __showNotification('error', res.data.msg, 5000);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         });
     });
 </script>
