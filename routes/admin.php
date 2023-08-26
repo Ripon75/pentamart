@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\OfferController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\StatusController;
 use App\Http\Controllers\Admin\SliderController;
@@ -48,6 +49,13 @@ Route::middleware(['auth'])->group(function() {
     Route::post('categories',          [CategoryController::class, 'store'])->name('categories.store')->middleware(['permission:categories-create']);
     Route::get('categories/{id}/edit', [CategoryController::class, 'edit'])->name('categories.edit')->middleware(['permission:categories-update']);
     Route::put('categories/{id}',      [CategoryController::class, 'update'])->name('categories.update')->middleware(['permission:categories-update']);
+
+    // All offer route
+    Route::get('offers',           [OfferController::class, 'index'])->name('offers.index')->middleware(['permission:offers-read']);
+    Route::get('offers/create',    [OfferController::class, 'create'])->name('offers.create')->middleware(['permission:offers-create']);
+    Route::post('offers',          [OfferController::class, 'store'])->name('offers.store')->middleware(['permission:offers-create']);
+    Route::get('offers/{id}/edit', [OfferController::class, 'edit'])->name('offers.edit')->middleware(['permission:offers-update']);
+    Route::put('offers/{id}',      [OfferController::class, 'update'])->name('offers.update')->middleware(['permission:offers-update']);
 
     // All product route
     Route::get('products',           [ProductController::class, 'index'])->name('products.index')->middleware(['permission:products-read']);
