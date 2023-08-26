@@ -10155,12 +10155,6 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
-.top-\[54\%\]{
-  top: 54%;
-}
-.left-\[19\%\]{
-  left: 19%;
-}
 .left-\[23\%\]{
   left: 23%;
 }
@@ -10327,11 +10321,8 @@ textarea.form-control.is-invalid{
 .mt-2\.5{
   margin-top: 0.625rem;
 }
-.ml-4{
-  margin-left: 1rem;
-}
-.mt-\[22px\]{
-  margin-top: 22px;
+.mt-\[16px\]{
+  margin-top: 16px;
 }
 .mb-8{
   margin-bottom: 2rem;
@@ -10342,14 +10333,23 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
-.-ml-px{
-  margin-left: -1px;
+.ml-4{
+  margin-left: 1rem;
 }
 .mt-7{
   margin-top: 1.75rem;
 }
-.mt-\[16px\]{
-  margin-top: 16px;
+.-ml-px{
+  margin-left: -1px;
+}
+.mb-10{
+  margin-bottom: 2.5rem;
+}
+.mb-20{
+  margin-bottom: 5rem;
+}
+.mb-24{
+  margin-bottom: 6rem;
 }
 .block{
   display: block;
@@ -10558,8 +10558,8 @@ textarea.form-control.is-invalid{
 .w-\[100\%\]{
   width: 100%;
 }
-.w-\[50px\]{
-  width: 50px;
+.w-\[45px\]{
+  width: 45px;
 }
 .w-\[102\%\]{
   width: 102%;
@@ -10572,6 +10572,9 @@ textarea.form-control.is-invalid{
 }
 .w-72{
   width: 18rem;
+}
+.w-\[33\%\]{
+  width: 33%;
 }
 .w-16{
   width: 4rem;
@@ -10596,15 +10599,6 @@ textarea.form-control.is-invalid{
 }
 .w-44{
   width: 11rem;
-}
-.w-\[45px\]{
-  width: 45px;
-}
-.w-\[20\%\]{
-  width: 20%;
-}
-.w-\[33\%\]{
-  width: 33%;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -11293,14 +11287,14 @@ textarea.form-control.is-invalid{
   font-size: 1.25rem;
   line-height: 1.75rem;
 }
+.text-\[14px\]{
+  font-size: 14px;
+}
 .text-\[12px\]{
   font-size: 12px;
 }
 .text-\[11px\]{
   font-size: 11px;
-}
-.text-\[14px\]{
-  font-size: 14px;
 }
 .font-bold{
   font-weight: 700;
@@ -11408,6 +11402,10 @@ textarea.form-control.is-invalid{
   --tw-text-opacity: 1;
   color: rgb(31 41 55 / var(--tw-text-opacity));
 }
+.text-red-400{
+  --tw-text-opacity: 1;
+  color: rgb(248 113 113 / var(--tw-text-opacity));
+}
 .text-slate-500{
   --tw-text-opacity: 1;
   color: rgb(100 116 139 / var(--tw-text-opacity));
@@ -11423,10 +11421,6 @@ textarea.form-control.is-invalid{
 .text-red-300{
   --tw-text-opacity: 1;
   color: rgb(252 165 165 / var(--tw-text-opacity));
-}
-.text-red-400{
-  --tw-text-opacity: 1;
-  color: rgb(248 113 113 / var(--tw-text-opacity));
 }
 .line-through{
   -webkit-text-decoration-line: line-through;
@@ -13791,9 +13785,6 @@ fieldset legend{
       padding-left: 6rem;
     }
   }
-  .md\:static{
-    position: static;
-  }
   .md\:left-16{
     left: 4rem;
   }
@@ -14025,11 +14016,17 @@ fieldset legend{
     font-size: 1.875rem;
     line-height: 2.25rem;
   }
+  .md\:text-\[14px\]{
+    font-size: 14px;
+  }
   .md\:text-\[12px\]{
     font-size: 12px;
   }
-  .md\:text-\[14px\]{
-    font-size: 14px;
+  .md\:text-\[15px\]{
+    font-size: 15px;
+  }
+  .md\:text-\[20px\]{
+    font-size: 20px;
   }
   .md\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -14050,9 +14047,6 @@ fieldset legend{
   }
 }
 @media (min-width: 1024px){
-  .lg\:static{
-    position: static;
-  }
   .lg\:-top-2{
     top: -0.5rem;
   }
@@ -14116,6 +14110,9 @@ fieldset legend{
   .lg\:w-1\/2{
     width: 50%;
   }
+  .lg\:w-\[20\%\]{
+    width: 20%;
+  }
   .lg\:w-\[600px\]{
     width: 600px;
   }
@@ -14124,9 +14121,6 @@ fieldset legend{
   }
   .lg\:w-\[800px\]{
     width: 800px;
-  }
-  .lg\:w-\[20\%\]{
-    width: 20%;
   }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -14145,6 +14139,9 @@ fieldset legend{
   }
   .lg\:justify-end{
     justify-content: flex-end;
+  }
+  .lg\:justify-between{
+    justify-content: space-between;
   }
   .lg\:gap-4{
     gap: 1rem;
@@ -14218,6 +14215,9 @@ fieldset legend{
     font-size: 2.25rem;
     line-height: 2.5rem;
   }
+  .lg\:text-\[14px\]{
+    font-size: 14px;
+  }
   .lg\:text-\[12px\]{
     font-size: 12px;
   }
@@ -14229,8 +14229,11 @@ fieldset legend{
     font-size: 1.5rem;
     line-height: 2rem;
   }
-  .lg\:text-\[14px\]{
-    font-size: 14px;
+  .lg\:text-\[15px\]{
+    font-size: 15px;
+  }
+  .lg\:text-\[20px\]{
+    font-size: 20px;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
@@ -14310,6 +14313,9 @@ fieldset legend{
   }
   .xl\:justify-end{
     justify-content: flex-end;
+  }
+  .xl\:justify-between{
+    justify-content: space-between;
   }
   .xl\:gap-4{
     gap: 1rem;
@@ -14437,6 +14443,9 @@ fieldset legend{
   }
   .\32xl\:justify-end{
     justify-content: flex-end;
+  }
+  .\32xl\:justify-between{
+    justify-content: space-between;
   }
   .\32xl\:gap-2{
     gap: 0.5rem;
