@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\Models\Offer;
 use App\Models\Brand;
 use App\Models\Rating;
 use App\Models\Slider;
@@ -34,17 +35,7 @@ class PageController extends Controller
         //New arrival Product Section
         $newArrival = Section::with(['products'])->where('slug', 'new-arrival')->first();
 
-        $offers = [
-            [
-                'img_src' => 'images/sample/offer.jpg'
-            ],
-            [
-                'img_src' => 'images/sample/offer.jpg'
-            ],
-            [
-                'img_src' => 'images/sample/offer.jpg'
-            ]
-        ];
+        $offers = Offer::where('status', 'active')->get();
 
         $features = [
             [
@@ -104,7 +95,7 @@ class PageController extends Controller
             ->orderBy('categories.name', 'ASC')
             ->get();
 
-        $barnds = Brand::distinct()
+        $brands = Brand::distinct()
             ->join('products', 'brands.id', '=', 'products.brand_id')
             ->select('brands.id', 'brands.name')
             ->whereNull('products.deleted_at')
@@ -115,7 +106,7 @@ class PageController extends Controller
 
         return view('frontend.pages.product-index', [
             'products'          => $products,
-            'brands'            => $barnds,
+            'brands'            => $brands,
             'categories'        => $categories,
             'filterCategoryIds' => $filterCategoryIds,
             'filterBrandIds'    => $filterBrandIds,
@@ -257,11 +248,10 @@ class PageController extends Controller
         ]);
     }
 
-    public function offerProduct(Request $request)
+    public function offerProduct(Request $request, $offerPercent)
     {
         $filterCategoryIds   = $request->input('filter_category_ids', []);
-        $filterCompanyIds    = $request->input('filter_company_ids', []);
-        $filterDosageFormIds = $request->input('filter_dosageForm_ids', []);
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
@@ -269,39 +259,46 @@ class PageController extends Controller
             $filterCategoryIds = [];
         }
 
-        if ($filterCompanyIds && !empty($filterCompanyIds && $filterCompanyIds != 'null')) {
-            $filterCompanyIds = explode(",", $filterCompanyIds);
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
         } else {
-            $filterCompanyIds = [];
+            $filterBrandIds = [];
         }
 
-        if ($filterDosageFormIds && !empty($filterDosageFormIds && $filterDosageFormIds != 'null')) {
-            $filterDosageFormIds = explode(",", $filterDosageFormIds);
-        } else {
-            $filterDosageFormIds = [];
-        }
-
-        $products = $this->getOfferProducts($request);
+        $products = $this->getOfferProducts($request, $offerPercent);
 
         $categories = Category::distinct()
             ->join('products', 'categories.id', '=', 'products.category_id')
             ->select('categories.id', 'categories.name')
+            ->where('categories.status', 'active')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
             ->orderBy('categories.name', 'ASC')
             ->get();
 
+        $brands = Brand::distinct()
+            ->join('products', 'brands.id', '=', 'products.brand_id')
+            ->select('brands.id', 'brands.name')
+            ->whereNull('products.deleted_at')
+            ->where('products.status', 'active')
+            ->where('brands.status', 'active')
+            ->orderBy('brands.name', 'ASC')
+            ->get();
 
         return view('frontend.pages.offer-products', [
-            'products'            => $products,
-            'categories'          => $categories,
-            'filterCategoryIds'   => $filterCategoryIds,
-            'filterCompanyIds'    => $filterCompanyIds,
-            'filterDosageFormIds' => $filterDosageFormIds
+            'products'          => $products,
+            'brands'            => $brands,
+            'categories'        => $categories,
+            'filterCategoryIds' => $filterCategoryIds,
+            'filterBrandIds'    => $filterBrandIds,
+            'offerPercent'      => $offerPercent,
+            'pageTitle'         => 'Offer products'
         ]);
     }
 
     private function getProducts($request, $relation = null, $id = null)
     {
-        $searchKey         = $request->input('search_key', null);
+        $paginate          = config('crud.paginate.default');
         $filterBrandIds    = $request->input('filter_brand_ids', []);
         $filterCategoryIds = $request->input('filter_category_ids', []);
 
@@ -329,65 +326,36 @@ class PageController extends Controller
             $products = $products->whereIn('brand_id', $filterBrandIds);
         }
 
-        // $order = $order === 'desc' ? 'desc' : 'asc';
-        // $products = $products->orderBy($orderBy, $order);
-
-        $paginate = config('crud.paginate.default');
-        if ($searchKey) {
-            $products = Product::search($searchKey)->query(function ($query) {
-                $query->where('status', 'active');
-            })->paginate($paginate);
-        } else {
-            $products = $products->where('mrp', '>', 0)->paginate($paginate);
-        }
+        $products = $products->where('mrp', '>', 0)->paginate($paginate);
 
         return $products;
     }
 
-    private function getOfferProducts($request, $relation = null, $slug = null)
+    private function getOfferProducts($request, $offerPercent)
     {
-        $orderBy = 'price';
-        $searchKey           = $request->input('search_key', null);
-        $order               = $request->input('order', null);
-        $percent             = $request->input('percent', null);
-        $subCategorySlug     = $request->input('sub_category', null);
-        $filterCategoryIds   = $request->input('filter_category_ids', []);
+        $paginate          = config('crud.paginate.default');
+        $filterBrandIds    = $request->input('filter_brand_ids', []);
+        $filterCategoryIds = $request->input('filter_category_ids', []);
 
         $products = Product::getDefaultMetaData();
-        $products = $products->where('offer_price', '>', 0);
-
-        if ($relation && $relation === 'categories' && $slug) {
-            if ($percent) {
-                $products = $products->where('offer_price', '<=', $percent);
-                if ($subCategorySlug) {
-                    $products = $products->whereHas('categories', function ($query) use ($subCategorySlug) {
-                        $query->where('slug', $subCategorySlug);
-                    });
-                }
-            } else {
-                $products = $products->whereHas('categories', function ($query) use ($slug) {
-                    $query->where('slug', $slug);
-                });
-            }
-        }
 
         if ($filterCategoryIds && !empty($filterCategoryIds && $filterCategoryIds != 'null')) {
             $filterCategoryIds = explode(",", $filterCategoryIds);
 
-            $products = $products->whereHas('categories', function ($query) use ($filterCategoryIds) {
-                $query->whereIn('id', $filterCategoryIds);
-            });
+            $products = $products->whereIn('category_id', $filterCategoryIds);
         }
 
-        $order = $order === 'desc' ? 'desc' : 'asc';
-        $products = $products->orderBy($orderBy, $order);
+        if ($filterBrandIds && !empty($filterBrandIds && $filterBrandIds != 'null')) {
+            $filterBrandIds = explode(",", $filterBrandIds);
 
-        $paginate = config('crud.paginate.default');
-        if ($searchKey) {
-            $products = Product::search($searchKey)->paginate($paginate);
-        } else {
-            $products = $products->where('price', '>', 0)->paginate($paginate);
+            $products = $products->whereIn('brand_id', $filterBrandIds);
         }
+
+        $products = $products
+                    ->where('offer_percent', '<=', $offerPercent)
+                    ->where('offer_percent', '>', 0)
+                    ->orderBy('offer_percent', 'desc')
+                    ->paginate($paginate);
 
         return $products;
     }

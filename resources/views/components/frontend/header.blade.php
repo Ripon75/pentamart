@@ -236,10 +236,6 @@
                         @foreach ($menus as $m)
                             <a href="{{ $m['route'] }}" class="p-2 lg:p-2 xl:p-4">{{ $m['label'] }}</a>
                         @endforeach
-                        <a href="" class="p-2 lg:p-2 xl:p-4">Category</a>
-                        <a href="{{ route('my.order') }}" class="p-2 lg:p-2 xl:p-4">My Order</a>
-                        <a href="" class="p-2 lg:p-2 xl:p-4">About</a>
-                        <a href="" class="p-2 lg:p-2 xl:p-4">Contact</a>
                     </ul>
                 </div>
 

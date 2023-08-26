@@ -8172,8 +8172,20 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+.top-\[54\%\]{
+  top: 54%;
+}
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .left-\[23\%\]{
   left: 23%;
+}
+.top-\[54\%\]{
+  top: 54%;
 }
 .z-30{
   z-index: 30;
@@ -8338,6 +8350,15 @@ textarea.form-control.is-invalid{
 .mt-2\.5{
   margin-top: 0.625rem;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+.ml-4{
+  margin-left: 1rem;
+}
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .mt-\[16px\]{
   margin-top: 16px;
 }
@@ -8350,14 +8371,24 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
+<<<<<<< HEAD
 .ml-4{
   margin-left: 1rem;
 }
+=======
+<<<<<<< HEAD
+.ml-4{
+  margin-left: 1rem;
+}
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .mt-7{
   margin-top: 1.75rem;
 }
 .-ml-px{
   margin-left: -1px;
+<<<<<<< HEAD
 }
 .mb-10{
   margin-bottom: 2.5rem;
@@ -8374,6 +8405,27 @@ textarea.form-control.is-invalid{
 .mt-\[-200px\]{
   margin-top: -200px;
 }
+=======
+<<<<<<< HEAD
+}
+.mb-10{
+  margin-bottom: 2.5rem;
+}
+.mb-20{
+  margin-bottom: 5rem;
+}
+.mb-24{
+  margin-bottom: 6rem;
+}
+.mt-\[200px\]{
+  margin-top: 200px;
+}
+.mt-\[-200px\]{
+  margin-top: -200px;
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+}
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .block{
   display: block;
 }
@@ -8596,8 +8648,18 @@ textarea.form-control.is-invalid{
 .w-72{
   width: 18rem;
 }
+<<<<<<< HEAD
 .w-\[33\%\]{
   width: 33%;
+=======
+<<<<<<< HEAD
+.w-\[33\%\]{
+  width: 33%;
+=======
+.w-\[20\%\]{
+  width: 20%;
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 }
 .w-16{
   width: 4rem;
@@ -8623,6 +8685,15 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+.w-\[20\%\]{
+  width: 20%;
+}
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+>>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
