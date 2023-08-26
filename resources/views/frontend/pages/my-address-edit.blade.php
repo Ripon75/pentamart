@@ -23,6 +23,24 @@
                             </span>
                         </div>
                         <div class="form-item">
+                            <label class="form-label">Name </label>
+                            <input class="form-input" type="text" value="{{ $data->user_name }}" name="user_name"/>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">Phone Number</label>
+                            <input class="form-input" type="text" value="{{ $data->phone_number }}" name="phone_number"/>
+                            <span class="text-red-500 text-xs">
+                                @error('phone_number') {{ $message }} @enderror
+                            </span>
+                        </div>
+                        <div class="form-item">
+                            <label class="form-label">Phone Number (2)</label>
+                            <input class="form-input" type="text" value="{{ $data->phone_number_2 }}" name="phone_number_2"/>
+                            <span class="text-red-500 text-xs">
+                                @error('phone_number_2') {{ $message }} @enderror
+                            </span>
+                        </div>
+                        <div class="form-item">
                             <label class="form-label">District <span class="text-red-500 font-medium">*</span></label>
                             <select class="form-input select-2-district" name="district_id">
                                 <option value="">Select</option>
@@ -45,10 +63,6 @@
                             <label class="form-label">Address <span class="text-red-500 font-medium">*</span></label>
                             <textarea name="address" class="form-input">{{ $data->address }}</textarea>
                             <span class="text-red-500 text-xs">@error('address') {{ $message }} @enderror</span>
-                        </div>
-                        <div class="form-item">
-                            <label class="form-label">Alternative Phone Number</label>
-                            <input class="form-input" type="number" value="{{ $data->phone_number }}" name="phone_number"/>
                         </div>
                         <div class="text-right">
                             <button type="submit" class="btn btn-md btn-primary">Update</button>

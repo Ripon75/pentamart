@@ -32,24 +32,27 @@ class AddressController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title'       => ['required'],
-            'address'     => ['required'],
-            'district_id' => ['required'],
-            'thana'       => ['required']
+            'title'          => ['required'],
+            'address'        => ['required'],
+            'district_id'    => ['required'],
+            'thana'          => ['required'],
+            'phone_number'   => ['required','regex:/^[0-9]+$/', 'digits:11'],
+            'phone_number_2' => ['nullable', 'regex:/^[0-9]+$/', 'digits:11']
         ],
         [
             'district_id.required' => 'The district is required'
         ]);
 
+        $userName        = $request->input('user_name', null);
         $title           = $request->input('title', null);
         $address         = $request->input('address', null);
         $phoneNumber     = $request->input('phone_number', null);
+        $phoneNumber2    = $request->input('phone_number_2', null);
         $districtId      = $request->input('district_id', null);
         $thana           = $request->input('thana', null);
         $authUser        = Auth::user();
-        $userPhoneNumber = $authUser->phone_number;
 
-        $phoneNumber = $phoneNumber ? $phoneNumber : $userPhoneNumber;
+        $userName = $userName ? $userName : $authUser->name;
 
         try {
             DB::beginTransaction();
@@ -58,12 +61,14 @@ class AddressController extends Controller
                 $addressObj = new Address();
             }
 
-            $addressObj->title        = $title;
-            $addressObj->address      = $address;
-            $addressObj->user_id      = $authUser->id;
-            $addressObj->phone_number = $phoneNumber;
-            $addressObj->district_id  = $districtId;
-            $addressObj->thana        = $thana;
+            $addressObj->user_name      = $userName;
+            $addressObj->title          = $title;
+            $addressObj->address        = $address;
+            $addressObj->user_id        = $authUser->id;
+            $addressObj->phone_number   = $phoneNumber;
+            $addressObj->phone_number_2 = $phoneNumber2;
+            $addressObj->district_id    = $districtId;
+            $addressObj->thana          = $thana;
             $res = $addressObj->save();
 
             if ($res) {
@@ -95,24 +100,30 @@ class AddressController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'address'     => ['required'],
-            'district_id' => ['required'],
-            'thana'       => ['required']
+            'address'        => ['required'],
+            'district_id'    => ['required'],
+            'thana'          => ['required'],
+            'phone_number'   => ['required', 'regex:/^[0-9]+$/', 'digits:11'],
+            'phone_number_2' => ['nullable', 'regex:/^[0-9]+$/', 'digits:11']
         ]);
 
-        $address     = $request->input('address', null);
-        $phoneNumber = $request->input('phone_number', null);
-        $districtId  = $request->input('district_id', null);
-        $thana       = $request->input('thana', null);
+        $userName     = $request->input('user_name', null);
+        $address      = $request->input('address', null);
+        $phoneNumber  = $request->input('phone_number', null);
+        $phoneNumber2 = $request->input('phone_number_2', null);
+        $districtId   = $request->input('district_id', null);
+        $thana        = $request->input('thana', null);
 
         try {
             DB::beginTransaction();
             $userAddress = Address::find($id);
 
-            $userAddress->address      = $address;
-            $userAddress->phone_number = $phoneNumber;
-            $userAddress->district_id  = $districtId;
-            $userAddress->thana        = $thana;
+            $userAddress->user_name      = $userName;
+            $userAddress->address        = $address;
+            $userAddress->phone_number   = $phoneNumber;
+            $userAddress->phone_number_2 = $phoneNumber2;
+            $userAddress->district_id    = $districtId;
+            $userAddress->thana          = $thana;
             $userAddress->save();
             DB::commit();
 
