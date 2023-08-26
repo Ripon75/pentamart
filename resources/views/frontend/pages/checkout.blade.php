@@ -29,8 +29,9 @@
                                         </div>
                                         <div>{{ $uAddress->address }}</div>
                                         <div>{{ $uAddress->district->name ?? '' }}</div>
-                                        <div>{{ $uAddress->user->name ?? '' }}</div>
+                                        <div>{{ $uAddress->user_name }}</div>
                                         <div>{{ $uAddress->phone_number }}</div>
+                                        <div>{{ $uAddress->phone_number_2 }}</div>
                                     </div>
                                 @endforeach
                             </div>
@@ -45,11 +46,25 @@
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
+                                        <label for="" class="form-label">Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <select id="input-address-title" name="title" class="form-select form-input w-full">
+                                            <option value="">Select</option>
+                                            <option value="Home">Home</option>
+                                            <option value="Office">Office</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                        @error('title')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1">
+                                    <div style="width:97%" class="form-item">
                                         <label class="form-label">Name</label>
                                         <input class="form-input" type="text" placeholder="Enter Your Name"
-                                            name="phone_number" />
+                                            name="user_name" />
                                     </div>
-
                                 </div>
 
                                 <div class="grid grid-cols-2">
@@ -84,12 +99,18 @@
                                         <label class="form-label">Phone Number<span class="ml-1 text-red-500 font-medium">*</span></label>
                                         <input class="form-input" type="text" placeholder="Enter Your Phone Number"
                                             name="phone_number" />
+                                        @error('phone_number')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Alternative Phone Number</label>
+                                        <label class="form-label">Phone Number (2)</label>
                                         <input class="form-input" type="text" placeholder="Enter Your Phone Number"
-                                            name="phone_number" />
+                                            name="phone_number_2" />
+                                        @error('phone_number_2')
+                                            <span class="form-helper error">{{ $message }}</span>
+                                        @enderror
                                     </div>
                                 </div>
 
@@ -342,6 +363,7 @@
 
             // create user address
             btnAddressCreate.click(function() {
+                console.log('click');
                 var inputAddressTitle    = $('#input-address-title');
                 var inputAddress         = $("#input-address");
                 var inputThana           = $("input[name=thana]");
