@@ -422,7 +422,7 @@
     </section>
 
     {{-- Related Products Section --}}
-    <section class="mt-[-200px] md:mt-0 lg:mt-0 page-section">
+    <section class="mt-[-200px] md:mt-[-85px] lg:mt-[-85px] page-section">
         <div class="container relative">
             <div class="text-center">
                 <h1 class="section-title mb-5">Related Product</h1>

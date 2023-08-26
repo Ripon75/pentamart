@@ -158,7 +158,7 @@ class PageController extends Controller
 
         $isWishListed = $wishlistedProduct ? true : false;
 
-        $relatedProducts = Product::getDefaultMetaData()->take(3)->get();
+        $relatedProducts = Product::getDefaultMetaData()->take(6)->get();
 
         $otherProducts = Product::inRandomOrder()->getDefaultMetaData()
             ->where('id', '<>', $product->id)->take(4)->get();
