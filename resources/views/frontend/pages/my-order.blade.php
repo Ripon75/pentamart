@@ -16,7 +16,7 @@
                                 <thead class="">
                                     <tr class="bg-secondary">
                                         <th class="text-center border p-2">Order ID</th>
-                                        <th class="text-center border p-2">Product</th>
+                                        {{-- <th class="text-center border p-2">Product</th> --}}
                                         <th class="text-center border p-2">Items</th>
                                         <th class="text-center border p-2">Order Date</th>
                                         <th class="text-center border p-2">Total Price</th>
@@ -28,23 +28,29 @@
                                     @foreach ($orders as $order)
                                         <tr>
                                             <td class="border p-2">{{ $order->id }}</td>
-                                            <td class="border border-l-0 p-2 text-right">{{ count($order->items) }}</td>
-                                            <td class="border border-l-0 p-2 text-right">
+                                            <td class="border border-l-0 p-2 text-center">{{ count($order->items) }}</td>
+
+                                            <td class="border border-l-0 p-2 text-center">{{ $order->created_at }}</td>
+
+                                            <td class="border border-l-0 p-2 text-center">
                                                 <span>{{ $currency }}</span>
                                                 <span class="ml-1">{{ number_format($order->payable_price, 2) }}</span>
                                             </td>
+
                                             @php
                                                 $label = $order->currentStatus->name ?? 'N/A';
                                                 $bgColor = $order->currentStatus->bg_color ?? '#f94449';
                                                 $fontColor = $order->currentStatus->font_color ?? '#ffff';
                                             @endphp
+
                                             <td class="border border-l-0 p-2 text-center">
                                                 <span class="rounded border px-2 py-1 text-xs"
                                                     style="background-color:{{ $bgColor }};color:{{ $fontColor }};">
                                                     {{ $label }}
                                                 </span>
                                             </td>
-                                            <td class="text-center">
+
+                                            {{-- <td class="text-center">
                                                 @if ($order->is_paid)
                                                     <button
                                                         class="border px-2 py-1 rounded text-white bg-green-500 text-sm">
@@ -55,10 +61,12 @@
                                                         NO
                                                     </button>
                                                 @endif
-                                            </td>
-                                            <td class="border border-l-0 p-2">
-                                                {{ $order->shippingAddress->area->name ?? '' }}</td>
-                                            <td class="border border-l-0 p-2">{{ $order->created_at }}</td>
+                                            </td> --}}
+
+                                            {{-- <td class="border border-l-0 p-2">
+                                                {{ $order->shippingAddress->area->name ?? '' }}
+                                            </td> --}}
+
                                             <td
                                                 class="border border-l-0 p-2 flex flex-wrap space-y-1 md:space-y-0 space-x-2 items-center justify-center">
                                                 <a href="{{ route('my.order.show', $order->id) }}" class="">
