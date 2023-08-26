@@ -47,7 +47,7 @@
 
 @section('content')
     {{-- ==============Banner Slider========================= --}}
-    <section class="mt-[120px] sm:mt-[120px] md:mt-[120px] lg:mt44">
+    <section class="mt-[100px] sm:mt-[100px] md:mt-[120px] lg:mt44">
         <div id="carouselExampleIndicators" class="carousel slide relative" data-bs-ride="carousel">
             <div class="carousel-indicators absolute right-0 bottom-0 left-0 flex justify-center p-0 mb-0 md:mb-4">
                 <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
@@ -373,10 +373,12 @@
                                         off
                                     </span>
                                 </p>
-                                <a href="{{ route('offers.products', $offer->offer_percent) }}"
-                                    class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">
-                                    Shop Now
-                                </a>
+                                <p class="mt-[15px]">
+                                    <a href="{{ route('offers.products', $offer->offer_percent) }}"
+                                        class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">
+                                        Shop Now
+                                    </a>
+                                </p>
                             </div>
                         </div>
                     </div>

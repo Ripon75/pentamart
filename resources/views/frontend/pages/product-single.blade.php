@@ -428,177 +428,134 @@
                 <h1 class="section-title mb-5">Related Product</h1>
             </div>
 
-            <div class="slider-container">
+            @if (count($relatedProducts) > 5)
+                <div class="slider-container">
 
-                @foreach ($relatedProducts as $rProduct)
-                    <div style="margin: 5px 5px 5px;">
-                        <a href="">
-                            <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
-                        </a>
+                    @foreach ($relatedProducts as $rProduct)
+                        <div style="margin: 5px 5px 5px;">
+                            <a href="">
+                                <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
+                            </a>
 
-                        <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                            <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                                <span style="font-size: 10px;">In Stock</span>
-                            </div>
-                            <p style="color:#00798C;"
-                                class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                <a href="">
-                                    {{ $rProduct->name }}
-                                </a>
-                            </p>
+                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                                <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                    <span style="font-size: 10px;">In Stock</span>
+                                </div>
+                                <p style="color:#00798C;"
+                                    class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
 
-                            <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                {{ $rProduct->category->name ?? '' }}
-                            </p>
+                                    @if ($rProduct->name)
+                                        <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                            {{ $rProduct->name }}
+                                        </a>
+                                    @else
+                                        <div class="h-5"></div>
+                                    @endif
+                                </p>
 
-                            <div class="flex mt-1">
+                                <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    {{ $rProduct->category->name ?? '' }}
+                                </p>
+
+                                <div class="flex mt-1">
+                                    @if ($rProduct->offer_price > 0)
+                                        <p
+                                            class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : {{ $rProduct->offer_price }}
+                                        </p>
+                                        <p
+                                            class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @endif
+
+                                </div>
+
                                 @if ($rProduct->offer_price > 0)
-                                    <p
-                                        class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : {{ $rProduct->offer_price }}
-                                    </p>
-                                    <p
-                                        class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : <span>{{ $rProduct->mrp }}</span>
-                                    </p>
-                                @else
-                                    <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : <span>{{ $rProduct->mrp }}</span>
+                                    <p class="ofText">
+                                        {{ $rProduct->offer_percent }}
                                     </p>
                                 @endif
-
                             </div>
+                        </div>
+                    @endforeach
 
-                            @if ($rProduct->offer_price > 0)
-                                <p class="ofText">
-                                    {{ $rProduct->offer_percent }}
+                    <!-- Add more slides as needed -->
+
+                </div>
+
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button2">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            @else
+                <div class="flex justify-around flex-wrap">
+                    @foreach ($relatedProducts as $rProduct)
+                        <div class="w-[150px] m-2 shadow-md relative md:w-[250px] lg:w-[250px] 2xl:w-[250px]">
+                            <a href="">
+                                <img class="w-full h-[150px] md:h-[205px] lg:h-[205px]" src="{{ $rProduct->img_src }}"
+                                    alt="no images">
+                            </a>
+
+                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                                <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                    <span style="font-size: 10px;">In Stock</span>
+                                </div>
+                                <p style="color:#00798C;"
+                                    class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    @if ($rProduct->name)
+                                        <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                            {{ $rProduct->name }}
+                                        </a>
+                                    @else
+                                        <div class="h-5">Unnamed</div>
+                                    @endif
                                 </p>
-                            @endif
-                        </div>
-                    </div>
-                @endforeach
-                {{-- Here use 3 static slider div for testing slider behaviour --}}
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
 
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
+                                <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    {{ $rProduct->category->name ?? '' }}
+                                </p>
 
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
+                                <div class="flex mt-1">
+                                    @if ($rProduct->offer_price > 0)
+                                        <p
+                                            class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : {{ $rProduct->offer_price }}
+                                        </p>
+                                        <p
+                                            class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @endif
 
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
+                                </div>
+
+                                @if ($rProduct->offer_price > 0)
+                                    <p class="ofText">
+                                        10.00
+                                    </p>
+                                @endif
+                            </div>
                         </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
+                    @endforeach
                 </div>
+            @endif
 
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
 
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
-                        </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
-                </div>
-
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
-
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
-                        </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
-                </div>
-                {{-- Here use 3 static slider END HERE --}}
-                <!-- Add more slides as needed -->
-            </div>
-
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button2">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <button
-                style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button2">
-                <i class="fa-solid fa-arrow-right-long"></i>
-            </button>
 
         </div>
     </section>

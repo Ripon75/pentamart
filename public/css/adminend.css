@@ -10155,20 +10155,8 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-.top-\[54\%\]{
-  top: 54%;
-}
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .left-\[23\%\]{
   left: 23%;
-}
-.top-\[54\%\]{
-  top: 54%;
 }
 .z-30{
   z-index: 30;
@@ -10229,6 +10217,9 @@ textarea.form-control.is-invalid{
 }
 .m-5{
   margin: 1.25rem;
+}
+.m-2{
+  margin: 0.5rem;
 }
 .mx-auto{
   margin-left: auto;
@@ -10321,6 +10312,9 @@ textarea.form-control.is-invalid{
 .mb-3{
   margin-bottom: 0.75rem;
 }
+.mb-24{
+  margin-bottom: 6rem;
+}
 .mb-4{
   margin-bottom: 1rem;
 }
@@ -10333,15 +10327,6 @@ textarea.form-control.is-invalid{
 .mt-2\.5{
   margin-top: 0.625rem;
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-=======
-.ml-4{
-  margin-left: 1rem;
-}
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .mt-\[16px\]{
   margin-top: 16px;
 }
@@ -10354,61 +10339,24 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
-<<<<<<< HEAD
+.mt-\[-200px\]{
+  margin-top: -200px;
+}
 .ml-4{
   margin-left: 1rem;
 }
-=======
-<<<<<<< HEAD
-.ml-4{
-  margin-left: 1rem;
-}
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .mt-7{
   margin-top: 1.75rem;
 }
 .-ml-px{
   margin-left: -1px;
-<<<<<<< HEAD
 }
-.mb-10{
-  margin-bottom: 2.5rem;
+.mt-\[15px\]{
+  margin-top: 15px;
 }
-.mb-20{
-  margin-bottom: 5rem;
+.mt-\[100px\]{
+  margin-top: 100px;
 }
-.mb-24{
-  margin-bottom: 6rem;
-}
-.mt-\[200px\]{
-  margin-top: 200px;
-}
-.mt-\[-200px\]{
-  margin-top: -200px;
-}
-=======
-<<<<<<< HEAD
-}
-.mb-10{
-  margin-bottom: 2.5rem;
-}
-.mb-20{
-  margin-bottom: 5rem;
-}
-.mb-24{
-  margin-bottom: 6rem;
-}
-.mt-\[200px\]{
-  margin-top: 200px;
-}
-.mt-\[-200px\]{
-  margin-top: -200px;
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
-}
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 .block{
   display: block;
 }
@@ -10526,6 +10474,9 @@ textarea.form-control.is-invalid{
 .h-\[384px\]{
   height: 384px;
 }
+.h-\[205px\]{
+  height: 205px;
+}
 .max-h-64{
   max-height: 16rem;
 }
@@ -10631,18 +10582,8 @@ textarea.form-control.is-invalid{
 .w-72{
   width: 18rem;
 }
-<<<<<<< HEAD
 .w-\[33\%\]{
   width: 33%;
-=======
-<<<<<<< HEAD
-.w-\[33\%\]{
-  width: 33%;
-=======
-.w-\[20\%\]{
-  width: 20%;
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
 }
 .w-16{
   width: 4rem;
@@ -10668,15 +10609,12 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-.w-\[20\%\]{
-  width: 20%;
+.w-\[250px\]{
+  width: 250px;
 }
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
->>>>>>> 2b90ddc8feb49cf6f2336ce231be2b5ee9ee6697
+.w-\[150px\]{
+  width: 150px;
+}
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
@@ -11367,11 +11305,11 @@ textarea.form-control.is-invalid{
 .text-\[14px\]{
   font-size: 14px;
 }
-.text-\[12px\]{
-  font-size: 12px;
-}
 .text-\[11px\]{
   font-size: 11px;
+}
+.text-\[12px\]{
+  font-size: 12px;
 }
 .font-bold{
   font-weight: 700;
@@ -13671,6 +13609,9 @@ fieldset legend{
   .sm\:mt-\[120px\]{
     margin-top: 120px;
   }
+  .sm\:mt-\[100px\]{
+    margin-top: 100px;
+  }
   .sm\:block{
     display: block;
   }
@@ -13914,6 +13855,9 @@ fieldset legend{
   .md\:mt-0{
     margin-top: 0px;
   }
+  .md\:mt-\[100px\]{
+    margin-top: 100px;
+  }
   .md\:block{
     display: block;
   }
@@ -13943,6 +13887,9 @@ fieldset legend{
   }
   .md\:h-\[32px\]{
     height: 32px;
+  }
+  .md\:h-\[205px\]{
+    height: 205px;
   }
   .md\:w-full{
     width: 100%;
@@ -14085,6 +14032,9 @@ fieldset legend{
     font-size: 0.75rem;
     line-height: 1rem;
   }
+  .md\:text-\[20px\]{
+    font-size: 20px;
+  }
   .md\:text-lg{
     font-size: 1.125rem;
     line-height: 1.75rem;
@@ -14098,12 +14048,6 @@ fieldset legend{
   }
   .md\:text-\[12px\]{
     font-size: 12px;
-  }
-  .md\:text-\[15px\]{
-    font-size: 15px;
-  }
-  .md\:text-\[20px\]{
-    font-size: 20px;
   }
   .md\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -14172,6 +14116,9 @@ fieldset legend{
   .lg\:h-44{
     height: 11rem;
   }
+  .lg\:h-\[205px\]{
+    height: 205px;
+  }
   .lg\:w-\[512px\]{
     width: 512px;
   }
@@ -14202,6 +14149,9 @@ fieldset legend{
   .lg\:w-\[800px\]{
     width: 800px;
   }
+  .lg\:w-\[250px\]{
+    width: 250px;
+  }
   .lg\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -14216,9 +14166,6 @@ fieldset legend{
   }
   .lg\:justify-start{
     justify-content: flex-start;
-  }
-  .lg\:justify-end{
-    justify-content: flex-end;
   }
   .lg\:justify-between{
     justify-content: space-between;
@@ -14294,6 +14241,9 @@ fieldset legend{
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
+  .lg\:text-\[20px\]{
+    font-size: 20px;
+  }
   .lg\:text-4xl{
     font-size: 2.25rem;
     line-height: 2.5rem;
@@ -14311,12 +14261,6 @@ fieldset legend{
   .lg\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
-  }
-  .lg\:text-\[15px\]{
-    font-size: 15px;
-  }
-  .lg\:text-\[20px\]{
-    font-size: 20px;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
@@ -14393,9 +14337,6 @@ fieldset legend{
   }
   .xl\:justify-start{
     justify-content: flex-start;
-  }
-  .xl\:justify-end{
-    justify-content: flex-end;
   }
   .xl\:justify-between{
     justify-content: space-between;
@@ -14512,6 +14453,9 @@ fieldset legend{
   .\32xl\:w-1\/2{
     width: 50%;
   }
+  .\32xl\:w-\[250px\]{
+    width: 250px;
+  }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -14526,9 +14470,6 @@ fieldset legend{
   }
   .\32xl\:flex-wrap{
     flex-wrap: wrap;
-  }
-  .\32xl\:justify-end{
-    justify-content: flex-end;
   }
   .\32xl\:justify-between{
     justify-content: space-between;
