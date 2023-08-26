@@ -237,11 +237,12 @@
                             <a href="{{ $m['route'] }}" class="p-2 lg:p-2 xl:p-4">{{ $m['label'] }}</a>
                         @endforeach
                         <a href="" class="p-2 lg:p-2 xl:p-4">Category</a>
-                        <a href="" class="p-2 lg:p-2 xl:p-4">My Order</a>
+                        <a href="{{ route('my.order') }}" class="p-2 lg:p-2 xl:p-4">My Order</a>
                         <a href="" class="p-2 lg:p-2 xl:p-4">About</a>
                         <a href="" class="p-2 lg:p-2 xl:p-4">Contact</a>
                     </ul>
                 </div>
+
                 {{-- <div class="flex justify-end">
                     <div class="flex justify-end space-x-4 items-center">
                         <span class="text-sm sm:text-sm lg:text-base text-primary">Download App</span>
@@ -251,6 +252,7 @@
                         </div>
                     </div>
                 </div> --}}
+
             </div>
         </div>
     </div>
@@ -289,9 +291,9 @@
                         Address
                     </a>
 
-                    <a href=""
+                    <a href="{{ route('my.order') }}"
                         class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        data-mc-on-previous-url="{{ route('my.order') }}">
                         <i class="pr-3 fa-solid fa-cart-shopping"></i>
                         My Order
                     </a>

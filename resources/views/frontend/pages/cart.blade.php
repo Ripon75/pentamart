@@ -17,7 +17,7 @@
                                             Image
                                         </th>
                                         <th
-                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-center pl-2">
                                             Product
                                         </th>
                                         {{-- <th class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
@@ -27,15 +27,15 @@
                                             Size
                                         </th> --}}
                                         <th
-                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-left pl-2">
+                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-center pl-2">
                                             MRP
                                         </th>
                                         <th
-                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-right border-r pr-0 sm:pr-0 md:pr-2">
+                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 text-center border-r pr-0 sm:pr-0 md:pr-2">
                                             Discount
                                         </th>
                                         <th
-                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
+                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-center pr-0 sm:pr-0 md:pr-2">
                                             Price
                                         </th>
                                         <th
@@ -43,7 +43,7 @@
                                             Qty
                                         </th>
                                         <th
-                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-right pr-0 sm:pr-0 md:pr-2">
+                                            class="text-xs sm:text-xs md:text-sm lg:text-base py-2 sm:py-2 md:py-3 lg:py-4 border-r text-center pr-0 sm:pr-0 md:pr-2">
                                             Total
                                         </th>
                                         <th
@@ -62,7 +62,7 @@
                                                     <img class="" src="{{ $product->img_src }}" alt="Product Image">
                                                 </div>
                                             </td>
-                                            <td class="border text-left pl-1 sm:pl-1 md:pl-2">
+                                            <td class="border text-center pl-1 sm:pl-1 md:pl-2">
                                                 @if ($product->name)
                                                     <a href="{{ route('products.show', [$product->id, $product->slug]) }}"
                                                         class="block text-primary text-xs sm:text-xs md:text-base font-medium"
@@ -102,13 +102,13 @@
                                                 @endif
                                             </td> --}}
                                             <td
-                                                class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-center xl:text-center 2xl:text-center pr-1 sm:pr-1 md:pr-2">
                                                 <span class="ml-1">
                                                     {{ $product->pivot->item_mrp }}
                                                 </span>
                                             </td>
                                             <td
-                                                class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-center pr-1 sm:pr-1 md:pr-2">
                                                 <span id="total-discount-{{ $product->pivot->item_id }}"
                                                     class="sub-total-discount ml-1">
                                                     <span id="discount-show-{{ $product->pivot->item_id }}">
@@ -117,7 +117,7 @@
                                                 </span>
                                             </td>
                                             <td
-                                                class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-right lg:text-right xl:text-right 2xl:text-right pr-1 sm:pr-1 md:pr-2">
+                                                class="text-xs md:text-sm lg:text-base border text-primary font-medium text-center sm:text-center md:text-center lg:text-center xl:text-center 2xl:text-center pr-1 sm:pr-1 md:pr-2">
                                                 <span class="ml-1">
                                                     {{ $product->pivot->item_sell_price }}
                                                 </span>
@@ -158,7 +158,7 @@
                                                 </div>
                                             </td>
                                             <td
-                                                class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-right pr-1 sm:pr-1 md:pr-2">
+                                                class="text-xs sm:text-xs md:text-sm lg:text-base border text-primary font-medium text-center pr-1 sm:pr-1 md:pr-2">
                                                 @php
                                                     $itemTotalSellPrice = $product->pivot->item_sell_price * $product->pivot->quantity;
                                                     $itemTotalSellPrice = number_format((float) $itemTotalSellPrice, 2);

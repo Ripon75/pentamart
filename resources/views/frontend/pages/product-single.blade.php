@@ -422,7 +422,7 @@
     </section>
 
     {{-- Related Products Section --}}
-    <section class="page-section">
+    <section class="mt-[-200px] md:mt-0 lg:mt-0 page-section">
         <div class="container relative">
             <div class="text-center">
                 <h1 class="section-title mb-5">Related Product</h1>
@@ -430,155 +430,54 @@
 
             <div class="slider-container">
 
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
+                @foreach ($relatedProducts as $rProduct)
+                    <div style="margin: 5px 5px 5px;">
+                        <a href="">
+                            <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
+                        </a>
 
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
+                        <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                            <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                <span style="font-size: 10px;">In Stock</span>
+                            </div>
+                            <p style="color:#00798C;"
+                                class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                <a href="">
+                                    {{ $rProduct->name }}
+                                </a>
                             </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
+
+                            <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                {{ $rProduct->category->name ?? '' }}
                             </p>
+
+                            <div class="flex mt-1">
+                                @if ($rProduct->offer_price > 0)
+                                    <p
+                                        class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        TK : {{ $rProduct->offer_price }}
+                                    </p>
+                                    <p
+                                        class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        TK : <span>{{ $rProduct->mrp }}</span>
+                                    </p>
+                                @else
+                                    <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                        TK : <span>{{ $rProduct->mrp }}</span>
+                                    </p>
+                                @endif
+
+                            </div>
+
+                            @if ($rProduct->offer_price > 0)
+                                <p class="ofText">
+                                    {{ $rProduct->offer_percent }}
+                                </p>
+                            @endif
                         </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
                     </div>
-                </div>
-
-
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
-
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
-                        </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
-                </div>
-
-
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
-
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
-                        </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
-                </div>
-
-
-
-                <div style="margin: 5px 5px 5px;">
-                    <a href="">
-                        <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
-                            alt="no images">
-                    </a>
-
-                    <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                        <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                            <span style="font-size: 10px;">In Stock</span>
-                        </div>
-                        <p style="color:#00798C;"
-                            class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            <a href="">
-                                Premium Roles Watch (Version-13) Pro
-                            </a>
-                        </p>
-
-                        <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                            Category-1
-                        </p>
-
-                        <div class="flex mt-1">
-                            <p
-                                class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : 230.00
-                            </p>
-                            <p class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                TK : <span>220.98</span>
-                            </p>
-                        </div>
-                        <p class="ofText">
-                            {{ $product->offer_percent }}
-                        </p>
-                    </div>
-                </div>
-
-
+                @endforeach
+                {{-- Here use 3 static slider div for testing slider behaviour --}}
                 <div style="margin: 5px 5px 5px;">
                     <a href="">
                         <img class="w-full h-[136px]" src="{{ asset('images/smart-watch-821557_1280.jpg') }}"
@@ -686,6 +585,7 @@
                         </p>
                     </div>
                 </div>
+                {{-- Here use 3 static slider END HERE --}}
                 <!-- Add more slides as needed -->
             </div>
 

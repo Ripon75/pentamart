@@ -8368,6 +8368,12 @@ textarea.form-control.is-invalid{
 .mb-24{
   margin-bottom: 6rem;
 }
+.mt-\[200px\]{
+  margin-top: 200px;
+}
+.mt-\[-200px\]{
+  margin-top: -200px;
+}
 .block{
   display: block;
 }
@@ -21433,6 +21439,9 @@ readers do not read off random characters that represent icons */
   .lg\:mt-14{
     margin-top: 3.5rem;
   }
+  .lg\:mt-0{
+    margin-top: 0px;
+  }
   .lg\:block{
     display: block;
   }
@@ -21544,6 +21553,9 @@ readers do not read off random characters that represent icons */
   }
   .lg\:text-left{
     text-align: left;
+  }
+  .lg\:text-center{
+    text-align: center;
   }
   .lg\:text-right{
     text-align: right;
@@ -21724,6 +21736,9 @@ readers do not read off random characters that represent icons */
   .xl\:text-left{
     text-align: left;
   }
+  .xl\:text-center{
+    text-align: center;
+  }
   .xl\:text-right{
     text-align: right;
   }
@@ -21829,6 +21844,9 @@ readers do not read off random characters that represent icons */
   .\32xl\:px-60{
     padding-left: 15rem;
     padding-right: 15rem;
+  }
+  .\32xl\:text-center{
+    text-align: center;
   }
   .\32xl\:text-right{
     text-align: right;
