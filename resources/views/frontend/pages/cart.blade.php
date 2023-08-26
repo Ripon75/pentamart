@@ -227,7 +227,9 @@
                                             </span>
                                         </span>
                                     </div>
-                                    <div class="flex justify-between font-medium">
+
+                                    {{-- Loyalty Point block Start from here --}}
+                                    {{-- <div class="flex justify-between font-medium">
                                         <span class="text-base sm:text-base md:text-lg">Earn Points</span>
                                         <span class="text-base sm:text-base md:text-lg font-medium">
                                             <span>
@@ -236,7 +238,8 @@
                                                 </span>
                                             </span>
                                         </span>
-                                    </div>
+                                    </div> --}}
+                                    {{-- Loyalty Point block end from here --}}
 
                                     <div class="flex justify-between font-medium mt-6 mb-24">
                                         <span class="text-base sm:text-base md:text-lg">Total Price</span>
