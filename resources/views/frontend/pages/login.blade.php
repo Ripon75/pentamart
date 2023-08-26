@@ -155,16 +155,22 @@
         $("#emailBtn").click(function() {
             $(this).toggleClass('borderLeft phoneBtn');
             $('#input-login-by-id').val('email');
-            $("#emailInput").show();
-            $("#phoneInput").hide();
+
+            $("#phoneInput").fadeOut('fast', function() {
+                $("#emailInput").fadeIn('fast');
+            });
+
             $("#phoneBtn").toggleClass('phoneBtn borderRight');
         });
 
         $("#phoneBtn").click(function() {
             $(this).toggleClass('borderRight phoneBtn');
             $('#input-login-by-id').val('phone_number');
-            $("#phoneInput").show();
-            $("#emailInput").hide();
+
+            $("#emailInput").fadeOut('fast', function() {
+                $("#phoneInput").fadeIn('fast');
+            });
+
             $("#emailBtn").toggleClass('phoneBtn borderLeft');
         });
 
