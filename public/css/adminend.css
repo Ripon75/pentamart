@@ -10155,12 +10155,6 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
-<<<<<<< HEAD
-=======
-.top-\[54\%\]{
-  top: 54%;
-}
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .left-\[23\%\]{
   left: 23%;
 }
@@ -10223,6 +10217,9 @@ textarea.form-control.is-invalid{
 }
 .m-1{
   margin: 0.25rem;
+}
+.m-2{
+  margin: 0.5rem;
 }
 .m-5{
   margin: 1.25rem;
@@ -10318,11 +10315,14 @@ textarea.form-control.is-invalid{
 .mb-3{
   margin-bottom: 0.75rem;
 }
+.mb-24{
+  margin-bottom: 6rem;
+}
 .mb-4{
   margin-bottom: 1rem;
 }
-.mt-\[120px\]{
-  margin-top: 120px;
+.mt-\[100px\]{
+  margin-top: 100px;
 }
 .mb-5{
   margin-bottom: 1.25rem;
@@ -10330,12 +10330,9 @@ textarea.form-control.is-invalid{
 .mt-2\.5{
   margin-top: 0.625rem;
 }
-<<<<<<< HEAD
-=======
-.ml-4{
-  margin-left: 1rem;
+.mt-\[15px\]{
+  margin-top: 15px;
 }
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .mt-\[16px\]{
   margin-top: 16px;
 }
@@ -10348,35 +10345,20 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
-<<<<<<< HEAD
+.mt-\[-200px\]{
+  margin-top: -200px;
+}
 .ml-4{
   margin-left: 1rem;
 }
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .mt-7{
   margin-top: 1.75rem;
 }
 .-ml-px{
   margin-left: -1px;
-<<<<<<< HEAD
 }
-.mb-10{
-  margin-bottom: 2.5rem;
-}
-.mb-20{
-  margin-bottom: 5rem;
-}
-.mb-24{
-  margin-bottom: 6rem;
-}
-.mt-\[200px\]{
-  margin-top: 200px;
-}
-.mt-\[-200px\]{
-  margin-top: -200px;
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+.mt-\[120px\]{
+  margin-top: 120px;
 }
 .block{
   display: block;
@@ -10600,13 +10582,11 @@ textarea.form-control.is-invalid{
 .w-72{
   width: 18rem;
 }
-<<<<<<< HEAD
 .w-\[33\%\]{
   width: 33%;
-=======
-.w-\[20\%\]{
-  width: 20%;
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
+}
+.w-\[150px\]{
+  width: 150px;
 }
 .w-16{
   width: 4rem;
@@ -10632,12 +10612,9 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
-<<<<<<< HEAD
 .w-\[20\%\]{
   width: 20%;
 }
-=======
->>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;
@@ -11328,11 +11305,11 @@ textarea.form-control.is-invalid{
 .text-\[14px\]{
   font-size: 14px;
 }
-.text-\[12px\]{
-  font-size: 12px;
-}
 .text-\[11px\]{
   font-size: 11px;
+}
+.text-\[12px\]{
+  font-size: 12px;
 }
 .font-bold{
   font-weight: 700;
@@ -13629,6 +13606,9 @@ fieldset legend{
   .sm\:mt-4{
     margin-top: 1rem;
   }
+  .sm\:mt-\[100px\]{
+    margin-top: 100px;
+  }
   .sm\:mt-\[120px\]{
     margin-top: 120px;
   }
@@ -13878,6 +13858,9 @@ fieldset legend{
   .md\:mt-0{
     margin-top: 0px;
   }
+  .md\:mt-\[-85px\]{
+    margin-top: -85px;
+  }
   .md\:block{
     display: block;
   }
@@ -13907,6 +13890,9 @@ fieldset legend{
   }
   .md\:h-\[32px\]{
     height: 32px;
+  }
+  .md\:h-\[205px\]{
+    height: 205px;
   }
   .md\:w-full{
     width: 100%;
@@ -14049,6 +14035,9 @@ fieldset legend{
     font-size: 0.75rem;
     line-height: 1rem;
   }
+  .md\:text-\[20px\]{
+    font-size: 20px;
+  }
   .md\:text-lg{
     font-size: 1.125rem;
     line-height: 1.75rem;
@@ -14062,12 +14051,6 @@ fieldset legend{
   }
   .md\:text-\[12px\]{
     font-size: 12px;
-  }
-  .md\:text-\[15px\]{
-    font-size: 15px;
-  }
-  .md\:text-\[20px\]{
-    font-size: 20px;
   }
   .md\:shadow-lg{
     --tw-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
@@ -14127,6 +14110,9 @@ fieldset legend{
   .lg\:mt-0{
     margin-top: 0px;
   }
+  .lg\:mt-\[-85px\]{
+    margin-top: -85px;
+  }
   .lg\:block{
     display: block;
   }
@@ -14138,6 +14124,9 @@ fieldset legend{
   }
   .lg\:h-44{
     height: 11rem;
+  }
+  .lg\:h-\[205px\]{
+    height: 205px;
   }
   .lg\:w-\[512px\]{
     width: 512px;
@@ -14159,6 +14148,9 @@ fieldset legend{
   }
   .lg\:w-\[20\%\]{
     width: 20%;
+  }
+  .lg\:w-\[250px\]{
+    width: 250px;
   }
   .lg\:w-\[600px\]{
     width: 600px;
@@ -14261,6 +14253,9 @@ fieldset legend{
     font-size: 0.875rem;
     line-height: 1.25rem;
   }
+  .lg\:text-\[20px\]{
+    font-size: 20px;
+  }
   .lg\:text-4xl{
     font-size: 2.25rem;
     line-height: 2.5rem;
@@ -14278,12 +14273,6 @@ fieldset legend{
   .lg\:text-2xl{
     font-size: 1.5rem;
     line-height: 2rem;
-  }
-  .lg\:text-\[15px\]{
-    font-size: 15px;
-  }
-  .lg\:text-\[20px\]{
-    font-size: 20px;
   }
   .lg\:shadow-none{
     --tw-shadow: 0 0 #0000;
@@ -14478,6 +14467,9 @@ fieldset legend{
   }
   .\32xl\:w-1\/2{
     width: 50%;
+  }
+  .\32xl\:w-\[250px\]{
+    width: 250px;
   }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
