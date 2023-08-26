@@ -24,6 +24,16 @@
         padding: 2px;
         font-size: 15px;
     }
+
+    .borderLeft {
+        border-left: 1px solid darkblue;
+        border-bottom: 1px solid darkblue;
+    }
+
+    .borderRight {
+        border-right: 1px solid darkblue;
+        border-bottom: 1px solid darkblue;
+    }
 </style>
 @section('title', 'login')
 @section('content')
@@ -31,7 +41,7 @@
         <div class="container page-section page-top-gap">
             <div class="sm:[w-500px] md:w-[500px] lg:w-[500px] xl:w-[500px] 2xl:w-[500px] mx-auto">
                 <div class="card shadow" style="background-color: #d3e6e9;">
-                    <div id="bodyP" class="body p-4">
+                    <div class="body p-4">
 
                         <div>
                             <div style="background-color: #00798c;" class="w-20 h-20 block mx-auto rounded-full">
@@ -55,7 +65,7 @@
                                 <button class="phoneBtn" id="phoneBtn">
                                     LOGIN WITH PHONE
                                 </button>
-                                <button id="emailBtn">
+                                <button id="emailBtn" class="borderLeft">
                                     LOGIN
                                     WITH EMAIL
                                 </button>
@@ -143,23 +153,19 @@
         var btnLoginSubmit = $('.btn-login-submit');
 
         $("#emailBtn").click(function() {
+            $(this).toggleClass('borderLeft phoneBtn');
             $('#input-login-by-id').val('email');
-            $(this).addClass('phoneBtn');
             $("#emailInput").show();
             $("#phoneInput").hide();
-            $("#phoneBtn").removeClass('phoneBtn');
+            $("#phoneBtn").toggleClass('phoneBtn borderRight');
         });
 
         $("#phoneBtn").click(function() {
+            $(this).toggleClass('borderRight phoneBtn');
             $('#input-login-by-id').val('phone_number');
-            $(this).addClass('phoneBtn');
             $("#phoneInput").show();
             $("#emailInput").hide();
-            $("#emailBtn").removeClass('phoneBtn');
-        });
-
-        $('#logForm').click(function() {
-            $('#bodyP').show();
+            $("#emailBtn").toggleClass('phoneBtn borderLeft');
         });
 
         btnLoginSubmit.click(function() {
