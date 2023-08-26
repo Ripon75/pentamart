@@ -36,6 +36,10 @@ class Header extends Component
         $menus       = [
             [ 'label' => 'Home', 'route' => route('home') ],
             [ 'label' => 'Products', 'route' => route('products.index')],
+            [ 'label' => 'Category', 'route' => '#'],
+            [ 'label' => 'My Order', 'route' => route('my.order')],
+            [ 'label' => 'About', 'route' => route('about')],
+            [ 'label' => 'Contact', 'route' => route('contact')],
         ];
 
         return view('components.frontend.header', [
