@@ -8172,6 +8172,12 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
+<<<<<<< HEAD
+=======
+.top-\[54\%\]{
+  top: 54%;
+}
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .left-\[23\%\]{
   left: 23%;
 }
@@ -8341,6 +8347,12 @@ textarea.form-control.is-invalid{
 .mt-2\.5{
   margin-top: 0.625rem;
 }
+<<<<<<< HEAD
+=======
+.ml-4{
+  margin-left: 1rem;
+}
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .mt-\[16px\]{
   margin-top: 16px;
 }
@@ -8353,14 +8365,18 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
+<<<<<<< HEAD
 .ml-4{
   margin-left: 1rem;
 }
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .mt-7{
   margin-top: 1.75rem;
 }
 .-ml-px{
   margin-left: -1px;
+<<<<<<< HEAD
 }
 .mb-10{
   margin-bottom: 2.5rem;
@@ -8376,6 +8392,8 @@ textarea.form-control.is-invalid{
 }
 .mt-\[-200px\]{
   margin-top: -200px;
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 }
 .block{
   display: block;
@@ -8599,8 +8617,13 @@ textarea.form-control.is-invalid{
 .w-72{
   width: 18rem;
 }
+<<<<<<< HEAD
 .w-\[33\%\]{
   width: 33%;
+=======
+.w-\[20\%\]{
+  width: 20%;
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 }
 .w-16{
   width: 4rem;
@@ -8626,9 +8649,12 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
+<<<<<<< HEAD
 .w-\[20\%\]{
   width: 20%;
 }
+=======
+>>>>>>> cd884b01ae19d506dc5cbf0a2756175668634557
 .min-w-max{
   min-width: -webkit-max-content;
   min-width: -moz-max-content;

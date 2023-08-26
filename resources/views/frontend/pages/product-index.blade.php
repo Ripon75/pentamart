@@ -28,7 +28,7 @@
                                             <input type="checkbox" name="brands[]" value="{{ $brand['id'] }}"
                                                 class="focus:ring-0 input-checkbox"
                                                 {{ in_array($brand['id'], $filterBrandIds) ? 'checked' : '' }} />
-                                            <span class="ml-3 text-sm">Digital Genix</span>
+                                            <span class="ml-3 text-sm">{{ $brand->name }}</span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -46,7 +46,7 @@
                                             <input type="checkbox" name="categories[]" value="{{ $category['id'] }}"
                                                 class="focus:ring-0 input-checkbox"
                                                 {{ in_array($category['id'], $filterCategoryIds) ? 'checked' : '' }} />
-                                            <span class="ml-3 text-sm">Wrist Watch</span>
+                                            <span class="ml-3 text-sm">{{ $category->name }}</span>
                                         </label>
                                     @endforeach
                                 </div>
@@ -70,10 +70,7 @@
                             </div>
                         </div>
                     </div>
-                    {{-- ========Scroll============ --}}
-                    {{-- <div class="flex items-center justify-center mt-8">
-                        <i id="product-loading-icon" class="text-4xl fa-solid fa-spinner fa-spin mr-2"></i>
-                    </div> --}}
+
                     {{-- ========Pagination============ --}}
                     @if ($products->hasPages())
                         <div class="mt-8 bg-gray-200 p-2 pl-4 rounded-md">
@@ -99,22 +96,12 @@
                 }
             };
 
-            var searchKey = '{{ request()->get('search_key') ?? '' }}';
             var route = "{{ route('products.index') }}?page={{ $products->currentPage() }}";
 
-            if (searchKey) {
-                route = `${route}&search_key=${searchKey}`;
-            }
-
-            const filterInputOrder = $("#input-short-order");
             const filterInputBrands = $('input[name="brands[]"]');
             const filterInputCategories = $('input[name="categories[]"]');
 
             $(function() {
-                filterInputOrder.on("change", (event) => {
-                    filterProducts(route);
-                });
-
                 filterInputCategories.on("click", (event) => {
                     filterProducts(route);
                 });
@@ -127,11 +114,7 @@
             function filterProducts(route) {
                 var selectedFilterCategoryIds = getFilterCategoryIds();
                 var selectedFilterBrandIds = getFilterBrandIds();
-                var order = filterInputOrder.val();
 
-                if (order) {
-                    route = `${route}&order=${order}`;
-                }
                 if (selectedFilterCategoryIds) {
                     route = `${route}&filter_category_ids=${selectedFilterCategoryIds}`;
                 }
@@ -159,46 +142,5 @@
                 return selectedBrandIds;
             }
         </script>
-
-        {{-- On scroll product load --}}
-        {{-- <script>
-        var onScrollProductRoute = "{{ route('products.index', ['true']) }}";
-        var order = "{{ request()->query('order') }}";
-        var currentPage = {{ $products->currentPage() }};
-        var lastPage = {{ $products->lastPage() }};
-        var productLoddingIcon = $('#product-loading-icon').hide();
-        var canCall = true;
-        currentPage++;
-
-        $(window).on('scroll', function() {
-            if (currentPage <= lastPage && canCall) {
-                var scrollLeft = $(document).height() - $(window).scrollTop();
-                if (scrollLeft <= 1200) {
-                    productLoddingIcon.show();
-                    getProductThumbsOnScroll();
-                }
-            }
-        });
-
-        function getProductThumbsOnScroll() {
-            canCall = false;
-            axios.get(onScrollProductRoute, {
-                params: {
-                    page: currentPage,
-                    order: order
-                }
-            })
-            .then((response) => {
-                var products = response.data;
-                $('.product-grid').append(products);
-                currentPage++;
-                canCall = true;
-                productLoddingIcon.hide();
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-        }
-    </script> --}}
     @endpush
 @endonce

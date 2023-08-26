@@ -175,7 +175,9 @@
                             </p>
 
                             <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                {{ $product->category->name ?? '' }}
+                                <a href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                    {{ $product->category->name ?? '' }}
+                                </a>
                             </p>
 
                             <div class="flex mt-1">
@@ -359,7 +361,7 @@
             </div>
             <div class="flex justify-center items-center flex-wrap sm:flex-wrap md:flex-wrap lg:flex-wrap 2xl:flex-wrap">
 
-                <div style="background-color: #00798C"
+                {{-- <div style="background-color: #00798C"
                     class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
                     <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
                         <img class="w-full h-40 object-cover"
@@ -378,30 +380,35 @@
                                 Now</button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <div style="background-color: #00798C"
-                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
-                    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                        <img class="w-full h-40 object-cover"
-                            src="https://images.unsplash.com/photo-1517329782449-810562a4ec2f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8aW1hZ2V8ZW58MHx8MHx8fDA%3D&auto=format&fit=crop&w=500&q=60"
-                            alt="Offer Image">
-                        <div class="p-4">
-                            <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">Samsaung Galaxy S35</h2>
-                            <p class="text-gray-600 mt-2">
-                                <span class="text-white-500 bg-clip-text"
-                                    style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
-                                    off
-                                </span>
-                            </p>
-                            <button
-                                class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
-                                Now</button>
+                @foreach ($offers as $offer)
+                    <div style="background-color: #00798C"
+                        class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+                        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+                            <a href="">
+                                <img class="w-full h-40 object-cover"
+                                    src="{{ $offer->img_src }}"
+                                    alt="Offer Image">
+                            </a>
+                            <div class="p-4">
+                                <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">{{ $offer->title }}</h2>
+                                <p class="text-gray-600 mt-2">
+                                    <span class="text-white-500 bg-clip-text"
+                                        style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get {{ $offer->offer_percent }}%
+                                        off
+                                    </span>
+                                </p>
+                                <a href="{{ route('offers.products', $offer->offer_percent) }}"
+                                    class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">
+                                    Shop Now
+                                </a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
-                <div style="background-color: #00798C"
+                {{-- <div style="background-color: #00798C"
                     class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
                     <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
                         <img class="w-full h-40 object-cover"
@@ -420,9 +427,9 @@
                                 Now</button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
-                <div style="background-color: #00798C"
+                {{-- <div style="background-color: #00798C"
                     class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
                     <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
                         <img class="w-full h-40 object-cover"
@@ -441,7 +448,7 @@
                                 Now</button>
                         </div>
                     </div>
-                </div>
+                </div> --}}
 
             </div>
         </div>

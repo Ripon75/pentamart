@@ -30,10 +30,9 @@ Route:: get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('
 Route:: get('/return-policy',  [PageController::class, 'returnPolicy'])->name('return.policy');
 Route:: get('/contact',        [PageController::class, 'contact'])->name('contact');
 Route:: get('/products',       [PageController::class, 'index'])->name('products.index');
-Route:: get('/offers',         [PageController::class, 'offerProduct'])->name('offers.products');
-Route:: get('/terms-and-conditions',     [PageController::class, 'termsAndConditions'])->name('terms.and.condition');
-Route:: get('/products/{id}/{slug?}',    [PageController::class, 'productShow'])->name('products.show');
-Route:: get('/offers/categories/{slug}', [PageController::class, 'offerCategoryProduct'])->name('offers.categories.products');
+Route:: get('/offers/products/{percent?}', [PageController::class, 'offerProduct'])->name('offers.products');
+Route:: get('/terms-and-conditions',  [PageController::class, 'termsAndConditions'])->name('terms.and.condition');
+Route:: get('/products/{id}/{slug?}', [PageController::class, 'productShow'])->name('products.show');
 
 // Registration route
 Route::get('/registration',  [AuthController::class, 'registrationCreate'])->name('registration');

@@ -17,6 +17,13 @@ return [
             'sub'         => []
         ],
         [
+            'label'       => 'Offers',
+            'icon'        => 'fa-solid fa-panorama',
+            'route'       => 'admin.offers.index',
+            'permission'  => 'offers-read',
+            'sub'         => []
+        ],
+        [
             'label'      => 'Sections',
             'icon'       => 'fa-solid fa-people-roof',
             'route'      => 'admin.sections.index',
