@@ -433,7 +433,7 @@
 
                     @foreach ($relatedProducts as $rProduct)
                         <div style="margin: 5px 5px 5px;">
-                            <a href="">
+                            <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
                                 <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
                             </a>
 
@@ -454,7 +454,10 @@
                                 </p>
 
                                 <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                    {{ $rProduct->category->name ?? '' }}
+                                    <a
+                                        href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                        {{ $rProduct->category->name ?? '' }}
+                                    </a>
                                 </p>
 
                                 <div class="flex mt-1">
@@ -502,7 +505,7 @@
                 <div class="flex justify-around flex-wrap">
                     @foreach ($relatedProducts as $rProduct)
                         <div class="w-[150px] m-2 shadow-md relative md:w-[250px] lg:w-[250px] 2xl:w-[250px]">
-                            <a href="">
+                            <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
                                 <img class="w-full h-[150px] md:h-[205px] lg:h-[205px]" src="{{ $rProduct->img_src }}"
                                     alt="no images">
                             </a>
@@ -512,7 +515,7 @@
                                     <span style="font-size: 10px;">In Stock</span>
                                 </div>
                                 <p style="color:#00798C;"
-                                    class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    class="text-[12px] font-semibold mt-1 text-left capitalize md:text-[12px] lg:text-[12px] 2xl:text-lg">
                                     @if ($rProduct->name)
                                         <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
                                             {{ $rProduct->name }}
@@ -522,8 +525,11 @@
                                     @endif
                                 </p>
 
-                                <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                    {{ $rProduct->category->name ?? '' }}
+                                <p class="text-left text-[11px] capitalize md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    <a
+                                        href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                        {{ $rProduct->category->name ?? '' }}
+                                    </a>
                                 </p>
 
                                 <div class="flex mt-1">
