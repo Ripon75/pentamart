@@ -125,75 +125,80 @@
     </section>
 
     {{-- New Arrivals --}}
-    <section class="page-section">
-        <div style="position: relative;" class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-5">{{ $newArrival->title }}</h1>
-            </div>
+    @if (count($newArrival->products) > 0)
+        <section class="page-section">
+            <div style="position: relative;" class="container">
+                <div class="text-center">
+                    <h1 class="section-title mb-5">{{ $newArrival->title }}</h1>
+                </div>
 
-            <div class="slider-container">
+                <div class="slider-container">
 
-                @foreach ($newArrival->products as $product)
-                    <div style="margin: 5px 5px 5px;">
-                        <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
-                            <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
-                        </a>
-                        <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
-                            <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
-                                <span style="font-size: 11px;">In Stock</span>
+                    @foreach ($newArrival->products as $product)
+                        <div style="margin: 5px 5px 5px;">
+                            <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
+                            </a>
+                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                                <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                    <span style="font-size: 11px;">In Stock</span>
+                                </div>
+
+                                <p style="color:#00798C;"
+                                    class="text-[14px] font-semibold mt-1 text-left md:text-[14px] lg:text-[14px] 2xl:text-2xl">
+                                    <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
+                                        {{ $product->name }}
+                                    </a>
+                                </p>
+
+                                <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    <a
+                                        href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                        {{ $product->category->name ?? '' }}
+                                    </a>
+
+                                </p>
+
+                                <div class="flex mt-1 justify-between">
+                                    @if ($product->offer_price > 0)
+                                        <p
+                                            class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : {{ $product->offer_price }}
+                                        </p>
+                                        <p
+                                            class="line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $product->mrp }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $product->mrp }}</span>
+                                        </p>
+                                    @endif
+                                </div>
                             </div>
-
-                            <p style="color:#00798C;"
-                                class="text-[14px] font-semibold mt-1 text-left md:text-[14px] lg:text-[14px] 2xl:text-2xl">
-                                <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
-                                    {{ $product->name }}
-                                </a>
-                            </p>
-
-                            <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
-                                <a
-                                    href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
-                                    {{ $product->category->name ?? '' }}
-                                </a>
-
-                            </p>
-
-                            <div class="flex mt-1 justify-between">
-                                @if ($product->offer_price > 0)
-                                    <p
-                                        class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : {{ $product->offer_price }}
-                                    </p>
-                                    <p class="line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : <span>{{ $product->mrp }}</span>
-                                    </p>
-                                @else
-                                    <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
-                                        TK : <span>{{ $product->mrp }}</span>
-                                    </p>
-                                @endif
-                            </div>
+                            @if ($product->offer_price > 0)
+                                <p class="ofText">
+                                    {{ $product->offer_percent }}
+                                </p>
+                            @endif
                         </div>
-                        @if ($product->offer_price > 0)
-                            <p class="ofText">
-                                {{ $product->offer_percent }}
-                            </p>
-                        @endif
-                    </div>
-                @endforeach
-                <!-- Add more slides as needed -->
-            </div>
+                    @endforeach
+                    <!-- Add more slides as needed -->
+                </div>
 
-            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button1">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
-            <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
-                <i class="fa-solid fa-arrow-right-long"></i>
-            </button>
-        </div>
-    </section>
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button1">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            </div>
+        </section>
+    @endif
 
     {{-- ==============Service Section=================== --}}
     {{-- <section class="service-section pt-4 pb-4 hidden sm:hidden md:hidden lg:block xl:block 2xl:block">
@@ -233,50 +238,13 @@
                         <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
                             <img class="h-[150px] w-[100%] rounded" src="{{ $tCategory->img_src }}">
                             <div style="background-color: #fff;" class="">
-                                <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
+                                <p style="color:#102967;" class="text-center p-3 font-semibold">{{ $tCategory->name }}
+                                </p>
                             </div>
                         </a>
                     </div>
                 @endforeach
 
-                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
-                    <a href="" class="img-wrapper">
-                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/wrist-watch.png') }}"
-                            alt="no images">
-                        <div style="background-color: #fff;" class="">
-                            <p style="color:#102967;" class="text-center p-3 font-semibold">Wrist Watch</p>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
-                    <a href="" class="img-wrapper">
-                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/book.jpg') }}" alt="no images">
-                        <div style="background-color: #fff;" class="">
-                            <p style="color:#102967;" class="text-center p-3 font-semibold">Medical books</p>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
-                    <a href="" class="img-wrapper">
-                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/facebook.png') }}"
-                            alt="no images">
-                        <div style="background-color: #fff;" class="">
-                            <p style="color:#102967;" class="text-center p-3 font-semibold">Facebook Boosting</p>
-                        </div>
-                    </a>
-                </div>
-
-                <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
-                    <a href="" class="img-wrapper">
-                        <img class="h-[150px] w-[100%] rounded" src="{{ asset('images/equipment.jpg') }}"
-                            alt="no images">
-                        <div style="background-color: #fff;" class="">
-                            <p style="color:#102967;" class="text-center p-3 font-semibold">Medical Equipment</p>
-                        </div>
-                    </a>
-                </div>
             </div>
         </div>
     </section>

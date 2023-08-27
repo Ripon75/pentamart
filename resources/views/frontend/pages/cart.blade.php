@@ -217,13 +217,15 @@
                         <div class="card border-2">
                             <div class="px-4 py-2">
                                 <div class="p-2 rounded">
+
                                     <div class="flex justify-between font-medium">
                                         <span class="text-base sm:text-base md:text-lg">Items</span>
                                         <span class="text-base sm:text-base md:text-lg font-medium">
                                             <span>
-                                                <span id="total-sell-price-label" class="ml-1">
+                                                {{ count($products) }}
+                                                {{-- <span id="total-sell-price-label" class="ml-1">
                                                     3
-                                                </span>
+                                                </span> --}}
                                             </span>
                                         </span>
                                     </div>
@@ -246,7 +248,17 @@
                                         <span class="text-base sm:text-base md:text-lg font-medium">
                                             <span>
                                                 <span id="total-sell-price-label" class="ml-1">
-                                                    <span class="text-2xl">৳</span>1269
+                                                    @php
+                                                        $totalSellPrice = 0;
+                                                    @endphp
+
+                                                    @foreach ($products as $product)
+                                                        @php
+                                                            // Convert the string to a float and add it to the total
+                                                            $totalSellPrice += (float) $product->pivot->item_sell_price;
+                                                        @endphp
+                                                    @endforeach
+                                                    <span class="text-2xl">৳</span>{{ number_format($totalSellPrice, 2) }}
                                                 </span>
                                             </span>
                                         </span>
@@ -258,8 +270,8 @@
                                         <span class="text-base sm:text-base md:text-lg">Sub Total</span>
                                         <span class="text-base sm:text-base md:text-lg font-medium">
                                             <span>
-                                                <span id="total-sell-price-label" class="ml-1">
-                                                    <span class="text-2xl">৳</span>1269
+                                                <span id="sub-total-sell-price-label" class="ml-1">
+                                                    <span class="text-2xl">৳</span>{{ number_format($totalSellPrice, 2) }}
                                                 </span>
                                             </span>
                                         </span>
@@ -311,6 +323,7 @@
         var btnOrderSubmit = $('#btn-order-submit');
         var btnContinueShopping = $('#btn-shopping-continue');
         var totalSellPriceLabel = $('#total-sell-price-label');
+        var subTotalSellPriceLabel = $('#sub-total-sell-price-label');
         // Trash and loading icon
         iconTrash.show();
         iconLoadding.hide();
@@ -402,6 +415,7 @@
 
             totalSellPrice = totalSellPrice.toFixed(2);
             totalSellPriceLabel.text(totalSellPrice);
+            subTotalSellPriceLabel.text(totalSellPrice);
         }
     </script>
 

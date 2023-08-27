@@ -8371,6 +8371,9 @@ textarea.form-control.is-invalid{
 .-ml-px{
   margin-left: -1px;
 }
+.mt-\[-100px\]{
+  margin-top: -100px;
+}
 .block{
   display: block;
 }
@@ -21198,6 +21201,9 @@ readers do not read off random characters that represent icons */
   .md\:mt-\[-85px\]{
     margin-top: -85px;
   }
+  .md\:mt-\[-65px\]{
+    margin-top: -65px;
+  }
   .md\:block{
     display: block;
   }
@@ -21442,11 +21448,11 @@ readers do not read off random characters that represent icons */
   .lg\:mt-14{
     margin-top: 3.5rem;
   }
-  .lg\:mt-0{
-    margin-top: 0px;
-  }
   .lg\:mt-\[-85px\]{
     margin-top: -85px;
+  }
+  .lg\:mt-\[-65px\]{
+    margin-top: -65px;
   }
   .lg\:block{
     display: block;
@@ -21777,6 +21783,9 @@ readers do not read off random characters that represent icons */
   }
   .\32xl\:mt-14{
     margin-top: 3.5rem;
+  }
+  .\32xl\:mt-\[-65px\]{
+    margin-top: -65px;
   }
   .\32xl\:block{
     display: block;
