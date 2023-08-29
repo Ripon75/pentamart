@@ -20476,9 +20476,17 @@ readers do not read off random characters that represent icons */
     --tw-border-opacity: 1;
     border-color: rgb(75 85 99 / var(--tw-border-opacity));
   }
+  .dark\:border-red-600{
+    --tw-border-opacity: 1;
+    border-color: rgb(220 38 38 / var(--tw-border-opacity));
+  }
   .dark\:bg-gray-700{
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  }
+  .dark\:bg-red-700{
+    --tw-bg-opacity: 1;
+    background-color: rgb(185 28 28 / var(--tw-bg-opacity));
   }
   .dark\:text-gray-300{
     --tw-text-opacity: 1;
@@ -20486,6 +20494,9 @@ readers do not read off random characters that represent icons */
   }
   .dark\:ring-offset-gray-800{
     --tw-ring-offset-color: #1f2937;
+  }
+  .dark\:ring-offset-red-800{
+    --tw-ring-offset-color: #991b1b;
   }
   .dark\:focus\:ring-blue-600:focus{
     --tw-ring-opacity: 1;

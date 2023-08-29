@@ -15,17 +15,15 @@
                                             <div>
                                                 <input id="{{ $uAddress->id }}"
                                                     class="input-shipping-address w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                                                    type="radio"
-                                                    value="{{ $uAddress->id }}"
-                                                    name="shipping_address_id"
-                                                    data-shipping-charge="{{ $uAddress->district->delivery_charge ?? 0 }}"
-                                                    >
+                                                    type="radio" value="{{ $uAddress->id }}" name="shipping_address_id"
+                                                    data-shipping-charge="{{ $uAddress->district->delivery_charge ?? 0 }}">
                                                 <label for="default-radio-1"
                                                     class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                                                     {{ $uAddress->title }}
                                                 </label>
                                             </div>
-                                            <a href="{{ route('my.address.edit', $uAddress->id) }}" class="btn btn-primary btn-xs items-end">Edit</a>
+                                            <a href="{{ route('my.address.edit', $uAddress->id) }}"
+                                                class="btn btn-primary btn-xs items-end">Edit</a>
                                         </div>
                                         <div>{{ $uAddress->address }}</div>
                                         <div>{{ $uAddress->district->name ?? '' }}</div>
@@ -46,8 +44,10 @@
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label for="" class="form-label">Address Title<span class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title" class="form-select form-input w-full">
+                                        <label for="" class="form-label">Address Title<span
+                                                class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <select id="input-address-title" name="title"
+                                            class="form-select form-input w-full">
                                             <option value="">Select</option>
                                             <option value="Home">Home</option>
                                             <option value="Office">Office</option>
@@ -71,7 +71,8 @@
                                     <div style="width:95%" class="form-item">
                                         <label for="" class="form-label">Districs<span
                                                 class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-district" name="district_id" class="form-select form-input w-full">
+                                        <select id="input-address-district" name="district_id"
+                                            class="form-select form-input w-full">
                                             @foreach ($districts as $district)
                                                 <option value="{{ $district->id }}"
                                                     {{ $district->id == 1 ? 'selected' : '' }}
@@ -87,7 +88,7 @@
 
                                     <div style="width:95%" class="form-item">
                                         <label class="form-label">Thana<span
-                                            class="ml-1 text-red-500 font-medium">*</span></label>
+                                                class="ml-1 text-red-500 font-medium">*</span></label>
                                         <input class="form-input" type="text" placeholder="Enter your thana"
                                             name="thana" />
                                         @error('thana')
@@ -96,7 +97,8 @@
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Phone Number<span class="ml-1 text-red-500 font-medium">*</span></label>
+                                        <label class="form-label">Phone Number<span
+                                                class="ml-1 text-red-500 font-medium">*</span></label>
                                         <input class="form-input" type="text" placeholder="Enter Your Phone Number"
                                             name="phone_number" />
                                         @error('phone_number')
@@ -116,8 +118,9 @@
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label class="form-label">Address<span class="ml-1 text-red-500 font-medium">*</span>
-                                            </label>
+                                        <label class="form-label">Address<span
+                                                class="ml-1 text-red-500 font-medium">*</span>
+                                        </label>
                                         <textarea id="input-address" name="address" class="form-input" rows="2" cols="50"
                                             placeholder="Enter your address here..."></textarea>
                                         @error('address')
@@ -144,7 +147,7 @@
 
                             <div class="mb-4">
                                 @foreach ($products as $product)
-                                    <div class="flex justify-between border-b-2">
+                                    <div class="flex justify-between border-b-2 capitalize">
                                         <span>{{ $product->name }} x {{ $product->pivot->quantity ?? '' }}</span>
                                         <span>{{ $currency }}
                                             @php
@@ -158,7 +161,7 @@
                                 @endforeach
                             </div>
 
-                            <div class="flex justify-between">
+                            <div class="flex justify-between capitalize">
                                 <span>Total Price</span>
                                 <span>{{ $currency }}
                                     <span class="ml-1">
@@ -168,7 +171,7 @@
                             </div>
 
                             {{-- Show total discount --}}
-                            <div class="flex justify-between">
+                            <div class="flex justify-between capitalize">
                                 <span>Discount (-)</span>
                                 <span>{{ $currency }}
                                     <input type="hidden" value="">
@@ -179,7 +182,7 @@
                             </div>
 
                             {{-- Show sell price --}}
-                            <div class="flex justify-between">
+                            <div class="flex justify-between capitalize">
                                 <span>Total Price(-Discount)</span>
                                 <span>{{ $currency }}
                                     <span class="ml-1">
@@ -190,7 +193,7 @@
 
                             {{-- Show coupon discount --}}
                             <div id="coupon-discount-div" class="hidden">
-                                <div class="flex justify-between">
+                                <div class="flex justify-between capitalize">
                                     <span>Coupon Discount (-)</span>
                                     <span>{{ $currency }}
                                         <input type="hidden" value="">
@@ -200,7 +203,7 @@
                             </div>
 
                             {{-- Show delivery charge --}}
-                            <div class="flex justify-between">
+                            <div class="flex justify-between capitalize">
                                 <span>Delivery Charge (+)</span>
                                 <span>{{ $currency }}
                                     <span id="delivery-charge-label" class="ml-1">
@@ -211,7 +214,7 @@
                         </div>
                         {{-- Show payable price --}}
                         <div class="bg-primary p-2 rounded mx-2 mb-2">
-                            <div class="flex justify-between text-white font-medium">
+                            <div class="flex justify-between text-white font-medium capitalize">
                                 <span class="text-base sm:text-base md:text-lg">Total</span>
                                 <span class="text-base sm:text-base md:text-lg font-medium">
                                     <span>{{ $currency }}
@@ -240,7 +243,8 @@
                                         <div class="flex space-x-2">
                                             <div class="flex-1">
                                                 {{-- Hidden input for coupon code --}}
-                                                <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
+                                                <input id="input-coupon-code-id" type="hidden" value=""
+                                                    name="coupon_id">
 
                                                 <input id="input-coupon-code"
                                                     class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0"
@@ -322,33 +326,33 @@
 
 @push('scripts')
     <script>
-        var iconLoadding                 = $('.loadding-icon');
-        var btnOrderSubmit               = $('#btn-order-submit');
-        var formCheckOut                 = $('#form-checkout');
-        var btnCreateNewAddress          = $('#btn-create-new-address');
-        var cartTotalSellPrice           = "{{ $cart->getTotalSellPrice() }}";
-        var deliveryCharge               = "{{ $defaultDeliveryCharge }}";
-        var deliveryChargeLabel          = $('#delivery-charge-label');
+        var iconLoadding = $('.loadding-icon');
+        var btnOrderSubmit = $('#btn-order-submit');
+        var formCheckOut = $('#form-checkout');
+        var btnCreateNewAddress = $('#btn-create-new-address');
+        var cartTotalSellPrice = "{{ $cart->getTotalSellPrice() }}";
+        var deliveryCharge = "{{ $defaultDeliveryCharge }}";
+        var deliveryChargeLabel = $('#delivery-charge-label');
         var totalWithDeliveryChargeLabel = $('#total-with-delivery-charge-label');
 
         // For address create
-        var addressCreateForm      = $('#address-create-form');
-        var btnAddressCreate       = $('#btn-address-create');
-        var inputShippingAddress   = $('.input-shipping-address');
+        var addressCreateForm = $('#address-create-form');
+        var btnAddressCreate = $('#btn-address-create');
+        var inputShippingAddress = $('.input-shipping-address');
         var inputShippingAddressId = $('#input-shipping-address-id');
-        var inputAddressDistrict   = $('#input-address-district');
+        var inputAddressDistrict = $('#input-address-district');
 
         // Coupon code
-        var couponDiscount      = 0;
-        var inputCouponCode     = $('#input-coupon-code');
-        var btnApplyCoupon      = $('#btn-check-coupon');
-        var applyCouponBox      = $('#apply-coupon-box');
-        var activeCouponBox     = $('#active-coupon-box');
-        var labelCouponCode     = $('.label-coupon-code');
+        var couponDiscount = 0;
+        var inputCouponCode = $('#input-coupon-code');
+        var btnApplyCoupon = $('#btn-check-coupon');
+        var applyCouponBox = $('#apply-coupon-box');
+        var activeCouponBox = $('#active-coupon-box');
+        var labelCouponCode = $('.label-coupon-code');
         var btnRemoveCouponCode = $('#btn-remove-coupon-code');
-        var inputCouponCodeId   = $('#input-coupon-code-id');
+        var inputCouponCodeId = $('#input-coupon-code-id');
         var couponDiscountLabel = $('#coupon-discount-label');
-        var couponDiscountDiv   = $('#coupon-discount-div');
+        var couponDiscountDiv = $('#coupon-discount-div');
 
         iconLoadding.hide();
 
@@ -364,10 +368,10 @@
             // create user address
             btnAddressCreate.click(function() {
                 console.log('click');
-                var inputAddressTitle    = $('#input-address-title');
-                var inputAddress         = $("#input-address");
-                var inputThana           = $("input[name=thana]");
-                var inputPhoneNumber     = $("input[name=phone_number]");
+                var inputAddressTitle = $('#input-address-title');
+                var inputAddress = $("#input-address");
+                var inputThana = $("input[name=thana]");
+                var inputPhoneNumber = $("input[name=phone_number]");
 
                 if (!inputAddressTitle.val()) {
                     inputAddressTitle.focus();
