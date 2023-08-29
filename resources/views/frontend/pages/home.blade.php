@@ -234,7 +234,7 @@
             <div
                 class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-1 sm:gap-1 md:gap-2 lg:gap-4 xl:gap-4 2xl:gap-4 mt-10">
                 @foreach ($topCategories as $tCategory)
-                    <div class="w-[175px] bg-white shadow-md md:w-[230px] lg:w-[230px]">
+                    <div class="w-[155px] m-2 bg-white shadow-md md:w-[230px] lg:w-[230px] 2xl:w-[230px]">
                         <a href="{{ route('category.page', [$tCategory->id, $tCategory->slug]) }}" class="img-wrapper">
                             <img class="h-[150px] w-[100%] rounded" src="{{ $tCategory->img_src }}">
                             <div style="background-color: #fff;" class="">
