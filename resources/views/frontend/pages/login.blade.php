@@ -21,8 +21,10 @@
         background-color: #e9d58d;
         color: darkblue;
         font-weight: 600;
-        padding: 2px;
+        padding: 5px;
         font-size: 15px;
+        border-radius: 4px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     }
 
     .borderLeft {
