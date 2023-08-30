@@ -184,7 +184,6 @@ class AuthController extends Controller
                 $user->phone_number    = $phoneNumber;
                 $user->otp_code        = $otpCode;
                 $user->terms_conditons = 1;
-                $user->ac_status       = 1;
                 $res = $user->save();
 
                 if ($res) {
