@@ -1,4 +1,41 @@
 @extends('frontend.layouts.default')
+
+<style>
+    .slider-container {
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        padding: 10px 12px 10px;
+        border-radius: 4px;
+        height: 285px;
+    }
+
+    .ofText {
+        position: absolute;
+        top: 5%;
+        background-color: #EF4444;
+        right: 5%;
+        padding: 2px;
+        width: 50px;
+        border-radius: 4px;
+        color: #fff;
+        font-size: 13px;
+    }
+
+    .slick-slide {
+        position: relative;
+    }
+
+    .read-more-link {
+        color: darkblue;
+        font-weight: bold;
+    }
+
+    .read-less-link {
+        color: darkblue;
+        font-weight: bold;
+    }
+</style>
+
 @section('title', $product->name)
 @section('content')
 
@@ -198,7 +235,9 @@
 
                     </div>
                 </div>
-                <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
+
+
+                {{-- <div class="border-l col-span-1 sm:col-span-1 md:col-span-2 lg:col-span-1">
                     <h1 class="text-primary-dark text-lg font-medium p-4">Related Product</h1>
                     <hr>
                     <div class="overflow-auto h-[384px] p-2">
@@ -210,7 +249,9 @@
                             @endforeach
                         </div>
                     </div>
-                </div>
+                </div> --}}
+
+
             </div>
 
             <div class="grid grid-cols-6 gap-4 mt-10">
@@ -224,9 +265,14 @@
                                 </div>
                             @endif
                             <div class="bg-white mb-4 pt-2 product-description">
-                                <p class="text-sm text-justify">
-                                    {!! html_entity_decode($product->description) !!}
-                                </p>
+
+                                {{-- if words more than 30,then read more functionalities --}}
+                                <div class="description-words-count">
+                                    <p class="text-sm text-justify">
+                                        {!! html_entity_decode($product->description) !!}
+                                    </p>
+                                </div>
+
                                 {{-- Rating form --}}
                                 <div class="mt-5">
                                     <form action="{{ route('ratings.store') }}" method="POST"
@@ -274,7 +320,7 @@
                                             file:bg-violet-50 file:text-primary
                                             hover:file:bg-violet-100"
                                                 accept="image/png, image/jpg, image/jpeg" />
-                                            <div class="mt-3 w-[20%]">
+                                            <div class="mt-3 w-[33%] md:w-[20%] lg:w-[20%]">
                                                 <button id="btn-rating-submit" type="button"
                                                     class="btn btn-block btn-primary">
                                                     Submit
@@ -374,11 +420,242 @@
             </div>
         </div>
     </section>
+
+    {{-- Related Products Section --}}
+    <section class="page-section">
+        <div class="container relative">
+            <div class="text-center">
+                <h1 class="section-title mb-5">Related Product</h1>
+            </div>
+
+            @if (count($relatedProducts) > 5)
+                <div class="slider-container">
+
+                    @foreach ($relatedProducts as $rProduct)
+                        <div style="margin: 5px 5px 5px;">
+                            <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
+                            </a>
+
+                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                                <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                    <span style="font-size: 10px;">In Stock</span>
+                                </div>
+                                <p style="color:#00798C;"
+                                    class="text-[12px] font-semibold mt-1 text-left md:text-[12px] lg:text-[12px] 2xl:text-lg">
+
+                                    @if ($rProduct->name)
+                                        <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                            {{ $rProduct->name }}
+                                        </a>
+                                    @else
+                                        <div class="h-5"></div>
+                                    @endif
+                                </p>
+
+                                <p class="text-left text-[11px] md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    <a
+                                        href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                        {{ $rProduct->category->name ?? '' }}
+                                    </a>
+                                </p>
+
+                                <div class="flex mt-1">
+                                    @if ($rProduct->offer_price > 0)
+                                        <p
+                                            class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : {{ $rProduct->offer_price }}
+                                        </p>
+                                        <p
+                                            class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @endif
+
+                                </div>
+
+                                @if ($rProduct->offer_price > 0)
+                                    <p class="ofText">
+                                        {{ $rProduct->offer_percent }}
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+
+                    <!-- Add more slides as needed -->
+
+                </div>
+
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button2">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
+                <button
+                    style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
+                    class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button2">
+                    <i class="fa-solid fa-arrow-right-long"></i>
+                </button>
+            @else
+                <div class="flex justify-around flex-wrap">
+                    @foreach ($relatedProducts as $rProduct)
+                        <div class="w-[150px] m-2 shadow-md relative md:w-[250px] lg:w-[250px] 2xl:w-[250px]">
+                            <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                <img class="w-full h-[150px] md:h-[205px] lg:h-[205px]" src="{{ $rProduct->img_src }}"
+                                    alt="no images">
+                            </a>
+
+                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                                <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
+                                    <span style="font-size: 10px;">In Stock</span>
+                                </div>
+                                <p style="color:#00798C;"
+                                    class="text-[12px] font-semibold mt-1 text-left capitalize md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    @if ($rProduct->name)
+                                        <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
+                                            {{ $rProduct->name }}
+                                        </a>
+                                    @else
+                                        <div class="h-5">Unnamed</div>
+                                    @endif
+                                </p>
+
+                                <p class="text-left text-[11px] capitalize md:text-[12px] lg:text-[12px] 2xl:text-lg">
+                                    <a
+                                        href="{{ route('category.page', [$product->category_id, $product->category->slug ?? '']) }}">
+                                        {{ $rProduct->category->name ?? '' }}
+                                    </a>
+                                </p>
+
+                                <div class="flex mt-1">
+                                    @if ($rProduct->offer_price > 0)
+                                        <p
+                                            class="text-orange-500 text-[12px] text-left sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : {{ $rProduct->offer_price }}
+                                        </p>
+                                        <p
+                                            class="ml-4 line-through text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @else
+                                        <p class="text-[12px] sm:text-[10px] md:text-sm lg:text-sm 2xl:text-lg">
+                                            TK : <span>{{ $rProduct->mrp }}</span>
+                                        </p>
+                                    @endif
+
+                                </div>
+
+                                @if ($rProduct->offer_price > 0)
+                                    <p class="ofText">
+                                        10.00
+                                    </p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+
+
+
+        </div>
+    </section>
 @endsection
 
 @push('scripts')
     {{-- jquery image zoom plugin --}}
     <script type="text/javascript" src="https://cdn.rawgit.com/igorlino/elevatezoom-plus/1.1.6/src/jquery.ez-plus.js">
+    </script>
+
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css" />
+
+    <!-- Include Slick Slider Theme CSS (optional) -->
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css" />
+
+    <!-- Include Slick Slider JS -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('.slider-container').slick({
+                slidesToShow: 5, // Display three slides at a time
+                slidesToScroll: 1, // Change one slide at a time
+                prevArrow: $('.prev-button2'), // Use prev button for navigation
+                nextArrow: $('.next-button2'), // Use next button for navigation
+                responsive: [{
+                        breakpoint: 320, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 2, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 480, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 2, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 768, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                    {
+                        breakpoint: 1024, // Adjust the breakpoint as needed
+                        settings: {
+                            slidesToShow: 3, // Display four slides at a time for larger screens
+                            slidesToScroll: 1,
+                        }
+                    },
+                ]
+            });
+        });
+    </script>
+
+    {{-- Description words more 30,then the function will be call --}}
+    <script>
+        $(document).ready(function() {
+            var descriptionWordCount = $('.description-words-count');
+            var description = descriptionWordCount.find('p');
+            var fullDescription = description.html().trim();
+            var maxWords = 30;
+
+            function updateDescription() {
+                var words = fullDescription.split(/\s+/);
+
+                if (words.length > maxWords) {
+                    var shortDescription = words.slice(0, maxWords).join(' ');
+                    var remainingWords = words.slice(maxWords).join(' ');
+
+                    var content = shortDescription + ' ... ';
+                    var readMoreLink = $('<a href="#" class="read-more-link">Read more</a>');
+
+                    description.html(content).append(readMoreLink);
+
+                    readMoreLink.on('click', function(e) {
+                        e.preventDefault();
+                        description.html(fullDescription +
+                            ' <a href="#" class="read-less-link">...Read less</a>');
+                    });
+                }
+            }
+
+            updateDescription();
+
+            descriptionWordCount.on('click', '.read-less-link', function(e) {
+                e.preventDefault();
+                updateDescription();
+            });
+        });
     </script>
 
     <script>

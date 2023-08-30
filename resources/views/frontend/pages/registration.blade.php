@@ -47,6 +47,15 @@
                             </div>
 
                             <div class="w-[80%] block mx-auto form-item">
+                                {{-- <label class="form-label">Email (Optional)</label> --}}
+                                <input type="text" value="{{ old('email') }}" name="phone_number"
+                                    placeholder="Phone Number" class="form-input" />
+                                @error('phone_number')
+                                    <span class="form-helper error">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="w-[80%] block mx-auto form-item">
                                 {{-- <label class="form-label">Password <span class="text-red-500 font-medium">*</span></label> --}}
                                 <div class="relative flex items-center justify-end">
                                     <input id="password-one" class="form-input flex-1" type="password"

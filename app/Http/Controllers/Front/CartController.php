@@ -52,6 +52,11 @@ class CartController extends Controller
         $cartTotalSellPrice = Auth::user()->cart->getTotalSellPrice();
         $currency           = 'tk';
 
+        // echo count($products);
+        // echo '<pre>';
+        // print_r($cart);
+        // return;
+
         return view('frontend.pages.cart', [
             'cart'               => $cart,
             'products'           => $products,

@@ -238,6 +238,7 @@
                         @endforeach
                     </ul>
                 </div>
+
                 {{-- <div class="flex justify-end">
                     <div class="flex justify-end space-x-4 items-center">
                         <span class="text-sm sm:text-sm lg:text-base text-primary">Download App</span>
@@ -247,6 +248,7 @@
                         </div>
                     </div>
                 </div> --}}
+
             </div>
         </div>
     </div>
@@ -285,9 +287,9 @@
                         Address
                     </a>
 
-                    <a href=""
+                    <a href="{{ route('my.order') }}"
                         class="text-base font-medium border-b rounded-b hover:bg-primary hover:text-white py-3 px-4 transition duration-300 ease-in-out"
-                        data-mc-on-previous-url="{{ route('my.address') }}">
+                        data-mc-on-previous-url="{{ route('my.order') }}">
                         <i class="pr-3 fa-solid fa-cart-shopping"></i>
                         My Order
                     </a>

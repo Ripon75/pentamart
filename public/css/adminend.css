@@ -10158,9 +10158,6 @@ textarea.form-control.is-invalid{
 .left-\[23\%\]{
   left: 23%;
 }
-.top-\[54\%\]{
-  top: 54%;
-}
 .z-30{
   z-index: 30;
 }
@@ -10612,6 +10609,14 @@ textarea.form-control.is-invalid{
 .w-44{
   width: 11rem;
 }
+.w-\[170px\]{
+  width: 170px;
+}
+.w-\[160px\]{
+  width: 160px;
+}
+.w-\[155px\]{
+  width: 155px;
 .w-\[20\%\]{
   width: 20%;
 }
@@ -13277,9 +13282,17 @@ fieldset legend{
     --tw-border-opacity: 1;
     border-color: rgb(75 85 99 / var(--tw-border-opacity));
   }
+  .dark\:border-red-600{
+    --tw-border-opacity: 1;
+    border-color: rgb(220 38 38 / var(--tw-border-opacity));
+  }
   .dark\:bg-gray-700{
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity));
+  }
+  .dark\:bg-red-700{
+    --tw-bg-opacity: 1;
+    background-color: rgb(185 28 28 / var(--tw-bg-opacity));
   }
   .dark\:text-gray-300{
     --tw-text-opacity: 1;
@@ -13287,6 +13300,9 @@ fieldset legend{
   }
   .dark\:ring-offset-gray-800{
     --tw-ring-offset-color: #1f2937;
+  }
+  .dark\:ring-offset-red-800{
+    --tw-ring-offset-color: #991b1b;
   }
   .dark\:focus\:ring-blue-600:focus{
     --tw-ring-opacity: 1;
@@ -13803,9 +13819,6 @@ fieldset legend{
       padding-left: 6rem;
     }
   }
-  .md\:static{
-    position: static;
-  }
   .md\:left-16{
     left: 4rem;
   }
@@ -14071,9 +14084,6 @@ fieldset legend{
   }
 }
 @media (min-width: 1024px){
-  .lg\:static{
-    position: static;
-  }
   .lg\:-top-2{
     top: -0.5rem;
   }
@@ -14175,9 +14185,6 @@ fieldset legend{
   }
   .lg\:justify-start{
     justify-content: flex-start;
-  }
-  .lg\:justify-end{
-    justify-content: flex-end;
   }
   .lg\:justify-between{
     justify-content: space-between;
@@ -14350,9 +14357,6 @@ fieldset legend{
   .xl\:justify-start{
     justify-content: flex-start;
   }
-  .xl\:justify-end{
-    justify-content: flex-end;
-  }
   .xl\:justify-between{
     justify-content: space-between;
   }
@@ -14471,6 +14475,9 @@ fieldset legend{
   .\32xl\:w-\[250px\]{
     width: 250px;
   }
+  .\32xl\:w-\[230px\]{
+    width: 230px;
+  }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -14485,9 +14492,6 @@ fieldset legend{
   }
   .\32xl\:flex-wrap{
     flex-wrap: wrap;
-  }
-  .\32xl\:justify-end{
-    justify-content: flex-end;
   }
   .\32xl\:justify-between{
     justify-content: space-between;
