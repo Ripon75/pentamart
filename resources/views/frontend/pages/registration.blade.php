@@ -21,6 +21,17 @@
                                 <p class="text-2xl font-semibold">SIGN UP</p>
                             </div>
                         </div>
+
+                        @if ($errors->any())
+                            <div class="alert alert-danger">
+                                <ul>
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+
                         <form action="{{ route('registration.store') }}" method="POST">
                             @csrf
 
@@ -48,7 +59,7 @@
 
                             <div class="w-[80%] block mx-auto form-item">
                                 {{-- <label class="form-label">Email (Optional)</label> --}}
-                                <input type="text" value="{{ old('email') }}" name="phone_number"
+                                <input type="text" value="{{ old('phone_number') }}" name="phone_number"
                                     placeholder="Phone Number" class="form-input" />
                                 @error('phone_number')
                                     <span class="form-helper error">{{ $message }}</span>
@@ -86,18 +97,17 @@
                                 @enderror
                             </div>
 
-                            {{-- <div class="flex space-x-2 items-center mt-2">
+                            <div class="w-[80%] block mx-auto form-item">
                                 <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
                                 <span class="text-gray-500 text-sm">
                                     I agree with
                                     <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
                                         Conditions</a>
                                 </span>
+                                @error('terms_conditons')
+                                    <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
+                                @enderror
                             </div>
-
-                            @error('terms_conditons')
-                                <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
-                            @enderror --}}
 
                             <div class="w-[50%] block mx-auto mt-8">
                                 <button style="background-color: #22bc1b;color:#fff;" type="submit"

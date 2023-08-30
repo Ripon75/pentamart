@@ -10212,11 +10212,11 @@ textarea.form-control.is-invalid{
 .m-0{
   margin: 0px;
 }
-.m-1{
-  margin: 0.25rem;
-}
 .m-2{
   margin: 0.5rem;
+}
+.m-1{
+  margin: 0.25rem;
 }
 .m-5{
   margin: 1.25rem;
@@ -10342,9 +10342,6 @@ textarea.form-control.is-invalid{
 .mb-1{
   margin-bottom: 0.25rem;
 }
-.mt-\[-200px\]{
-  margin-top: -200px;
-}
 .ml-4{
   margin-left: 1rem;
 }
@@ -10353,9 +10350,6 @@ textarea.form-control.is-invalid{
 }
 .-ml-px{
   margin-left: -1px;
-}
-.mt-\[120px\]{
-  margin-top: 120px;
 }
 .block{
   display: block;
@@ -10558,8 +10552,8 @@ textarea.form-control.is-invalid{
 .w-\[90px\]{
   width: 90px;
 }
-.w-\[175px\]{
-  width: 175px;
+.w-\[155px\]{
+  width: 155px;
 }
 .w-\[100\%\]{
   width: 100%;
@@ -10608,17 +10602,6 @@ textarea.form-control.is-invalid{
 }
 .w-44{
   width: 11rem;
-}
-.w-\[170px\]{
-  width: 170px;
-}
-.w-\[160px\]{
-  width: 160px;
-}
-.w-\[155px\]{
-  width: 155px;
-.w-\[20\%\]{
-  width: 20%;
 }
 .min-w-max{
   min-width: -webkit-max-content;
@@ -13282,17 +13265,9 @@ fieldset legend{
     --tw-border-opacity: 1;
     border-color: rgb(75 85 99 / var(--tw-border-opacity));
   }
-  .dark\:border-red-600{
-    --tw-border-opacity: 1;
-    border-color: rgb(220 38 38 / var(--tw-border-opacity));
-  }
   .dark\:bg-gray-700{
     --tw-bg-opacity: 1;
     background-color: rgb(55 65 81 / var(--tw-bg-opacity));
-  }
-  .dark\:bg-red-700{
-    --tw-bg-opacity: 1;
-    background-color: rgb(185 28 28 / var(--tw-bg-opacity));
   }
   .dark\:text-gray-300{
     --tw-text-opacity: 1;
@@ -13300,9 +13275,6 @@ fieldset legend{
   }
   .dark\:ring-offset-gray-800{
     --tw-ring-offset-color: #1f2937;
-  }
-  .dark\:ring-offset-red-800{
-    --tw-ring-offset-color: #991b1b;
   }
   .dark\:focus\:ring-blue-600:focus{
     --tw-ring-opacity: 1;
@@ -13625,9 +13597,6 @@ fieldset legend{
   .sm\:mt-\[100px\]{
     margin-top: 100px;
   }
-  .sm\:mt-\[120px\]{
-    margin-top: 120px;
-  }
   .sm\:block{
     display: block;
   }
@@ -13871,9 +13840,6 @@ fieldset legend{
   .md\:mt-0{
     margin-top: 0px;
   }
-  .md\:mt-\[-85px\]{
-    margin-top: -85px;
-  }
   .md\:block{
     display: block;
   }
@@ -14116,12 +14082,6 @@ fieldset legend{
   }
   .lg\:mt-14{
     margin-top: 3.5rem;
-  }
-  .lg\:mt-0{
-    margin-top: 0px;
-  }
-  .lg\:mt-\[-85px\]{
-    margin-top: -85px;
   }
   .lg\:block{
     display: block;
@@ -14463,6 +14423,9 @@ fieldset legend{
   .\32xl\:h-56{
     height: 14rem;
   }
+  .\32xl\:w-\[230px\]{
+    width: 230px;
+  }
   .\32xl\:w-64{
     width: 16rem;
   }
@@ -14474,9 +14437,6 @@ fieldset legend{
   }
   .\32xl\:w-\[250px\]{
     width: 250px;
-  }
-  .\32xl\:w-\[230px\]{
-    width: 230px;
   }
   .\32xl\:grid-cols-3{
     grid-template-columns: repeat(3, minmax(0, 1fr));

@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\Front\AuthController;
 use App\Http\Controllers\Front\PageController;
 use App\Http\Controllers\Front\CartController;
@@ -13,16 +12,6 @@ use App\Http\Controllers\Front\RatingController;
 use App\Http\Controllers\Front\WishlistController;
 
 Route::get('logs', [\Rap2hpoutre\LaravelLogViewer\LogViewerController::class, 'index']);
-
-Route::get('/clear', function () {
-    Artisan::call('config:clear');
-    Artisan::call('cache:clear');
-    Artisan::call('view:clear');
-    Artisan::call('route:clear');
-    Artisan::call('config:cache');
-
-    return 'Success! Your are very lucky!'; //Return anything
-});
 
 Route:: get('/',               [PageController::class, 'home'])->name('home');
 Route:: get('/about',          [PageController::class, 'about'])->name('about');

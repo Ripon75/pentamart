@@ -90,6 +90,10 @@
                                             class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                             <i class="mr-3 text-sm fa-solid fa-location-dot"></i>Address
                                         </a>
+                                        <a href="{{ route('my.profile') }}"
+                                            class="border-b px-3 py-2 text-xs hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                            <i class="mr-3 text-sm fa-solid fa-user"></i>Profile
+                                        </a>
                                         <a href="{{ route('logout') }}"
                                             class="text-xs px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">
                                             <i class="mr-3 text-xs fa-solid fa-arrow-right-from-bracket"></i>Logout
@@ -157,6 +161,10 @@
                                 <a href="{{ route('my.address') }}"
                                     class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
                                     <i class="mr-1 text-sm fa-solid fa-location-dot"></i>Address
+                                </a>
+                                <a href="{{ route('my.profile') }}"
+                                    class="border-b px-3 py-2 text-sm hover:bg-secondary hover:text-white transition duration-150 ease-in-out">
+                                    <i class="mr-1 text-sm fa-solid fa-location-dot"></i>Profile
                                 </a>
                                 <a href="{{ route('logout') }}"
                                     class="text-sm px-3 py-2 hover:text-white hover:bg-secondary transition duration-150 ease-in-out rounded-b-lg">

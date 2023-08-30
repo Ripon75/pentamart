@@ -121,33 +121,33 @@ class AuthController extends Controller
     }
 
     // Login by otp
-    public function loginByOtp(Request $request)
-    {
-        return $request->all();
-        $validator = Validator::make($request->all(), [
-            'phone_number' => ['required', 'regex:/^[0-9]+$/', 'digits:11'],
-            'otp_code'     => ['required']
-        ]);
+    // public function loginByOtp(Request $request)
+    // {
+    //     return $request->all();
+    //     $validator = Validator::make($request->all(), [
+    //         'phone_number' => ['required', 'regex:/^[0-9]+$/', 'digits:11'],
+    //         'otp_code'     => ['required']
+    //     ]);
 
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->sendError($validator->errors());
-        }
+    //     if ($validator->stopOnFirstFailure()->fails()) {
+    //         return $this->sendError($validator->errors());
+    //     }
 
-        $phoneNumber = $request->input('phone_number', null);
-        $otpCode     = $request->input('otp_code', null);
-        $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+    //     $phoneNumber = $request->input('phone_number', null);
+    //     $otpCode     = $request->input('otp_code', null);
+    //     $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
 
-        $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
+    //     $user = User::where('phone_number', $phoneNumber)->where('otp_code', $otpCode)->first();
 
-        if ($user) {
-            Auth::login($user, true);
-            $request->session()->regenerate();
+    //     if ($user) {
+    //         Auth::login($user, true);
+    //         $request->session()->regenerate();
 
-            return $this->sendResponse($user, 'Successfully login');
-        } else {
-            return $this->sendError("Invalid your OTP");
-        }
-    }
+    //         return $this->sendResponse($user, 'Successfully login');
+    //     } else {
+    //         return $this->sendError("Invalid your OTP");
+    //     }
+    // }
 
     // Login
     public function login(Request $request)
@@ -163,9 +163,9 @@ class AuthController extends Controller
                 return $this->sendError($validator->errors());
             }
 
-            // send otp
             $phoneNumber = $request->input('phone_number', null);
             $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+
             $user = User::where('phone_number', $phoneNumber)->first();
             if ($user) {
                 $otpCode = $this->getRandomCode();
@@ -173,8 +173,29 @@ class AuthController extends Controller
                 $user->save();
                 $this->sendSMS($phoneNumber, $otpCode);
 
-                return $this->sendResponse($otpCode, 'Send otp to user');
+                return $this->sendResponse($otpCode, 'Send otp your phone number');
             } else {
+                DB::beginTransaction();
+
+                $user = new User();
+
+                $otpCode = $this->getRandomCode();
+
+                $user->phone_number    = $phoneNumber;
+                $user->otp_code        = $otpCode;
+                $user->terms_conditons = 1;
+                $user->ac_status       = 1;
+                $res = $user->save();
+
+                if ($res) {
+                    $this->sendSMS($phoneNumber, $otpCode);
+
+                    DB::commit();
+                    // return redirect("/send-otp-code?phone_number={$phoneNumber}");
+                    return $this->sendResponse($otpCode, 'Send otp your phone number');
+                }
+
+                $user = new User();
                 return $this->sendError('User Not found');
             }
         } else {
