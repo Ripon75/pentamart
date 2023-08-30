@@ -49,5 +49,13 @@
         </div>
     </div>
 </section>
-
 @endsection
+
+@push('scripts')
+    <script>
+        // Set time to flash message
+        setTimeout(function(){
+            $("div.alert").remove();
+        }, 4000 );
+    </script>
+@endpush
