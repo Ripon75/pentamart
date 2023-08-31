@@ -268,8 +268,11 @@
 
                                 {{-- if words more than 30,then read more functionalities --}}
                                 <div class="description-words-count">
-                                    <p class="text-sm text-justify">
-                                        {!! html_entity_decode($product->description) !!}
+                                    <p class="text-sm text-justify custom-description">
+                                        {{-- This code working locally
+                                        {!! html_entity_decode($product->description) !!} --}}
+                                        {{-- Live Server Code --}}
+                                        {{ strip_tags($product->description) }}
                                     </p>
                                 </div>
 
@@ -625,8 +628,9 @@
     <script>
         $(document).ready(function() {
             var descriptionWordCount = $('.description-words-count');
-            var description = descriptionWordCount.find('p');
+            var description = descriptionWordCount.find('.custom-description');
             var fullDescription = description.html().trim();
+
             var maxWords = 30;
 
             function updateDescription() {
