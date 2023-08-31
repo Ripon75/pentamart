@@ -183,19 +183,20 @@
             var password = $("input[name=password]").val();
 
             axios.post('/login', {
-                    login_by: loginBy,
-                    phone_number: phoneNumber,
-                    email: email,
-                    password: password
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        if (loginBy === 'phone_number') {
-                            window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
-                        } else {
-                            window.location.href = "/";
-                        }
+                login_by: loginBy,
+                phone_number: phoneNumber,
+                email: email,
+                password: password
+            })
+            .then((res) => {
+                if (res.data.success) {
+                    if (loginBy === 'phone_number') {
+                        window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
                     } else {
+                        window.location.href = "/";
+                    }
+                } else {
+                    if (res.data.msg) {
                         if (res.data.msg.phone_number) {
                             $("input[name=phone_number]").focus();
                             $('#show-phone-number-error-msg').text(res.data.msg.phone_number[0]);
@@ -210,12 +211,14 @@
                             return false;
                         } else {
                             __showNotification('error', res.data.msg, 5000);
+                            return false;
                         }
                     }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
         });
     });
 </script>

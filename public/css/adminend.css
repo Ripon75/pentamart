@@ -10465,12 +10465,15 @@ textarea.form-control.is-invalid{
 .h-20{
   height: 5rem;
 }
+<<<<<<< HEAD
 .h-\[400px\]{
   height: 400px;
 }
 .h-\[200px\]{
   height: 200px;
 }
+=======
+>>>>>>> 27cd764007d1554e6811ed7ae7bf45966706725e
 .h-\[36px\]{
   height: 36px;
 }
