@@ -10459,9 +10459,6 @@ textarea.form-control.is-invalid{
 .h-20{
   height: 5rem;
 }
-.h-\[46px\]{
-  height: 46px;
-}
 .h-\[36px\]{
   height: 36px;
 }
@@ -13675,11 +13672,6 @@ fieldset legend{
   .sm\:gap-0{
     gap: 0px;
   }
-  .sm\:space-x-2 > :not([hidden]) ~ :not([hidden]){
-    --tw-space-x-reverse: 0;
-    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-  }
   .sm\:p-4{
     padding: 1rem;
   }
@@ -13935,11 +13927,6 @@ fieldset legend{
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
-  .md\:space-x-2 > :not([hidden]) ~ :not([hidden]){
-    --tw-space-x-reverse: 0;
-    margin-right: calc(0.5rem * var(--tw-space-x-reverse));
-    margin-left: calc(0.5rem * calc(1 - var(--tw-space-x-reverse)));
-  }
   .md\:p-4{
     padding: 1rem;
   }
@@ -14155,11 +14142,6 @@ fieldset legend{
   .lg\:gap-2{
     gap: 0.5rem;
   }
-  .lg\:space-x-0 > :not([hidden]) ~ :not([hidden]){
-    --tw-space-x-reverse: 0;
-    margin-right: calc(0px * var(--tw-space-x-reverse));
-    margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
-  }
   .lg\:justify-self-end{
     justify-self: end;
   }
@@ -14339,11 +14321,6 @@ fieldset legend{
     margin-top: calc(0px * calc(1 - var(--tw-space-y-reverse)));
     margin-bottom: calc(0px * var(--tw-space-y-reverse));
   }
-  .xl\:space-x-0 > :not([hidden]) ~ :not([hidden]){
-    --tw-space-x-reverse: 0;
-    margin-right: calc(0px * var(--tw-space-x-reverse));
-    margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
-  }
   .xl\:p-4{
     padding: 1rem;
   }
@@ -14464,11 +14441,6 @@ fieldset legend{
   }
   .\32xl\:gap-4{
     gap: 1rem;
-  }
-  .\32xl\:space-x-0 > :not([hidden]) ~ :not([hidden]){
-    --tw-space-x-reverse: 0;
-    margin-right: calc(0px * var(--tw-space-x-reverse));
-    margin-left: calc(0px * calc(1 - var(--tw-space-x-reverse)));
   }
   .\32xl\:p-4{
     padding: 1rem;
