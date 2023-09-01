@@ -17,7 +17,7 @@
                     <div class="card border-2 p-4">
                         <div class="">
                             <div class="flex flex-col sm:flex-row md:flex-row space-x-2">
-                                {{-- @foreach ($userAddress as $uAddress)
+                                @foreach ($userAddress as $uAddress)
                                     <div class="border p-2 text-sm w-full">
                                         <div class="flex items-center justify-between">
                                             <div>
@@ -39,7 +39,7 @@
                                         <div>{{ $uAddress->phone_number }}</div>
                                         <div>{{ $uAddress->phone_number_2 }}</div>
                                     </div>
-                                @endforeach --}}
+                                @endforeach
                             </div>
 
                             {{-- create new address --}}
@@ -151,8 +151,8 @@
                                     <div style="width:95%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Alternative
-                                                Phone Number:</legend>
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Phone Number(2):
+                                            </legend>
                                             <input class="form-input border-0 w-full form-otline-none" type="text"
                                                 name="phone_number_2" />
                                         </fieldset>
