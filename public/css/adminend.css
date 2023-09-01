@@ -10318,6 +10318,12 @@ textarea.form-control.is-invalid{
 .mb-4{
   margin-bottom: 1rem;
 }
+.ml-4{
+  margin-left: 1rem;
+}
+.mb-1{
+  margin-bottom: 0.25rem;
+}
 .mt-\[100px\]{
   margin-top: 100px;
 }
@@ -10344,12 +10350,6 @@ textarea.form-control.is-invalid{
 }
 .mt-3{
   margin-top: 0.75rem;
-}
-.mb-1{
-  margin-bottom: 0.25rem;
-}
-.ml-4{
-  margin-left: 1rem;
 }
 .mt-7{
   margin-top: 1.75rem;
@@ -10476,6 +10476,12 @@ textarea.form-control.is-invalid{
 }
 .h-\[384px\]{
   height: 384px;
+}
+.h-\[127px\]{
+  height: 127px;
+}
+.h-\[138px\]{
+  height: 138px;
 }
 .max-h-64{
   max-height: 16rem;
@@ -11269,6 +11275,9 @@ textarea.form-control.is-invalid{
 }
 .text-justify{
   text-align: justify;
+}
+.indent-8{
+  text-indent: 2rem;
 }
 .align-middle{
   vertical-align: middle;
@@ -12992,6 +13001,9 @@ fieldset legend{
   --tw-text-opacity: 1;
   color: rgb(75 85 99 / var(--tw-text-opacity));
 }
+.first-letter\:rounded::first-letter{
+  border-radius: 0.25rem;
+}
 .file\:mr-4::-webkit-file-upload-button{
   margin-right: 1rem;
 }
@@ -13853,6 +13865,9 @@ fieldset legend{
   .md\:mt-0{
     margin-top: 0px;
   }
+  .md\:ml-4{
+    margin-left: 1rem;
+  }
   .md\:block{
     display: block;
   }
@@ -14093,6 +14108,15 @@ fieldset legend{
   }
   .lg\:mt-14{
     margin-top: 3.5rem;
+  }
+  .lg\:mb-4{
+    margin-bottom: 1rem;
+  }
+  .lg\:mb-6{
+    margin-bottom: 1.5rem;
+  }
+  .lg\:ml-4{
+    margin-left: 1rem;
   }
   .lg\:block{
     display: block;
@@ -14411,6 +14435,9 @@ fieldset legend{
   }
   .\32xl\:mt-14{
     margin-top: 3.5rem;
+  }
+  .\32xl\:ml-4{
+    margin-left: 1rem;
   }
   .\32xl\:block{
     display: block;
