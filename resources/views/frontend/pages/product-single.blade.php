@@ -219,14 +219,14 @@
                                     <button
                                         class="btn-add-to-car h-[36px] bg-[#00798c] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                         data-mc-on-previous-url="{{ url()->current() }}">
-                                        <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
+                                        <i class="loadding-icon hidden text-sm fa-solid fa-spinner fa-spin"></i>
                                         <i id="add-to-cart-icon" class="fa-solid text-sm fa-cart-plus mr-1"></i>
                                         Add to cart
                                     </button>
                                     <button id="btn-buy-now"
                                         class="h-[36px] bg-[#ffc42d] text-sm whitespace-nowrap px-4 text-white rounded-md"
                                         data-mc-on-previous-url="{{ url()->current() }}">
-                                        <i class="loadding-icon text-sm fa-solid fa-spinner fa-spin"></i>
+                                        <i class="loadding-icon hidden text-sm fa-solid fa-spinner fa-spin"></i>
                                         Buy Now
                                     </button>
                                 </div>
@@ -676,7 +676,7 @@
         var btnBuyNow = $('#btn-buy-now');
         var productId = $('#product-id').val();
         var inputQuantity = $('#input-quantity');
-        var iconLoadding = $('.loadding-icon').hide();
+        var iconLoadding = $('.loadding-icon');
         var iconAddToCart = $('#add-to-cart-icon');
         var wishButton = $('#wish-button');
         var undoWishButton = $('#undo-wish-button');
@@ -779,8 +779,6 @@
             if (btn) {
                 btn.prop("disabled", true);
             }
-            // iconLoadding.show();
-            // iconAddToCart.hide();
 
             btn.find(iconLoadding).show();
             btn.find(iconAddToCart).hide();
@@ -800,8 +798,7 @@
                         __cartItemCount();
                     } else {
                         __showNotification('error', response.data.msg);
-                        // iconLoadding.hide();
-                        // iconAddToCart.show();
+
                         btn.find(iconLoadding).hide();
                         btn.find(iconAddToCart).show();
                         if (btn) {
@@ -814,7 +811,6 @@
                     if (btn) {
                         btn.prop("disabled", false);
                     }
-                    // iconLoadding.hide();
                     btn.find(iconLoadding).hide();
                     console.log(error);
                 });

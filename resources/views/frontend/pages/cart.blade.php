@@ -177,7 +177,7 @@
                                                     data-item-id="{{ $product->id }}"
                                                     data-color-id="{{ $product->pivot->color_id }}"
                                                     data-size-id="{{ $product->pivot->size_id }}">
-                                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                                    <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
                                                     <i
                                                         class="trash-icon text-sm sm:text-sm md:text-base lg:text-base xl:text-base 2xl:text-base text-white fa-regular fa-trash-can"></i>
                                                 </button>
@@ -195,14 +195,14 @@
                                     <a class="hover:text-white" href="{{ route('products.index') }}">
                                         Continue shopping
                                     </a>
-                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                    <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
                                 </button>
                             </div>
                             <div class="">
                                 <button id="input-cart-empty" class="btn btn-md btn-danger">
                                     Clear cart
                                     <i class="ml-2 trash-icon text-white fa-regular fa-trash-can"></i>
-                                    <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                    <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
                                 </button>
                             </div>
                         </div>
@@ -281,7 +281,7 @@
                                 <div class="mt-4">
                                     <a href="{{ route('checkout') }}" id="btn-order-submit"
                                         class="btn btn-md btn-block btn-primary">
-                                        <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                        <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
                                         Checkout
                                     </a>
                                 </div>
@@ -326,7 +326,6 @@
         var subTotalSellPriceLabel = $('#sub-total-sell-price-label');
         // Trash and loading icon
         iconTrash.show();
-        iconLoadding.hide();
 
         $(function() {
             // Delete item
@@ -409,7 +408,8 @@
         function totalPriceCalculation() {
             var totalSellPrice = 0;
             $(".item-sell-price").each(function() {
-                var itemSellPrice = parseFloat($(this).text());
+                var itemSellPrice = $(this).text();
+                itemSellPrice = parseFloat(itemSellPrice.replace(/,/g, ''));
                 totalSellPrice = totalSellPrice + itemSellPrice;
             });
 

@@ -131,7 +131,7 @@
                                     <div style="width:97%" class="form-item">
                                         <button id="btn-address-create" type="button" class="btn btn-primary">
                                             Create
-                                            <i class="loadding-icon fa-solid fa-spinner fa-spin text-white"></i>
+                                            <i class="loadding-icon hidden fa-solid fa-spinner fa-spin text-white"></i>
                                         </button>
                                     </div>
                                 </div>
@@ -289,7 +289,7 @@
                                     <div class="mt-4">
                                         <button type="button" id="btn-order-submit"
                                             class="btn btn-md btn-block btn-primary">
-                                            <i class="loadding-icon fa-solid fa-spinner fa-spin mr-2"></i>
+                                            <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
                                             SUBMIT ORDER
                                         </button>
                                     </div>
@@ -353,8 +353,6 @@
         var inputCouponCodeId = $('#input-coupon-code-id');
         var couponDiscountLabel = $('#coupon-discount-label');
         var couponDiscountDiv = $('#coupon-discount-div');
-
-        iconLoadding.hide();
 
         $(function() {
             inputShippingAddress.click(function() {
