@@ -1,4 +1,12 @@
 @extends('frontend.layouts.default')
+<style>
+    .form-otline-none:focus {
+        outline: none !important;
+        border: none !important;
+        border-color: transparent !important;
+        box-shadow: none !important;
+    }
+</style>
 @section('title', 'Checkout')
 @section('content')
     @if (count($products))
@@ -35,24 +43,46 @@
                             </div>
 
                             {{-- create new address --}}
-                            <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto">
+                            {{-- <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto">
                                 <button id="btn-create-new-address" class="btn btn-success btn-sm">Add new address</button>
+                            </div> --}}
+
+                            <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto lg:mb-6">
+                                <h2>Shipping Adress (Please fill out your information)</h2>
                             </div>
-                            <form class="mb-0 hidden" id="address-create-form" action="{{ route('my.address.store') }}"
+
+                            <form class="mb-0" id="address-create-form" action="{{ route('my.address.store') }}"
                                 method="POST">
                                 @csrf
 
+
+                                {{-- <div class="grid grid-cols-1">
+                                    <div class="mt-4 mb-2">
+                                        <p>
+                                            Pick Up your parcel From :
+                                            <input type="radio" class="ml-2"><span class="ml-2">Home</span>
+                                            <input type="radio" class="ml-2"><span class="ml-2">Office</span>
+                                        </p>
+                                    </div>
+                                </div> --}}
+
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label for="" class="form-label">Address Title<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-title" name="title"
-                                            class="form-select form-input w-full">
-                                            <option value="">Select</option>
-                                            <option value="Home">Home</option>
-                                            <option value="Office">Office</option>
-                                            <option value="Others">Others</option>
-                                        </select>
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Pick Up your
+                                                parcel From :
+                                            </legend>
+                                            <select id="input-address-title" name="title"
+                                                class="form-select form-input border-0 w-full form-otline-none">
+                                                <option value="" disabled selected>Select</option>
+                                                <option value="Home">Home</option>
+                                                <option value="Office">Office</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                        </fieldset>
+
+
                                         @error('title')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
@@ -61,55 +91,71 @@
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label class="form-label">Name</label>
-                                        <input class="form-input" type="text" placeholder="Enter Your Name"
-                                            name="user_name" />
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Name:</legend>
+                                            <input class="form-input border-0 w-full form-otline-none" type="text"
+                                                name="user_name" />
+                                        </fieldset>
                                     </div>
                                 </div>
 
                                 <div class="grid grid-cols-2">
                                     <div style="width:95%" class="form-item">
-                                        <label for="" class="form-label">Districs<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <select id="input-address-district" name="district_id"
-                                            class="form-select form-input w-full">
-                                            @foreach ($districts as $district)
-                                                <option value="{{ $district->id }}"
-                                                    {{ $district->id == 1 ? 'selected' : '' }}
-                                                    data-delivery-charge="{{ $district->delivery_charge }}">
-                                                    {{ $district->name }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Districs<span
+                                                    class="ml-1 text-red-500 font-medium">*</span></legend>
+                                            <select id="input-address-district" name="district_id"
+                                                class="form-select form-input border-0 w-full form-otline-none">
+                                                @foreach ($districts as $district)
+                                                    <option value="{{ $district->id }}"
+                                                        {{ $district->id == 1 ? 'selected' : '' }}
+                                                        data-delivery-charge="{{ $district->delivery_charge }}">
+                                                        {{ $district->name }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                        </fieldset>
+
                                         @error('district_id')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Thana<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <input class="form-input" type="text" placeholder="Enter your thana"
-                                            name="thana" />
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Thana:</legend>
+                                            <input class="form-input border-0 w-full form-otline-none" type="text"
+                                                name="thana" />
+                                        </fieldset>
                                         @error('thana')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Phone Number<span
-                                                class="ml-1 text-red-500 font-medium">*</span></label>
-                                        <input class="form-input" type="text" placeholder="Enter Your Phone Number"
-                                            name="phone_number" />
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Phone
+                                                Number:<span class="ml-1 text-red-500 font-medium">*</span></legend>
+                                            <input class="form-input border-0 w-full form-otline-none" type="text"
+                                                name="phone_number" />
+                                        </fieldset>
                                         @error('phone_number')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
-                                        <label class="form-label">Phone Number (2)</label>
-                                        <input class="form-input" type="text" placeholder="Enter Your Phone Number"
-                                            name="phone_number_2" />
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Phone Number(2):
+                                            </legend>
+                                            <input class="form-input border-0 w-full form-otline-none" type="text"
+                                                name="phone_number_2" />
+                                        </fieldset>
                                         @error('phone_number_2')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
@@ -118,11 +164,13 @@
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
-                                        <label class="form-label">Address<span
-                                                class="ml-1 text-red-500 font-medium">*</span>
-                                        </label>
-                                        <textarea id="input-address" name="address" class="form-input" rows="2" cols="50"
-                                            placeholder="Enter your address here..."></textarea>
+                                        <fieldset class="border first-letter:rounded shadow-md">
+                                            <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Full Address:
+                                            </legend>
+                                            <textarea id="input-address" name="address" class="form-input border-0 w-full form-otline-none" rows="2"
+                                                cols="50"></textarea>
+                                        </fieldset>
                                         @error('address')
                                             <span class="form-helper error">{{ $message }}</span>
                                         @enderror
@@ -142,10 +190,11 @@
 
                 <div class="col-span-2">
                     <section class="card border-2">
+                        <h2 class="p-2 text-2xl font-bold">Checkout Summary</h2>
                         <div
                             class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
 
-                            <div class="mb-4">
+                            {{-- <div class="mb-4">
                                 @foreach ($products as $product)
                                     <div class="flex justify-between border-b-2 capitalize">
                                         <span>{{ $product->name }} x {{ $product->pivot->quantity ?? '' }}</span>
@@ -159,10 +208,10 @@
                                         </span>
                                     </div>
                                 @endforeach
-                            </div>
+                            </div> --}}
 
                             <div class="flex justify-between capitalize">
-                                <span>Total Price</span>
+                                <span>Sub Total</span>
                                 <span>{{ $currency }}
                                     <span class="ml-1">
                                         {{ number_format($cart->getTotalMRP(), 2) }}
@@ -213,8 +262,8 @@
                             </div>
                         </div>
                         {{-- Show payable price --}}
-                        <div class="bg-primary p-2 rounded mx-2 mb-2">
-                            <div class="flex justify-between text-white font-medium capitalize">
+                        <div class="p-2 rounded mx-2 mb-2">
+                            <div class="flex justify-between text-black font-medium capitalize">
                                 <span class="text-base sm:text-base md:text-lg">Total</span>
                                 <span class="text-base sm:text-base md:text-lg font-medium">
                                     <span>{{ $currency }}
@@ -277,7 +326,8 @@
                                         <textarea name="order_note"
                                             class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
                                     </div>
-                                    <div class="flex space-x-2 mt-2">
+
+                                    {{-- <div class="flex space-x-2 mt-2">
                                         <input class="focus:ring-0" type="checkbox" value="1"
                                             name="terms_conditons">
                                         <span class="text-gray-500 text-xs">
@@ -285,7 +335,38 @@
                                             <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
                                                 Conditions</a>,
                                         </span>
+                                    </div> --}}
+
+
+                                    <h2 class="mt-4">Payment Method : <span
+                                            style="color: rgb(0 121 140 / var(--tw-bg-opacity));">Cash
+                                            On
+                                            Delivery</span></h2>
+                                    <div style="background-color: #00ffff1f" class="mt-4 mb-4 p-2 rounded-sm">
+                                        <p class="text-xs mb-1">আপনার অবগতির জন্য জানানো যাচ্ছে যে,</p>
+                                        <p class="text-xs">১.ডেলিভারী চার্জ - </p>
+                                        <p class="indent-8 text-xs">ঢাকার মধ্যে - ৬০ টাকা</p>
+                                        <p class="indent-8 text-xs">ঢাকার বাইরে - ১০০ টাকা</p>
+
+                                        <p class="text-xs mt-2 mb-2">
+                                            ২.প্রোডাক্ট রিটার্ন করলে ডেলিভারী চার্জ দিয়ে রিটার্ন করতে হবে।
+                                        </p>
+
+                                        <p class="text-xs mt-2 mb-2">
+                                            ৩.ডেলিভারী ম্যান থাকা অবস্থায় ভালভাবে চেক করে রিসিভ করবেন। <br>
+                                            অন্যথায় ডেলিভারী ম্যান চলে যাওয়ার পর কোন অভিযোগ গ্রহণ বা রিটার্ন নেওয়া হবে না।
+                                        </p class="text-sm">
+
+                                        <input class="focus:ring-0" type="checkbox" value="1"
+                                            name="terms_conditons">
+                                        <span class="text-gray-500 text-xs">
+                                            এই শর্তগুলো মেনে
+                                            <a href="{{ route('terms.and.condition') }}" class="text-primary"> অর্ডার
+                                                প্রদান করছি </a>,
+                                        </span>
                                     </div>
+
+
                                     <div class="mt-4">
                                         <button type="button" id="btn-order-submit"
                                             class="btn btn-md btn-block btn-primary">
@@ -365,7 +446,6 @@
 
             // create user address
             btnAddressCreate.click(function() {
-                console.log('click');
                 var inputAddressTitle = $('#input-address-title');
                 var inputAddress = $("#input-address");
                 var inputThana = $("input[name=thana]");

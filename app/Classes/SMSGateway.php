@@ -27,10 +27,10 @@ class SMSGateway
 
     public function sendOrderSubmitSMS($phoneNumber)
     {
-        $now         = Carbon::now();
-        $deliveryday = $now->addDays(2);
-        $deliveryday = $deliveryday->format('l');
-        $message = "Your pentamart order is submitted. Estimated delivery by {$deliveryday}.";
+        // $now         = Carbon::now();
+        // $deliveryday = $now->addDays(2);
+        // $deliveryday = $deliveryday->format('l');
+        $message = "Your pentamart order is submitted. Thank You!.";
         return $this->send($phoneNumber, $message);
     }
 

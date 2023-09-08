@@ -98,15 +98,17 @@
                             </div>
 
                             <div class="w-[80%] block mx-auto form-item">
-                                <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
-                                <span class="text-gray-500 text-sm">
-                                    I agree with
-                                    <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
-                                        Conditions</a>
-                                </span>
-                                @error('terms_conditons')
-                                    <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
-                                @enderror
+                                <div class="flex items-center">
+                                    <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
+                                    <span class="text-gray-500 text-sm ml-2">
+                                        I agree with
+                                        <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
+                                            Conditions</a>
+                                    </span>
+                                    @error('terms_conditons')
+                                        <span class="form-helper error text-xs text-red-700">{{ $message }}</span>
+                                    @enderror
+                                </div>
                             </div>
 
                             <div class="w-[50%] block mx-auto mt-8">

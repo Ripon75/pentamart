@@ -6,7 +6,7 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         padding: 10px 12px 10px;
         border-radius: 4px;
-        height: 285px;
+        height: 305px;
     }
 
 
@@ -135,11 +135,12 @@
                 <div class="slider-container">
 
                     @foreach ($newArrival->products as $product)
-                        <div style="margin: 5px 5px 5px;">
+                        <div
+                            style="height:275px;margin: 5px 5px 5px; box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;">
                             <a href="{{ route('products.show', [$product->id, $product->slug]) }}">
                                 <img class="w-full h-[136px]" src="{{ $product->img_src }}" alt="no images">
                             </a>
-                            <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
+                            <div class="p-2" style="background-color: #F9FAFB; height:138px;">
                                 <div class="w-12 rounded" style="background-color: #DCFCE7;color:#58C55E">
                                     <span style="font-size: 11px;">In Stock</span>
                                 </div>
