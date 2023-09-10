@@ -680,7 +680,7 @@
         var btnBuyNow = $('#btn-buy-now');
         var productId = $('#product-id').val();
         var inputQuantity = $('#input-quantity');
-        var iconLoadding = $('.loadding-icon');
+        var iconLoadding = $('.loadding-icon').hide();
         var iconAddToCart = $('#add-to-cart-icon');
         var wishButton = $('#wish-button');
         var undoWishButton = $('#undo-wish-button');
@@ -756,11 +756,8 @@
                 }
 
                 if (productId != 0 && quantity != 0) {
-                    addCartItem(productId, quantity, colorId, sizeId, $(this));
+                    addCartItem(productId, quantity, colorId, sizeId, $(this), true);
                 }
-
-                // Redirect checkout page
-                window.location.href = "/checkout";
             });
 
             // Add event with wishlist button
@@ -779,7 +776,7 @@
             });
         });
 
-        function addCartItem(productId, productQty, colorId = null, sizeId = null, btn = null) {
+        function addCartItem(productId, productQty, colorId = null, sizeId = null, btn = null, isBuyNow = false) {
             if (btn) {
                 btn.prop("disabled", true);
             }
@@ -800,6 +797,9 @@
                             btn.prop("disabled", false);
                         }
                         __cartItemCount();
+                        if (isBuyNow) {
+                            window.location.href = "/checkout";
+                        }
                     } else {
                         __showNotification('error', response.data.msg);
 

@@ -317,7 +317,7 @@
     <script>
         var cartAddItemEndPoint = '/cart/items/add';
         var btnDeleteCartItem = $('.btn-delete-cart-item');
-        var iconLoadding = $('.loadding-icon');
+        var iconLoadding = $('.loadding-icon').hide();
         var iconTrash = $('.trash-icon');
         var inputCartEmpty = $('#input-cart-empty');
         var btnOrderSubmit = $('#btn-order-submit');

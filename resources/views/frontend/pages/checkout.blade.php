@@ -407,7 +407,7 @@
 
 @push('scripts')
     <script>
-        var iconLoadding = $('.loadding-icon');
+        var iconLoadding = $('.loadding-icon').hide();
         var btnOrderSubmit = $('#btn-order-submit');
         var formCheckOut = $('#form-checkout');
         var btnCreateNewAddress = $('#btn-create-new-address');
