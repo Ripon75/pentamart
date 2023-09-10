@@ -26,6 +26,10 @@
 
             <div class="grid grid-cols-12 gap-1">
                 <div class="card shadow body p-2 col-span-2">
+                    <div class="form-item w-full">
+                        <label class="form-label">Delivery Date</label>
+                        <input class="form-input" type="date"name="delivery_date" autocomplete="off"/>
+                   </div>
                      <div class="form-item">
                         <label class="form-label">
                             Payment Status <span class="text-red-500 font-medium">*</span>

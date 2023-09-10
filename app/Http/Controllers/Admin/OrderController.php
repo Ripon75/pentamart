@@ -9,11 +9,13 @@ use App\Models\Status;
 use App\Models\District;
 use App\Models\Address;
 use App\Classes\Utility;
+use App\Classes\SMSGateway;
 use Illuminate\Http\Request;
 use App\Exports\OrdersExport;
 use App\Models\PaymentGateway;
 use Illuminate\Support\Facades\DB;
 use App\Models\PaymentTransaction;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\Validator;
@@ -290,6 +292,7 @@ class OrderController extends Controller
         $phoneNumber     = $request->input('phone_number');
         $districtId      = $request->input('district_id');
         $isPaid          = $request->input('is_paid');
+        $deliveryDate    = $request->input('delivery_date');
 
         // format items array
         $currentItems = collect($currentItems);
@@ -329,6 +332,11 @@ class OrderController extends Controller
                         'item_sell_price' => $item['sell_price'],
                         'item_discount'   => $item['discount']
                     ];
+                }
+
+                if ($statusId == 2) {
+                    $phoneNumber = $phoneNumber ? $phoneNumber : Auth::user()->phone_number;
+                    $this->sendSMS($phoneNumber, $deliveryDate);
                 }
 
                 // Update items  stock
@@ -459,5 +467,11 @@ class OrderController extends Controller
         Order::whereIn('id', $orderId)->update(['is_paid' => 1]);
 
         return $this->sendResponse(null, 'Order paid successfully');
+    }
+
+    public function sendSMS($phoneNumber, $date)
+    {
+        $SMSGateway = new SMSGateway();
+        $SMSGateway->sendDeliveryDate($phoneNumber, $date);
     }
 }
