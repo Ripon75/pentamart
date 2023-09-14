@@ -42,14 +42,53 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'address_id' => ['required']
+            'title'          => ['required_if:address_id,null'],
+            'district_id'    => ['required_if:address_id,null', "integer"],
+            'thana'          => ['required_if:address_id,null', "max:20"],
+            'address'        => ['required_if:address_id,null', "max:500"],
+            'phone_number'   => ['required_if:address_id,null', "declined_if:required_if,regex:/^[0-9]+$/", "declined_if:required_if,digits:11"],
+            'phone_number_2' => ['nullable', 'regex:/^[0-9]+$/', 'digits:11']
+        ],
+        [
+            'title.required_if'        => 'Please select address title.',
+            'thana.required_if'        => 'The thana field is required.',
+            'address.required_if'      => 'The address field is required.',
+            'phone_number.required_if' => 'The phone_number field is required.',
         ]);
 
-        $addressId = $request->input('address_id', null);
-        $note      = $request->input('note', null);
-        $couponId  = $request->input('coupon_id', null);
+        $addressId    = $request->input('address_id', null);
+        $couponId     = $request->input('coupon_id', null);
+        $note         = $request->input('note', null);
+        $userName     = $request->input('user_name', null);
+        $title        = $request->input('title', null);
+        $address      = $request->input('address', null);
+        $phoneNumber  = $request->input('phone_number', null);
+        $phoneNumber2 = $request->input('phone_number_2', null);
+        $districtId   = $request->input('district_id', null);
+        $thana        = $request->input('thana', null);
+        $authUser     = Auth::user();
 
-        $addressObj     = Address::find($addressId);
+        $userName = $userName ? $userName : $authUser->name;
+
+        if ($addressId) {
+            $addressObj = Address::find($addressId);
+        } else {
+            $addressObj = Address::where('title', $title)->first();
+            if (!$addressObj) {
+                $addressObj = new Address();
+            }
+
+            $addressObj->user_name      = $userName;
+            $addressObj->title          = $title;
+            $addressObj->address        = $address;
+            $addressObj->user_id        = $authUser->id;
+            $addressObj->phone_number   = $phoneNumber;
+            $addressObj->phone_number_2 = $phoneNumber2;
+            $addressObj->district_id    = $districtId;
+            $addressObj->thana          = $thana;
+            $addressObj->save();
+        }
+
         $address        = $addressObj->address;
         $deliveryCharge = District::where('id', $addressObj->district_id)->value('delivery_charge');
 
