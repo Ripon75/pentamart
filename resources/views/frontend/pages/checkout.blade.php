@@ -176,14 +176,14 @@
                                         @enderror
                                     </div>
 
-                                    <div style="width:97%" class="form-item">
+                                    {{-- <div style="width:97%" class="form-item">
                                         <button id="btn-address-create" type="button" class="btn btn-primary">
                                             Create
                                             <i class="loadding-icon hidden fa-solid fa-spinner fa-spin text-white"></i>
                                         </button>
-                                    </div>
+                                    </div> --}}
                                 </div>
-                            </form>
+                                {{-- </form> --}}
                         </div>
                     </div>
                 </div>
@@ -275,59 +275,59 @@
                             </div>
                         </div>
                     </section>
-                    <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
-                        @csrf
+                    {{-- <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
+                        @csrf --}}
 
-                        {{-- hidden field for shipping address --}}
-                        <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
+                    {{-- hidden field for shipping address --}}
+                    <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
 
-                        {{-- ===========Use coupon==================== --}}
-                        <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="header">
-                                    <h1 class="title">Have a coupon code</h1>
-                                </div>
-                                <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
-                                    <div id="apply-coupon-box">
-                                        <div class="flex space-x-2">
-                                            <div class="flex-1">
-                                                {{-- Hidden input for coupon code --}}
-                                                <input id="input-coupon-code-id" type="hidden" value=""
-                                                    name="coupon_id">
+                    {{-- ===========Use coupon==================== --}}
+                    <section class="mt-4">
+                        <div class="card border-2">
+                            <div class="header">
+                                <h1 class="title">Have a coupon code</h1>
+                            </div>
+                            <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
+                                <div id="apply-coupon-box">
+                                    <div class="flex space-x-2">
+                                        <div class="flex-1">
+                                            {{-- Hidden input for coupon code --}}
+                                            <input id="input-coupon-code-id" type="hidden" value=""
+                                                name="coupon_id">
 
-                                                <input id="input-coupon-code"
-                                                    class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0"
-                                                    placeholder="Enter coupon code">
-                                            </div>
-                                            <button id="btn-check-coupon" type="button"
-                                                class="btn btn-md btn-primary">Apply</button>
+                                            <input id="input-coupon-code"
+                                                class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0"
+                                                placeholder="Enter coupon code">
                                         </div>
+                                        <button id="btn-check-coupon" type="button"
+                                            class="btn btn-md btn-primary">Apply</button>
                                     </div>
-                                    <div id="active-coupon-box" class="hidden">
-                                        <div
-                                            class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
-                                            <span class="text-sm">
-                                                <span class="label-coupon-code font-medium ml-2 uppercase"></span>
-                                                &nbsp;Applied
-                                            </span>
-                                            <button type="button" id="btn-remove-coupon-code"
-                                                class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
-                                        </div>
+                                </div>
+                                <div id="active-coupon-box" class="hidden">
+                                    <div
+                                        class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
+                                        <span class="text-sm">
+                                            <span class="label-coupon-code font-medium ml-2 uppercase"></span>
+                                            &nbsp;Applied
+                                        </span>
+                                        <button type="button" id="btn-remove-coupon-code"
+                                            class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
                                     </div>
                                 </div>
                             </div>
-                        </section>
-                        {{-- ===============Checkout================== --}}
-                        <section class="mt-4">
-                            <div class="card border-2">
-                                <div class="px-4 py-2">
-                                    <div class="mt-4">
-                                        <label class="text-sm" for="">Write note here</label><br>
-                                        <textarea name="order_note"
-                                            class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
-                                    </div>
+                        </div>
+                    </section>
+                    {{-- ===============Checkout================== --}}
+                    <section class="mt-4">
+                        <div class="card border-2">
+                            <div class="px-4 py-2">
+                                <div class="mt-4">
+                                    <label class="text-sm" for="">Write note here</label><br>
+                                    <textarea name="order_note"
+                                        class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                                </div>
 
-                                    {{-- <div class="flex space-x-2 mt-2">
+                                {{-- <div class="flex space-x-2 mt-2">
                                         <input class="focus:ring-0" type="checkbox" value="1"
                                             name="terms_conditons">
                                         <span class="text-gray-500 text-xs">
@@ -338,45 +338,44 @@
                                     </div> --}}
 
 
-                                    <h2 class="mt-4">Payment Method : <span
-                                            style="color: rgb(0 121 140 / var(--tw-bg-opacity));">Cash
-                                            On
-                                            Delivery</span></h2>
-                                    <div style="background-color: #00ffff1f" class="mt-4 mb-4 p-2 rounded-sm">
-                                        <p class="text-xs mb-1">আপনার অবগতির জন্য জানানো যাচ্ছে যে,</p>
-                                        <p class="text-xs">১.ডেলিভারী চার্জ - </p>
-                                        <p class="indent-8 text-xs">ঢাকার মধ্যে - ৬০ টাকা</p>
-                                        <p class="indent-8 text-xs">ঢাকার বাইরে - ১০০ টাকা</p>
+                                <h2 class="mt-4">Payment Method : <span
+                                        style="color: rgb(0 121 140 / var(--tw-bg-opacity));">Cash
+                                        On
+                                        Delivery</span></h2>
+                                <div style="background-color: #00ffff1f" class="mt-4 mb-4 p-2 rounded-sm">
+                                    <p class="text-xs mb-1">আপনার অবগতির জন্য জানানো যাচ্ছে যে,</p>
+                                    <p class="text-xs">১.ডেলিভারী চার্জ - </p>
+                                    <p class="indent-8 text-xs">ঢাকার মধ্যে - ৬০ টাকা</p>
+                                    <p class="indent-8 text-xs">ঢাকার বাইরে - ১০০ টাকা</p>
 
-                                        <p class="text-xs mt-2 mb-2">
-                                            ২.প্রোডাক্ট রিটার্ন করলে ডেলিভারী চার্জ দিয়ে রিটার্ন করতে হবে।
-                                        </p>
+                                    <p class="text-xs mt-2 mb-2">
+                                        ২.প্রোডাক্ট রিটার্ন করলে ডেলিভারী চার্জ দিয়ে রিটার্ন করতে হবে।
+                                    </p>
 
-                                        <p class="text-xs mt-2 mb-2">
-                                            ৩.ডেলিভারী ম্যান থাকা অবস্থায় ভালভাবে চেক করে রিসিভ করবেন। <br>
-                                            অন্যথায় ডেলিভারী ম্যান চলে যাওয়ার পর কোন অভিযোগ গ্রহণ বা রিটার্ন নেওয়া হবে না।
-                                        </p class="text-sm">
+                                    <p class="text-xs mt-2 mb-2">
+                                        ৩.ডেলিভারী ম্যান থাকা অবস্থায় ভালভাবে চেক করে রিসিভ করবেন। <br>
+                                        অন্যথায় ডেলিভারী ম্যান চলে যাওয়ার পর কোন অভিযোগ গ্রহণ বা রিটার্ন নেওয়া হবে না।
+                                    </p class="text-sm">
 
-                                        <input class="focus:ring-0" type="checkbox" value="1"
-                                            name="terms_conditons">
-                                        <span class="text-gray-500 text-xs">
-                                            এই শর্তগুলো মেনে
-                                            <a href="{{ route('terms.and.condition') }}" class="text-primary"> অর্ডার
-                                                প্রদান করছি </a>,
-                                        </span>
-                                    </div>
+                                    <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
+                                    <span class="text-gray-500 text-xs">
+                                        এই শর্তগুলো মেনে
+                                        <a href="{{ route('terms.and.condition') }}" class="text-primary"> অর্ডার
+                                            প্রদান করছি </a>,
+                                    </span>
+                                </div>
 
 
-                                    <div class="mt-4">
-                                        <button type="button" id="btn-order-submit"
-                                            class="btn btn-md btn-block btn-primary">
-                                            <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
-                                            SUBMIT ORDER
-                                        </button>
-                                    </div>
+                                <div class="mt-4">
+                                    <button type="button" id="btn-order-submit"
+                                        class="btn btn-md btn-block btn-primary">
+                                        <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
+                                        SUBMIT ORDER
+                                    </button>
                                 </div>
                             </div>
-                        </section>
+                        </div>
+                    </section>
                     </form>
                 </div>
             </div>
