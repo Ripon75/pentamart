@@ -690,9 +690,14 @@
         var productCurrentStock = "{{ $product->current_stock }}";
 
         if (productCurrentStock == 0) {
+            // for add to cart
             btnAddToCart.prop("disabled", true);
             btnAddToCart.addClass('disabled:opacity-50');
             btnAddToCart.text('Out of Stock');
+            // for buy now button
+            btnBuyNow.prop("disabled", true);
+            btnBuyNow.addClass('disabled:opacity-50');
+            btnBuyNow.text('Out of Stock');
         }
 
         @auth

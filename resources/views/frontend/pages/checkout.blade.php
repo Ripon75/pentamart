@@ -16,8 +16,16 @@
                 <div class="col-span-1 sm:col-span-1 md:col-span-1 lg:col-span-3 xl:col-span-3 2xl:col-span-3">
                     <div class="card border-2 p-4">
                         <div class="">
-                            <div class="flex flex-col sm:flex-row md:flex-row space-x-2">
-                                @foreach ($userAddress as $uAddress)
+                            <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto lg:mb-6">
+                                <h2>Shipping Adress (Please fill out your information)</h2>
+                            </div>
+
+                            <form class="mb-0" id="order-submit-form" action="{{ route('my.order.store') }}"
+                                method="POST">
+                                @csrf
+
+                                <div class="flex flex-col sm:flex-row md:flex-row space-x-2">
+                                    @foreach ($userAddress as $uAddress)
                                     <div class="border p-2 text-sm w-full">
                                         <div class="flex items-center justify-between">
                                             <div>
@@ -39,32 +47,8 @@
                                         <div>{{ $uAddress->phone_number }}</div>
                                         <div>{{ $uAddress->phone_number_2 }}</div>
                                     </div>
-                                @endforeach
-                            </div>
-
-                            {{-- create new address --}}
-                            {{-- <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto">
-                                <button id="btn-create-new-address" class="btn btn-success btn-sm">Add new address</button>
-                            </div> --}}
-
-                            <div class="mt-2 md:mt-2 mb-2 text-base text-center font-bold mx-auto lg:mb-6">
-                                <h2>Shipping Adress (Please fill out your information)</h2>
-                            </div>
-
-                            <form class="mb-0" id="address-create-form" action="{{ route('my.address.store') }}"
-                                method="POST">
-                                @csrf
-
-
-                                {{-- <div class="grid grid-cols-1">
-                                    <div class="mt-4 mb-2">
-                                        <p>
-                                            Pick Up your parcel From :
-                                            <input type="radio" class="ml-2"><span class="ml-2">Home</span>
-                                            <input type="radio" class="ml-2"><span class="ml-2">Office</span>
-                                        </p>
-                                    </div>
-                                </div> --}}
+                                    @endforeach
+                                </div>
 
                                 <div class="grid grid-cols-1">
                                     <div style="width:97%" class="form-item">
@@ -82,9 +66,8 @@
                                             </select>
                                         </fieldset>
 
-
                                         @error('title')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -93,7 +76,8 @@
                                     <div style="width:97%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Name:</legend>
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Name:
+                                            </legend>
                                             <input class="form-input border-0 w-full form-otline-none" type="text"
                                                 name="user_name" />
                                         </fieldset>
@@ -104,34 +88,35 @@
                                     <div style="width:95%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Districs<span
-                                                    class="ml-1 text-red-500 font-medium">*</span></legend>
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">
+                                                Districs<span class="ml-1 text-red-500 font-medium">*</span></legend>
                                             <select id="input-address-district" name="district_id"
                                                 class="form-select form-input border-0 w-full form-otline-none">
                                                 @foreach ($districts as $district)
-                                                    <option value="{{ $district->id }}"
-                                                        {{ $district->id == 1 ? 'selected' : '' }}
-                                                        data-delivery-charge="{{ $district->delivery_charge }}">
-                                                        {{ $district->name }}
-                                                    </option>
+                                                <option value="{{ $district->id }}"
+                                                    {{ $district->id == 1 ? 'selected' : '' }}
+                                                    data-delivery-charge="{{ $district->delivery_charge }}">
+                                                    {{ $district->name }}
+                                                </option>
                                                 @endforeach
                                             </select>
                                         </fieldset>
 
                                         @error('district_id')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Thana:</legend>
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Thana:
+                                            </legend>
                                             <input class="form-input border-0 w-full form-otline-none" type="text"
                                                 name="thana" />
                                         </fieldset>
                                         @error('thana')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
@@ -144,20 +129,21 @@
                                                 name="phone_number" />
                                         </fieldset>
                                         @error('phone_number')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
 
                                     <div style="width:95%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Phone Number(2):
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Phone
+                                                Number(2):
                                             </legend>
                                             <input class="form-input border-0 w-full form-otline-none" type="text"
                                                 name="phone_number_2" />
                                         </fieldset>
                                         @error('phone_number_2')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
                                 </div>
@@ -166,24 +152,18 @@
                                     <div style="width:97%" class="form-item">
                                         <fieldset class="border first-letter:rounded shadow-md">
                                             <legend style="color: rgb(0 121 140 / var(--tw-bg-opacity));"
-                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Full Address:
+                                                class="text-sm font-semibold ml-2 md:ml-4 lg:ml-4 2xl:ml-4">Full
+                                                Address:
                                             </legend>
-                                            <textarea id="input-address" name="address" class="form-input border-0 w-full form-otline-none" rows="2"
+                                            <textarea id="input-address" name="address"
+                                                class="form-input border-0 w-full form-otline-none" rows="2"
                                                 cols="50"></textarea>
                                         </fieldset>
                                         @error('address')
-                                            <span class="form-helper error">{{ $message }}</span>
+                                        <span class="form-helper error">{{ $message }}</span>
                                         @enderror
                                     </div>
-
-                                    {{-- <div style="width:97%" class="form-item">
-                                        <button id="btn-address-create" type="button" class="btn btn-primary">
-                                            Create
-                                            <i class="loadding-icon hidden fa-solid fa-spinner fa-spin text-white"></i>
-                                        </button>
-                                    </div> --}}
                                 </div>
-                                {{-- </form> --}}
                         </div>
                     </div>
                 </div>
@@ -194,190 +174,159 @@
                         <div
                             class="flex flex-col space-y-1 p-2 border rounded-t font-medium text-sm sm:text-sm md:text-base">
 
-                            {{-- <div class="mb-4">
-                                @foreach ($products as $product)
-                                    <div class="flex justify-between border-b-2 capitalize">
-                                        <span>{{ $product->name }} x {{ $product->pivot->quantity ?? '' }}</span>
-                                        <span>{{ $currency }}
-                                            @php
-                                                $itemSellPrice = $product->pivot->item_mrp;
-                                                $itemQty = $product->pivot->quantity;
-                                                $itemTotalSellPrice = $itemSellPrice * $itemQty;
-                                            @endphp
-                                            <span class="ml-1">{{ number_format($itemTotalSellPrice, 2) }}</span>
-                                        </span>
-                                    </div>
-                                @endforeach
-                            </div> --}}
 
-                            <div class="flex justify-between capitalize">
-                                <span>Sub Total</span>
-                                <span>{{ $currency }}
-                                    <span class="ml-1">
-                                        {{ number_format($cart->getTotalMRP(), 2) }}
-                                    </span>
-                                </span>
-                            </div>
-
-                            {{-- Show total discount --}}
-                            <div class="flex justify-between capitalize">
-                                <span>Discount (-)</span>
-                                <span>{{ $currency }}
-                                    <input type="hidden" value="">
-                                    <span class="ml-1">
-                                        {{ number_format($cart->getTotalDiscount(), 2) }}
-                                    </span>
-                                </span>
-                            </div>
-
-                            {{-- Show sell price --}}
-                            <div class="flex justify-between capitalize">
-                                <span>Total Price(-Discount)</span>
-                                <span>{{ $currency }}
-                                    <span class="ml-1">
-                                        {{ number_format($cart->getTotalSellPrice(), 2) }}
-                                    </span>
-                                </span>
-                            </div>
-
-                            {{-- Show coupon discount --}}
-                            <div id="coupon-discount-div" class="hidden">
-                                <div class="flex justify-between capitalize">
-                                    <span>Coupon Discount (-)</span>
-                                    <span>{{ $currency }}
-                                        <input type="hidden" value="">
-                                        <span id="coupon-discount-label" class="ml-1">0.00</span>
-                                    </span>
-                                </div>
-                            </div>
-
-                            {{-- Show delivery charge --}}
-                            <div class="flex justify-between capitalize">
-                                <span>Delivery Charge (+)</span>
-                                <span>{{ $currency }}
-                                    <span id="delivery-charge-label" class="ml-1">
-                                        {{ number_format($defaultDeliveryCharge, 2) }}
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                        {{-- Show payable price --}}
-                        <div class="p-2 rounded mx-2 mb-2">
-                            <div class="flex justify-between text-black font-medium capitalize">
-                                <span class="text-base sm:text-base md:text-lg">Total</span>
-                                <span class="text-base sm:text-base md:text-lg font-medium">
-                                    <span>{{ $currency }}
-                                        <span id="total-with-delivery-charge-label" class="ml-1">
-                                            {{ number_format($cart->getTotalSellPrice() + $defaultDeliveryCharge, 2) }}
-                                        </span>
-                                    </span>
-                                </span>
-                            </div>
-                        </div>
-                    </section>
-                    {{-- <form action="{{ route('my.order.store') }}" method="POST" id="form-checkout">
-                        @csrf --}}
-
-                    {{-- hidden field for shipping address --}}
-                    <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
-
-                    {{-- ===========Use coupon==================== --}}
-                    <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="header">
-                                <h1 class="title">Have a coupon code</h1>
-                            </div>
-                            <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
-                                <div id="apply-coupon-box">
-                                    <div class="flex space-x-2">
-                                        <div class="flex-1">
-                                            {{-- Hidden input for coupon code --}}
-                                            <input id="input-coupon-code-id" type="hidden" value=""
-                                                name="coupon_id">
-
-                                            <input id="input-coupon-code"
-                                                class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0"
-                                                placeholder="Enter coupon code">
-                                        </div>
-                                        <button id="btn-check-coupon" type="button"
-                                            class="btn btn-md btn-primary">Apply</button>
-                                    </div>
-                                </div>
-                                <div id="active-coupon-box" class="hidden">
-                                    <div
-                                        class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
-                                        <span class="text-sm">
-                                            <span class="label-coupon-code font-medium ml-2 uppercase"></span>
-                                            &nbsp;Applied
-                                        </span>
-                                        <button type="button" id="btn-remove-coupon-code"
-                                            class="p-1 text-red-600 text-sm" title="Remove coupon">Remove</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    {{-- ===============Checkout================== --}}
-                    <section class="mt-4">
-                        <div class="card border-2">
-                            <div class="px-4 py-2">
-                                <div class="mt-4">
-                                    <label class="text-sm" for="">Write note here</label><br>
-                                    <textarea name="order_note"
-                                        class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
-                                </div>
-
-                                {{-- <div class="flex space-x-2 mt-2">
-                                        <input class="focus:ring-0" type="checkbox" value="1"
-                                            name="terms_conditons">
-                                        <span class="text-gray-500 text-xs">
-                                            I agree with
-                                            <a href="{{ route('terms.and.condition') }}" class="text-primary">Terms and
-                                                Conditions</a>,
-                                        </span>
-                                    </div> --}}
-
-
-                                <h2 class="mt-4">Payment Method : <span
-                                        style="color: rgb(0 121 140 / var(--tw-bg-opacity));">Cash
-                                        On
-                                        Delivery</span></h2>
-                                <div style="background-color: #00ffff1f" class="mt-4 mb-4 p-2 rounded-sm">
-                                    <p class="text-xs mb-1">আপনার অবগতির জন্য জানানো যাচ্ছে যে,</p>
-                                    <p class="text-xs">১.ডেলিভারী চার্জ - </p>
-                                    <p class="indent-8 text-xs">ঢাকার মধ্যে - ৬০ টাকা</p>
-                                    <p class="indent-8 text-xs">ঢাকার বাইরে - ১০০ টাকা</p>
-
-                                    <p class="text-xs mt-2 mb-2">
-                                        ২.প্রোডাক্ট রিটার্ন করলে ডেলিভারী চার্জ দিয়ে রিটার্ন করতে হবে।
-                                    </p>
-
-                                    <p class="text-xs mt-2 mb-2">
-                                        ৩.ডেলিভারী ম্যান থাকা অবস্থায় ভালভাবে চেক করে রিসিভ করবেন। <br>
-                                        অন্যথায় ডেলিভারী ম্যান চলে যাওয়ার পর কোন অভিযোগ গ্রহণ বা রিটার্ন নেওয়া হবে না।
-                                    </p class="text-sm">
-
-                                    <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
-                                    <span class="text-gray-500 text-xs">
-                                        এই শর্তগুলো মেনে
-                                        <a href="{{ route('terms.and.condition') }}" class="text-primary"> অর্ডার
-                                            প্রদান করছি </a>,
-                                    </span>
-                                </div>
-
-
-                                <div class="mt-4">
-                                    <button type="button" id="btn-order-submit"
-                                        class="btn btn-md btn-block btn-primary">
-                                        <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
-                                        SUBMIT ORDER
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    </form>
+                <div class="flex justify-between capitalize">
+                    <span>Sub Total</span>
+                    <span>{{ $currency }}
+                        <span class="ml-1">
+                            {{ number_format($cart->getTotalMRP(), 2) }}
+                        </span>
+                    </span>
                 </div>
+
+                {{-- Show total discount --}}
+                <div class="flex justify-between capitalize">
+                    <span>Discount (-)</span>
+                    <span>{{ $currency }}
+                        <input type="hidden" value="">
+                        <span class="ml-1">
+                            {{ number_format($cart->getTotalDiscount(), 2) }}
+                        </span>
+                    </span>
+                </div>
+
+                {{-- Show sell price --}}
+                <div class="flex justify-between capitalize">
+                    <span>Total Price(-Discount)</span>
+                    <span>{{ $currency }}
+                        <span class="ml-1">
+                            {{ number_format($cart->getTotalSellPrice(), 2) }}
+                        </span>
+                    </span>
+                </div>
+
+                {{-- Show coupon discount --}}
+                <div id="coupon-discount-div" class="hidden">
+                    <div class="flex justify-between capitalize">
+                        <span>Coupon Discount (-)</span>
+                        <span>{{ $currency }}
+                            <input type="hidden" value="">
+                            <span id="coupon-discount-label" class="ml-1">0.00</span>
+                        </span>
+                    </div>
+                </div>
+
+                {{-- Show delivery charge --}}
+                <div class="flex justify-between capitalize">
+                    <span>Delivery Charge (+)</span>
+                    <span>{{ $currency }}
+                        <span id="delivery-charge-label" class="ml-1">
+                            {{ number_format($defaultDeliveryCharge, 2) }}
+                        </span>
+                    </span>
+                </div>
+            </div>
+            {{-- Show payable price --}}
+            <div class="p-2 rounded mx-2 mb-2">
+                <div class="flex justify-between text-black font-medium capitalize">
+                    <span class="text-base sm:text-base md:text-lg">Total</span>
+                    <span class="text-base sm:text-base md:text-lg font-medium">
+                        <span>{{ $currency }}
+                            <span id="total-with-delivery-charge-label" class="ml-1">
+                                {{ number_format($cart->getTotalSellPrice() + $defaultDeliveryCharge, 2) }}
+                            </span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+            </section>
+
+            {{-- hidden field for shipping address --}}
+            <input id="input-shipping-address-id" type="hidden" name="address_id" value="">
+
+            {{-- ===========Use coupon==================== --}}
+            <section class="mt-4">
+                <div class="card border-2">
+                    <div class="header">
+                        <h1 class="title">Have a coupon code</h1>
+                    </div>
+                    <div class="px-2 sm:px-2 md:px-2 xl:px-4 py-4">
+                        <div id="apply-coupon-box">
+                            <div class="flex space-x-2">
+                                <div class="flex-1">
+                                    {{-- Hidden input for coupon code --}}
+                                    <input id="input-coupon-code-id" type="hidden" value="" name="coupon_id">
+
+                                    <input id="input-coupon-code"
+                                        class="w-full focus:outline-none focus:ring-0 focus:border-primary-light text-gray-500 border-gray-500 p-1.5 px-4 rounded border placeholder:text-sm m-0"
+                                        placeholder="Enter coupon code">
+                                </div>
+                                <button id="btn-check-coupon" type="button"
+                                    class="btn btn-md btn-primary">Apply</button>
+                            </div>
+                        </div>
+                        <div id="active-coupon-box" class="hidden">
+                            <div
+                                class="bg-green-100 rounded-md p-1 border border-green-600 text-green-600 flex justify-between items-center">
+                                <span class="text-sm">
+                                    <span class="label-coupon-code font-medium ml-2 uppercase"></span>
+                                    &nbsp;Applied
+                                </span>
+                                <button type="button" id="btn-remove-coupon-code" class="p-1 text-red-600 text-sm"
+                                    title="Remove coupon">Remove</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            {{-- ===============Checkout================== --}}
+            <section class="mt-4">
+                <div class="card border-2">
+                    <div class="px-4 py-2">
+                        <div class="mt-4">
+                            <label class="text-sm" for="">Write note here</label><br>
+                            <textarea name="order_note"
+                                class="w-full mt-1 focus:outline-none focus:ring-0 text-sm text-gray-500 placeholder:text-gray-400 placeholder:text-sm border-gray-500 rounded"></textarea>
+                        </div>
+                        <h2 class="mt-4">Payment Method : <span
+                                style="color: rgb(0 121 140 / var(--tw-bg-opacity));">Cash
+                                On
+                                Delivery</span></h2>
+                        <div style="background-color: #00ffff1f" class="mt-4 mb-4 p-2 rounded-sm">
+                            <p class="text-xs mb-1">আপনার অবগতির জন্য জানানো যাচ্ছে যে,</p>
+                            <p class="text-xs">১.ডেলিভারী চার্জ - </p>
+                            <p class="indent-8 text-xs">ঢাকার মধ্যে - ৬০ টাকা</p>
+                            <p class="indent-8 text-xs">ঢাকার বাইরে - ১০০ টাকা</p>
+
+                            <p class="text-xs mt-2 mb-2">
+                                ২.প্রোডাক্ট রিটার্ন করলে ডেলিভারী চার্জ দিয়ে রিটার্ন করতে হবে।
+                            </p>
+
+                            <p class="text-xs mt-2 mb-2">
+                                ৩.ডেলিভারী ম্যান থাকা অবস্থায় ভালভাবে চেক করে রিসিভ করবেন। <br>
+                                অন্যথায় ডেলিভারী ম্যান চলে যাওয়ার পর কোন অভিযোগ গ্রহণ বা রিটার্ন নেওয়া হবে না।
+                            </p class="text-sm">
+
+                            <input class="focus:ring-0" type="checkbox" value="1" name="terms_conditons">
+                            <span class="text-gray-500 text-xs">
+                                এই শর্তগুলো মেনে
+                                <a href="{{ route('terms.and.condition') }}" class="text-primary"> অর্ডার
+                                    প্রদান করছি </a>,
+                            </span>
+                        </div>
+
+
+                        <div class="mt-4">
+                            <button type="button" id="btn-order-submit" class="btn btn-md btn-block btn-primary">
+                                <i class="loadding-icon hidden fa-solid fa-spinner fa-spin mr-2"></i>
+                                SUBMIT ORDER
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            </form>
+            </div>
             </div>
         </section>
     @else
@@ -406,18 +355,17 @@
 
 @push('scripts')
     <script>
-        var iconLoadding = $('.loadding-icon').hide();
-        var btnOrderSubmit = $('#btn-order-submit');
-        var formCheckOut = $('#form-checkout');
-        var btnCreateNewAddress = $('#btn-create-new-address');
-        var cartTotalSellPrice = "{{ $cart->getTotalSellPrice() }}";
-        var deliveryCharge = "{{ $defaultDeliveryCharge }}";
-        var deliveryChargeLabel = $('#delivery-charge-label');
+        var iconLoadding                 = $('.loadding-icon').hide();
+        var btnOrderSubmit               = $('#btn-order-submit');
+        var orderSubmitForm              = $('#order-submit-form');
+        var btnCreateNewAddress          = $('#btn-create-new-address');
+        var cartTotalSellPrice           = "{{ $cart->getTotalSellPrice() }}";
+        var deliveryCharge               = "{{ $defaultDeliveryCharge }}";
+        var deliveryChargeLabel          = $('#delivery-charge-label');
         var totalWithDeliveryChargeLabel = $('#total-with-delivery-charge-label');
 
         // For address create
         var addressCreateForm = $('#address-create-form');
-        var btnAddressCreate = $('#btn-address-create');
         var inputShippingAddress = $('.input-shipping-address');
         var inputShippingAddressId = $('#input-shipping-address-id');
         var inputAddressDistrict = $('#input-address-district');
@@ -443,43 +391,7 @@
                 totalPriceCalculation();
             });
 
-            // create user address
-            btnAddressCreate.click(function() {
-                var inputAddressTitle = $('#input-address-title');
-                var inputAddress = $("#input-address");
-                var inputThana = $("input[name=thana]");
-                var inputPhoneNumber = $("input[name=phone_number]");
-
-                if (!inputAddressTitle.val()) {
-                    inputAddressTitle.focus();
-                    return false;
-                }
-
-                if (!inputAddressDistrict.val()) {
-                    inputAddressDistrict.focus();
-                    return false;
-                }
-
-                if (!inputThana.val()) {
-                    inputThana.focus();
-                    return false;
-                }
-
-                if (!inputPhoneNumber.val()) {
-                    inputPhoneNumber.focus();
-                    return false;
-                }
-
-                if (!inputAddress.val()) {
-                    inputAddress.focus();
-                    return false;
-                }
-
-                addressCreateForm.submit();
-            });
-
             inputAddressDistrict.on('change', function() {
-                // Get the selected option
                 var selectedOption = $(this).find(":selected");
                 // Get the value of the data-delivery-charge attribute
                 deliveryCharge = selectedOption.data("delivery-charge");
@@ -487,22 +399,21 @@
             });
 
             btnOrderSubmit.click(function() {
-                var addressId = inputShippingAddressId.val();
-                var checked = $('input[name=terms_conditons]:checked').val();
+                try {
+                    var checked = $('input[name=terms_conditons]:checked').val();
 
-                if (!addressId) {
-                    __showNotification('error', 'Please select shipping address');
-                    inputShippingAddress.focus();
-                    return false;
+                    if (!checked) {
+                        __showNotification('error', 'Please check terms and conditions');
+                        return false;
+                    }
+
+                    $(this).find(iconLoadding).show();
+                    orderSubmitForm.submit();
+                } catch (error) {
+                    console.log(error);
+                } finally {
+                    $(this).find(iconLoadding).hide();
                 }
-
-                if (!checked) {
-                    __showNotification('error', 'Please check terms and conditions');
-                    return false;
-                }
-
-                $(this).find(iconLoadding).show();
-                formCheckOut.submit();
             });
 
             inputCouponCode.on("keypress", function(e) {
