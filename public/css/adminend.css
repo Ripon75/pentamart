@@ -10357,6 +10357,9 @@ textarea.form-control.is-invalid{
 .-ml-px{
   margin-left: -1px;
 }
+.mb-6{
+  margin-bottom: 1.5rem;
+}
 .block{
   display: block;
 }
