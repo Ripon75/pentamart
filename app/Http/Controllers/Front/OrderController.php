@@ -46,7 +46,7 @@ class OrderController extends Controller
             'district_id'    => ['required_if:address_id,null', "integer"],
             'thana'          => ['required_if:address_id,null', "max:20"],
             'address'        => ['required_if:address_id,null', "max:500"],
-            'phone_number'   => ['required_if:address_id,null', "declined_if:required_if,regex:/^[0-9]+$/", "declined_if:required_if,digits:11"],
+            'phone_number'   => ['required_if:address_id,null'],
             'phone_number_2' => ['nullable', 'regex:/^[0-9]+$/', 'digits:11']
         ],
         [
