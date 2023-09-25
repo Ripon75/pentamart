@@ -437,7 +437,7 @@
                     @foreach ($relatedProducts as $rProduct)
                         <div style="margin: 5px 5px 5px;">
                             <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
-                                <img class="w-full h-[136px]" src="{{ $rProduct->img_src }}" alt="no images">
+                                <img class="w-full h-[155px]" src="{{ $rProduct->img_src }}" alt="no images">
                             </a>
 
                             <div class="p-2 h-[120px]" style="background-color: #F9FAFB;">
@@ -509,7 +509,7 @@
                     @foreach ($relatedProducts as $rProduct)
                         <div class="w-[150px] m-2 shadow-md relative md:w-[250px] lg:w-[250px] 2xl:w-[250px]">
                             <a href="{{ route('products.show', [$rProduct->id, $rProduct->slug]) }}">
-                                <img class="w-full h-[150px] md:h-[205px] lg:h-[205px]" src="{{ $rProduct->img_src }}"
+                                <img class="w-full h-[155px] md:h-[205px] lg:h-[205px]" src="{{ $rProduct->img_src }}"
                                     alt="no images">
                             </a>
 

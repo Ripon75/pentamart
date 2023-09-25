@@ -200,7 +200,7 @@
                             if (res.data.msg.phone_number) {
                                 $("input[name=phone_number]").focus();
                                 $('#show-phone-number-error-msg').text(res.data.msg.phone_number[
-                                0]);
+                                    0]);
                                 return false;
                             } else if (res.data.msg.email) {
                                 $("input[name=email]").focus();

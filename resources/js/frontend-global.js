@@ -71,10 +71,33 @@ window.__showNotification = function (
     timer = 10000,
     layout = "top-end"
 ) {
+    // Swal.fire({
+    //     icon: type,
+    //     title: message,
+    //     // text: "Something went wrong!",
+    //     footer: '<a href="">Login Here</a>',
+    //     position: layout,
+    // });
+
+    //     Swal.fire({
+    //         title: "Custom width, padding, color, background.",
+    //         width: 600,
+    //         padding: "3em",
+    //         color: "#716add",
+    //         background: "#fff url(/images/trees.png)",
+    //         backdrop: `
+    //     rgba(0,0,123,0.4)
+    //     url("/images/nyan-cat.gif")
+    //     left top
+    //     no-repeat
+    //   `,
+    //     });
+
     const Toast = Swal.mixin({
         toast: true,
         position: layout,
         showConfirmButton: false,
+        footer: '<a class="btn btn-sm btn-primary" href="/login">Login Here</a>',
         timer: timer,
         timerProgressBar: true,
         didOpen: (toast) => {

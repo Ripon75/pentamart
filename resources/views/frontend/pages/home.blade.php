@@ -103,7 +103,8 @@
 
                 @foreach ($topBrands as $brand)
                     <div>
-                        <img class="h-[195px] w-[85%] block mx-auto rounded" src="{{ $brand->img_src }}" alt="no images">
+                        <img style="width:85%;" class="h-[195px] block mx-auto rounded" src="{{ $brand->img_src }}"
+                            alt="no images">
                         <div class="mt-2.5 w-[90px] mx-auto">
                             <a href="{{ route('brand.page', [$brand->id, $brand->slug]) }}"
                                 class="btn btn-sm btn-primary rounded text-sm">Book Now</a>
