@@ -41,41 +41,4 @@ class Coupon extends Model
         'updated_at'      => 'datetime:Y-m-d H:i:s',
         'deleted_at'      => 'datetime:Y-m-d H:i:s'
     ];
-
-    public function isActive($code)
-    {
-        if (!$code) {
-            return false;
-        }
-
-        $now    = Carbon::now();
-        $coupon = Self::where('code', $code)
-            ->where('status', 'active')
-            ->whereDate('started_at', '<=', $now )
-            ->whereDate('ended_at', '>=', $now)->first();
-
-        if (!$coupon) {
-            return false;
-        }
-
-        return $coupon;
-    }
-
-    public function isValidForCart($cart, $code)
-    {
-        $coupon = $this->isActive($code);
-
-        if (!$coupon) {
-            return Utility::sendError('Coupon code is not valid');
-        }
-
-        $minCartValue    = $coupon->min_cart_amount;
-        $cartTotalAmount = $cart->getTotalSellPrice();
-        if ($cartTotalAmount < $minCartValue) {
-            $msg = "Minimum cart amount without delivery charge {$minCartValue} is required";
-            return Utility::sendError($msg);
-        }
-
-        return $coupon;
-    }
 }

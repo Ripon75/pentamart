@@ -372,16 +372,16 @@
         var inputAddressDistrict = $('#input-address-district');
 
         // Coupon code
-        var couponDiscount = 0;
-        var inputCouponCode = $('#input-coupon-code');
-        var btnApplyCoupon = $('#btn-check-coupon');
-        var applyCouponBox = $('#apply-coupon-box');
-        var activeCouponBox = $('#active-coupon-box');
-        var labelCouponCode = $('.label-coupon-code');
+        var couponDiscount      = 0;
+        var inputCouponCode     = $('#input-coupon-code');
+        var btnApplyCoupon      = $('#btn-check-coupon');
+        var applyCouponBox      = $('#apply-coupon-box');
+        var activeCouponBox     = $('#active-coupon-box');
+        var labelCouponCode     = $('.label-coupon-code');
         var btnRemoveCouponCode = $('#btn-remove-coupon-code');
-        var inputCouponCodeId = $('#input-coupon-code-id');
+        var inputCouponCodeId   = $('#input-coupon-code-id');
         var couponDiscountLabel = $('#coupon-discount-label');
-        var couponDiscountDiv = $('#coupon-discount-div');
+        var couponDiscountDiv   = $('#coupon-discount-div');
 
         $(function() {
             inputShippingAddress.click(function() {
@@ -451,6 +451,8 @@
                     if (response.data.success) {
                         var coupon = response.data.result;
                         calculateCouponValue(coupon);
+                    } else {
+                        __showNotification('error', response.data.msg);
                     }
                 })
                 .catch((error) => {

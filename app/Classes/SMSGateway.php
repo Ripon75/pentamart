@@ -27,15 +27,15 @@ class SMSGateway
 
     public function sendDeliveryDate($phoneNumber, $date)
     {
-        $appName      = config('app.name');
-        $now          = Carbon::now();
-        $defatultDate = $now->addDays(2);
-        $date         = $date ? $date : $defatultDate;
-        $date1         = Carbon::parse($date);
-        $date2         = Carbon::parse($date);
-        $date2         = $date2->format("Y-m-d");
-        $dayName      = $date1->format('l');
-        $message = "Your {$appName} delivery date within {$date2} ({$dayName}).";
+        $appName     = config('app.name');
+        $now         = Carbon::now();
+        $defaultDate = $now->addDays(2);
+        $date        = $date ? $date : $defaultDate;
+        $date1       = Carbon::parse($date);
+        $date2       = Carbon::parse($date);
+        $date2       = $date2->format("Y-m-d");
+        $dayName     = $date1->format('l');
+        $message     = "Your {$appName} delivery date within {$date2} ({$dayName}).";
 
         return $this->send($phoneNumber, $message);
     }
@@ -43,8 +43,8 @@ class SMSGateway
     public function sendOrderSubmitSMS($phoneNumber)
     {
         // $now         = Carbon::now();
-        // $deliveryday = $now->addDays(2);
-        // $deliveryday = $deliveryday->format('l');
+        // $deliveryDay = $now->addDays(2);
+        // $deliveryDay = $deliveryDay->format('l');
         $message = "Your pentamart order is submitted. Thank You!.";
         return $this->send($phoneNumber, $message);
     }
@@ -62,7 +62,6 @@ class SMSGateway
             'sender_id' => $this->senderId,
             'message'   => $message,
         ];
-
 
         $response = Http::withHeaders($headers)->post($this->endPoint, $data);
 
