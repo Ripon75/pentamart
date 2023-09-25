@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Front;
 
+use Carbon\Carbon;
 use App\Models\Cart;
 use App\Models\Coupon;
 use Illuminate\Support\Str;
@@ -16,15 +17,29 @@ class CouponController extends Controller
         $couponCode = Str::of($couponCode)->trim();
 
         if (!$couponCode) {
-            return false;
+            return $this->sendError('Coupon code not found');
         }
 
         $cartObj = new Cart();
         $cart    = $cartObj->getCurrentCustomerCart();
 
-        $couponObj = new Coupon();
-        $res = $couponObj->isValidForCart($cart, $couponCode);
+        $now    = Carbon::now();
+        $coupon = Coupon::where('code', $couponCode)
+            ->where('status', 'active')
+            ->whereDate('started_at', '<=', $now)
+            ->whereDate('ended_at', '>=', $now)->first();
 
-        return $this->sendResponse($res, 'Coupon information');
+        if (!$coupon) {
+            return $this->sendError('Invalid coupon code');
+        }
+
+        $minCartValue    = $coupon->min_cart_amount;
+        $cartTotalAmount = $cart->getTotalSellPrice();
+        if ($cartTotalAmount < $minCartValue) {
+            $msg = "Minimum cart amount without delivery charge {$minCartValue} is required";
+            return $this->sendError($msg);
+        }
+
+        return $this->sendResponse($coupon, 'Coupon information');
     }
 }
