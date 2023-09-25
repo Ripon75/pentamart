@@ -10155,6 +10155,9 @@ textarea.form-control.is-invalid{
 .left-2{
   left: 0.5rem;
 }
+.right-2{
+  right: 0.5rem;
+}
 .left-\[23\%\]{
   left: 23%;
 }
@@ -10318,14 +10321,14 @@ textarea.form-control.is-invalid{
 .mb-4{
   margin-bottom: 1rem;
 }
+.mb-5{
+  margin-bottom: 1.25rem;
+}
 .mb-1{
   margin-bottom: 0.25rem;
 }
 .mt-\[100px\]{
   margin-top: 100px;
-}
-.mb-5{
-  margin-bottom: 1.25rem;
 }
 .mt-2\.5{
   margin-top: 0.625rem;
@@ -10926,9 +10929,6 @@ textarea.form-control.is-invalid{
 }
 .border-l{
   border-left-width: 1px;
-}
-.border-b-2{
-  border-bottom-width: 2px;
 }
 .border-solid{
   border-style: solid;

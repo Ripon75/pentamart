@@ -26,7 +26,7 @@
 
                     <div class="p-3">
                         <div class="flex justify-items-center p-1">
-                            <p>
+                            <p class="flex items-center">
                                 <i class="fa-solid fa-location-dot text-white"></i>
                             </p>
                             <p class="text-white ml-2">
@@ -35,7 +35,7 @@
                         </div>
 
                         <div class="flex justify-items-center p-1">
-                            <p>
+                            <p class="flex items-center">
                                 <i class="fa-solid fa-phone text-white"></i>
                             </p>
                             <p class="text-white ml-2">
@@ -44,7 +44,7 @@
                         </div>
 
                         <div class="flex justify-items-center p-1">
-                            <p>
+                            <p class="flex items-center">
                                 <i class="fa-regular fa-envelope text-white"></i>
                             </p>
                             <p class="text-white ml-2">

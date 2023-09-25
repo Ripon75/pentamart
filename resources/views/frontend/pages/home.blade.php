@@ -17,7 +17,7 @@
         width: 100%;
         /* Set a maximum width for the slider */
         height: 250px;
-        margin: 5px 5px 5px 5px;
+        margin: 5px 5px 5px 0px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -115,10 +115,10 @@
 
             <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                 class="absolute left-2 border-0 rounded cursor-pointer md:left-16 lg:left-16 prev-button2">
-                <i class="fa-solid fa-arrow-left"></i>
+                <i class="fa-solid fa-arrow-left-long"></i>
             </button>
             <button style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                class="absolute right-0 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button2">
+                class="absolute right-2 border-0 rounded cursor-pointer md:right-16 lg:right-16 next-button2">
                 <i class="fa-solid fa-arrow-right-long"></i>
             </button>
         </div>
@@ -190,11 +190,11 @@
                 <button
                     style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
                     class="absolute left-2 border-0 rounded cursor-pointer md:left-12 lg:left-16 prev-button1">
-                    <i class="fa-solid fa-arrow-left"></i>
+                    <i class="fa-solid fa-arrow-left-long"></i>
                 </button>
                 <button
                     style="top: 55%;background-color: #333;color: #fff;padding: 7px 15px;transition: background-color 0.3s;"
-                    class="absolute right-0 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
+                    class="absolute right-2 border-0 rounded cursor-pointer md:right-12 lg:right-16 next-button1">
                     <i class="fa-solid fa-arrow-right-long"></i>
                 </button>
             </div>

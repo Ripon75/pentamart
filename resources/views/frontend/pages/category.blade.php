@@ -17,19 +17,16 @@
                         @if (count($brands))
                             <div class="filter-box">
                                 <div class="box-wrapper">
-                                <span class="box-title">Brand</span>
+                                    <span class="box-title">Brand</span>
                                 </div>
                                 <div class="filter-list">
                                     @foreach ($brands as $brand)
-                                    <label class="item">
-                                        <input
-                                            type="checkbox"
-                                            name="brands[]"
-                                            value="{{ $brand->id }}"
-                                            class="focus:ring-0 input-checkbox"
-                                            {{ in_array($brand->id, $filterBrandIds) ? 'checked' : '' }}/>
-                                        <span class="ml-3 text-sm">{{ $brand->name }}</span>
-                                    </label>
+                                        <label class="item">
+                                            <input type="checkbox" name="brands[]" value="{{ $brand->id }}"
+                                                class="focus:ring-0 input-checkbox"
+                                                {{ in_array($brand->id, $filterBrandIds) ? 'checked' : '' }} />
+                                            <span class="ml-3 text-sm">{{ $brand->name }}</span>
+                                        </label>
                                     @endforeach
                                 </div>
                             </div>
@@ -42,11 +39,12 @@
                     <div class="">
                         {{-- =====product thumb========== --}}
                         <div class="">
-                            <div class="product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-2 lg:gap-2 xl:gap-2 2xl:gap-2">
+                            <div
+                                class="product-grid grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-2 sm:gap-2 md:gap-2 lg:gap-2 xl:gap-2 2xl:gap-2">
                                 @foreach ($products as $product)
-                                <div>
-                                    <x-frontend.product-thumb type="default" :product="$product" />
-                                </div>
+                                    <div>
+                                        <x-frontend.product-thumb type="default" :product="$product" />
+                                    </div>
                                 @endforeach
                             </div>
                         </div>
@@ -69,63 +67,62 @@
 
 @once
     @push('scripts')
-    <script>
-        // Category Menu for Medicine Corner
-          function toggleFilter() {
-            var filterCategory = document.getElementById('category-filter');
-            if(filterCategory.style.display == "block") { // if is menuBox displayed, hide it
-                filterCategory.style.display = "none";
+        <script>
+            // Category Menu for Medicine Corner
+            function toggleFilter() {
+                var filterCategory = document.getElementById('category-filter');
+                if (filterCategory.style.display == "block") { // if is menuBox displayed, hide it
+                    filterCategory.style.display = "none";
+                } else { // if is menuBox hidden, display it
+                    filterCategory.style.display = "block";
+                }
+            };
+
+            var searchKey = '{{ request()->get('search_key') ?? '' }}';
+            var route = "{{ route('category.page', $id) }}?page={{ $products->currentPage() }}";
+
+            if (searchKey) {
+                route = `${route}&search_key=${searchKey}`;
             }
-            else { // if is menuBox hidden, display it
-                filterCategory.style.display = "block";
-            }
-        };
 
-        var searchKey = '{{ request()->get('search_key') ?? '' }}';
-        var route     = "{{ route('category.page', $id) }}?page={{ $products->currentPage() }}";
+            // const filterInputOrder     = $("#input-short-order");
+            const filterInputBrands = $('input[name="brands[]"]');
 
-        if (searchKey) {
-            route = `${route}&search_key=${searchKey}`;
-        }
+            $(function() {
+                // filterInputOrder.on("change", (event) => {
+                //     filterProducts(route);
+                // });
 
-        // const filterInputOrder     = $("#input-short-order");
-        const filterInputBrands = $('input[name="brands[]"]');
-
-        $(function() {
-            // filterInputOrder.on("change", (event) => {
-            //     filterProducts(route);
-            // });
-
-            filterInputBrands.on("click", (event) => {
-                filterProducts(route);
+                filterInputBrands.on("click", (event) => {
+                    filterProducts(route);
+                });
             });
-        });
 
-        function filterProducts(route) {
-            var selectedFilterBrandIds = getFilterBrandIds();
-            // var order = filterInputOrder.val();
+            function filterProducts(route) {
+                var selectedFilterBrandIds = getFilterBrandIds();
+                // var order = filterInputOrder.val();
 
-            // if (order) {
-            //     route = `${route}&order=${order}`;
-            // }
-            if (selectedFilterBrandIds) {
-                route = `${route}&filter_brand_ids=${selectedFilterBrandIds}`;
+                // if (order) {
+                //     route = `${route}&order=${order}`;
+                // }
+                if (selectedFilterBrandIds) {
+                    route = `${route}&filter_brand_ids=${selectedFilterBrandIds}`;
+                }
+                window.location.href = route;
             }
-            window.location.href = route;
-        }
 
-        function getFilterBrandIds() {
-            var selectedBrandIds = null;
-            $.each($('input[name="brands[]"]:checked'), function() {
-                const id = $(this).val();
-                selectedBrandIds = selectedBrandIds ? `${selectedBrandIds},${id}` : id ;
-            });
-            return selectedBrandIds;
-        }
-    </script>
+            function getFilterBrandIds() {
+                var selectedBrandIds = null;
+                $.each($('input[name="brands[]"]:checked'), function() {
+                    const id = $(this).val();
+                    selectedBrandIds = selectedBrandIds ? `${selectedBrandIds},${id}` : id;
+                });
+                return selectedBrandIds;
+            }
+        </script>
 
-    {{-- On scroll product load --}}
-    {{-- <script>
+        {{-- On scroll product load --}}
+        {{-- <script>
         var onScrollProductRoute = "{{ route('category.page', [$slug, 'true']) }}";
         var order = "{{ request()->query('order') }}";
         var currentPage = {{ $products->currentPage() }};

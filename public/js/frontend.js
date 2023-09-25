@@ -2146,13 +2146,13 @@ window.__debounce = function (func, wait, immediate) {
 
 
 window.__cartItemCount = function () {
-  axios.get('/cart/items/count').then(function (response) {
+  axios.get("/cart/items/count").then(function (response) {
     cartCount.text(response.data);
 
     if (cartCount.text() > 0) {
-      $('.cart-dev').show();
+      $(".cart-dev").show();
     } else {
-      $('.cart-dev').hide();
+      $(".cart-dev").hide();
     }
   })["catch"](function (error) {
     console.log(error);
@@ -2177,8 +2177,8 @@ window.__redirectPreviousURL = function () {
 };
 
 window.__showNotification = function (type, message) {
-  var timer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 3000;
-  var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'top-end';
+  var timer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10000;
+  var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "top-end";
   var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().mixin({
     toast: true,
     position: layout,
@@ -2186,8 +2186,8 @@ window.__showNotification = function (type, message) {
     timer: timer,
     timerProgressBar: true,
     didOpen: function didOpen(toast) {
-      toast.addEventListener('mouseenter', (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().stopTimer));
-      toast.addEventListener('mouseleave', (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().resumeTimer));
+      toast.addEventListener("mouseenter", (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().stopTimer));
+      toast.addEventListener("mouseleave", (sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().resumeTimer));
     }
   });
   Toast.fire({
