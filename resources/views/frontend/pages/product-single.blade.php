@@ -717,7 +717,7 @@
             // Add product to cart
             btnAddToCart.click(function() {
                 if (!authUserId) {
-                    __showNotification('error', 'Please login to continue');
+                    __showLoginNotification('error', 'Please login to continue');
                     return false;
                 }
 
@@ -742,7 +742,7 @@
 
             $('#btn-buy-now').click(function() {
                 if (!authUserId) {
-                    __showNotification('error', 'Please login to continue');
+                    __showLoginNotification('error', 'Please login to continue');
                     return false;
                 }
 
