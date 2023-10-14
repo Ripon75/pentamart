@@ -65,7 +65,7 @@ window.__redirectPreviousURL = function () {
     }
 };
 
-window.__showNotification = function (
+window.__showLoginNotification = function (
     type,
     message,
     timer = 10000,
@@ -75,6 +75,7 @@ window.__showNotification = function (
         toast: true,
         position: layout,
         showConfirmButton: false,
+        footer: '<a class="btn btn-sm btn-primary" href="/login">Login Here</a>',
         timer: timer,
         timerProgressBar: true,
         didOpen: (toast) => {
@@ -87,4 +88,51 @@ window.__showNotification = function (
         icon: type,
         title: message,
     });
+};
+
+window.__showNotification = function (
+    type,
+    message,
+    timer = 5000,
+    layout = "top-end"
+) {
+    Swal.fire({
+        icon: type,
+        title: message,
+        // text: "Something went wrong!",
+        // footer: '<a href="">Login Here</a>',
+        // position: layout,
+    });
+
+    //     Swal.fire({
+    //         title: "Custom width, padding, color, background.",
+    //         width: 600,
+    //         padding: "3em",
+    //         color: "#716add",
+    //         background: "#fff url(/images/trees.png)",
+    //         backdrop: `
+    //     rgba(0,0,123,0.4)
+    //     url("/images/nyan-cat.gif")
+    //     left top
+    //     no-repeat
+    //   `,
+    //     });
+
+    // const Toast = Swal.mixin({
+    //     toast: true,
+    //     position: layout,
+    //     showConfirmButton: false,
+    //     // footer: '<a class="btn btn-sm btn-primary" href="/login">Login Here</a>',
+    //     timer: timer,
+    //     timerProgressBar: true,
+    //     didOpen: (toast) => {
+    //         toast.addEventListener("mouseenter", Swal.stopTimer);
+    //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //     },
+    // });
+
+    // Toast.fire({
+    //     icon: type,
+    //     title: message,
+    // });
 };

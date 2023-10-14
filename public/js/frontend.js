@@ -2176,13 +2176,14 @@ window.__redirectPreviousURL = function () {
   }
 };
 
-window.__showNotification = function (type, message) {
+window.__showLoginNotification = function (type, message) {
   var timer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 10000;
   var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "top-end";
   var Toast = sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().mixin({
     toast: true,
     position: layout,
     showConfirmButton: false,
+    footer: '<a class="btn btn-sm btn-primary" href="/login">Login Here</a>',
     timer: timer,
     timerProgressBar: true,
     didOpen: function didOpen(toast) {
@@ -2194,6 +2195,46 @@ window.__showNotification = function (type, message) {
     icon: type,
     title: message
   });
+};
+
+window.__showNotification = function (type, message) {
+  var timer = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 5000;
+  var layout = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : "top-end";
+  sweetalert2__WEBPACK_IMPORTED_MODULE_0___default().fire({
+    icon: type,
+    title: message // text: "Something went wrong!",
+    // footer: '<a href="">Login Here</a>',
+    // position: layout,
+
+  }); //     Swal.fire({
+  //         title: "Custom width, padding, color, background.",
+  //         width: 600,
+  //         padding: "3em",
+  //         color: "#716add",
+  //         background: "#fff url(/images/trees.png)",
+  //         backdrop: `
+  //     rgba(0,0,123,0.4)
+  //     url("/images/nyan-cat.gif")
+  //     left top
+  //     no-repeat
+  //   `,
+  //     });
+  // const Toast = Swal.mixin({
+  //     toast: true,
+  //     position: layout,
+  //     showConfirmButton: false,
+  //     // footer: '<a class="btn btn-sm btn-primary" href="/login">Login Here</a>',
+  //     timer: timer,
+  //     timerProgressBar: true,
+  //     didOpen: (toast) => {
+  //         toast.addEventListener("mouseenter", Swal.stopTimer);
+  //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+  //     },
+  // });
+  // Toast.fire({
+  //     icon: type,
+  //     title: message,
+  // });
 };
 
 /***/ }),
