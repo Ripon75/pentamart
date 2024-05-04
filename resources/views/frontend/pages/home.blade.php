@@ -126,7 +126,7 @@
     </section>
 
     {{-- New Arrivals --}}
-    @if (count(@$newArrival->products) > 0)
+    @if ($newArrival && count(@$newArrival->products) > 0)
         <section class="page-section">
             <div style="position: relative;" class="container">
                 <div class="text-center">
