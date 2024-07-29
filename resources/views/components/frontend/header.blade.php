@@ -238,7 +238,7 @@
     {{-- ==========New post header======================= --}}
     <div class="hidden sm:hidden md:hidden lg:block">
         <div class="post-header container h-14">
-            <div class="flex items-center justify-around h-full">
+            <div class="flex items-center h-full">
                 <div class="">
                     <ul class="flex text-sm md:text-sm lg:text-base text-primary font-normal tracking-wide">
                         @foreach ($menus as $m)

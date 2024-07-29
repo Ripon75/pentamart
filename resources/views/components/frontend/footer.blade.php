@@ -16,11 +16,11 @@
                     <div class="logo-wrapper hidden md:block">
                         {{-- TODO: Make a logo component --}}
                         <img class="logo w-[200px] sm:w-[200px] md:w-[250px] h-[56px] sm:h-[56px] md:h-[64px] mx-auto sm:mx-auto md:mx-auto lg:mr-auto xl:mr-auto xl:ml-0 lg:ml-0"
-                            src="/images/logos/logo.png">
+                            src="/images/logos/health.png">
                     </div>
 
                     <div class="md:hidden lg:hidden">
-                        <img class="" src="/images/logos/logo.png" alt="logo image"
+                        <img class="" src="/images/logos/health.png" alt="logo image"
                             style="width: 80%; display:block;margin-left:auto;margin-right:auto;">
                     </div>
 
@@ -30,7 +30,7 @@
                                 <i class="fa-solid fa-location-dot text-white"></i>
                             </p>
                             <p class="text-white ml-2">
-                                Gulshan, Dhaka, Bangladesh
+                                Malibagh, Dhaka, Bangladesh
                             </p>
                         </div>
 
@@ -39,7 +39,7 @@
                                 <i class="fa-solid fa-phone text-white"></i>
                             </p>
                             <p class="text-white ml-2">
-                                09610-609940
+                                01***********
                             </p>
                         </div>
 
@@ -48,7 +48,7 @@
                                 <i class="fa-regular fa-envelope text-white"></i>
                             </p>
                             <p class="text-white ml-2">
-                                info@pentamart.com
+                                info@healthwareeng.com
                             </p>
                         </div>
                     </div>

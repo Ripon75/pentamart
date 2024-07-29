@@ -150,82 +150,118 @@ class AuthController extends Controller
     // }
 
     // Login
+    // public function login(Request $request)
+    // {
+    //     $loginBy = $request->input('login_by', 'phone_number');
+
+    //     if ($loginBy === 'phone_number') {
+    //         $validator = Validator::make($request->all(), [
+    //             'phone_number' => ['required','regex:/^[0-9]+$/', 'digits:11']
+    //         ]);
+
+    //         if ($validator->stopOnFirstFailure()->fails()) {
+    //             return $this->sendError($validator->errors());
+    //         }
+
+    //         $phoneNumber = $request->input('phone_number', null);
+    //         $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+
+    //         $user = User::where('phone_number', $phoneNumber)->first();
+    //         if ($user) {
+    //             $otpCode = $this->getRandomCode();
+    //             $user->otp_code = $otpCode;
+    //             $user->save();
+    //             $this->sendSMS($phoneNumber, $otpCode);
+
+    //             return $this->sendResponse($otpCode, 'Send otp your phone number');
+    //         } else {
+    //             DB::beginTransaction();
+
+    //             $user = new User();
+
+    //             $otpCode = $this->getRandomCode();
+
+    //             $user->phone_number    = $phoneNumber;
+    //             $user->otp_code        = $otpCode;
+    //             $user->terms_conditons = 1;
+    //             $res = $user->save();
+
+    //             if ($res) {
+    //                 $this->sendSMS($phoneNumber, $otpCode);
+
+    //                 DB::commit();
+    //                 // return redirect("/send-otp-code?phone_number={$phoneNumber}");
+    //                 return $this->sendResponse($otpCode, 'Send otp your phone number');
+    //             }
+
+    //             $user = new User();
+    //             return $this->sendError('User Not found');
+    //         }
+    //     } else {
+    //         $validator = Validator::make($request->all(), [
+    //             'email'    => ['required', 'email'],
+    //             'password' => ['required']
+    //         ]);
+
+    //         if ($validator->stopOnFirstFailure()->fails()) {
+    //             return $this->sendError($validator->errors());
+    //         }
+
+    //         $email    = $request->input('email', null);
+    //         $password = $request->input('password', null);
+
+    //         $user = User::where('email', $email)->first();
+    //         if ($user && !$user->ac_status) {
+    //             $otpCode = $this->getRandomCode();
+    //             $user->otp_code = $otpCode;
+    //             $user->save();
+
+    //             return $this->sendError('Inactive user please try to login by phone number');
+    //         }
+
+    //         if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
+    //             $request->session()->regenerate();
+
+    //             return $this->sendResponse(true, 'Login successfully');
+    //         } else {
+    //             return $this->sendError('Invalid credential');
+    //         }
+    //     }
+    // }
+
     public function login(Request $request)
     {
-        $loginBy = $request->input('login_by', 'phone_number');
+        $validator = Validator::make($request->all(), [
+            'phone_number' => ['required'],
+            'password'     => ['required']
+        ]);
 
-        if ($loginBy === 'phone_number') {
-            $validator = Validator::make($request->all(), [
-                'phone_number' => ['required','regex:/^[0-9]+$/', 'digits:11']
-            ]);
+        if ($validator->stopOnFirstFailure()->fails()) {
+            return $this->sendError($validator->errors());
+        }
 
-            if ($validator->stopOnFirstFailure()->fails()) {
-                return $this->sendError($validator->errors());
-            }
+        $phoneNumber = $request->input('phone_number', null);
+        $password    = $request->input('password', null);
 
-            $phoneNumber = $request->input('phone_number', null);
-            $phoneNumber = $this->util->formatPhoneNumber($phoneNumber);
+        $user = User::where('phone_number', $phoneNumber)->first();
+        if ($user && !$user->ac_status) {
+            $otpCode = $this->getRandomCode();
+            $user->otp_code = $otpCode;
+            $user->save();
 
-            $user = User::where('phone_number', $phoneNumber)->first();
-            if ($user) {
-                $otpCode = $this->getRandomCode();
-                $user->otp_code = $otpCode;
-                $user->save();
-                $this->sendSMS($phoneNumber, $otpCode);
+            // return $this->sendError('Inactive user please try to login by phone number');
+            return back()->with('error', 'Inactive user please');
+        }
 
-                return $this->sendResponse($otpCode, 'Send otp your phone number');
-            } else {
-                DB::beginTransaction();
+        if (Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password], true)) {
+            $request->session()->regenerate();
 
-                $user = new User();
+            // return $this->sendResponse(true, 'Login successfully');
+            return back()->with('message', 'Login successfully');
 
-                $otpCode = $this->getRandomCode();
-
-                $user->phone_number    = $phoneNumber;
-                $user->otp_code        = $otpCode;
-                $user->terms_conditons = 1;
-                $res = $user->save();
-
-                if ($res) {
-                    $this->sendSMS($phoneNumber, $otpCode);
-
-                    DB::commit();
-                    // return redirect("/send-otp-code?phone_number={$phoneNumber}");
-                    return $this->sendResponse($otpCode, 'Send otp your phone number');
-                }
-
-                $user = new User();
-                return $this->sendError('User Not found');
-            }
         } else {
-            $validator = Validator::make($request->all(), [
-                'email'    => ['required', 'email'],
-                'password' => ['required']
-            ]);
-
-            if ($validator->stopOnFirstFailure()->fails()) {
-                return $this->sendError($validator->errors());
-            }
-
-            $email    = $request->input('email', null);
-            $password = $request->input('password', null);
-
-            $user = User::where('email', $email)->first();
-            if ($user && !$user->ac_status) {
-                $otpCode = $this->getRandomCode();
-                $user->otp_code = $otpCode;
-                $user->save();
-
-                return $this->sendError('Inactive user please try to login by phone number');
-            }
-
-            if (Auth::attempt(['email' => $email, 'password' => $password], true)) {
-                $request->session()->regenerate();
-
-                return $this->sendResponse(true, 'Login successfully');
-            } else {
-                return $this->sendError('Invalid credential');
-            }
+            // return $this->sendError('Invalid credential');
+            return back()->with('error', 'Invalid credential');
         }
     }
 

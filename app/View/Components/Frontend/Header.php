@@ -10,21 +10,11 @@ use Illuminate\Support\Facades\Auth;
 
 class Header extends Component
 {
-    /**
-     * Create a new component instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         //
     }
 
-    /**
-     * Get the view / contents that represent the component.
-     *
-     * @return \Illuminate\Contracts\View\View|\Closure|string
-     */
     public function render()
     {
         // TODO: Get all data from config or db
@@ -36,14 +26,14 @@ class Header extends Component
         $menus       = [
             [ 'label' => 'Home', 'route' => route('home') ],
             [ 'label' => 'Products', 'route' => route('products.index')],
-            [ 'label' => 'Category', 'route' => '#'],
+            // [ 'label' => 'Category', 'route' => '#'],
             [ 'label' => 'My Order', 'route' => route('my.order')],
             [ 'label' => 'About', 'route' => route('about')],
             [ 'label' => 'Contact', 'route' => route('contact')],
         ];
 
         return view('components.frontend.header', [
-            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.png' ],
+            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/health.png' ],
             'menus'       => $menus,
             'cart'        => $cart,
             'areas'       => $areas,

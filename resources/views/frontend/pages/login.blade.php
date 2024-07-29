@@ -62,16 +62,6 @@
                                         SIGNUP
                                     </a></button>
                             </div>
-
-                            <div class="text-center" style="padding:10px 12px 10px;">
-                                <button class="phoneBtn" id="phoneBtn">
-                                    LOGIN WITH PHONE
-                                </button>
-                                <button id="emailBtn" class="borderLeft">
-                                    LOGIN
-                                    WITH EMAIL
-                                </button>
-                            </div>
                         </div>
                         <hr>
                         <form id="loginForm" action="{{ route('login') }}" method="POST">
@@ -81,31 +71,18 @@
                                 <div class="alert mb-8 error">{{ Session::get('error') }}</div>
                             @endif
 
-                            {{-- hidden input field --}}
-                            <input id="input-login-by-id" type="hidden" name="login_by" value="phone_number">
-
-                            <div id="phoneInput">
+                            <div>
                                 <div class="w-[80%] block mx-auto form-item">
-                                    <label class="form-label">Phone Number <span
-                                            class="text-red-500 font-medium">*</span></label>
-                                    <input type="text" id="number"
-                                        value="{{ old('phone_number') ?? Request::get('phone_number') }}"
-                                        name="phone_number" class="form-input rounded" placeholder="Your phone number" />
-
-                                    <span id="show-phone-number-error-msg" class="text-red-400 text-sm"></span>
-                                </div>
-
-                                <div class="w-[50%] block mx-auto mt-8">
-                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Next</button>
-                                </div>
-                            </div>
-
-                            <div id="emailInput" style="display: none;">
-                                <div class="w-[80%] block mx-auto form-item">
-                                    <label class="form-label">Email <span class="text-red-500 font-medium">*</span></label>
-                                    <input type="email" name="email" id="email" class="form-input rounded"
+                                    <label class="form-label">Phone Number
+                                        <span class="text-red-500 font-medium">*</span>
+                                    </label>
+                                    <input type="text" name="phone_number" id="phone_number" class="form-input rounded"
                                         placeholder="Your phone number" />
                                     <span id="show-email-error-msg" class="text-red-400 text-sm"></span>
+
+                                    @error('phone_number')
+                                        <span class="form-helper error">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="w-[80%] block mx-auto form-item">
@@ -114,6 +91,10 @@
                                     <input type="password" name="password" id="password" class="form-input rounded"
                                         placeholder="Your password" />
                                     <span id="show-password-error-msg" class="text-red-400 text-sm"></span>
+
+                                    @error('password')
+                                        <span class="form-helper error">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
                                 <div class="w-[50%] block mx-auto mt-8">

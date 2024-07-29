@@ -8347,8 +8347,8 @@ textarea.form-control.is-invalid{
 .mt-\[100px\]{
   margin-top: 100px;
 }
-.mt-2\.5{
-  margin-top: 0.625rem;
+.mt-3{
+  margin-top: 0.75rem;
 }
 .mt-\[15px\]{
   margin-top: 15px;
@@ -8364,9 +8364,6 @@ textarea.form-control.is-invalid{
 }
 .mb-10{
   margin-bottom: 2.5rem;
-}
-.mt-3{
-  margin-top: 0.75rem;
 }
 .ml-4{
   margin-left: 1rem;

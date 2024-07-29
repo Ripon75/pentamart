@@ -26,7 +26,7 @@
                 <div class="grid grid-cols-2 h-full w-full">
                     <div class="col-span-2 h-full p-4">
                         <h1 class="text-3xl text-blue-500">Hi {{ Auth::user()->name }}</h1>
-                        <p class="text-gray-400">Here's what happening your Pentamart</p>
+                        <p class="text-gray-400">Here's what happening your HealthWareeng</p>
                         <div class="flex space-x-10 mt-10">
                             <div class="space-y-2">
                                 <h2 class="text-gray-400">Total Order</h2>

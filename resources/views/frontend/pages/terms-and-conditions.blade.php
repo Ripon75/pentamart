@@ -6,7 +6,7 @@
             {{-- ======English translate============ --}}
             <div class="mt-4">
                 <div class="">
-                    <h1 class="text-lg">Welcome to <span class="font-medium">Pentamart</span></h1>
+                    <h1 class="text-lg">Welcome to <span class="font-medium">HealthWareeng</span></h1>
                 </div>
                 <div class="mt-2 flex flex-col space-y-2 text-justify">
                     <p class="">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Excepturi incidunt dolore voluptatem aspernatur soluta laboriosam magni vel voluptas facilis commodi earum quis exercitationem id, pariatur debitis. Consequuntur iusto ex beatae.</p>
