@@ -64,15 +64,17 @@
                             </div>
                         </div>
                         <hr>
-                        <form id="loginForm" action="{{ route('login') }}" method="POST">
+                        <form action="{{ route('login') }}" method="POST">
                             @csrf
-
-                            @if (Session::has('error'))
-                                <div class="alert mb-8 error">{{ Session::get('error') }}</div>
-                            @endif
+                            @method('POST')
 
                             <div>
                                 <div class="w-[80%] block mx-auto form-item">
+
+                                    @if (Session::has('error'))
+                                        <div class="alert mb-8 error">{{ Session::get('error') }}</div>
+                                    @endif
+
                                     <label class="form-label">Phone Number
                                         <span class="text-red-500 font-medium">*</span>
                                     </label>
@@ -98,7 +100,7 @@
                                 </div>
 
                                 <div class="w-[50%] block mx-auto mt-8">
-                                    <button type="button" class="btn-login-submit btn btn-primary btn-block">Login</button>
+                                    <button class="btn-login-submit btn btn-primary btn-block">Login</button>
                                 </div>
                                 <p class="text-center text-[12px] mt-2" style="color:#00798c;">
                                     <a href="#">Forget Password ?</a>
@@ -129,78 +131,3 @@
         </div>
     </section>
 @endsection
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<script>
-    $(document).ready(function() {
-        var btnLoginSubmit = $('.btn-login-submit');
-
-        $("#emailBtn").click(function() {
-            $(this).toggleClass('borderLeft phoneBtn');
-            $('#input-login-by-id').val('email');
-
-            $("#phoneInput").fadeOut('fast', function() {
-                $("#emailInput").fadeIn('fast');
-            });
-
-            $("#phoneBtn").toggleClass('phoneBtn borderRight');
-        });
-
-        $("#phoneBtn").click(function() {
-            $(this).toggleClass('borderRight phoneBtn');
-            $('#input-login-by-id').val('phone_number');
-
-            $("#emailInput").fadeOut('fast', function() {
-                $("#phoneInput").fadeIn('fast');
-            });
-
-            $("#emailBtn").toggleClass('phoneBtn borderLeft');
-        });
-
-        btnLoginSubmit.click(function() {
-            var loginBy = $("input[name=login_by]").val();
-            var phoneNumber = $("input[name=phone_number]").val();
-            var email = $("input[name=email]").val();
-            var password = $("input[name=password]").val();
-
-            axios.post('/login', {
-                    login_by: loginBy,
-                    phone_number: phoneNumber,
-                    email: email,
-                    password: password
-                })
-                .then((res) => {
-                    if (res.data.success) {
-                        if (loginBy === 'phone_number') {
-                            window.location.href = `/send-otp-code?phone_number=${phoneNumber}`;
-                        } else {
-                            window.location.href = "/";
-                        }
-                    } else {
-                        if (res.data.msg) {
-                            if (res.data.msg.phone_number) {
-                                $("input[name=phone_number]").focus();
-                                $('#show-phone-number-error-msg').text(res.data.msg.phone_number[
-                                    0]);
-                                return false;
-                            } else if (res.data.msg.email) {
-                                $("input[name=email]").focus();
-                                $('#show-email-error-msg').text(res.data.msg.email[0]);
-                                return false;
-                            } else if (res.data.msg.password) {
-                                $("input[name=password]").focus();
-                                $('#show-password-error-msg').text(res.data.msg.password[0]);
-                                return false;
-                            } else {
-                                __showNotification('error', res.data.msg, 5000);
-                                return false;
-                            }
-                        }
-                    }
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        });
-    });
-</script>

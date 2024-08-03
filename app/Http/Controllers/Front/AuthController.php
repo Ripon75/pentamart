@@ -231,17 +231,12 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $credentials = $request->validate([
             'phone_number' => ['required'],
             'password'     => ['required']
         ]);
 
-        if ($validator->stopOnFirstFailure()->fails()) {
-            return $this->sendError($validator->errors());
-        }
-
         $phoneNumber = $request->input('phone_number', null);
-        $password    = $request->input('password', null);
 
         $user = User::where('phone_number', $phoneNumber)->first();
         if ($user && !$user->ac_status) {
@@ -249,18 +244,14 @@ class AuthController extends Controller
             $user->otp_code = $otpCode;
             $user->save();
 
-            // return $this->sendError('Inactive user please try to login by phone number');
             return back()->with('error', 'Inactive user please');
         }
 
-        if (Auth::attempt(['phone_number' => $phoneNumber, 'password' => $password], true)) {
+        if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // return $this->sendResponse(true, 'Login successfully');
-            return back()->with('message', 'Login successfully');
-
+            return redirect()->intended('dashboard');
         } else {
-            // return $this->sendError('Invalid credential');
             return back()->with('error', 'Invalid credential');
         }
     }
