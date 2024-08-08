@@ -33,7 +33,7 @@ class Header extends Component
         ];
 
         return view('components.frontend.header', [
-            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/health.png' ],
+            'logo'        => [ 'route' => 'home', 'imgSRC' => '/images/logos/logo.png' ],
             'menus'       => $menus,
             'cart'        => $cart,
             'areas'       => $areas,
