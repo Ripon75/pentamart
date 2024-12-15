@@ -30,7 +30,9 @@
                                 <i class="fa-solid fa-location-dot text-white"></i>
                             </p>
                             <p class="text-white ml-2">
-                                Malibagh, Dhaka, Bangladesh
+                                Corporate Office <br>
+                                89/KA Piscicultur Housing Society,
+                                Shyamoli, Mohammadpur. Dhaka-1203,
                             </p>
                         </div>
 
@@ -39,18 +41,18 @@
                                 <i class="fa-solid fa-phone text-white"></i>
                             </p>
                             <p class="text-white ml-2">
-                                01***********
+                                Cell : +8801722-042754, +8801303-055673
                             </p>
                         </div>
 
-                        <div class="flex justify-items-center p-1">
+                        {{-- <div class="flex justify-items-center p-1">
                             <p class="flex items-center">
                                 <i class="fa-regular fa-envelope text-white"></i>
                             </p>
                             <p class="text-white ml-2">
                                 info@healthwareeng.com
                             </p>
-                        </div>
+                        </div> --}}
                     </div>
 
                 </div>

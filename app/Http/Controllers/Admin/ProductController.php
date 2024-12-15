@@ -82,9 +82,9 @@ class ProductController extends Controller
             'category_id'   => ['required', 'integer'],
             // 'color_ids'     => ['nullable', 'array'],
             // 'size_ids'      => ['nullable', 'array'],
-            'current_stock' => ['required', 'integer'],
-            'buy_price'     => ['required'],
-            'mrp'           => ['required']
+            // 'current_stock' => ['required', 'integer'],
+            // 'buy_price'     => ['required'],
+            // 'mrp'           => ['required']
         ]);
 
         $name         = $request->input('name', null);
@@ -116,8 +116,8 @@ class ProductController extends Controller
             $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
-            $product->buy_price     = $BuyPrice;
-            $product->mrp           = $mrp;
+            $product->buy_price     = $BuyPrice ?? 0;
+            $product->mrp           = $mrp ?? 0;
             $product->offer_price   = $offerPrice ?? 0;
             $product->discount      = $discount;
             $product->offer_percent = $offerPercent ?? 0;
@@ -128,8 +128,8 @@ class ProductController extends Controller
             $res = $product->save();
             if ($res) {
                 // sync colors and sizes
-                $product->colors()->sync($colorIds);
-                $product->sizes()->sync($sizeIds);
+                // $product->colors()->sync($colorIds);
+                // $product->sizes()->sync($sizeIds);
 
                 // upload file
                 if ($request->hasFile('img_src')) {
@@ -199,11 +199,11 @@ class ProductController extends Controller
             'name'          => ['required', "unique:products,name,$id"],
             'brand_id'      => ['required', 'integer'],
             'category_id'   => ['required', 'integer'],
-            'color_ids'     => ['nullable', 'array'],
-            'size_ids'      => ['nullable', 'array'],
+            // 'color_ids'     => ['nullable', 'array'],
+            // 'size_ids'      => ['nullable', 'array'],
             'current_stock' => ['required', 'integer'],
-            'buy_price'     => ['required'],
-            'mrp'           => ['required']
+            // 'buy_price'     => ['required'],
+            // 'mrp'           => ['required']
         ]);
 
         $name         = $request->input('name', null);
@@ -237,8 +237,8 @@ class ProductController extends Controller
             $product->slug          = $slug;
             $product->brand_id      = $brandId;
             $product->category_id   = $categoryId;
-            $product->buy_price     = $buyPrice;
-            $product->mrp           = $mrp;
+            $product->buy_price     = $buyPrice ?? 0;
+            $product->mrp           = $mrp ?? 0;
             $product->offer_price   = $offerPrice ?? 0;
             $product->discount      = $discount;
             $product->offer_percent = $offerPercent ?? 0;
@@ -250,8 +250,8 @@ class ProductController extends Controller
 
             if ($res) {
                 // sync colors and sizes
-                $product->colors()->sync($colorIds);
-                $product->sizes()->sync($sizeIds);
+                // $product->colors()->sync($colorIds);
+                // $product->sizes()->sync($sizeIds);
 
                 // upload file
                 if ($request->hasFile('img_src')) {

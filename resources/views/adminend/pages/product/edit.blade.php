@@ -82,7 +82,7 @@
                                     <input type="number" value="{{ $product->current_stock }}" name="current_stock" class="w-full form-input">
                                 </div>
                             </div>
-                            <div class="flex space-x-2">
+                            {{-- <div class="flex space-x-2">
                                 <div class="form-item w-full">
                                     <label for="" class="form-label">Buy Price<span class="text-red-500 font-medium">*</span></label>
                                     <input type="number" step="any" name="buy_price" value="{{ $product->buy_price }}" class="w-full form-input">
@@ -97,8 +97,8 @@
                                         <span class="form-helper error">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="flex space-x-2">
+                            </div> --}}
+                            {{-- <div class="flex space-x-2">
                                 <div class="form-item w-full">
                                     <label for="" class="form-label">Offer price</label>
                                     <input id="input-offer-price" type="number" min="0" step="any" value="{{ $product->offer_price }}" name="offer_price" class="w-full form-input">
@@ -107,8 +107,8 @@
                                     <label for="" class="form-label">Offer percent</label>
                                     <input id="input-offer-percent" type="number" min="0" step="any" value="{{ $product->offer_percent }}" name="offer_percent" class="w-full form-input">
                                 </div>
-                            </div>
-                            <div class="flex space-x-2">
+                            </div> --}}
+                            {{-- <div class="flex space-x-2">
                                 <div class="form-item w-full">
                                     <label for="" class="form-label">Colors <span class="text-red-500 font-medium">*</span> </label>
                                     <select class="form-select w-full select-2 form-input" name="color_ids[]" multiple>
@@ -135,10 +135,10 @@
                                         <span class="form-helper error">{{ $message }}</span>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="form-item">
                                 <label for="" class="form-label">Description</label>
-                                <textarea class="w-full tinymce" name="description">{{ $product->description }}</textarea>
+                                <textarea name="description">{{ $product->description }}</textarea>
                             </div>
                             <div class="flex justify-end">
                                 <button type="submit" class="btn btn-primary">Update</button>
@@ -156,15 +156,22 @@
     {{-- Select 2 cdn link --}}
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    {{-- CKT editor cdn link --}}
-    <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+
+    {{-- CKEditor CDN link --}}
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+
     <script>
-        tinymce.init({
-            selector: '.tinymce', // Replace this CSS selector to match the placeholder element for TinyMCE
-            plugins: 'powerpaste advcode table lists checklist',
-            toolbar: 'undo redo | blocks| bold italic | bullist numlist checklist | code | table'
+        $(function() {
+            // Initialize Select2
+            $('.select-2').select2({
+                placeholder: "Select",
+            });
+
+            // Initialize CKEditor
+            CKEDITOR.replace('description');
         });
     </script>
+
     <script>
         var inputMRP          = $('#input-mrp');
         var inputOfferPrice   = $('#input-offer-price');

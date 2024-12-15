@@ -120,8 +120,8 @@ class PageController extends Controller
         Utility::saveIntendedURL($currentURL);
 
         $product       = Product::where('status', 'active')->getDefaultMetaData()->find($id);
-        $productSizes  = $product->sizes;
-        $productColors = $product->colors;
+        $productSizes  = @$product->sizes;
+        $productColors = @$product->colors;
 
         if (!$product) {
             abort(404);
@@ -326,9 +326,7 @@ class PageController extends Controller
             $products = $products->whereIn('brand_id', $filterBrandIds);
         }
 
-        $products = $products->where('mrp', '>', 0)->paginate($paginate);
-
-        return $products;
+        return $products->paginate($paginate);
     }
 
     private function getOfferProducts($request, $offerPercent)

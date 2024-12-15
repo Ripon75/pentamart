@@ -112,8 +112,8 @@
                             </div>
                         @endif --}}
 
-                            <div class="mt-1 pt-1 pb-1">
-                                @if (count($productColors))
+                            {{-- <div class="mt-1 pt-1 pb-1">
+                                @if (count($productColors) > 0)
                                     <div class="flex mb-2">
                                         <strong>Colors:&nbsp;</strong>&nbsp;
                                         @foreach ($productColors as $color)
@@ -127,7 +127,7 @@
                                         @endforeach
                                     </div>
                                 @endif
-                                @if (count($productSizes))
+                                @if (count($productSizes) > 0)
                                     <div class="flex">
                                         <strong>Sizes:&nbsp;</strong>&nbsp;
                                         @foreach ($productSizes as $size)
@@ -141,13 +141,13 @@
                                         @endforeach
                                     </div>
                                 @endif
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
                     <div class="mt-1">
                         <input type="hidden" value="{{ $product->id }}" id="product-id" style="display: none">
-                        <div class="prices flex space-x-2 items-center mb-1">
+                        {{-- <div class="prices flex space-x-2 items-center mb-1">
                             <span class="text-gray-500 text-sm"><strong>Best Price *</strong></span>
                             <span>
                                 @if ($product->offer_price > 0)
@@ -164,7 +164,7 @@
                                 @endif
                                 <span class="ml-1">{{ $currency }}&nbsp;</span>
                             </span>
-                        </div>
+                        </div> --}}
                         {{-- Extra information --}}
                         <div class="flex justify-between mb-3">
                             <div class="space-y-1">
@@ -277,7 +277,7 @@
                                 </div>
 
                                 {{-- Rating form --}}
-                                <div class="mt-5">
+                                {{-- <div class="mt-5">
                                     <form action="{{ route('ratings.store') }}" method="POST"
                                         enctype="multipart/form-data">
                                         @csrf
@@ -301,7 +301,7 @@
                                                     <label for="star1" title="text">1 star</label>
                                                 </div>
                                             </div>
-                                            {{-- Hidden input product id --}}
+
                                             <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                                             <label class="text-sm font-medium mt-2" for="">Write your product
@@ -331,9 +331,9 @@
                                             </div>
                                         </div>
                                     </form>
-                                </div>
+                                </div> --}}
                                 {{-- Show rating --}}
-                                @foreach ($ratings as $rating)
+                                {{-- @foreach ($ratings as $rating)
                                     <div class="bg-gray-100 mt-5 p-2 rounded">
                                         <div class="w-40 flex justify-between text-md text-base italic">
                                             <span class="text-sm italic">{{ $rating->user->name ?? 'NA' }}</span>
@@ -360,12 +360,13 @@
                                             {{ $rating->created_at->format('d/M/Y') }}
                                         </div>
                                     </div>
-                                @endforeach
+                                @endforeach --}}
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-span-6 lg:col-span-6 xl:col-span-2">
+
+                {{-- <div class="col-span-6 lg:col-span-6 xl:col-span-2">
                     <h1 class="text-xl font-medium">Ratings & Reviews</h1>
                     <div class="overflow-auto h-[384px] p-2">
                         <div class="border-b last:border-b-0">
@@ -419,7 +420,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </div> --}}
             </div>
         </div>
     </section>

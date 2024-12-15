@@ -161,7 +161,6 @@ class Product extends Model implements Auditable
             'sizes',
             'colors'
         ])
-        ->where('status', 'active')
-        ->where('mrp', '>', 0);
+        ->where('status', 'active');
     }
 }

@@ -298,112 +298,113 @@
 
 
     {{-- Offers --}}
-    <section class="page-section">
-        <div class="container">
-            <div class="text-center">
-                <h1 class="section-title mb-5">Special Offers</h1>
-            </div>
-            <div class="flex justify-center items-center flex-wrap sm:flex-wrap md:flex-wrap lg:flex-wrap 2xl:flex-wrap">
+    @if (count($offers) > 1)
+        <section class="page-section">
+            <div class="container">
+                <div class="text-center">
+                    <h1 class="section-title mb-5">Special Offers</h1>
+                </div>
+                <div class="flex justify-center items-center flex-wrap sm:flex-wrap md:flex-wrap lg:flex-wrap 2xl:flex-wrap">
 
-                {{-- <div style="background-color: #00798C"
-                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
-                    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                        <img class="w-full h-40 object-cover"
-                            src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
-                            alt="Offer Image">
-                        <div class="p-4">
-                            <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">Canon D Camera</h2>
-                            <p class="text-sm text-gray-600 mt-2 md:text-lg lg:text-lg">
-                                <span class="text-white-500 bg-clip-text"
-                                    style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
-                                    off
-                                </span>
-                            </p>
-                            <button
-                                class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
-                                Now</button>
-                        </div>
-                    </div>
-                </div> --}}
-
-                @foreach ($offers as $offer)
-                    <div style="background-color: #00798C"
+                    {{-- <div style="background-color: #00798C"
                         class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
                         <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                            <a href="">
-                                <img class="w-full h-40 object-cover" src="{{ $offer->img_src }}" alt="Offer Image">
-                            </a>
+                            <img class="w-full h-40 object-cover"
+                                src="https://dfstudio-d420.kxcdn.com/wordpress/wp-content/uploads/2019/06/digital_camera_photo-1080x675.jpg"
+                                alt="Offer Image">
                             <div class="p-4">
-                                <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">{{ $offer->title }}
-                                </h2>
-                                <p class="text-gray-600 mt-2">
+                                <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">Canon D Camera</h2>
+                                <p class="text-sm text-gray-600 mt-2 md:text-lg lg:text-lg">
                                     <span class="text-white-500 bg-clip-text"
-                                        style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get
-                                        {{ $offer->offer_percent }}%
+                                        style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
                                         off
                                     </span>
                                 </p>
-                                <p class="mt-[15px]">
-                                    <a href="{{ route('offers.products', $offer->offer_percent) }}"
-                                        class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">
-                                        Shop Now
-                                    </a>
-                                </p>
+                                <button
+                                    class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
+                                    Now</button>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    </div> --}}
 
-                {{-- <div style="background-color: #00798C"
-                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
-                    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                        <img class="w-full h-40 object-cover"
-                            src="https://brotherselectronicsbd.com/image/cache/catalog/demo/Accessories/Huawei/Watch%203%20Pro/Brothers-Huawei%20Watch%203%20Pro%20(1)-800x800.jpg"
-                            alt="Offer Image">
-                        <div class="p-4">
-                            <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">Apple Smart Watch</h2>
-                            <p class="text-gray-600 mt-2">
-                                <span class="text-white-500 bg-clip-text"
-                                    style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
-                                    off
-                                </span>
-                            </p>
-                            <button
-                                class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
-                                Now</button>
+                    @foreach ($offers as $offer)
+                        <div style="background-color: #00798C"
+                            class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+                            <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+                                <a href="">
+                                    <img class="w-full h-40 object-cover" src="{{ $offer->img_src }}" alt="Offer Image">
+                                </a>
+                                <div class="p-4">
+                                    <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">{{ $offer->title }}
+                                    </h2>
+                                    <p class="text-gray-600 mt-2">
+                                        <span class="text-white-500 bg-clip-text"
+                                            style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get
+                                            {{ $offer->offer_percent }}%
+                                            off
+                                        </span>
+                                    </p>
+                                    <p class="mt-[15px]">
+                                        <a href="{{ route('offers.products', $offer->offer_percent) }}"
+                                            class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">
+                                            Shop Now
+                                        </a>
+                                    </p>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div> --}}
+                    @endforeach
 
-                {{-- <div style="background-color: #00798C"
-                    class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
-                    <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
-                        <img class="w-full h-40 object-cover"
-                            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-6gpSFfSouDX2HmBIUJkM4gWvPc6CrFY1HA&usqp=CAU"
-                            alt="Offer Image">
-                        <div class="p-4">
-                            <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">RAY-BAN sunglass</h2>
-                            <p class="text-gray-600 mt-2 ">
-                                <span class="text-white-500 bg-clip-text"
-                                    style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
-                                    off
-                                </span>
-                            </p>
-                            <button
-                                class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
-                                Now</button>
+                    {{-- <div style="background-color: #00798C"
+                        class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+                        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+                            <img class="w-full h-40 object-cover"
+                                src="https://brotherselectronicsbd.com/image/cache/catalog/demo/Accessories/Huawei/Watch%203%20Pro/Brothers-Huawei%20Watch%203%20Pro%20(1)-800x800.jpg"
+                                alt="Offer Image">
+                            <div class="p-4">
+                                <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">Apple Smart Watch</h2>
+                                <p class="text-gray-600 mt-2">
+                                    <span class="text-white-500 bg-clip-text"
+                                        style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
+                                        off
+                                    </span>
+                                </p>
+                                <button
+                                    class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
+                                    Now</button>
+                            </div>
                         </div>
-                    </div>
-                </div> --}}
+                    </div> --}}
 
+                    {{-- <div style="background-color: #00798C"
+                        class="w-32 h-auto m-1 md:w-64 lg:w-64 2xl:w-64 hover:scale-105 transition duration-300 ease-in-out rounded">
+                        <div class="max-w-md mx-auto bg-white rounded-lg overflow-hidden shadow-lg">
+                            <img class="w-full h-40 object-cover"
+                                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT-6gpSFfSouDX2HmBIUJkM4gWvPc6CrFY1HA&usqp=CAU"
+                                alt="Offer Image">
+                            <div class="p-4">
+                                <h2 class="text-sm font-semibold text-gray-800 md:text-xl lg:text-xl">RAY-BAN sunglass</h2>
+                                <p class="text-gray-600 mt-2 ">
+                                    <span class="text-white-500 bg-clip-text"
+                                        style="background-image: linear-gradient(to right, #ff00cc, #6600ff);">Get 20%
+                                        off
+                                    </span>
+                                </p>
+                                <button
+                                    class="text-sm mt-4 bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-full">Shop
+                                    Now</button>
+                            </div>
+                        </div>
+                    </div> --}}
+
+                </div>
             </div>
-        </div>
-    </section>
-
+        </section>
+    @endif
     {{-- Offers END --}}
 
     {{-- ==================Features================== --}}
-    <section class="page-section">
+    {{-- <section class="page-section">
         <div class="container">
             <div class="grid gap-4 grid-cols-1 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-3">
                 @foreach ($features as $feature)
@@ -420,10 +421,7 @@
                 @endforeach
             </div>
         </div>
-    </section>
-
-
-
+    </section> --}}
 
 @endsection
 

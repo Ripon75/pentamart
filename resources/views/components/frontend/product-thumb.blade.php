@@ -66,7 +66,7 @@
                     </a>
                 @endif
                 {{-- Price show for type default --}}
-                <div
+                {{-- <div
                     class="prices mt-1 text-xs sm:text-xs md:text-sm lg:text-base xl:text-base 2xl:text-base flex space-x-4">
                     @php
                         $productPrice = $product->mrp;
@@ -94,7 +94,7 @@
                             </span>
                         </span>
                     @endif
-                </div>
+                </div> --}}
             </div>
         </div>
     </div>
@@ -126,7 +126,7 @@
                     @endif
 
                     {{-- Price show --}}
-                    <div class="prices mt-2 flex space-x-4">
+                    {{-- <div class="prices mt-2 flex space-x-4">
                         @if ($product->offer_price > 0)
                             <span class="text-primary text-sm">{{ $currency }} {{ $product->offer_price }}</span>
                             <span class="line-through text-sm text-gray-500 self-end">{{ $currency }}
@@ -134,7 +134,7 @@
                         @else
                             <span class="text-primary">{{ $currency }} {{ $product->mrp }}</span>
                         @endif
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </a>
@@ -148,7 +148,7 @@
             <div class="text-center p-4 rounded-b-md bg-gray-50 text-primary-dark hover:text-primary-dark">
                 <a href="{{ route('products.show', [$product->id, $product->slug]) }}"
                     class="inline-block text-sm font-medium">{{ $product->name }}</a>
-                <h2 class="text-sm">{{ $currency }} {{ $product->mrp }} </h2>
+                {{-- <h2 class="text-sm">{{ $currency }} {{ $product->mrp }} </h2> --}}
             </div>
         </div>
     </div>
